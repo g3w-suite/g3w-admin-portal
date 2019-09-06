@@ -14,7 +14,7 @@ from django.urls import reverse
 from guardian.compat import get_user_model
 from rest_framework.test import APIClient
 from usersmanage.models import User, Group as UserGroup
-from core.models import Group as CoreGroup, G3WSpatialRefSys
+from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup
 import os
 import json
 
@@ -81,6 +81,11 @@ class PortalTestsBase(TestCase):
 
         cls.project_group2.save()
 
+        # create macrogroups
+        cls.macrogroup = MacroGroup(title='Macrogroup1', logo_img='macrogroup.png')
+        cls.macrogroup.save()
+        cls.project_group2.macrogroups.add(cls.macrogroup)
+
         # add permission to anonymous and viewer
         cls.project_group2.addPermissionsToViewers(users_id=[cls.test_user3.pk, get_user_model().get_anonymous().pk])
 
@@ -89,6 +94,7 @@ class PortalTestAPI(PortalTestsBase):
     """ Main portal test API class"""
 
     def test_group(self):
+        """ Test for group map """
 
         # instance API client
         client = APIClient()
@@ -100,7 +106,7 @@ class PortalTestAPI(PortalTestsBase):
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 1)
 
-        # user logged as viwer
+        # user logged as viewer
         self.assertTrue(client.login(username=self.test_user3, password=self.test_user3))
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -117,3 +123,29 @@ class PortalTestAPI(PortalTestsBase):
         self.assertEqual(jcontent['count'], 2)
 
         client.logout()
+
+    def test_project(self):
+        """ Test api for qdjango projects """
+
+        # instance API client
+        client = APIClient()
+
+        # user not logged(anonymoususer)
+        url = reverse('portal-project-api-list')
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 0)
+
+    def test_macrogroup(self):
+        """ Test for macrogroup """
+
+        # instance API client
+        client = APIClient()
+
+        # user not logged(anonymoususer)
+        url = reverse('portal-macrogroup-api-list')
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 1)

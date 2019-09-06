@@ -10,11 +10,17 @@ __date__ = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
 
 from django.conf.urls import url
-from .api.views import GroupsApiView
+from .api.views import *
 
 
 urlpatterns = [
 
+    # All Projects (filtered by user role)
+    url(r'^api/project/$', ProjectsApiView.as_view(), name='portal-project-api-list'),
+
     # All Groups (filtered by user role)
-    url(r'^api/group/$', GroupsApiView.as_view(), name='portal-group-api-list')
+    url(r'^api/group/$', GroupsApiView.as_view(), name='portal-group-api-list'),
+
+    # All MacroGroupS
+    url(r'^api/macrogroup/$', MacroGroupsApiView.as_view(), name='portal-macrogroup-api-list')
 ]

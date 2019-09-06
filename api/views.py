@@ -9,9 +9,20 @@ __date__ = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
 
 from rest_framework import generics
-from core.models import Group
 from .serializers import *
 from .filters import *
+
+
+class ProjectsApiView(generics.ListAPIView):
+    """
+    API list view for map projects
+    """
+
+    queryset = Project.objects.all()
+
+    serializer_class = ProjectSerializer
+
+    #filter_backends = (UserGroupFilter, )
 
 
 class GroupsApiView(generics.ListAPIView):
@@ -25,3 +36,12 @@ class GroupsApiView(generics.ListAPIView):
 
     filter_backends = (UserGroupFilter, )
 
+
+class MacroGroupsApiView(generics.ListAPIView):
+    """
+    API list view for map macrogroups
+    """
+
+    queryset = MacroGroup.objects.all()
+
+    serializer_class = MacroGroupSerializer

@@ -13,6 +13,21 @@ __copyright__ = 'Copyright 2019, GIS3W'
 
 from rest_framework import serializers
 from core.models import *
+from qdjango.models import Project
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    """
+    Map group serializer for portal
+    """
+    class Meta:
+        model = Project
+        fields = (
+            'id',
+            'title',
+            'description',
+            'thumbnail'
+        )
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -25,4 +40,19 @@ class GroupSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'header_logo_img'
+        )
+
+
+class MacroGroupSerializer(serializers.ModelSerializer):
+    """
+    Map macrogroup serializer for portal
+    """
+    class Meta:
+        model = MacroGroup
+        fields = (
+            'id',
+            'title',
+            'description',
+            'logo_img',
+            'logo_link'
         )
