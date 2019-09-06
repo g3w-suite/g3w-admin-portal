@@ -149,3 +149,18 @@ class PortalTestAPI(PortalTestsBase):
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 1)
+
+    def test_genericsuitedata(self):
+        """ Test for Generic suite data """
+
+        # instance API client
+        client = APIClient()
+
+        # user not logged(anonymoususer)
+        url = reverse('portal-infodata-api-list')
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+
+        self.assertTrue('title' in jcontent and 'about_name' in jcontent)
+

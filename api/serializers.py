@@ -56,3 +56,12 @@ class MacroGroupSerializer(serializers.ModelSerializer):
             'logo_img',
             'logo_link'
         )
+
+
+class GenericSuiteDataSerializer(serializers.ModelSerializer):
+    """
+    Generic suite data
+    """
+    class Meta:
+        model = GeneralSuiteData
+        fields = '__all__'

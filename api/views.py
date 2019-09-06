@@ -19,7 +19,6 @@ class ProjectsApiView(generics.ListAPIView):
     """
 
     queryset = Project.objects.all()
-
     serializer_class = ProjectSerializer
 
     #filter_backends = (UserGroupFilter, )
@@ -31,7 +30,6 @@ class GroupsApiView(generics.ListAPIView):
     """
 
     queryset = Group.objects.all()
-
     serializer_class = GroupSerializer
 
     filter_backends = (UserGroupFilter, )
@@ -43,5 +41,16 @@ class MacroGroupsApiView(generics.ListAPIView):
     """
 
     queryset = MacroGroup.objects.all()
-
     serializer_class = MacroGroupSerializer
+
+
+class InfoDataApiView(generics.RetrieveAPIView):
+    """
+    API for Generic suite data
+    """
+
+    queryset = GeneralSuiteData.objects.all()
+    serializer_class = GenericSuiteDataSerializer
+
+    def get_object(self):
+        return self.get_queryset()[0]
