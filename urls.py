@@ -9,4 +9,9 @@ __date__ = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
 
 
-urlpatterns = []
+from django.conf.urls import url
+from .viewes import LoginAjaxView
+
+urlpatterns = [
+    url(r'^jx/login/$', LoginAjaxView.as_view(), name='portal-ajax-login'),
+]
