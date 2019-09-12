@@ -21,6 +21,10 @@ urlpatterns = [
     # All Groups (filtered by user role)
     url(r'^api/group/$', GroupsApiView.as_view(), name='portal-group-api-list'),
 
+    # All Project (filtered by user role and groups)
+    url(r'^api/group/(?P<group_id>[0-9]+)/projects/$', ProjectsApiView.as_view(),
+        name='portal-project-by-group-api-list'),
+
     # All MacroGroupS
     url(r'^api/macrogroup/$', MacroGroupsApiView.as_view(), name='portal-macrogroup-api-list'),
 

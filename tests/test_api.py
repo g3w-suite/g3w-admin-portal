@@ -11,17 +11,22 @@ __copyright__ = 'Copyright 2019, GIS3W'
 from django.conf import settings
 from django.test import TestCase, override_settings
 from django.urls import reverse
+from django.core.files import File
 from guardian.compat import get_user_model
 from rest_framework.test import APIClient
 from usersmanage.models import User, Group as UserGroup
 from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup
+from qdjango.utils.data import QgisProject
 import os
 import json
 
 
 CURRENT_PATH = os.getcwd()
-TEST_BASE_PATH = '/editing/tests/data/'
+TEST_BASE_PATH = '/portal/tests/data/'
 DATASOURCE_PATH = '{}{}'.format(CURRENT_PATH, TEST_BASE_PATH)
+QGS_DB = 'portal_test_project.sqlite'
+QGS_FILE = 'portal_test_project.qgs'
+
 
 @override_settings(CACHES = {
         'default': {
@@ -31,7 +36,7 @@ DATASOURCE_PATH = '{}{}'.format(CURRENT_PATH, TEST_BASE_PATH)
     },
     DATASOURCE_PATH=DATASOURCE_PATH,
     G3WADMIN_LOCAL_MORE_APPS=[
-    'editing',
+    'portal',
 ])
 class PortalTestsBase(TestCase):
     """Base class for Portal tests"""
@@ -89,6 +94,16 @@ class PortalTestsBase(TestCase):
         # add permission to anonymous and viewer
         cls.project_group2.addPermissionsToViewers(users_id=[cls.test_user3.pk, get_user_model().get_anonymous().pk])
 
+        #projects
+        qgis_project_file = File(open('{}{}{}'.format(CURRENT_PATH, TEST_BASE_PATH, QGS_FILE), 'r'))
+        cls.project = QgisProject(qgis_project_file)
+        cls.project.title = 'A project'
+        cls.project.group = cls.project_group
+        cls.project.save()
+
+        # add permission to anonumous and viewer
+        cls.project.instance.addPermissionsToViewers([cls.test_user3.pk])
+
 
 class PortalTestAPI(PortalTestsBase):
     """ Main portal test API class"""
@@ -136,6 +151,42 @@ class PortalTestAPI(PortalTestsBase):
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 0)
+
+        # user logged as admin
+        self.assertTrue(client.login(username=self.test_user_admin1.username, password=self.test_user_admin1.username))
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 1)
+
+        url_by_group = reverse('portal-project-by-group-api-list', kwargs={'group_id': self.project_group.pk})
+        response = client.get(url_by_group)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 1)
+
+        url_by_group = reverse('portal-project-by-group-api-list', kwargs={'group_id': self.project_group2.pk})
+        response = client.get(url_by_group)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 0)
+
+        client.logout()
+
+        # user logged as user2
+        self.assertTrue(client.login(username=self.test_user2.username, password=self.test_user2.username))
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 0)
+        client.logout()
+
+        # ser logged as user3
+        self.assertTrue(client.login(username=self.test_user3.username, password=self.test_user3.username))
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 1)
 
     def test_macrogroup(self):
         """ Test for macrogroup """

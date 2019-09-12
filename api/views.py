@@ -21,7 +21,10 @@ class ProjectsApiView(generics.ListAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
-    #filter_backends = (UserGroupFilter, )
+    filter_backends = (
+        UserProjectFilter,
+        GroupProjectFilter
+    )
 
 
 class GroupsApiView(generics.ListAPIView):

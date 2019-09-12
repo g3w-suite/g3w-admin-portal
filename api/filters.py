@@ -15,6 +15,7 @@ __copyright__ = 'Copyright 2019, Gis3w'
 from django.contrib.auth.models import AnonymousUser
 from rest_framework.filters import BaseFilterBackend
 from core.models import *
+from qdjango.models import Project
 
 
 class UserGroupFilter(BaseFilterBackend):
@@ -26,5 +27,31 @@ class UserGroupFilter(BaseFilterBackend):
         """
         queryset = get_objects_for_user(request.user, 'core.view_group', Group).order_by('order') \
                  | get_objects_for_user(AnonymousUser(), 'core.view_group', Group).order_by('order')
+
+        return queryset
+
+
+class UserProjectFilter(BaseFilterBackend):
+    """A filter backend for portal module for qdjango project"""
+
+    def filter_queryset(self, request, queryset, view):
+        """
+        Return a filtered queryset by guardian grant
+        """
+        queryset = get_objects_for_user(request.user, 'qdjango.view_project', Project).order_by('title') \
+                 | get_objects_for_user(AnonymousUser(), 'qdjango.view_project', Project).order_by('title')
+
+        return queryset
+
+
+class GroupProjectFilter(BaseFilterBackend):
+    """A filter backend for portal module for qdjango project , filter by gropus"""
+
+    def filter_queryset(self, request, queryset, view):
+        """
+        Return a filtered queryset by group_id
+        """
+        if 'group_id' in view.kwargs:
+            queryset = queryset.filter(group_id=view.kwargs['group_id'])
 
         return queryset
