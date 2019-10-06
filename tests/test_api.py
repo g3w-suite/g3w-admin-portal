@@ -12,6 +12,7 @@ from django.conf import settings
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.core.files import File
+from django.utils import translation
 from guardian.compat import get_user_model
 from rest_framework.test import APIClient
 from usersmanage.models import User, Group as UserGroup
@@ -49,6 +50,9 @@ class PortalTestsBase(TestCase):
 
     @classmethod
     def setUpTestData(cls):
+
+        translation.activate(settings.LANGUAGE_CODE[:2])
+
         # Admin level 1
         cls.test_user_admin1 = User.objects.create_user(username='admin01', password='admin01')
         cls.test_user_admin1.is_superuser = True
@@ -73,7 +77,7 @@ class PortalTestsBase(TestCase):
 
         cls.test_user4 = User.objects.create_user(username='user04', password='user04')
         cls.test_user4.groups.add(cls.group)
-        cls.test_user3.save()
+        cls.test_user4.save()
 
         cls.project_group = CoreGroup(name='Group1', title='Group1', header_logo_img='',
                                       srid=G3WSpatialRefSys.objects.get(auth_srid=4326))
@@ -90,6 +94,12 @@ class PortalTestsBase(TestCase):
         cls.macrogroup = MacroGroup(title='Macrogroup1', logo_img='macrogroup.png')
         cls.macrogroup.save()
         cls.project_group2.macrogroups.add(cls.macrogroup)
+        cls.project_group.macrogroups.add(cls.macrogroup)
+
+        # create macrogroups 2
+        cls.macrogroup2 = MacroGroup(title='Macrogroup2', logo_img='macrogroup2.png')
+        cls.macrogroup2.save()
+        cls.project_group.macrogroups.add(cls.macrogroup2)
 
         # add permission to anonymous and viewer
         cls.project_group2.addPermissionsToViewers(users_id=[cls.test_user3.pk, get_user_model().get_anonymous().pk])
@@ -126,7 +136,7 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 1)
+        self.assertEqual(jcontent['count'], 2)
 
         client.logout()
 
@@ -199,7 +209,38 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 2)
+
+        # get group by macrogroup id
+        # user not logged: Macrogroup1 1 group, Macrogroup2 0 group
+        url = reverse('portal-group-by-macrogroup-api-list', kwargs={'macrogroup_id': self.macrogroup.pk})
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 1)
+        self.assertEqual(jcontent['results'][0]['id'], self.project_group2.pk)
+
+        url = reverse('portal-group-by-macrogroup-api-list', kwargs={'macrogroup_id': self.macrogroup2.pk})
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 0)
+
+        # user logged as admin: Macrogroup1 2 group, Macrogroup2 1 group
+        self.assertTrue(client.login(username=self.test_user_admin1.username, password=self.test_user_admin1.username))
+        url = reverse('portal-group-by-macrogroup-api-list', kwargs={'macrogroup_id': self.macrogroup.pk})
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 2)
+
+        url = reverse('portal-group-by-macrogroup-api-list', kwargs={'macrogroup_id': self.macrogroup2.pk})
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 1)
+
+        client.logout()
 
     def test_genericsuitedata(self):
         """ Test for Generic suite data """

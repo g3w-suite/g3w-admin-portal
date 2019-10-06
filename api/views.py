@@ -35,7 +35,10 @@ class GroupsApiView(generics.ListAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
-    filter_backends = (UserGroupFilter, )
+    filter_backends = (
+        UserGroupFilter,
+        MacroGroupGroupFilter
+    )
 
 
 class MacroGroupsApiView(generics.ListAPIView):

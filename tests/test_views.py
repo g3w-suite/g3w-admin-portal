@@ -44,4 +44,4 @@ class PortalViewsTest(PortalTestsBase):
 
         self.assertTrue(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['status'], 'errori')
+        self.assertEqual(jcontent['status'], 'error')

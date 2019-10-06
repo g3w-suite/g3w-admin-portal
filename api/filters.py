@@ -45,7 +45,7 @@ class UserProjectFilter(BaseFilterBackend):
 
 
 class GroupProjectFilter(BaseFilterBackend):
-    """A filter backend for portal module for qdjango project , filter by gropus"""
+    """A filter backend for portal module for qdjango project , filter by group"""
 
     def filter_queryset(self, request, queryset, view):
         """
@@ -53,5 +53,18 @@ class GroupProjectFilter(BaseFilterBackend):
         """
         if 'group_id' in view.kwargs:
             queryset = queryset.filter(group_id=view.kwargs['group_id'])
+
+        return queryset
+
+
+class MacroGroupGroupFilter(BaseFilterBackend):
+    """A filter backend for portal module for group, filter by macrogroup"""
+
+    def filter_queryset(self, request, queryset, view):
+        """
+        Return a filtered queryset by macrogroup_id
+        """
+        if 'macrogroup_id' in view.kwargs:
+            queryset = queryset.filter(macrogroups__pk=view.kwargs['macrogroup_id'])
 
         return queryset
