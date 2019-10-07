@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^api/macrogroup/$', MacroGroupsApiView.as_view(), name='portal-macrogroup-api-list'),
 
     # Groups by MacroGroup
-    url(r'^api/macrogroup/(?P<macrogroup_id>[0-9]+)$', GroupsApiView.as_view(),
+    url(r'^api/group/(?P<macrogroup_id>[0-9]+)$', GroupsApiView.as_view(),
         name='portal-group-by-macrogroup-api-list'),
 
     # Generic suite data
