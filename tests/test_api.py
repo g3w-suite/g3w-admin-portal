@@ -255,6 +255,24 @@ class PortalTestAPI(PortalTestsBase):
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 1)
 
+        # check Group without MacroGroup
+        url = reverse('portal-group-without-macrogroup-api-list')
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 0)
+
+        # ad new group without macrogroup
+        new_group = CoreGroup(name='Group33', title='Group33', header_logo_img='',
+                  srid=G3WSpatialRefSys.objects.get(auth_srid=4326))
+        new_group.save()
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 1)
+        self.assertEqual(jcontent['results'][0]['name'], 'Group33')
+
         client.logout()
 
     def test_genericsuitedata(self):

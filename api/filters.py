@@ -13,6 +13,7 @@ __copyright__ = 'Copyright 2019, Gis3w'
 
 
 from django.contrib.auth.models import AnonymousUser
+from django.urls import resolve
 from rest_framework.filters import BaseFilterBackend
 from core.models import *
 from qdjango.models import Project
@@ -66,5 +67,9 @@ class MacroGroupGroupFilter(BaseFilterBackend):
         """
         if 'macrogroup_id' in view.kwargs:
             queryset = queryset.filter(macrogroups__pk=view.kwargs['macrogroup_id'])
+
+        # check for group without macrogroup
+        if resolve(request.path_info).url_name == 'portal-group-without-macrogroup-api-list':
+            queryset = queryset.filter(macrogroups__pk=None)
 
         return queryset

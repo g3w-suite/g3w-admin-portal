@@ -39,6 +39,9 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'title',
+            'srid',
+            'header_logo_link',
             'header_logo_img'
         )
 
