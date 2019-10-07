@@ -114,6 +114,21 @@ class PortalTestsBase(TestCase):
         # add permission to anonumous and viewer
         cls.project.instance.addPermissionsToViewers([cls.test_user3.pk])
 
+    @classmethod
+    def tearDownClass(cls):
+        """Cleanup """
+        # Cleanup
+        super(PortalTestsBase, cls).tearDownClass()
+
+    def tearDown(self):
+        """Cleanup catalogs"""
+        super(PortalTestsBase, self).tearDown()
+
+        # Make some groups and macrogroups
+        CoreGroup.objects.all().delete()
+        MacroGroup.objects.all().delete()
+
+
 
 class PortalTestAPI(PortalTestsBase):
     """ Main portal test API class"""
