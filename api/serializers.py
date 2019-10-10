@@ -14,19 +14,31 @@ __copyright__ = 'Copyright 2019, GIS3W'
 from rest_framework import serializers
 from core.models import *
 from qdjango.models import Project
+from django.urls import reverse
 
 
 class ProjectSerializer(serializers.ModelSerializer):
     """
     Map group serializer for portal
     """
+    map_url = serializers.SerializerMethodField()
+
+    def get_map_url(self, instance):
+        """ Return map url"""
+        return reverse('group-project-map', kwargs={
+            'group_slug': instance.group.slug,
+            'project_type': 'qdjango',
+            'project_id': instance.pk
+        })
+
     class Meta:
         model = Project
         fields = (
             'id',
             'title',
             'description',
-            'thumbnail'
+            'thumbnail',
+            'map_url'
         )
 
 

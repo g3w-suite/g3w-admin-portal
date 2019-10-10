@@ -184,6 +184,17 @@ class PortalTestAPI(PortalTestsBase):
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 1)
 
+        # check for project data
+        result = jcontent['results'][0]
+        self.assertEqual(self.project.instance.pk, result['id'])
+        self.assertEqual(self.project.instance.title, result['title'])
+        map_url = reverse('group-project-map', kwargs={
+            'group_slug': self.project.instance.group.slug,
+            'project_type': 'qdjango',
+            'project_id': self.project.instance.pk
+        })
+        self.assertEqual(map_url, result['map_url'])
+
         url_by_group = reverse('portal-project-by-group-api-list', kwargs={'group_id': self.project_group.pk})
         response = client.get(url_by_group)
         self.assertEqual(response.status_code, 200)
