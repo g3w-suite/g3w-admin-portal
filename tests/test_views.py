@@ -19,7 +19,7 @@ class PortalViewsTest(PortalTestsBase):
 
     def test_index(self):
         """ test index page"""
-        url = reverse('portal')
+        url = reverse('frontend')
 
         # instance client
         client = Client()

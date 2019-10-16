@@ -31,6 +31,19 @@ class ProjectSerializer(serializers.ModelSerializer):
             'project_id': instance.pk
         })
 
+    def to_representation(self, instance):
+
+        feature = super(ProjectSerializer, self).to_representation(instance)
+
+        # add editing url if user has grant
+        if self._context['request'].user.has_perm('qdjango.change_project', instance):
+            feature['edit_url'] = reverse('qdjango-project-update', kwargs={
+            'group_slug': instance.group.slug,
+            'slug': instance.slug
+        })
+
+        return feature
+
     class Meta:
         model = Project
         fields = (
@@ -46,6 +59,19 @@ class GroupSerializer(serializers.ModelSerializer):
     """
     Map group serializer for portal
     """
+
+    def to_representation(self, instance):
+
+        feature = super(GroupSerializer, self).to_representation(instance)
+
+        # add editing url if user has grant
+        if self._context['request'].user.has_perm('core.change_group', instance):
+            feature['edit_url'] = reverse('group-update', kwargs={
+            'slug': instance.slug
+        })
+
+        return feature
+
     class Meta:
         model = Group
         fields = (
@@ -62,6 +88,19 @@ class MacroGroupSerializer(serializers.ModelSerializer):
     """
     Map macrogroup serializer for portal
     """
+
+    def to_representation(self, instance):
+
+        feature = super(MacroGroupSerializer, self).to_representation(instance)
+
+        # add editing url if user has grant
+        if self._context['request'].user.has_perm('core.change_macrogroup', instance):
+            feature['edit_url'] = reverse('macrogroup-update', kwargs={
+            'slug': instance.slug
+        })
+
+        return feature
+
     class Meta:
         model = MacroGroup
         fields = (

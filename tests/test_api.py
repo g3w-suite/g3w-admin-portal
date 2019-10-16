@@ -145,6 +145,7 @@ class PortalTestAPI(PortalTestsBase):
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 1)
+        self.assertNotIn('edit_url', jcontent['results'][0])
 
         # user logged as viewer
         self.assertTrue(client.login(username=self.test_user3, password=self.test_user3))
@@ -155,12 +156,29 @@ class PortalTestAPI(PortalTestsBase):
 
         client.logout()
 
+        # user logged as editor_level_2
+        self.assertTrue(client.login(username=self.test_user2, password=self.test_user2))
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 2)
+        feature = jcontent['results'][0]
+        self.assertIn('edit_url', feature)
+        group = CoreGroup.objects.filter(pk=feature['id'])[0]
+        self.assertEqual(feature['edit_url'], reverse('group-update', kwargs={'slug': group.slug}))
+
+        client.logout()
+
         # user logged as admin
         self.assertTrue(client.login(username=self.test_user_admin1, password=self.test_user_admin1))
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 2)
+        feature = jcontent['results'][0]
+        self.assertIn('edit_url', feature)
+        group = CoreGroup.objects.filter(pk=feature['id'])[0]
+        self.assertEqual(feature['edit_url'], reverse('group-update', kwargs={'slug': group.slug}))
 
         client.logout()
 
@@ -194,6 +212,11 @@ class PortalTestAPI(PortalTestsBase):
             'project_id': self.project.instance.pk
         })
         self.assertEqual(map_url, result['map_url'])
+        edit_url = reverse('qdjango-project-update', kwargs={
+            'group_slug': self.project.instance.group.slug,
+            'slug': self.project.instance.slug
+        })
+        self.assertEqual(edit_url, result['edit_url'])
 
         url_by_group = reverse('portal-project-by-group-api-list', kwargs={'group_id': self.project_group.pk})
         response = client.get(url_by_group)
@@ -223,6 +246,7 @@ class PortalTestAPI(PortalTestsBase):
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 1)
+        self.assertNotIn('edit_url', jcontent['results'][0])
 
     def test_macrogroup(self):
         """ Test for macrogroup """
@@ -236,6 +260,23 @@ class PortalTestAPI(PortalTestsBase):
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 2)
+        self.assertNotIn('edit_url', jcontent['results'][0])
+
+        # user logged as admin
+        self.assertTrue(client.login(username=self.test_user_admin1.username, password=self.test_user_admin1.username))
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['count'], 2)
+        feature = jcontent['results'][0]
+        macrogroup = MacroGroup.objects.filter(pk=feature['id'])[0]
+        self.assertIn('edit_url', feature)
+        edit_url = reverse('macrogroup-update', kwargs={
+            'slug': macrogroup.slug
+        })
+        self.assertEqual(edit_url, feature['edit_url'])
+
+        client.logout()
 
         # get group by macrogroup id
         # user not logged: Macrogroup1 1 group, Macrogroup2 0 group
@@ -245,6 +286,7 @@ class PortalTestAPI(PortalTestsBase):
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 1)
         self.assertEqual(jcontent['results'][0]['id'], self.project_group2.pk)
+        self.assertNotIn('edit_url', jcontent['results'][0])
 
         url = reverse('portal-group-by-macrogroup-api-list', kwargs={'macrogroup_id': self.macrogroup2.pk})
         response = client.get(url)
@@ -259,6 +301,12 @@ class PortalTestAPI(PortalTestsBase):
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 2)
+        feature = jcontent['results'][0]
+        group = CoreGroup.objects.filter(pk=feature['id'])[0]
+        edit_url = reverse('group-update', kwargs={
+            'slug': group.slug
+        })
+        self.assertEqual(edit_url, feature['edit_url'])
 
         url = reverse('portal-group-by-macrogroup-api-list', kwargs={'macrogroup_id': self.macrogroup2.pk})
         response = client.get(url)

@@ -13,6 +13,6 @@ from django.conf.urls import url
 from .views import LoginAjaxView, PortalView
 
 urlpatterns = [
-    url(r'^$', PortalView.as_view(), name='portal'),
+    url(r'^$', PortalView.as_view(), name='frontend'),
     url(r'^jx/login/$', LoginAjaxView.as_view(), name='portal-ajax-login'),
 ]
