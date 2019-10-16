@@ -17,8 +17,19 @@ import json
 
 class PortalViewsTest(PortalTestsBase):
 
-    def test_ajax_login(self):
+    def test_index(self):
+        """ test index page"""
+        url = reverse('portal')
 
+        # instance client
+        client = Client()
+
+        response = client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_ajax_login(self):
+        """ Test Ajax login"""
         url = reverse('portal-ajax-login')
 
         # instance client
