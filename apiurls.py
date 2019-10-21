@@ -15,6 +15,9 @@ from .api.views import *
 
 urlpatterns = [
 
+    # Return logged user info
+    url(r'^api/whoami/$', WhoamiApiView.as_view(), name='portal-whoami-api'),
+
     # All Projects (filtered by user role)
     url(r'^api/project/$', ProjectsApiView.as_view(), name='portal-project-api-list'),
 

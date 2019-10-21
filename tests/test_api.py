@@ -129,9 +129,32 @@ class PortalTestsBase(TestCase):
         MacroGroup.objects.all().delete()
 
 
-
 class PortalTestAPI(PortalTestsBase):
     """ Main portal test API class"""
+
+    def test_whoami(self):
+        """ Test whoami API: return data about user logged, if it's authenticated"""
+
+        # instance API client
+        client = APIClient()
+
+        # user not logged(anonymoususer)
+        url = reverse('portal-whoami-api')
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertFalse(jcontent['is_authenticated'])
+
+        # user logged as viewer
+        self.assertTrue(client.login(username=self.test_user3, password=self.test_user3))
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertTrue(jcontent['is_authenticated'])
+        self.assertEqual(jcontent['username'], self.test_user3.username)
+
+        client.logout()
+
 
     def test_group(self):
         """ Test for group map """

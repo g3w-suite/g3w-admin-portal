@@ -9,6 +9,8 @@ __date__ = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
 
 from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .serializers import *
 from .filters import *
 
@@ -60,3 +62,31 @@ class InfoDataApiView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.get_queryset()[0]
+
+
+class WhoamiApiView(APIView):
+    """
+    API for current user logged
+    """
+
+    def get(self, request):
+
+        user = self.request.user
+
+        if user.is_authenticated:
+            ret = {
+                'is_authenticated': True,
+                'username': user.username,
+                'email': user.email,
+                'data': {
+                    'first_name': user.first_name,
+                    'lastn_ame': user.last_name
+                }
+            }
+        else:
+            ret = {
+                'is_authenticated': False,
+            }
+        return Response(ret)
+
+
