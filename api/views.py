@@ -80,7 +80,7 @@ class WhoamiApiView(APIView):
                 'email': user.email,
                 'data': {
                     'first_name': user.first_name,
-                    'lastn_ame': user.last_name
+                    'last_name': user.last_name
                 }
             }
         else:
