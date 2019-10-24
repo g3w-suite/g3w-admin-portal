@@ -28,7 +28,7 @@ class PortalViewsTest(PortalTestsBase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_ajax_login(self):
+    def test_ajax_login_logout(self):
         """ Test Ajax login"""
         url = reverse('portal-ajax-login')
 
@@ -45,7 +45,13 @@ class PortalViewsTest(PortalTestsBase):
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['status'], 'ok')
 
-        client.logout()
+        # test logout
+        url_logout = reverse('portal-ajax-logout')
+        response = client.get(url_logout)
+        self.assertTrue(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(jcontent['status'], 'ok')
+        self.assertEqual(jcontent['message'], 'Logout')
 
         # test not login
         response = client.post(url, {
@@ -56,3 +62,5 @@ class PortalViewsTest(PortalTestsBase):
         self.assertTrue(response.status_code, 200)
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['status'], 'error')
+
+

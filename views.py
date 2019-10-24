@@ -10,11 +10,11 @@ __copyright__ = 'Copyright 2019, GIS3W'
 
 
 from django.views.generic.edit import BaseFormView
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.contrib.auth import login as auth_login
+from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 
 
@@ -31,6 +31,16 @@ class LoginAjaxView(BaseFormView):
     def form_valid(self, form):
         auth_login(self.request, form.get_user())
         return JsonResponse({'status': 'ok', 'message': 'Login'})
+
+
+class LogoutAjaxView(View):
+    """
+    View to make logout by ajax call
+    """
+
+    def get(self, request, *args, **kwargs):
+        auth_logout(self.request)
+        return JsonResponse({'status': 'ok', 'message': 'Logout'})
 
 
 class PortalView(TemplateView):
