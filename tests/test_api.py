@@ -120,14 +120,6 @@ class PortalTestsBase(TestCase):
         # Cleanup
         super(PortalTestsBase, cls).tearDownClass()
 
-    def tearDown(self):
-        """Cleanup catalogs"""
-        super(PortalTestsBase, self).tearDown()
-
-        # Make some groups and macrogroups
-        CoreGroup.objects.all().delete()
-        MacroGroup.objects.all().delete()
-
 
 class PortalTestAPI(PortalTestsBase):
     """ Main portal test API class"""
@@ -186,9 +178,7 @@ class PortalTestAPI(PortalTestsBase):
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['count'], 2)
         feature = jcontent['results'][0]
-        self.assertIn('edit_url', feature)
-        group = CoreGroup.objects.filter(pk=feature['id'])[0]
-        self.assertEqual(feature['edit_url'], reverse('group-update', kwargs={'slug': group.slug}))
+        self.assertNotIn('edit_url', feature)
 
         client.logout()
 
