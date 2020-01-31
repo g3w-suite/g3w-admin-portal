@@ -39,6 +39,4 @@ urlpatterns = [
     # All MacroGroups
     url(r'^api/macrogroup/$', MacroGroupsApiView.as_view(), name='portal-macrogroup-api-list'),
 
-    # Generic suite data
-    url(r'^api/infodata/$', InfoDataApiView.as_view(), name='portal-infodata-api-list')
-]
+    ]

@@ -112,7 +112,27 @@ class MacroGroupSerializer(serializers.ModelSerializer):
         )
 
 
-class GenericSuiteDataSerializer(serializers.ModelSerializer):
+class GetUnlanguageFieldsMixin(object):
+    """ Mixin for remove modaltranslation fields """
+    def get_field_names(self, declared_fields, info):
+
+        # remove form self.Meta.fields, fields with suffix _<lang> get by settings
+        langs = ['_'+l[0] for l in settings.LANGUAGES]
+        meta_fields = getattr(self.Meta, 'fields', None)
+        cleared_meta_fields = []
+        if meta_fields == serializers.ALL_FIELDS:
+            fields = info.fields.copy()
+            for f in fields:
+                if f[-3:] not in langs:
+                    cleared_meta_fields.append(f)
+
+            # resetting self.Meta.fields
+            self.Meta.fields = cleared_meta_fields
+
+        return super(GetUnlanguageFieldsMixin, self).get_field_names(declared_fields, info)
+
+
+class GenericSuiteDataSerializer(GetUnlanguageFieldsMixin, serializers.ModelSerializer):
     """
     Generic suite data
     """
