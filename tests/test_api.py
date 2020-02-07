@@ -38,7 +38,10 @@ QGS_FILE = 'portal_test_project.qgs'
     DATASOURCE_PATH=DATASOURCE_PATH,
     G3WADMIN_LOCAL_MORE_APPS=[
     'portal',
-])
+    ],
+    FRONTEND=True,
+    FRONTEND_APP='portal'
+)
 class PortalTestsBase(TestCase):
     """Base class for Portal tests"""
 
