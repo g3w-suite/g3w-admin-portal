@@ -11,14 +11,45 @@ __copyright__ = 'Copyright 2019, GIS3W'
 
 from django.conf.urls import url
 from .views import LoginAjaxView, LogoutAjaxView, PortalView
-from .api.views import InfoDataApiView
+from .api.views import \
+    InfoDataApiView, \
+    GroupsApiView, \
+    WhoamiApiView, \
+    MacroGroupsApiView, \
+    ProjectsApiView
 
 urlpatterns = [
     url(r'^$', PortalView.as_view(), name='frontend'),
     url(r'^jx/login/$', LoginAjaxView.as_view(), name='portal-ajax-login'),
     url(r'^jx/logout/$', LogoutAjaxView.as_view(), name='portal-ajax-logout'),
 
+    # MOVE EVERY API URLS HERE TO USER I18N CAPABILITIES
+    # --------------------------------------------------
     # Generic suite data
-    url(r'^portal/api/infodata/$', InfoDataApiView.as_view(), name='portal-infodata-api-list')
+    url(r'^portal/api/infodata/$', InfoDataApiView.as_view(), name='portal-infodata-api-list'),
 
+    # All Groups (filtered by user role)
+    url(r'^portal/api/group/$', GroupsApiView.as_view(), name='portal-group-api-list'),
+
+    # Return logged user info
+    url(r'^portal/api/whoami/$', WhoamiApiView.as_view(), name='portal-whoami-api'),
+
+    # All Projects (filtered by user role)
+    url(r'^portal/api/project/$', ProjectsApiView.as_view(), name='portal-project-api-list'),
+
+
+    # All Project (filtered by user role and groups)
+    url(r'^portal/api/group/(?P<group_id>[0-9]+)/projects/$', ProjectsApiView.as_view(),
+        name='portal-project-by-group-api-list'),
+
+    # Groups by MacroGroup
+    url(r'^portal/api/group/(?P<macrogroup_id>[0-9]+)$', GroupsApiView.as_view(),
+        name='portal-group-by-macrogroup-api-list'),
+
+    # Groups without MacroGroups
+    url(r'^portal/api/group/nomacrogroup/$', GroupsApiView.as_view(),
+        name='portal-group-without-macrogroup-api-list'),
+
+    # All MacroGroups
+    url(r'^portal/api/macrogroup/$', MacroGroupsApiView.as_view(), name='portal-macrogroup-api-list'),
 ]

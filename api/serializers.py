@@ -78,6 +78,7 @@ class GroupSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'title',
+            'description',
             'srid',
             'header_logo_link',
             'header_logo_img'

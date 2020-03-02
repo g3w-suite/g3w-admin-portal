@@ -15,28 +15,6 @@ from .api.views import *
 
 urlpatterns = [
 
-    # Return logged user info
-    url(r'^api/whoami/$', WhoamiApiView.as_view(), name='portal-whoami-api'),
 
-    # All Projects (filtered by user role)
-    url(r'^api/project/$', ProjectsApiView.as_view(), name='portal-project-api-list'),
-
-    # All Groups (filtered by user role)
-    url(r'^api/group/$', GroupsApiView.as_view(), name='portal-group-api-list'),
-
-    # All Project (filtered by user role and groups)
-    url(r'^api/group/(?P<group_id>[0-9]+)/projects/$', ProjectsApiView.as_view(),
-        name='portal-project-by-group-api-list'),
-
-    # Groups by MacroGroup
-    url(r'^api/group/(?P<macrogroup_id>[0-9]+)$', GroupsApiView.as_view(),
-        name='portal-group-by-macrogroup-api-list'),
-
-    # Groups without MacroGroups
-    url(r'^api/group/nomacrogroup/$', GroupsApiView.as_view(),
-        name='portal-group-without-macrogroup-api-list'),
-
-    # All MacroGroups
-    url(r'^api/macrogroup/$', MacroGroupsApiView.as_view(), name='portal-macrogroup-api-list'),
 
     ]
