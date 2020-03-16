@@ -48,3 +48,8 @@ class PortalView(TemplateView):
     Base index portal view
     """
     template_name = 'portal/index.html'
+
+    def get_context_data(self, **kwargs):
+        return {
+            'IS_PA': True, 'API_BASE_URL': '/'
+        }
