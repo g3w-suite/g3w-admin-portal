@@ -27,5 +27,9 @@ To activate 'frontend' module and to set the frontend app for G3W-SUITE set in t
 ...
 FRONTEND = True
 FRONTEND_APP = 'portal'
+
+# Optional
+# Activate Public Administration template
+PORTAL_IS_PA = True #(False, default)
 ...
 ```

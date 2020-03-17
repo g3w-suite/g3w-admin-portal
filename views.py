@@ -9,6 +9,7 @@ __date__ = '2019-09-10'
 __copyright__ = 'Copyright 2019, GIS3W'
 
 
+from django.conf import settings
 from django.views.generic.edit import BaseFormView
 from django.views.generic import TemplateView, View
 from django.http import JsonResponse
@@ -51,5 +52,6 @@ class PortalView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'IS_PA': True, 'API_BASE_URL': '/'
+            'IS_PA': getattr(settings, 'PORTAL_IS_PA', False),
+            'API_BASE_URL': '/'
         }
