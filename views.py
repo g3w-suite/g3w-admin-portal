@@ -11,12 +11,14 @@ __copyright__ = 'Copyright 2019, GIS3W'
 
 from django.conf import settings
 from django.views.generic.edit import BaseFormView
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, View, ListView
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from usersmanage.decorators import user_passes_test_or_403
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
+from .models import Picture
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -55,3 +57,13 @@ class PortalView(TemplateView):
             'IS_PA': getattr(settings, 'PORTAL_IS_PA', False),
             'API_BASE_URL': '/'
         }
+
+
+class PictureListView(ListView):
+    """ Main frontend picture list"""
+    model = Picture
+    template_name = 'portal/picture_list.html'
+
+    @method_decorator(user_passes_test_or_403(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super(PictureListView, self).dispatch(*args, **kwargs)

@@ -10,7 +10,9 @@ __copyright__ = 'Copyright 2019, GIS3W'
 
 
 from django.conf.urls import url
-from .views import LoginAjaxView, LogoutAjaxView, PortalView
+from django.contrib.auth.decorators import login_required
+from base.urls import BASE_ADMIN_URLPATH
+from .views import LoginAjaxView, LogoutAjaxView, PortalView, PictureListView
 from .api.views import \
     InfoDataApiView, \
     GroupsApiView, \
@@ -52,4 +54,8 @@ urlpatterns = [
 
     # All MacroGroups
     url(r'^portal/api/macrogroup/$', MacroGroupsApiView.as_view(), name='portal-macrogroup-api-list'),
+
+    # Pictures manager
+    url(r'^{}/portal/pictures/$'.format(BASE_ADMIN_URLPATH), login_required(PictureListView.as_view()),
+        name='portal-picture'),
 ]

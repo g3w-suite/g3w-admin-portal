@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load g3wadmin_tags %}
+{% load guardian_tags %}
+
+
+
+{% block page_header %}
+<h1>
+{% trans 'Portal pictures' %}
+</h1>
+{% endblock %}
+
+
+{% block main_content %}
+
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <div class="box">
+            <div class="box-body">
+                {% trans 'Add, update or delete portal picture' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box">
+    <div class="box-header">
+        <div class="box-header">
+            <h3 class="box-title"><a href="{% url 'cadastre-config-add' %}"><i class="ion ion-plus-circled"></i></a> {% trans 'Pictures' %}</h3>
+        </div>
+    </div>
+    <div class="box-body">
+        <table id="layers_table" class="table table-hover table-striped" data-widget-type="dataTable">
+            <thead>
+                <tr>
+                    <th style="width:120px">Actions</th>
+                    <th>{% trans 'Image' %}</th>
+                    <th>{% trans 'Author' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                <tr id="picture_{{ object.pk }}">
+                    <td>
+                        <span class="col-xs-6 icon">
+                            <a href="{% url 'cadastre-config-update' object.id %}" data-toggle="tooltip" data-placement="top" title="{% trans 'Edit' %}" ><i class="ion ion-edit"></i></a>
+                        </span>
+                        <span class="col-xs-6 icon">
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="{% trans 'Delete' %}"  data-widget-type="deleteItem" data-delete-url="{% url 'cadastre-config-delete' object.pk %}" data-item-selector="#config_{{ object.pk }}"><i class="ion ion-trash-b"></i></a>
+                        </span>
+                    </td>
+                    <td>{{ object.image }}</td>
+                    <td>
+                        {{ object.author }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
