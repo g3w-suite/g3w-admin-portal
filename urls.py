@@ -10,9 +10,17 @@ __copyright__ = 'Copyright 2019, GIS3W'
 
 
 from django.conf.urls import url
+from django.urls import path
 from django.contrib.auth.decorators import login_required
 from base.urls import BASE_ADMIN_URLPATH
-from .views import LoginAjaxView, LogoutAjaxView, PortalView, PictureListView
+from .views import \
+    LoginAjaxView, \
+    LogoutAjaxView, \
+    PortalView, \
+    PictureListView, \
+    PictureCreateView, \
+    PictureUpdateView, \
+    PictureDeleteView
 from .api.views import \
     InfoDataApiView, \
     GroupsApiView, \
@@ -56,6 +64,16 @@ urlpatterns = [
     url(r'^portal/api/macrogroup/$', MacroGroupsApiView.as_view(), name='portal-macrogroup-api-list'),
 
     # Pictures manager
-    url(r'^{}/portal/pictures/$'.format(BASE_ADMIN_URLPATH), login_required(PictureListView.as_view()),
+    # ------------------------------------
+    url(r'^{}portal/pictures/$'.format(BASE_ADMIN_URLPATH), login_required(PictureListView.as_view()),
         name='portal-picture'),
+
+    url(r'^{}portal/pictures/add/$'.format(BASE_ADMIN_URLPATH), login_required(PictureCreateView.as_view()),
+        name='portal-picture-add'),
+
+    path('{}portal/pictures/update/<int:pk>'.format(BASE_ADMIN_URLPATH), login_required(PictureUpdateView.as_view()),
+        name='portal-picture-update'),
+
+    path('{}portal/pictures/delete/<int:pk>'.format(BASE_ADMIN_URLPATH), login_required(PictureDeleteView.as_view()),
+         name='portal-picture-delete'),
 ]

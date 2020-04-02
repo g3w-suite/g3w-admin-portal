@@ -27,7 +27,9 @@
 <div class="box">
     <div class="box-header">
         <div class="box-header">
-            <h3 class="box-title"><a href="{% url 'cadastre-config-add' %}"><i class="ion ion-plus-circled"></i></a> {% trans 'Pictures' %}</h3>
+            <h3 class="box-title">
+                <a href="{% url 'portal-picture-add' %}" class="btn btn-info"><i class="ion ion-plus-circled"></i> {% trans 'Pictures' %}</a>
+            </h3>
         </div>
     </div>
     <div class="box-body">
@@ -37,6 +39,7 @@
                     <th style="width:120px">Actions</th>
                     <th>{% trans 'Image' %}</th>
                     <th>{% trans 'Author' %}</th>
+                    <th>{% trans 'Author url' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,15 +47,22 @@
                 <tr id="picture_{{ object.pk }}">
                     <td>
                         <span class="col-xs-6 icon">
-                            <a href="{% url 'cadastre-config-update' object.id %}" data-toggle="tooltip" data-placement="top" title="{% trans 'Edit' %}" ><i class="ion ion-edit"></i></a>
+                            <a href="{% url 'portal-picture-update' object.id %}" data-toggle="tooltip" data-placement="top" title="{% trans 'Edit' %}" ><i class="ion ion-edit"></i></a>
                         </span>
                         <span class="col-xs-6 icon">
-                            <a href="#" data-toggle="tooltip" data-placement="top" title="{% trans 'Delete' %}"  data-widget-type="deleteItem" data-delete-url="{% url 'cadastre-config-delete' object.pk %}" data-item-selector="#config_{{ object.pk }}"><i class="ion ion-trash-b"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="{% trans 'Delete' %}"  data-widget-type="deleteItem" data-delete-url="{% url 'portal-picture-delete' object.pk %}" data-item-selector="#picture_{{ object.pk }}"><i class="ion ion-trash-b"></i></a>
                         </span>
                     </td>
-                    <td>{{ object.image }}</td>
                     <td>
-                        {{ object.author }}
+                        <img style="height:60px;" class="img-responsive" src="{{ MEDIA_URL }}{{ object.image }}" />
+                    </td>
+                    <td>
+                        {% if object.author_url %}{{ object.author }}{% endif %}
+                    </td>
+                    <td>
+                        {% if object.author_url %}
+                        <a href="{{ object.author_url }}" target="_blank">{{ object.author_url }}</a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

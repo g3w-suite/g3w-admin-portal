@@ -10,8 +10,10 @@ __copyright__ = 'Copyright 2019, GIS3W'
 
 
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client
-from .test_api import PortalTestsBase
+from portal.models import Picture
+from .test_api import PortalTestsBase, DATASOURCE_PATH
 import json
 
 
@@ -62,5 +64,81 @@ class PortalViewsTest(PortalTestsBase):
         self.assertTrue(response.status_code, 200)
         jcontent = json.loads(response.content)
         self.assertEqual(jcontent['status'], 'error')
+
+    def test_picture_list(self):
+        """ Test picture list view """
+
+        url = reverse('portal-picture')
+
+        # instance client
+        client = Client()
+
+        # test login required
+        response = client.get(url)
+
+        # redirect to login page
+        self.assertEqual(response.status_code, 302)
+
+        # test 403 for not admin user: login as editor level 1
+        self.assertTrue(client.login(username=self.test_user1, password=self.test_user1))
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+        client.logout()
+
+        # test 200 for admin user
+        self.assertTrue(client.login(username=self.test_user_admin1, password=self.test_user_admin1))
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        client.logout()
+
+    def test_picture_create_update(self):
+        """ Test picture create view """
+
+        url = reverse('portal-picture-add')
+
+        # instance client
+        client = Client()
+
+        # test login required
+        response = client.get(url)
+
+        # redirect to login page
+        self.assertEqual(response.status_code, 302)
+
+        # test 403 for not admin user: login as editor level 1
+        self.assertTrue(client.login(username=self.test_user1, password=self.test_user1))
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 403)
+
+        client.logout()
+
+        # test 200 for admin user
+        self.assertTrue(client.login(username=self.test_user_admin1, password=self.test_user_admin1))
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        """
+        with open('%sportal_image_test.png' % (DATASOURCE_PATH), 'rb') as test_image:
+
+            # test create record
+            response = client.post(url, data={
+                'image': SimpleUploadedFile('portal_image_test.png', test_image.read()),
+                'author': 'walter lorenzetti'
+            })
+
+        self.assertEqual(response.status_code, 200)
+
+        m_picture = Picture.objects.get(author='walter lorenzetti')
+        """
+
+        client.logout()
+
+
 
 

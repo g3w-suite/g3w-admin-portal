@@ -10,15 +10,18 @@ __copyright__ = 'Copyright 2019, GIS3W'
 
 
 from django.conf import settings
-from django.views.generic.edit import BaseFormView
-from django.views.generic import TemplateView, View, ListView
+from django.views.generic.edit import BaseFormView, SingleObjectMixin
+from django.views.generic import TemplateView, View, ListView, CreateView, UpdateView
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.urls import reverse
 from usersmanage.decorators import user_passes_test_or_403
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
+from core.mixins.views import G3WAjaxDeleteViewMixin
 from .models import Picture
+from .forms import PictureForm
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -61,9 +64,40 @@ class PortalView(TemplateView):
 
 class PictureListView(ListView):
     """ Main frontend picture list"""
+
     model = Picture
     template_name = 'portal/picture_list.html'
 
     @method_decorator(user_passes_test_or_403(lambda u: u.is_superuser))
     def dispatch(self, *args, **kwargs):
         return super(PictureListView, self).dispatch(*args, **kwargs)
+
+
+class PictureViewMixin(object):
+    """ Mixin for common properties and methods between Picture CRUD views """
+    model = Picture
+    form_class = PictureForm
+    template_name = 'portal/picture_form.html'
+
+    @method_decorator(user_passes_test_or_403(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super(PictureViewMixin, self).dispatch(*args, **kwargs)
+
+    def get_success_url(self):
+
+        # return to picture list
+        return reverse('portal-picture')
+
+
+class PictureCreateView(PictureViewMixin, CreateView):
+    """ Create picture form view"""
+    pass
+
+
+class PictureUpdateView(PictureViewMixin, UpdateView):
+    """ Update picture from view """
+
+
+class PictureDeleteView(PictureViewMixin, G3WAjaxDeleteViewMixin, SingleObjectMixin, View):
+    """ Delete picture Ajax view """
+    pass
