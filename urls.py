@@ -81,5 +81,5 @@ urlpatterns = [
     # Picture api urls
     # --------------------------------------
     # All MacroGroups
-    path('portal/pictures/', PicuresApiView.as_view(), name='portal-picture-api-list')
+    path('portal/api/pictures/', PicuresApiView.as_view(), name='portal-picture-api-list')
 ]
