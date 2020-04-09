@@ -33,3 +33,9 @@ FRONTEND_APP = 'portal'
 PORTAL_IS_PA = True #(False, default)
 ...
 ```
+
+To load default portal picture
+
+```
+./manage.py loaddata_picture
+```
