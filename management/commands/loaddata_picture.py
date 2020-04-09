@@ -28,7 +28,7 @@ class Command(BaseCommand):
 
         # Copy media picture to MEDIA_ROOT
         try:
-            shutil.copytree(PICTURE_DEFAULT_ROOT, settings.MEDIA_ROOT + '/portal_data')
+            shutil.copytree(PICTURE_DEFAULT_ROOT, settings.MEDIA_ROOT + '/portal_picture')
         except shutil.Error as e:
             print(e)
 
