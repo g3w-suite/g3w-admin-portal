@@ -90,3 +90,13 @@ class WhoamiApiView(APIView):
         return Response(ret)
 
 
+class PicuresApiView(generics.ListAPIView):
+    """
+    API list view for portal pictures
+    """
+
+    queryset = Picture.objects.order_by('id').all()
+    serializer_class = PictureSerializer
+
+
+

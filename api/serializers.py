@@ -15,6 +15,7 @@ from rest_framework import serializers
 from core.models import *
 from qdjango.models import Project
 from django.urls import reverse
+from portal.models import Picture
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -140,3 +141,22 @@ class GenericSuiteDataSerializer(GetUnlanguageFieldsMixin, serializers.ModelSeri
     class Meta:
         model = GeneralSuiteData
         fields = '__all__'
+
+
+class PictureSerializer(serializers.ModelSerializer):
+    """
+    Portal pictures serializer
+    """
+    class Meta:
+        model = Picture
+        fields = '__all__'
+
+    def to_representation(self, instance):
+
+        ret = super(PictureSerializer, self).to_representation(instance)
+
+        # set picture to MEDIA_URL
+        media_url = getattr(settings, 'MEDIA_URL', '/media/')
+        ret['image'] = '%s%s' % (media_url, instance.image)
+
+        return ret

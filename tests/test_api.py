@@ -18,6 +18,7 @@ from rest_framework.test import APIClient
 from usersmanage.models import User, Group as UserGroup
 from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup
 from qdjango.utils.data import QgisProject
+from portal.models import Picture
 import os
 import json
 
@@ -48,7 +49,8 @@ class PortalTestsBase(TestCase):
     fixtures = ['BaseLayer.json',
                 'G3WMapControls.json',
                 'G3WSpatialRefSys.json',
-                'G3WGeneralDataSuite.json'
+                'G3WGeneralDataSuite.json',
+                'portal_picture.json'
                 ]
 
     @classmethod
@@ -170,7 +172,7 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 2)
+        self.assertEqual(jcontent['count'], 1)
 
         client.logout()
 
@@ -363,4 +365,32 @@ class PortalTestAPI(PortalTestsBase):
         jcontent = json.loads(response.content)
 
         self.assertTrue('title' in jcontent and 'about_name' in jcontent)
+
+    def test_picture_list(self):
+        """ Test for Portal picture lista API """
+
+        pics = Picture.objects.all().order_by('id')
+
+        # instance API client
+        client = APIClient()
+
+        # user not logged(anonymoususer)
+        url = reverse('portal-picture-api-list')
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+
+        self.assertEqual(len(jcontent['results']), len(pics))
+
+        p = pics[0]
+        jp = jcontent['results'][0]
+
+        self.assertEqual(p.author, jp['author'])
+        self.assertEqual(p.author_url, jp['author_url'])
+
+        media_url = getattr(settings, 'MEDIA_URL', '/media/')
+        self.assertEqual('%s%s' % (media_url, p.image), jp['image'])
+
+
+
 

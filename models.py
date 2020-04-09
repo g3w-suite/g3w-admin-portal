@@ -17,7 +17,7 @@ class Picture(OrderedModel):
     """
     Model for custom portal module
     """
-    image = models.ImageField(_('Picture'))
+    image = models.ImageField(_('Picture'), upload_to='portal_picture')
     main_color = models.CharField(_('Main color'), max_length=7, default='#FFF')
     main_title_color = models.CharField(_('Main title color'), max_length=7, default='#FFF')
     subtitle_color = models.CharField(_('Subtitle color'), max_length=7, default='#FFF')

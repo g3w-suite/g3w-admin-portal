@@ -26,7 +26,8 @@ from .api.views import \
     GroupsApiView, \
     WhoamiApiView, \
     MacroGroupsApiView, \
-    ProjectsApiView
+    ProjectsApiView, \
+    PicuresApiView
 
 urlpatterns = [
     url(r'^$', PortalView.as_view(), name='frontend'),
@@ -76,4 +77,9 @@ urlpatterns = [
 
     path('{}portal/pictures/delete/<int:pk>'.format(BASE_ADMIN_URLPATH), login_required(PictureDeleteView.as_view()),
          name='portal-picture-delete'),
+
+    # Picture api urls
+    # --------------------------------------
+    # All MacroGroups
+    path('portal/pictures/', PicuresApiView.as_view(), name='portal-picture-api-list')
 ]
