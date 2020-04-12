@@ -1,0 +1,48 @@
+@import "variables";
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import "mixin";
+@import url('https://fonts.googleapis.com/css?family=Abril+Fatface&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&display=swap');
+
+.trbl-0 {
+ @include trbl(0,0,0,0);
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+.square {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%;
+}
+
+.aspect_16_9{
+  position: relative;
+  height: 0;
+  width: 100%;
+  padding-top: 56.25%;
+}
+
+.square_inner {
+  @extend .trbl-0, .position-absolute;
+}
+
+.scroll {
+  overflow-y: scroll;
+}
+
+.gradient{
+  @include gis_gradient(30, rgba(242, 19, 123, 0.8), 0%, rgba(22, 10, 64, 0.8), 50%);
+}
+
+
+.tab_button_bg{
+  background-color: rgba(22, 10, 64, 0.8);
+}
+
+.text-black{
+  color: $black;
+}

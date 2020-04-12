@@ -1,0 +1,117 @@
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import routerItalia from './routerItalia';
+import store from './store';
+import VueI18n from 'vue-i18n';
+import BootstrapVue from 'bootstrap-vue';
+import {it} from '@/lang/it.ts';
+import {en} from '@/lang/en.ts';
+
+// if (localStorage.getItem('isPA') === 'true') {
+//     require('@/styles/appPA.scss');
+// } else {
+//     require('@/styles/app.scss');
+// }
+
+import {library} from '@fortawesome/fontawesome-svg-core';
+import {
+    faFacebookSquare,
+    faTwitterSquare,
+    faInstagram,
+    faLinkedin,
+} from '@fortawesome/free-brands-svg-icons';
+
+import {
+    faUserSecret,
+    faKey,
+    faMapMarkerAlt,
+    faInbox,
+    faNewspaper,
+    faInfo,
+    faUser,
+    faUserLock,
+    faLanguage,
+    faPhoneAlt,
+    faEnvelope,
+    faExpandArrowsAlt,
+    faTimes,
+    faSignOutAlt,
+    faPencilAlt,
+} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
+import {EnvironmentHelper} from "@/EnvironmentHelper";
+
+library.add(
+    faUserSecret,
+    faKey,
+    faMapMarkerAlt,
+    faInbox,
+    faNewspaper,
+    faInfo,
+    faUserLock,
+    faLanguage,
+    faPhoneAlt,
+    faEnvelope,
+    faUser,
+    faFacebookSquare,
+    faTwitterSquare,
+    faInstagram,
+    faLinkedin,
+    faExpandArrowsAlt,
+    faTimes,
+    faSignOutAlt,
+    faPencilAlt,
+);
+
+Vue.use(BootstrapVue);
+Vue.use(VueI18n);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+
+export const i18n = new VueI18n({
+    locale: 'it',
+    fallbackLocale: 'it',
+    messages: {
+        it,
+        en,
+    },
+});
+
+Vue.config.productionTip = false;
+
+let IS_PA;
+
+if (EnvironmentHelper.isProduction){
+    IS_PA = (window as any).IS_PA;
+} else {
+    IS_PA = localStorage.getItem('isPA') === 'true';
+}
+
+new Vue({
+    router: (() => {
+        if (IS_PA) {
+            return routerItalia;
+        } else {
+            return router;
+        }
+    })(),
+    store,
+    i18n,
+    render: (h) => h(App),
+    created:()=>{
+        store.dispatch('info/fetchInfo');
+    }
+}).$mount('#app');
+
+if (IS_PA) {
+
+    const btIta = document.createElement('link');
+
+    btIta.setAttribute('rel', 'stylesheet');
+    btIta.setAttribute('type', 'text/css');
+    btIta.setAttribute('href', '/static/frontend/bootstrap-italia/css/bootstrap-italia.min.css');
+
+    document.body.appendChild(btIta);
+
+    document.body.classList.add('pa');
+}

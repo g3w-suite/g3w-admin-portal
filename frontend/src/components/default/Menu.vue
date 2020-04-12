@@ -1,0 +1,85 @@
+<template>
+    <div class="Menu d-md-flex flex-column align-items-end">
+        <!--        l'overflow hidden serve per evitare un certo flicker che si presenta se il testo sborda quando il bottone si espande-->
+        <g3w-button
+                @click="$emit('buttonClicked')"
+                :text="$t('messages.menu.mappe')"
+                class="buttonMenu overflow-hidden flex-grow-1"
+                icon="map-marker-alt"
+                size="2x"
+                to="mappe"
+                :hoverClasses="hoverClasses"
+                :alwaysExpanded ="alwaysExpanded"
+        >
+        </g3w-button>
+        <g3w-button
+                @click="$emit('buttonClicked')"
+                :text="$t('messages.menu.info')"
+                class="buttonMenu overflow-hidden flex-grow-1"
+                icon="info"
+                size="2x"
+                to="info"
+                :hoverClasses="hoverClasses"
+                :alwaysExpanded ="alwaysExpanded"
+        ></g3w-button>
+        <g3w-button
+                v-show="false"
+                :text="$t('messages.menu.news')"
+                @click="$emit('buttonClicked')"
+                class="buttonMenu overflow-hidden flex-grow-1"
+                icon="newspaper"
+                size="2x"
+                :hoverClasses="hoverClasses"
+                :alwaysExpanded ="alwaysExpanded"
+        ></g3w-button>
+        <g3w-button
+                v-show="false"
+                @click="$emit('buttonClicked')"
+                :text="$t('messages.menu.archivi')"
+                class="buttonMenu overflow-hidden flex-grow-1"
+                icon="inbox"
+                size="2x"
+                :hoverClasses="hoverClasses"
+                :alwaysExpanded ="alwaysExpanded"
+        ></g3w-button>
+    </div>
+</template>
+
+<script lang="ts">
+import {Component, Prop, Vue} from 'vue-property-decorator';
+import G3wButton from '@/components/default/g3wButton.vue';
+
+@Component({
+    components: {G3wButton},
+})
+
+export default class Menu extends Vue {
+    @Prop(Boolean) private readonly alwaysExpanded!: boolean;
+    @Prop(String) private readonly hoverClasses!: string;
+}
+</script>
+
+<style lang="scss" scoped>
+    @import "../../styles/_variables";
+
+    .left_rounded{
+        border-top-left-radius: $gis_rounded_radius;
+        border-bottom-left-radius: $gis_rounded_radius;
+    }
+
+    .Menu {
+        background-color: transparent;
+
+        .buttonMenu {
+            /*height: 150px;*/
+            @extend .left_rounded;
+            cursor: pointer;
+            transition: 500ms;
+            width: 50%;
+
+            &:hover {
+                width: 100%;
+            }
+        }
+    }
+</style>

@@ -1,0 +1,81 @@
+@import "common";
+
+body:not(.pa) {
+  position: relative;
+  overflow-y: hidden;
+
+
+  .font-lato {
+    font-family: 'Lato', sans-serif;
+  }
+
+  .font-abril {
+    font-family: 'Abril Fatface', cursive;
+  }
+
+  &:before {
+    @extend .trbl-0;
+    content: "";
+    position: absolute;
+    background-image: url(~@/assets/img/sfondo.jpg);
+    background-size: cover;
+  }
+
+  @include media-breakpoint-down(sm){
+    &:before {
+      background-image: url(~@/assets/img/monti.jpg);
+    }
+  }
+
+  //personalizzazione scrollbar
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background-color: gray;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(127, 127, 127, 0.5);
+  }
+
+  //placeholder color
+  .form-control::-webkit-input-placeholder {
+    color: white;
+  }
+
+  /* WebKit, Blink, Edge */
+  .form-control:-moz-placeholder {
+    color: white;
+  }
+
+  /* Mozilla Firefox 4 to 18 */
+  .form-control::-moz-placeholder {
+    color: white;
+  }
+
+  /* Mozilla Firefox 19+ */
+  .form-control:-ms-input-placeholder {
+    color: white;
+  }
+
+  /* Internet Explorer 10-11 */
+  .form-control::-ms-input-placeholder {
+    color: white;
+  }
+
+  /* Microsoft Edge */
+}
+
+

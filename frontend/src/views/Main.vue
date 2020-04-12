@@ -1,0 +1,59 @@
+<template>
+    <div class="scroll vh-100 d-flex flex-column"
+         id="main"
+         :class="[$store.getters['menu/isVisible'] ? 'overlay' : '']"
+    >
+        <div class="header d-flex py-4 pl-4 pr-4 pr-md-0">
+            <router-view name="header"></router-view>
+        </div>
+        <div class="body px-0 pl-md-4 pr-md-0 flex-grow-1 align-items-stretch">
+            <div class="info d-flex h-100">
+                <router-view class="content"></router-view>
+                <router-view class="d-none d-md-block menu" name="menu"></router-view>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts">
+import {Component, Vue} from 'vue-property-decorator';
+
+@Component({
+    components: {},
+})
+export default class Main extends Vue {
+
+}
+</script>
+
+<style lang="scss">
+
+    @import '../styles/_variables.scss';
+    @import '../styles/mixin';
+
+    #main.overlay{
+
+        @include media-breakpoint-down(sm) {
+            &:after {
+                @include trbl(0, 0, 0, 0);
+                content: "";
+                position: absolute;
+                background-image: url(~@/assets/img/sfondo.jpg);
+                background-size: cover;
+                opacity: 0.5;
+            }
+        }
+    }
+
+    .content {
+
+        @include media-breakpoint-down(sm) {
+            width: 100%;
+        }
+        width: (100 - $menu_width);
+    }
+
+    .menu {
+        width: $menu_width;
+    }
+</style>
