@@ -1,10 +1,6 @@
 <template>
     <MainContent>
 
-        <template slot="background-img">
-            <img class="w-100" src="@/assets/img/monti.jpg"/>
-        </template>
-
         <template slot="tl-container">
             <div class="tl_content h-100 gradient text-white p-3">
                 <div class="scroll h-100 w-100 pl-3 pr-2 pl-md-5">

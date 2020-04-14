@@ -1,8 +1,5 @@
 <template>
     <MainContent>
-        <template slot="background-img">
-            <img class="w-100 d-none d-md-block" src="@/assets/img/monti.jpg"/>
-        </template>
 
         <template slot="tl-container">
             <div class="tl_content h-100 gradient text-white p-3">
