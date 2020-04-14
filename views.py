@@ -8,6 +8,7 @@ __author__ = 'lorenzetti@gis3w.it'
 __date__ = '2019-09-10'
 __copyright__ = 'Copyright 2019, GIS3W'
 
+import json
 
 from django.conf import settings
 from django.views.generic.edit import BaseFormView, SingleObjectMixin
@@ -58,7 +59,8 @@ class PortalView(TemplateView):
     def get_context_data(self, **kwargs):
         return {
             'IS_PA': getattr(settings, 'PORTAL_IS_PA', False),
-            'API_BASE_URL': '/'
+            'API_BASE_URL': '/',
+            'PORTAL_SECTIONS': json.dumps(getattr(settings, 'PORTAL_SECTIONS', []))
         }
 
 

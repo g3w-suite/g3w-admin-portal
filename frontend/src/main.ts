@@ -81,10 +81,16 @@ Vue.config.productionTip = false;
 
 let IS_PA;
 
-if (EnvironmentHelper.isProduction){
+if (EnvironmentHelper.isProduction) {
     IS_PA = (window as any).IS_PA;
 } else {
     IS_PA = localStorage.getItem('isPA') === 'true';
+    (window as any).PORTAL_SECTIONS = [
+        'maps',
+        'info',
+        'news',
+        'archives'
+    ]
 }
 
 new Vue({
@@ -98,8 +104,9 @@ new Vue({
     store,
     i18n,
     render: (h) => h(App),
-    created:()=>{
+    created: () => {
         store.dispatch('info/fetchInfo');
+        store.dispatch('settings/portalSections', {sections: (window as any).PORTAL_SECTIONS});
     }
 }).$mount('#app');
 
