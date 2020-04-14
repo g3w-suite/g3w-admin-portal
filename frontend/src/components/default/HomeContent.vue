@@ -1,7 +1,9 @@
 <template>
     <MainContent>
         <template slot="background-img">
-            <img class="w-100 d-none d-md-block" src="@/assets/img/monti.jpg"/>
+            <transition-group name="fade">
+                <img alt="bg" v-if="(index % pictures.length) == idx" v-for="(i,idx) in pictures" :key="i.id" class="position-absolute w-100 d-none d-md-block sfondo" :src="i.image"/>
+            </transition-group>
         </template>
 
         <template slot="tl-container">
@@ -15,23 +17,36 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import MainContent from '@/components/default/MainContent.vue';
-import Home from '@/components/Home.vue';
+    import {Component, Prop, Vue} from 'vue-property-decorator';
+    import MainContent from '@/components/default/MainContent.vue';
+    import Home from '@/components/Home.vue';
+    import {mapGetters} from "vuex";
+    import {IPictures} from "@/datastore/interfaces/PortalInterface";
 
-@Component({
-    components: {MainContent, Home},
-})
-export default class HomeContent extends Home {
+    @Component({
+        components: {MainContent, Home},
+        computed:{
+            ...mapGetters({
+                pictures: 'settings/pictures'
+            })
+        }
+    })
+    export default class HomeContent extends Home {
+        private index: number = 0;
 
-}
+        mounted() {
+            window.setInterval(() => {
+                this.index++;
+            }, 2000)
+        }
+    }
 </script>
 
 <style lang="scss">
 
     @import "../../styles/_variables";
 
-    .tl_content{
+    .tl_content {
         border-top-left-radius: $gis_rounded_radius;
     }
 
@@ -43,5 +58,24 @@ export default class HomeContent extends Home {
         .subtitle {
             font-family: 'Lato', sans-serif;
         }
+    }
+
+    .sfondo{
+        transition: opacity 1000ms;
+    }
+
+    .fade-enter{
+        opacity: 0;
+    }
+
+    .fade-enter-to{
+        opacity: 1;
+    }
+
+    .fade-leave{
+        opacity: 1;
+    }
+    .fade-leave-to{
+        opacity: 0;
     }
 </style>

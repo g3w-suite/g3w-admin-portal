@@ -111,6 +111,7 @@ new Vue({
         store.dispatch('info/fetchInfo');
         store.dispatch('settings/portalSections', {sections: (window as any).PORTAL_SECTIONS});
         store.dispatch('settings/showAdminButton', {show: (window as any).ADMIN_BTN});
+        store.dispatch('settings/fetchPictures');
     }
 }).$mount('#app');
 
