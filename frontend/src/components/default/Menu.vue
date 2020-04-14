@@ -10,7 +10,7 @@
                 size="2x"
                 to="mappe"
                 :hoverClasses="hoverClasses"
-                :alwaysExpanded ="alwaysExpanded"
+                :alwaysExpanded="alwaysExpanded"
         >
         </g3w-button>
         <g3w-button
@@ -22,7 +22,7 @@
                 size="2x"
                 to="info"
                 :hoverClasses="hoverClasses"
-                :alwaysExpanded ="alwaysExpanded"
+                :alwaysExpanded="alwaysExpanded"
         ></g3w-button>
         <g3w-button
                 v-show="sections.includes('news')"
@@ -32,7 +32,7 @@
                 icon="newspaper"
                 size="2x"
                 :hoverClasses="hoverClasses"
-                :alwaysExpanded ="alwaysExpanded"
+                :alwaysExpanded="alwaysExpanded"
         ></g3w-button>
         <g3w-button
                 v-show="sections.includes('archives')"
@@ -42,37 +42,41 @@
                 icon="inbox"
                 size="2x"
                 :hoverClasses="hoverClasses"
-                :alwaysExpanded ="alwaysExpanded"
+                :alwaysExpanded="alwaysExpanded"
         ></g3w-button>
     </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import G3wButton from '@/components/default/g3wButton.vue';
-import {mapGetters} from "vuex";
+    import {Component, Prop, Vue} from 'vue-property-decorator';
+    import G3wButton from '@/components/default/g3wButton.vue';
+    import {mapGetters} from "vuex";
 
-@Component({
-    components: {G3wButton},
-    computed:{
-        ...mapGetters({
-            'sections' : 'settings/portalSections'
-        })
+    @Component({
+        components: {G3wButton},
+        computed: {
+            ...mapGetters({
+                'sections': 'settings/portalSections'
+            })
+        }
+    })
+
+    export default class Menu extends Vue {
+        @Prop(Boolean) private readonly alwaysExpanded!: boolean;
+        @Prop(String) private readonly hoverClasses!: string;
     }
-})
-
-export default class Menu extends Vue {
-    @Prop(Boolean) private readonly alwaysExpanded!: boolean;
-    @Prop(String) private readonly hoverClasses!: string;
-}
 </script>
 
 <style lang="scss" scoped>
     @import "../../styles/_variables";
 
-    .left_rounded{
+    .left_rounded {
         border-top-left-radius: $gis_rounded_radius;
         border-bottom-left-radius: $gis_rounded_radius;
+    }
+
+    ::v-deep .expanded-class {
+        width: 100% !important;
     }
 
     .Menu {

@@ -14,6 +14,7 @@
                             @click="switchLang"
                             class="left_rounded button pointer"
                             icon="language"
+                            :class="width"
                             size="lg"
                     >
                         <div class="flag m-auto d-flex justify-content-center align-items-center">
@@ -23,6 +24,7 @@
                     <g3w-button
                             :alwaysExpanded="true"
                             :icon="Icon"
+                            :class="width"
                             class="button pointer"
                     >
                         <div
@@ -40,6 +42,17 @@
                             <font-awesome-icon :icon="Icon" class="position-absolute" size="lg"></font-awesome-icon>
                         </div>
                     </g3w-button>
+                    <g3w-button
+                            :alwaysExpanded="true"
+                            v-if="showAdmin && someoneIsLogged"
+                            class="button d-flex align-items-center justify-content-center"
+                            :class="width"
+                            :icon="Icon"
+                    >
+                        <a href="/admin" rel="noopener noreferrer nofollow" class="position-absolute text-white">
+                            <font-awesome-icon icon="user-shield" size="lg"></font-awesome-icon>
+                        </a>
+                    </g3w-button>
                 </div>
                 <Menu
                         :alwaysExpanded="true"
@@ -56,65 +69,83 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import G3wButton from '@/components/default/g3wButton.vue';
-import CountryFlag from 'vue-country-flag';
-import Menu from '@/components/default/Menu.vue';
-import HeaderPA from '@/components/italia/HeaderPA.vue';
+    import {Component, Prop, Vue} from 'vue-property-decorator';
+    import G3wButton from '@/components/default/g3wButton.vue';
+    import CountryFlag from 'vue-country-flag';
+    import Menu from '@/components/default/Menu.vue';
+    import HeaderPA from '@/components/italia/HeaderPA.vue';
+    import {mapGetters} from "vuex";
 
-@Component({
-    components: {Menu, G3wButton, CountryFlag},
-})
-export default class MobileMenu extends HeaderPA {
-    // private showMenu: boolean = false;
-
-    private toggleMenu() {
-        this.$store.dispatch('menu/toggleVisibility');
-    }
-
-    get Icon() {
-        if (this.someoneIsLogged) {
-            return 'sign-out-alt';
-        } else {
-            return 'user-lock';
+    @Component({
+        components: {Menu, G3wButton, CountryFlag},
+        computed: {
+            ...mapGetters({
+                'showAdmin': 'settings/showAdminButton'
+            })
         }
-    }
+    })
+    export default class MobileMenu extends HeaderPA {
+        // private showMenu: boolean = false;
+        private showAdmin!: any
 
-    get flag() {
-        switch (this.$i18n.locale) {
-            case 'en':
-                return 'it';
-            case 'it':
-                return 'gb';
+        get width() {
+            if (this.showAdmin && this.someoneIsLogged) {
+                return 'w-33'
+            }
+            return 'w-50'
         }
-        this.$store.dispatch('menu/setVisibility', {v: false});
-    }
 
-    private goToLogin() {
-        if (this.$route.name !== 'login') {
-            this.$router.push({name: 'login'});
+        private toggleMenu() {
+            this.$store.dispatch('menu/toggleVisibility');
         }
-        this.$store.dispatch('menu/setVisibility', {v: false});
-    }
 
-    private switchLang() {
-        if (this.$root.$i18n.locale === 'it') {
-            this.$root.$i18n.locale = 'en';
-        } else if (this.$root.$i18n.locale === 'en') {
-            this.$root.$i18n.locale = 'it';
+        get Icon() {
+            if (this.someoneIsLogged) {
+                return 'sign-out-alt';
+            } else {
+                return 'user-lock';
+            }
         }
-        this.$store.dispatch('menu/setVisibility', {v: false});
-        this.$router.replace({name: this.$route.name, params: {lang: this.$root.$i18n.locale}});
-        window.location.reload();
-    }
 
-}
+        get flag() {
+            switch (this.$i18n.locale) {
+                case 'en':
+                    return 'it';
+                case 'it':
+                    return 'gb';
+            }
+            this.$store.dispatch('menu/setVisibility', {v: false});
+        }
+
+        private goToLogin() {
+            if (this.$route.name !== 'login') {
+                this.$router.push({name: 'login'});
+            }
+            this.$store.dispatch('menu/setVisibility', {v: false});
+        }
+
+        private switchLang() {
+            if (this.$root.$i18n.locale === 'it') {
+                this.$root.$i18n.locale = 'en';
+            } else if (this.$root.$i18n.locale === 'en') {
+                this.$root.$i18n.locale = 'it';
+            }
+            this.$store.dispatch('menu/setVisibility', {v: false});
+            this.$router.replace({name: this.$route.name, params: {lang: this.$root.$i18n.locale}});
+            window.location.reload();
+        }
+
+    }
 </script>
 
 <style lang="scss" scoped>
 
     @import "../../styles/_variables.scss";
     @import "../../styles/mixin.scss";
+
+    ::v-deep .expanded-class {
+        width: 100% !important;
+    }
 
     .ButtonMenu {
         height: 50px;

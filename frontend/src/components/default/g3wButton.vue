@@ -1,6 +1,6 @@
 <template>
     <div
-            :class="[expanded ? 'w-100': '', isHover ? hoverClasses: '']"
+            :class="[expanded ? 'expanded-class': '', isHover ? hoverClasses: '']"
             @click="$emit('click')"
             @mouseleave="mouseLeave"
             @mouseover="mouseOver"

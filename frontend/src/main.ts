@@ -38,11 +38,13 @@ import {
     faTimes,
     faSignOutAlt,
     faPencilAlt,
+    faUserShield
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import {EnvironmentHelper} from "@/EnvironmentHelper";
 
 library.add(
+    faUserShield,
     faUserSecret,
     faKey,
     faMapMarkerAlt,
@@ -85,6 +87,7 @@ if (EnvironmentHelper.isProduction) {
     IS_PA = (window as any).IS_PA;
 } else {
     IS_PA = localStorage.getItem('isPA') === 'true';
+    (window as any).ADMIN_BTN = true;
     (window as any).PORTAL_SECTIONS = [
         'maps',
         'info',
@@ -107,6 +110,7 @@ new Vue({
     created: () => {
         store.dispatch('info/fetchInfo');
         store.dispatch('settings/portalSections', {sections: (window as any).PORTAL_SECTIONS});
+        store.dispatch('settings/showAdminButton', {show: (window as any).ADMIN_BTN});
     }
 }).$mount('#app');
 

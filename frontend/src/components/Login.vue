@@ -46,64 +46,66 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import {mapGetters} from "vuex";
+    import {Component, Prop, Vue} from 'vue-property-decorator';
+    import {mapGetters} from "vuex";
 
 
-@Component({
-    name:"Login",
-    computed: {
-        ...mapGetters({
-            'settings': 'info/info'
-        })
-    }
-})
-export default class Login extends Vue {
-    @Prop(Boolean) private readonly showLabel!: boolean;
-    @Prop(Boolean) private readonly placeholderUppercase!: boolean;
+    @Component({
+        name: "Login",
+        computed: {
+            ...mapGetters({
+                'settings': 'info/info'
+            })
+        }
+    })
+    export default class Login extends Vue {
+        @Prop(Boolean) private readonly showLabel!: boolean;
+        @Prop(Boolean) private readonly placeholderUppercase!: boolean;
 
-    private username: string = '';
-    private password: string = '';
+        private username: string = '';
+        private password: string = '';
 
-    private passwordError: boolean = false;
-    private usernameError: boolean = false;
-    private loginError: boolean = false;
+        private passwordError: boolean = false;
+        private usernameError: boolean = false;
+        private loginError: boolean = false;
 
-    get passwordPlaceholder() {
-        return this.password.length ? '' : (this.placeholderUppercase ? this.$tc('messages.login.password').toUpperCase() : this.$tc('messages.login.password'));
-    }
+        get passwordPlaceholder() {
+            return this.password.length ? '' : (this.placeholderUppercase ? this.$tc('messages.login.password').toUpperCase() : this.$tc('messages.login.password'));
+        }
 
-    get usernamePlaceholder() {
-        return this.username.length ? '' : (this.placeholderUppercase ? this.$tc('messages.login.username').toUpperCase() : this.$tc('messages.login.username'));
-    }
+        get usernamePlaceholder() {
+            return this.username.length ? '' : (this.placeholderUppercase ? this.$tc('messages.login.username').toUpperCase() : this.$tc('messages.login.username'));
+        }
 
-    get show_label(): boolean {
-        return this.showLabel == undefined ? true : this.showLabel;
-    }
+        get show_label(): boolean {
+            return this.showLabel == undefined ? true : this.showLabel;
+        }
 
 
-    private login() {
-        if (!this.username) {
-            this.usernameError = true;
-        } else if (!this.password) {
-            this.passwordError = true;
-        } else {
-            this.usernameError = false;
-            this.passwordError = false;
-            this.loginError = false;
-            const locale = this.$i18n.locale;
-            this.$store.dispatch('me/login', {
-                locale,
-                username: this.username,
-                password: this.password,
-            }).then(() => {
-                this.$router.push({name: 'home'});
-            }).catch(() => {
-                this.loginError = true;
-            });
+        private login() {
+            if (!this.username) {
+                this.usernameError = true;
+            } else if (!this.password) {
+                this.passwordError = true;
+            } else {
+                this.usernameError = false;
+                this.passwordError = false;
+                this.loginError = false;
+                const locale = this.$i18n.locale;
+                this.$store.dispatch('me/login', {
+                    locale,
+                    username: this.username,
+                    password: this.password,
+                }).then(() => {
+                    return this.$store.dispatch('me/fetchWhoAmI')
+                }).catch(() => {
+                    this.loginError = true;
+                }).finally(() => {
+                    this.$router.push({name: 'home'});
+                })
+            }
         }
     }
-}
 </script>
 
 <style>
