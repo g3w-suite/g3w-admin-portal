@@ -21,11 +21,11 @@ body:not(.pa) {
     background-size: cover;
   }
 
-  @include media-breakpoint-down(sm){
-    &:before {
-      background-image: url(~@/assets/img/monti.jpg);
-    }
-  }
+  //@include media-breakpoint-down(sm){
+  //  &:before {
+  //    background-image: url(~@/assets/img/monti.jpg);
+  //  }
+  //}
 
   //personalizzazione scrollbar
 

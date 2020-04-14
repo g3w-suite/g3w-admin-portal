@@ -3,7 +3,7 @@
         <div class="d-none d-md-block bg_image mr-4  position-absolute">
             <slot name="background-img">
                 <transition-group name="fade">
-                    <img alt="bg" v-if="(index % pictures.length) == idx" v-for="(i,idx) in pictures" :key="i.id" class="position-absolute w-100 d-none d-md-block sfondo" :src="i.image"/>
+                    <img alt="bg" v-if="(index % pictures.length) == idx" v-for="(i,idx) in pictures" :key="i.id" class="position-absolute w-100 sfondo" :src="i.image"/>
                 </transition-group>
             </slot>
         </div>
@@ -35,10 +35,10 @@ import {mapGetters} from "vuex";
 @Component({
     components: {},
     computed:{
-            ...mapGetters({
-                pictures: 'settings/pictures'
-            })
-        }
+        ...mapGetters({
+            pictures: 'settings/pictures'
+        })
+    }
 })
 
 export default class AboutContent extends Vue {

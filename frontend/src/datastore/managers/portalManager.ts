@@ -11,7 +11,7 @@ export class PortalManager implements IPortalManager {
     }
 
     public pictures(locale: string = 'en'): Promise<IPicturesPagination> {
-        return this.httpClient.get<IPicturesPagination>('http://localhost:8000/portal/api/pictures/');
+        return this.httpClient.get<IPicturesPagination>(locale + '/portal/api/pictures/');
     }
 }
 
