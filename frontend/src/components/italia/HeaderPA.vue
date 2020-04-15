@@ -89,7 +89,9 @@
 
                             </div>
                             <div class="nav-item">
-                                <a class="nav-link" v-if="someoneIsLogged && showAdmin" href="/admin">Admin</a>
+                                <a class="nav-link dropdown-toggle  " v-if="someoneIsLogged && showAdmin" href="/admin">
+                                    <span>Admin</span>
+                                </a>
                             </div>
                             <div class="it-access-top-wrapper">
                                 <router-link v-if="!someoneIsLogged" :to="{name:'login'}">
