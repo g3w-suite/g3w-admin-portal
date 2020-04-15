@@ -2,7 +2,7 @@
     <div class="Menu d-md-flex flex-column align-items-end">
         <!--        l'overflow hidden serve per evitare un certo flicker che si presenta se il testo sborda quando il bottone si espande-->
         <g3w-button
-                v-show="sections.includes('maps')"
+                v-if="sections.includes('maps')"
                 @click="$emit('buttonClicked')"
                 :text="$t('messages.menu.mappe')"
                 class="buttonMenu overflow-hidden flex-grow-1"
@@ -14,7 +14,7 @@
         >
         </g3w-button>
         <g3w-button
-                v-show="sections.includes('info')"
+                v-if="sections.includes('info')"
                 @click="$emit('buttonClicked')"
                 :text="$t('messages.menu.info')"
                 class="buttonMenu overflow-hidden flex-grow-1"
@@ -25,7 +25,7 @@
                 :alwaysExpanded="alwaysExpanded"
         ></g3w-button>
         <g3w-button
-                v-show="sections.includes('news')"
+                v-if="sections.includes('news')"
                 :text="$t('messages.menu.news')"
                 @click="$emit('buttonClicked')"
                 class="buttonMenu overflow-hidden flex-grow-1"
@@ -35,7 +35,7 @@
                 :alwaysExpanded="alwaysExpanded"
         ></g3w-button>
         <g3w-button
-                v-show="sections.includes('archives')"
+                v-if="sections.includes('archives')"
                 @click="$emit('buttonClicked')"
                 :text="$t('messages.menu.archivi')"
                 class="buttonMenu overflow-hidden flex-grow-1"

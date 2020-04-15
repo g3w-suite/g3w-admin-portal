@@ -3,10 +3,11 @@
          id="main"
          :class="[$store.getters['menu/isVisible'] ? 'overlay' : '']"
     >
-<!--        <MobileCarousel-->
-<!--               class="d-md-none d-block vh-100 w-100 position-absolute bg_image"-->
-<!--        ></MobileCarousel>-->
-        <div class="header d-flex py-4 pl-4 pr-4 pr-md-0">
+        <MobileCarousel
+                v-if="$route.name === 'home'"
+               class="d-md-none d-block vh-100 w-100 position-absolute bg_image"
+        ></MobileCarousel>
+        <div class="z-100 header d-flex py-4 pl-4 pr-4 pr-md-0">
             <router-view name="header"></router-view>
         </div>
         <div class="body px-0 pl-md-4 pr-md-0 flex-grow-1 align-items-stretch">

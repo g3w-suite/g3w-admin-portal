@@ -8,6 +8,10 @@
  @include trbl(0,0,0,0);
 }
 
+.z-100{
+  z-index: 100;
+}
+
 .w-33{
   width: 33.33333% !important;
 }

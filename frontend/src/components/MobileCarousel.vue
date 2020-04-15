@@ -1,6 +1,7 @@
 <template>
     <div
-    :style="style">
+    :style="style"
+    style="background-position: center center">
 
     </div>
 </template>
@@ -34,7 +35,7 @@
         mounted() {
             window.setInterval(() => {
                 this.index++;
-            }, 2000)
+            }, 30000)
         }
     }
 </script>

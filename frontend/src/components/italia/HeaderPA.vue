@@ -22,17 +22,29 @@
                                                 {{$t("messages.menu.home")}}
                                             </router-link>
                                         </li>
-                                        <li>
+                                        <li v-if="sections.includes('maps')">
                                             <router-link class="list-item text-capitalize" :to="{name:'mappe'}"
                                                          :class="{'active' : $route.name === 'mappe' }"
                                             >
                                                 {{$t("messages.menu.mappe")}}
                                             </router-link>
                                         </li>
-                                        <li>
+                                        <li v-if="sections.includes('info')">
                                             <router-link class="list-item text-capitalize" :to="{name:'info'}"
                                                          :class="{'active' : $route.name === 'info' }">
                                                 {{$t("messages.menu.info")}}
+                                            </router-link>
+                                        </li>
+                                        <li v-if="sections.includes('news')">
+                                            <router-link class="list-item text-capitalize" :to="{name:'home'}"
+                                                         :class="{'active' : $route.name === 'home' }">
+                                                {{$t("messages.menu.news")}}
+                                            </router-link>
+                                        </li>
+                                        <li v-if="sections.includes('archives')">
+                                            <router-link class="list-item text-capitalize" :to="{name:'home'}"
+                                                         :class="{'active' : $route.name === 'home' }">
+                                                {{$t("messages.menu.archivi")}}
                                             </router-link>
                                         </li>
 <!--                                        <li>-->
@@ -74,6 +86,10 @@
                                         </div>
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="nav-item">
+                                <a class="nav-link" v-if="someoneIsLogged && showAdmin" href="/admin">Admin</a>
                             </div>
                             <div class="it-access-top-wrapper">
                                 <router-link v-if="!someoneIsLogged" :to="{name:'login'}">
@@ -91,9 +107,16 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
+import {mapGetters} from "vuex";
 
 @Component({
     components: {},
+    computed: {
+            ...mapGetters({
+                'sections': 'settings/portalSections',
+                'showAdmin': 'settings/showAdminButton'
+            })
+        }
 })
 
 export default class HeaderPA extends Vue {
