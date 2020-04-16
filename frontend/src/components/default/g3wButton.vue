@@ -82,9 +82,9 @@ export default class g3wButton extends Vue {
     @import "../../styles/_variables.scss";
 
     .g3wButton {
-        background-color: $palette_viola_fourth;
+        /*background-color: $palette_viola_fourth;*/
         opacity: 0.7;
-        border: 1px solid $palette_viola_third;
+        /*border: 1px solid $palette_viola_third;*/
 
         @include media-breakpoint-down(sm){
             opacity: 1;

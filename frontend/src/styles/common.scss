@@ -42,11 +42,6 @@
   overflow-y: scroll;
 }
 
-.gradient{
-  @include gis_gradient(30, rgba(242, 19, 123, 0.8), 0%, rgba(22, 10, 64, 0.8), 50%);
-}
-
-
 .tab_button_bg{
   background-color: rgba(22, 10, 64, 0.8);
 }

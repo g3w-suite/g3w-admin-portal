@@ -37,18 +37,18 @@ export default class MapsContent extends Vue {
             align-items: center;
             border-width: 1px;
             border-style: solid;
-            border-color: rgba(22, 10, 64, 0.8);
+            /*border-color: rgba(22, 10, 64, 0.8);*/
         }
     }
 
     ::v-deep .gis_active {
-        background-color: rgba(22, 10, 64, 0.8) !important;
+        /*background-color: rgba(22, 10, 64, 0.8) !important;*/
         color: white !important;
         border-width: 0 !important;
     }
 
-    ::v-deep #TabContent {
+    /*::v-deep #TabContent {
         @include gis_gradient(30, rgba(242, 19, 123, 0.8), 0%, rgba(22, 10, 64, 0.8), 50%);
-    }
+    }*/
 
 </style>
