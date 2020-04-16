@@ -32,6 +32,16 @@ FRONTEND_APP = 'portal'
 # Activate Public Administration template
 PORTAL_IS_PA = True #(False, default)
 ...
+
+# Optional
+# Activete Link to Admin 
+ADMIN_BTN = True #(False, default)
+...
+
+# Optional
+# Set default portal palette color (chose from 'yellow' 'violet' or 'blue')
+PORTAL_COLOR = 'yellow' #(violet, default) 
+...
 ```
 
 To load default portal picture
