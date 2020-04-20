@@ -44,7 +44,7 @@ PORTAL_IS_PA = True #(False, default)
 
 # Optional
 # Activete Link to Admin 
-ADMIN_BTN = True #(False, default)
+PORTAL_ADMIN_BTN = True #(False, default)
 ...
 
 # Optional

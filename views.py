@@ -61,7 +61,7 @@ class PortalView(TemplateView):
             'IS_PA': getattr(settings, 'PORTAL_IS_PA', False),
             'API_BASE_URL': '/',
             'PORTAL_SECTIONS': json.dumps(getattr(settings, 'PORTAL_SECTIONS', [])),
-            'ADMIN_BTN': json.dumps(getattr(settings, 'ADMIN_BTN', False)),
+            'ADMIN_BTN': json.dumps(getattr(settings, 'PORTAL_ADMIN_BTN', False)),
             'PORTAL_COLOR': getattr(settings, 'PORTAL_COLOR', 'violet'),
         }
 
