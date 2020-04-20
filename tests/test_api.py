@@ -30,17 +30,18 @@ QGS_DB = 'portal_test_project.sqlite'
 QGS_FILE = 'portal_test_project.qgs'
 
 
-@override_settings(CACHES = {
+@override_settings(
+    CACHES={
         'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'some',
-        }
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'some',
+            }
     },
     DATASOURCE_PATH=DATASOURCE_PATH,
     G3WADMIN_LOCAL_MORE_APPS=[
-    'portal',
+        'portal',
     ],
-    FRONTEND=True,
+    FRONTEND=False,
     FRONTEND_APP='portal'
 )
 class PortalTestsBase(TestCase):
