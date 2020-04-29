@@ -3,11 +3,11 @@ import {IGroupRequest, IMacroGroupsRequest, IProjectRequest} from '@/datastore/i
 
 
 export interface IGroupManager {
-    groups: () => Promise<IGroupRequest>;
-    groupsInMacrogroup: (id: number) => Promise<IGroupRequest>;
-    macrogroups: () => Promise<IMacroGroupsRequest>;
-    groupsNoMacrogroups: () => Promise<IGroupRequest>;
-    projectsInGroup: (id: number) => Promise<IProjectRequest>;
+    groups: (locale: string) => Promise<IGroupRequest>;
+    groupsInMacrogroup: (locale: string,id: number) => Promise<IGroupRequest>;
+    macrogroups: (locale: string) => Promise<IMacroGroupsRequest>;
+    groupsNoMacrogroups: (locale: string) => Promise<IGroupRequest>;
+    projectsInGroup: (locale: string, id: number) => Promise<IProjectRequest>;
 }
 
 export class GroupManager implements IGroupManager {
@@ -18,37 +18,36 @@ export class GroupManager implements IGroupManager {
     /**
      * ritorna tutto l'insieme dei gruppi
      */
-    public groups(): Promise<IGroupRequest> {
-        return this.httpClient.get<IGroupRequest>('portal/api/group/');
+    public groups(locale: string = 'en'): Promise<IGroupRequest> {
+        return this.httpClient.get<IGroupRequest>(locale + '/portal/api/group/');
     }
 
     /**
-     * ritorna l'insieme dei gruppi contenuti in un macrogruppo
-     * @param id
+     * ritorna l'insieme dei gruppi contenuti in un macrogruppo7
      */
-    public async groupsInMacrogroup(id: number): Promise<IGroupRequest> {
-        return this.httpClient.get<IGroupRequest>('portal/api/group/' + id);
+    public async groupsInMacrogroup(locale: string = 'en', id: number): Promise<IGroupRequest> {
+        return this.httpClient.get<IGroupRequest>(locale + '/portal/api/group/' + id);
     }
 
     /**
      * ritorna i macrogruppi
      */
-    public macrogroups(): Promise<IMacroGroupsRequest> {
-        return this.httpClient.get<IMacroGroupsRequest>('portal/api/macrogroup/');
+    public macrogroups(locale: string = 'en'): Promise<IMacroGroupsRequest> {
+        return this.httpClient.get<IMacroGroupsRequest>(locale + '/portal/api/macrogroup/');
     }
 
     /**
      * ritorna i gruppi che non appartengono ad un macrogruppo
      */
-    public groupsNoMacrogroups(): Promise<IGroupRequest> {
-        return this.httpClient.get<IGroupRequest>('portal/api/group/nomacrogroup/');
+    public groupsNoMacrogroups(locale: string = 'en'): Promise<IGroupRequest> {
+        return this.httpClient.get<IGroupRequest>(locale + '/portal/api/group/nomacrogroup/');
     }
 
     /**
      * ritorna i progetti di uno specifico gruppo dato l'id
      */
-    public projectsInGroup(id: number): Promise<IProjectRequest> {
-        return this.httpClient.get<IProjectRequest>('portal/api/group/' + id + '/projects/');
+    public projectsInGroup(locale: string = 'en', id: number): Promise<IProjectRequest> {
+        return this.httpClient.get<IProjectRequest>(locale + '/portal/api/group/' + id + '/projects/');
     }
 }
 

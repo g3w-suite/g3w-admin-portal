@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import {i18n} from '@/main';
 import MainItalia from '@/views/MainItalia.vue';
 import HeaderPA from '@/components/italia/HeaderPA.vue';
 import TabWidget from '@/components/TabWidget.vue';
 import AboutPA from '@/components/italia/AboutPA.vue';
 import LoginPA from '@/components/italia/LoginPA.vue';
 import Home from '@/components/Home.vue';
+import {i18n} from "@/main";
 
 Vue.use(Router);
 

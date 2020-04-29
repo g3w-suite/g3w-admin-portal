@@ -3,6 +3,7 @@ import {EBoxType} from '@/datastore/interfaces/RequestsInterfaces';
 import {Group} from '@/datastore/types/Group';
 import store from '@/store';
 import {SuperGroup} from '@/datastore/types/SuperGroup';
+import {i18n} from "@/main";
 
 export class MacroGroup extends SuperGroup {
     public id: number;
@@ -56,7 +57,7 @@ export class MacroGroup extends SuperGroup {
     }
 
     public fetchGroups() {
-        store.dispatch('group/fetchGroupsByMacroGroupId', {id: this.Id});
+        store.dispatch('group/fetchGroupsByMacroGroupId', {locale: i18n.locale, id: this.Id});
     }
 }
 

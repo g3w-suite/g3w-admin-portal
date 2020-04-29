@@ -7,7 +7,7 @@ import {WhoAmIInterface} from '@/datastore/interfaces/WhoAmIInterface';
 export interface ILoginManager {
     login: (locale: string, username: string, password: string) => Promise<ILoginResponse>;
     logout: (locale: string) => Promise<ILogoutResponse>;
-    who_am_i: () => Promise<WhoAmIInterface>;
+    who_am_i: (locale: string) => Promise<WhoAmIInterface>;
 }
 
 export class LoginManager implements ILoginManager {
@@ -23,11 +23,11 @@ export class LoginManager implements ILoginManager {
         });
     }
 
-    public who_am_i(): Promise<WhoAmIInterface> {
-        return this.httpClient.get<WhoAmIInterface>('/portal/api/whoami/');
+    public who_am_i(locale: string = 'en'): Promise<WhoAmIInterface> {
+        return this.httpClient.get<WhoAmIInterface>(locale + '/portal/api/whoami/');
     }
 
-    public logout(locale: string): Promise<ILogoutResponse> {
+    public logout(locale: string = 'en'): Promise<ILogoutResponse> {
         return this.httpClient.get<ILogoutResponse>(locale + '/jx/logout/');
     }
 }

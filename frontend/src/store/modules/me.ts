@@ -3,6 +3,7 @@ import {RootState} from '@/store/types';
 import User from '@/datastore/types/User';
 import {loginManager} from '@/datastore/managers/loginManager';
 import {ELoginStatus} from '@/datastore/interfaces/LoginInterfaces';
+import {i18n} from "@/main";
 
 const namespaced: boolean = true;
 
@@ -25,8 +26,8 @@ const getters: GetterTree<IUserState, RootState> = {
 
 const actions: ActionTree<IUserState, RootState> = {
 
-    fetchWhoAmI({commit}) {
-        return loginManager.who_am_i().then((u) => {
+    fetchWhoAmI({commit},{locale}) {
+        return loginManager.who_am_i(locale).then((u) => {
             if (u.is_authenticated) {
                 commit('setUser', new User(u));
             }
@@ -42,7 +43,7 @@ const actions: ActionTree<IUserState, RootState> = {
     login({commit, dispatch}, {locale, username, password}) {
         return loginManager.login(locale, username, password).then((data) => {
             if (data && data.status === ELoginStatus.OK) {
-                dispatch('fetchWhoAmI');
+                dispatch('fetchWhoAmI',{locale});
             } else {
                 commit('setUser', null);
             }

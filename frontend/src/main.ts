@@ -5,8 +5,8 @@ import routerItalia from './routerItalia';
 import store from './store';
 import VueI18n from 'vue-i18n';
 import BootstrapVue from 'bootstrap-vue';
-import {it} from '@/lang/it.ts';
-import {en} from '@/lang/en.ts';
+import {it} from "@/lang/it";
+import {en} from "@/lang/en";
 
 // if (localStorage.getItem('isPA') === 'true') {
 //     require('@/styles/appPA.scss');
@@ -108,10 +108,10 @@ new Vue({
     i18n,
     render: (h) => h(App),
     created: () => {
-        store.dispatch('info/fetchInfo');
+        store.dispatch('info/fetchInfo',{locale:i18n.locale});
         store.dispatch('settings/portalSections', {sections: (window as any).PORTAL_SECTIONS});
         store.dispatch('settings/showAdminButton', {show: (window as any).ADMIN_BTN});
-        store.dispatch('settings/fetchPictures');
+        store.dispatch('settings/fetchPictures',{locale:i18n.locale});
     }
 }).$mount('#app');
 

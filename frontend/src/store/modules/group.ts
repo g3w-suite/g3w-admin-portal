@@ -7,6 +7,7 @@ import {groupManager} from '@/datastore/managers/groupManager';
 import {IGroup} from '@/datastore/interfaces/GroupInterface';
 import {IMacroGroup} from '@/datastore/interfaces/MacroGroupInterface';
 import {IProgectInGroupDict, Project} from '@/datastore/types/Project';
+import {i18n} from "@/main";
 
 const namespaced: boolean = true;
 
@@ -50,16 +51,16 @@ const actions: ActionTree<IGroupState, RootState> = {
     reset({commit}) {
         commit('reset');
     },
-    fetchMacroGroups({commit}) {
-        return groupManager.macrogroups().then((i) => {
+    fetchMacroGroups({commit}, {locale}) {
+        return groupManager.macrogroups(locale).then((i) => {
             i.results.forEach((m: IMacroGroup) => {
                 commit('setMacroGroups', new MacroGroup(m));
             });
         }).catch();
     },
 
-    fetchGroupsWithNoMacroGroup({commit}) {
-        return groupManager.groupsNoMacrogroups().then((i) => {
+    fetchGroupsWithNoMacroGroup({commit}, {locale}) {
+        return groupManager.groupsNoMacrogroups(locale).then((i) => {
             i.results.forEach((g: IGroup) => {
                 const gr = new Group(g);
                 commit('setGroupWithNoMacroGroup', gr);
@@ -67,16 +68,16 @@ const actions: ActionTree<IGroupState, RootState> = {
             });
         });
     },
-    fetchGroups({commit}) {
-        return groupManager.groups().then((i) => {
+    fetchGroups({commit}, {locale}) {
+        return groupManager.groups(locale).then((i) => {
             i.results.forEach((g) => {
                 commit('setGroup', new Group(g));
             });
         });
     },
 
-    fetchGroupsByMacroGroupId({commit}, {id}) {
-        return groupManager.groupsInMacrogroup(id).then((i) => {
+    fetchGroupsByMacroGroupId({commit}, {locale,id}) {
+        return groupManager.groupsInMacrogroup(locale,id).then((i) => {
             commit('setGroupsOfMacrogroup', {
                 id, gps: i.results.map((g) => {
                     const gr = new Group(g);
@@ -87,8 +88,8 @@ const actions: ActionTree<IGroupState, RootState> = {
         });
     },
 
-    fetchProjectsByGroupId({commit}, {id}) {
-        return groupManager.projectsInGroup(id).then((i) => {
+    fetchProjectsByGroupId({commit}, {locale,id}) {
+        return groupManager.projectsInGroup(locale,id).then((i) => {
             commit('setProjectsOfGroup', {
                 id, prj: i.results.map((p) => {
                     return new Project(p);

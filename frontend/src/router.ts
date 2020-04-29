@@ -1,13 +1,13 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Main from './views/Main.vue';
-import {i18n} from '@/main';
 import Menu from '@/components/default/Menu.vue';
 import AboutContent from '@/components/default/AboutContent.vue';
 import Header from '@/components/default/Header.vue';
 import LoginContent from '@/components/default/LoginContent.vue';
 import MapsContent from '@/components/default/MapsContent.vue';
 import HomeContent from '@/components/default/HomeContent.vue';
+import {i18n} from "@/main";
 
 Vue.use(Router);
 

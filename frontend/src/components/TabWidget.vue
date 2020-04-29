@@ -112,8 +112,8 @@ export default class TabWidget extends Vue {
     private stackElementTab: SuperGroup[] = [];
 
     public mounted() {
-        this.$store.dispatch('group/fetchMacroGroups');
-        this.$store.dispatch('group/fetchGroupsWithNoMacroGroup');
+        this.$store.dispatch('group/fetchMacroGroups',{locale:this.$i18n.locale});
+        this.$store.dispatch('group/fetchGroupsWithNoMacroGroup',{locale:this.$i18n.locale});
     }
 
 

@@ -3,7 +3,7 @@ import {Info} from '@/datastore/types/Info';
 import {IInfo} from '@/datastore/interfaces/InfoInterface';
 
 export interface IInfoManager {
-    infodata: () => Promise<Info>;
+    infodata: (locale: string) => Promise<Info>;
 }
 
 export class InfoManager implements IInfoManager {
@@ -11,8 +11,8 @@ export class InfoManager implements IInfoManager {
     constructor(private httpClient: IHttpClient) {
     }
 
-    public async infodata(): Promise<Info> {
-        return new Info(await this.httpClient.get<IInfo>('portal/api/infodata/'));
+    public async infodata(locale: string = 'en'): Promise<Info> {
+        return new Info(await this.httpClient.get<IInfo>(locale + '/portal/api/infodata/'));
     }
 
 }

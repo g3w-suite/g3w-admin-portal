@@ -2,6 +2,7 @@ import {ActionTree, GetterTree, MutationTree} from 'vuex';
 import {RootState} from '@/store/types';
 import {portalManager} from "@/datastore/managers/portalManager";
 import {IPictures} from "@/datastore/interfaces/PortalInterface";
+import {i18n} from "@/main";
 
 const namespaced: boolean = true;
 
@@ -36,8 +37,8 @@ const actions: ActionTree<ISettings, RootState> = {
     showAdminButton: ({commit}, {show}) => {
         commit('showAdminButton', show)
     },
-    fetchPictures: ({commit}) => {
-        portalManager.pictures().then((ps) => {
+    fetchPictures: ({commit},{locale}) => {
+        portalManager.pictures(locale).then((ps) => {
             const pictures = ps.results.sort((a:IPictures, b:IPictures) => {
                 if (a.order < b.order) {
                     return -1;

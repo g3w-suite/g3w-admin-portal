@@ -143,7 +143,7 @@ export default class HeaderPA extends Vue {
 
     public mounted() {
         // appena apro la barra guardo se c'e' qualcuno loggato
-        this.$store.dispatch('me/fetchWhoAmI');
+        this.$store.dispatch('me/fetchWhoAmI',{locale:this.$i18n.locale});
     }
 }
 </script>

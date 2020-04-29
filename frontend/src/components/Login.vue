@@ -97,7 +97,7 @@
                     username: this.username,
                     password: this.password,
                 }).then(() => {
-                    return this.$store.dispatch('me/fetchWhoAmI')
+                    return this.$store.dispatch('me/fetchWhoAmI',{locale:this.$i18n.locale})
                 }).catch(() => {
                     this.loginError = true;
                 }).finally(() => {
