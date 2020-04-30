@@ -7,7 +7,7 @@
        data-toggle="tab"
        href="#nav-tab"
        id="nav-tab1-tab"
-       role="tab">{{text}}</a>
+       role="tab"><span class="tab_title font-weight-bold">{{text}}</span></a>
 </template>
 
 <script lang="ts">
@@ -26,5 +26,7 @@ export default class TabButton extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
+    .tab_title{
+        font-size: 1.2rem;
+    }
 </style>

@@ -39,7 +39,7 @@
             </div>
         </div>
         <div class="text-uppercase text-black title mt-3 bg-white d-flex justify-content-center align-items-center position-relative">
-            <p class="px-2 title_ellipsis">{{title}} asd aasd aasd aasd aasd aasd aasd aasd aasd aasd aasd aasd aasd a</p>
+            <p class="px-2 title_ellipsis">{{title}}</p>
         </div>
     </div>
 </template>

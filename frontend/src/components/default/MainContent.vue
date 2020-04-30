@@ -3,7 +3,17 @@
         <div class="d-none d-md-block bg_image mr-4  position-absolute">
             <slot name="background-img">
                 <transition-group name="fade">
-                    <img alt="bg" v-if="(index % pictures.length) == idx" v-for="(i,idx) in pictures" :key="i.id" class="position-absolute w-100 sfondo" :src="i.image"/>
+                    <div class="position-absolute w-100 sfondo" v-if="(index % pictures.length) == idx" v-for="(i,idx) in pictures" :key="i.id">
+                        <img alt="bg"  class="w-100" :src="i.image"/>
+                        <span class="photo_info pr-4 pb-3"
+                              :style="{color : i.main_color}">
+                            Photo by
+                                <a v-if="i.author_url" :style="{color : i.main_color}" :href="i.author_url"><u>{{i.author}}</u></a>
+                                <template v-else>
+                                    {{i.author}}
+                                </template>
+                            </span>
+                    </div>
                 </transition-group>
             </slot>
         </div>
@@ -56,6 +66,13 @@ export default class AboutContent extends Vue {
 
     @import "../../styles/_variables";
 
+     .photo_info {
+        z-index: 100;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
     .bg_image {
         width: 85%;
         right: 0;
@@ -91,6 +108,7 @@ export default class AboutContent extends Vue {
             width: 35%;
         }
     }
+
 
     .qb {
 
