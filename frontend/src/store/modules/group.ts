@@ -8,6 +8,7 @@ import {IGroup} from '@/datastore/interfaces/GroupInterface';
 import {IMacroGroup} from '@/datastore/interfaces/MacroGroupInterface';
 import {IProgectInGroupDict, Project} from '@/datastore/types/Project';
 import {i18n} from "@/main";
+import {SuperGroup} from "@/datastore/types/SuperGroup";
 
 const namespaced: boolean = true;
 
@@ -17,6 +18,7 @@ interface IGroupState {
     Groups: IGroupDict;
     GroupsInMacroGroups: IGroupInMacrogroupDict;
     ProjectsInGroups: IProgectInGroupDict;
+    ActiveGroup: SuperGroup | null;
 }
 
 const infoState: IGroupState = {
@@ -25,11 +27,16 @@ const infoState: IGroupState = {
     Groups: {},
     GroupsInMacroGroups: {},
     ProjectsInGroups: {},
+    ActiveGroup: null
 };
 
 const getters: GetterTree<IGroupState, RootState> = {
     macroGroups(state): IMacroGroupDict {
         return state.MacroGroups;
+    },
+
+    activeGroup(state):SuperGroup|null{
+        return state.ActiveGroup
     },
 
     groupsWithNoMacroGroup(state): IGroupDict {
@@ -57,6 +64,11 @@ const actions: ActionTree<IGroupState, RootState> = {
                 commit('setMacroGroups', new MacroGroup(m));
             });
         }).catch();
+    },
+
+    setActiveGroup({commit}, {sg}){
+        commit('setActiveGroup',sg);
+
     },
 
     fetchGroupsWithNoMacroGroup({commit}, {locale}) {
@@ -106,6 +118,9 @@ const mutations: MutationTree<IGroupState> = {
         state.Groups = {};
         state.GroupsInMacroGroups = {};
         state.ProjectsInGroups = {};
+    },
+    setActiveGroup(state,sg){
+        state.ActiveGroup = sg;
     },
     setMacroGroups(state, mc) {
         Vue.set(state.MacroGroups, mc.id, mc);

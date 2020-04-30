@@ -6,9 +6,9 @@
                     <div class="position-absolute w-100 sfondo" v-if="(index % pictures.length) == idx" v-for="(i,idx) in pictures" :key="i.id">
                         <img alt="bg"  class="w-100" :src="i.image"/>
                         <span class="photo_info pr-4 pb-3"
-                              :style="{color : i.main_color}">
+                              :style="{color : i.main_color||'black'}">
                             Photo by
-                                <a v-if="i.author_url" :style="{color : i.main_color}" :href="i.author_url"><u>{{i.author}}</u></a>
+                                <a v-if="i.author_url" :style="{color : i.main_color||'black'}" :href="i.author_url"><u>{{i.author}}</u></a>
                                 <template v-else>
                                     {{i.author}}
                                 </template>

@@ -10,9 +10,9 @@
             <div aria-labelledby="nav-tab1-tab" class="tab-pane p-4 fade show active" id="nav-tab1" role="tabpanel">
                 <div class="w-100">
                     <div class="p-2 h-100 bg-transparent">
-                        <h2 class="sottotitolo font-abril">{{settings.groups_title}}</h2>
+                        <h2 class="sottotitolo font-abril">{{title}}</h2>
 <!--                        <h6 class="titolo font-lato">{{$tc("messages.tab.sottotitolo")}}</h6>-->
-                        <p class="descrizione">{{settings.groups_map_description}}</p>
+                        <p class="descrizione" v-html="description"></p>
                         <div class="row">
                             <tab-box
                                     :href="mc.LogoLink"
@@ -116,6 +116,19 @@ export default class TabWidget extends Vue {
         this.$store.dispatch('group/fetchGroupsWithNoMacroGroup',{locale:this.$i18n.locale});
     }
 
+    get title(){
+        if(this.tabs.length == 1){
+            return this.settings.groups_title
+        }
+        return this.$store.getters['group/activeGroup'].title
+    }
+
+    get description(){
+        if(this.tabs.length == 1) {
+            return this.settings.groups_map_description
+        }
+        return this.$store.getters['group/activeGroup'].description
+    }
 
     public created() {
         this.tabs = [this.$tc('messages.tab.firstTab')];
@@ -130,7 +143,6 @@ export default class TabWidget extends Vue {
         // console.log(id,type);
         let el: SuperGroup = new SuperGroup();
         if (type == EBoxType.P) {
-            console.log('ciao');
             return false;
         }
         switch (type) {
@@ -144,10 +156,10 @@ export default class TabWidget extends Vue {
                 break;
         }
 
+        this.$store.dispatch('group/setActiveGroup',{sg:el})
         this.stackElementTab = this.stackElementTab.concat(el);
         // @ts-ignore
         this.tabs = this.tabs.concat(el.title);
-
     }
 }
 </script>

@@ -43,13 +43,13 @@
 
         get infoStyle(){
             return {
-                color : this.info.main_color
+                color : (this.info && this.info.main_color)||'black'
             }
         }
 
         get info() {
             //@ts-ignore
-            return this.pictures[this.index % this.pictures.length]
+            return this.pictures[this.index % this.pictures.length] || {}
         }
 
         mounted() {
