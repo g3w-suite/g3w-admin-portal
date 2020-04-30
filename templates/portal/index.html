@@ -13,7 +13,7 @@
     <script src="{% static "frontend/bootstrap-italia/js/bootstrap-italia.bundle.min.js" %}"></script>
     <link href="{% static "frontend/css/app.css" %}" rel=stylesheet>
 </head>
-<body class="{{ PORTAL_COLOR }}">
+<body class="{% if not IS_PA %}{{ PORTAL_COLOR }}{% endif %}">
 <noscript><strong>We're sorry but gis3w_suite-frontend doesn't work properly without JavaScript enabled. Please enable
     it to continue.</strong></noscript>
 <script>
