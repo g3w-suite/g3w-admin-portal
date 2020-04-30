@@ -3,7 +3,6 @@ import {RootState} from '@/store/types';
 import User from '@/datastore/types/User';
 import {loginManager} from '@/datastore/managers/loginManager';
 import {ELoginStatus} from '@/datastore/interfaces/LoginInterfaces';
-import {i18n} from "@/main";
 
 const namespaced: boolean = true;
 

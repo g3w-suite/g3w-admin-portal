@@ -23,8 +23,12 @@
                                     :type="mc.InstanceOf"
                                     :edit_url="mc.edit_url"
                                     :map_url="mc.map_url"
+                                    :description="mc.description"
                                     @click="handleBoxClick"
-                                    class="col-12 col-md-6 col-lg-4 mb-4"
+                                    :class="{
+                                        'col-12 col-md-6 col-lg-4 mb-4': mc.InstanceOf != eboxtype.P,
+                                        'col-12 mb-4': mc.InstanceOf == eboxtype.P
+                                            }"
                                     v-for="mc in boxes">
                             </tab-box>
 
@@ -61,6 +65,7 @@ import {EBoxType} from '@/datastore/interfaces/RequestsInterfaces';
 import {SuperGroup} from '@/datastore/types/SuperGroup';
 import TabNav from '@/components/TabNav.vue';
 import {mapGetters} from "vuex";
+import {Info} from "@/datastore/types/Info";
 
 // groups with no macrogroups and macrogroups
 
@@ -78,8 +83,7 @@ interface IGWNM_AND_MG_Dict {
 })
 
 export default class TabWidget extends Vue {
-
-
+    public eboxtype = EBoxType;
     get boxes() {
         // se sono nel primo tab
         const els: Array<MacroGroup | Group> = [];
@@ -110,6 +114,7 @@ export default class TabWidget extends Vue {
 
     private tabs: string[] = [];
     private stackElementTab: SuperGroup[] = [];
+    private settings!:Info
 
     public mounted() {
         this.$store.dispatch('group/fetchMacroGroups',{locale:this.$i18n.locale});
