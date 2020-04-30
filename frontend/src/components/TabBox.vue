@@ -28,7 +28,7 @@
                 <b-col md="5">
                     <a :href="map_url" class="d-block aspect_16_9 map-img" rel="noopener noreferrer" target="_blank">
                         <div :style="bg_img"
-                                class="img_container d-flex text-white square_inner bg-white overflow-hidden">
+                             class="img_container d-flex text-white square_inner bg-white overflow-hidden">
                             <font-awesome-icon @click="expand" class="expand-arrow m-3 position-absolute"
                                                icon="expand-arrows-alt"
                                                size="lg"></font-awesome-icon>
@@ -41,15 +41,22 @@
                                 <font-awesome-icon class="   pencil m-3 position-absolute" icon="pencil-alt"
                                                    size="lg"></font-awesome-icon>
                             </a>
-<!--                            <img :src="img_url" class="thumbnail align-self-center w-100"/>-->
+                            <!--                            <img :src="img_url" class="thumbnail align-self-center w-100"/>-->
                         </div>
                     </a>
                 </b-col>
                 <b-col md="7" class="d-none d-md-block position-relative overflow-y-scoll">
-                    <p v-html="description" class="m-0 p-2 card-description"></p>
+                    <b-card-body :title="title" class="card-description">
+                        <b-card-text v-html="description">
+                        </b-card-text>
+                    </b-card-body>
+
                 </b-col>
                 <b-col cols="12" class="d-md-none position-relative">
-                    <p v-html="description" class="m-0 p-2"></p>
+                    <b-card-body :title="title" >
+                        <b-card-text v-html="description">
+                        </b-card-text>
+                    </b-card-body>
                 </b-col>
             </b-row>
         </b-card>
@@ -83,9 +90,9 @@
             this.$bvModal.show('thumbnailModal');
         }
 
-        get bg_img(){
+        get bg_img() {
             return {
-                backgroundImage : "url('" + this.img_url +"')",
+                backgroundImage: "url('" + this.img_url + "')",
                 backgroundSize: 'cover',
             }
         }
@@ -102,7 +109,7 @@
         }
     }
 
-    .overflow-y-scoll{
+    .overflow-y-scoll {
         overflow-y: scroll;
     }
 
@@ -111,8 +118,7 @@
         color: black;
     }
 
-    .card-description{
-        min-height: 70px;
+    .card-description {
         position: absolute;
         left: 0;
         right: 0;
