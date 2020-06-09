@@ -43,6 +43,10 @@ class ProjectSerializer(serializers.ModelSerializer):
             'slug': instance.slug
         })
 
+        # set picture to MEDIA_URL
+        media_url = getattr(settings, 'MEDIA_URL', '/media/')
+        feature['thumbnail'] = '%s%s' % (media_url, instance.thumbnail)
+
         return feature
 
     class Meta:
@@ -70,6 +74,10 @@ class GroupSerializer(serializers.ModelSerializer):
             feature['edit_url'] = reverse('group-update', kwargs={
             'slug': instance.slug
         })
+
+        # set picture to MEDIA_URL
+        media_url = getattr(settings, 'MEDIA_URL', '/media/')
+        feature['header_logo_img'] = '%s%s' % (media_url, instance.header_logo_img)
 
         return feature
 
@@ -100,6 +108,10 @@ class MacroGroupSerializer(serializers.ModelSerializer):
             feature['edit_url'] = reverse('macrogroup-update', kwargs={
             'slug': instance.slug
         })
+
+        # set picture to MEDIA_URL
+        media_url = getattr(settings, 'MEDIA_URL', '/media/')
+        feature['logo_img'] = '%s%s' % (media_url, instance.logo_img)
 
         return feature
 
@@ -138,6 +150,17 @@ class GenericSuiteDataSerializer(GetUnlanguageFieldsMixin, serializers.ModelSeri
     """
     Generic suite data
     """
+
+    def to_representation(self, instance):
+
+        ret = super(GenericSuiteDataSerializer, self).to_representation(instance)
+
+        # set picture to MEDIA_URL
+        media_url = getattr(settings, 'MEDIA_URL', '/media/')
+        ret['suite_logo'] = '%s%s' % (media_url, instance.suite_logo)
+
+        return ret
+
     class Meta:
         model = GeneralSuiteData
         fields = '__all__'

@@ -41,7 +41,7 @@ QGS_FILE = 'portal_test_project.qgs'
     G3WADMIN_LOCAL_MORE_APPS=[
         'portal',
     ],
-    FRONTEND=False,
+    FRONTEND=True,
     FRONTEND_APP='portal'
 )
 class PortalTestsBase(TestCase):
