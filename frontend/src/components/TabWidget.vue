@@ -142,6 +142,7 @@ export default class TabWidget extends Vue {
     private handleTabClick(idx: number) {
         this.tabs.splice(idx + 1, this.tabs.length);
         this.stackElementTab.splice(idx, this.stackElementTab.length);
+        this.$store.dispatch('group/setActiveGroup',{sg:this.stackElementTab[this.stackElementTab.length-1]})
     }
 
     private handleBoxClick(id: number, type: EBoxType) {

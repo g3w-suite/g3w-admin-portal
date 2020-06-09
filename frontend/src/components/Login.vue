@@ -2,7 +2,7 @@
 
     <div>
         <h2 class="font-abril">{{$tc("messages.login.titolo")}}</h2>
-        <h6 class="font-lato">{{settings.login_description}}</h6>
+        <h6 class="font-lato" v-html="settings.login_description"></h6>
 
         <form class="form">
             <div class="form-group">
