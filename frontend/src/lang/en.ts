@@ -1,6 +1,13 @@
 export const en: any = {
     messages: {
         hello: 'hello',
+        tooltip:{
+          cambia_lingua: 'Change language',
+          home: 'Go to home',
+          logout: 'Logout',
+          login: 'Login',
+          admin: 'Admin section'
+        },
         menu: {
             cerca:'SEARCH',
             home: 'home',
