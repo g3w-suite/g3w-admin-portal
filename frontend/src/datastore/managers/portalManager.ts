@@ -1,8 +1,8 @@
 import {httpClient, IHttpClient} from '@/datastore/HttpClient';
-import {IPicturesPagination} from "@/datastore/interfaces/PortalInterface";
+import {IPictures} from "@/datastore/interfaces/PortalInterface";
 
 export interface IPortalManager {
-    pictures: (locale: string) => Promise<IPicturesPagination>;
+    pictures: (locale: string) => Promise<IPictures[]>;
 }
 
 export class PortalManager implements IPortalManager {
@@ -10,8 +10,8 @@ export class PortalManager implements IPortalManager {
     constructor(private httpClient: IHttpClient) {
     }
 
-    public pictures(locale: string = 'en'): Promise<IPicturesPagination> {
-        return this.httpClient.get<IPicturesPagination>(locale + '/portal/api/pictures/');
+    public pictures(locale: string = 'en'): Promise<IPictures[]> {
+        return this.httpClient.get<IPictures[]>(locale + '/portal/api/pictures/');
     }
 }
 

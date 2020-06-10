@@ -6,7 +6,8 @@
                 <!--                <img class="d-block d-md-none logo_apte" src="@/assets/img/patew.png">-->
                 <img alt="logo" class="logo" :src="info.suite_logo">
             </router-link>
-            <Search v-if="$route.name === 'mappe'" class="h-100 search_box d-none d-md-flex pr-md-5"
+            <Search class="h-100 search_box d-none d-md-flex pr-md-5"
+                    :class="{'d-md-flex': ($route.name === 'mappe')}"
                     v-model="search"></Search>
         </div>
 

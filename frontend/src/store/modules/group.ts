@@ -71,7 +71,7 @@ const actions: ActionTree<IGroupState, RootState> = {
 
     fetchMacroGroups({commit}, {locale}) {
         return groupManager.macrogroups(locale).then((i) => {
-            i.results.forEach((m: IMacroGroup) => {
+            i.forEach((m) => {
                 commit('setMacroGroups', new MacroGroup(m));
             });
         }).catch();
@@ -84,7 +84,7 @@ const actions: ActionTree<IGroupState, RootState> = {
 
     fetchGroupsWithNoMacroGroup({commit}, {locale}) {
         return groupManager.groupsNoMacrogroups(locale).then((i) => {
-            i.results.forEach((g: IGroup) => {
+            i.forEach((g: IGroup) => {
                 const gr = new Group(g);
                 commit('setGroupWithNoMacroGroup', gr);
                 commit('setGroup', gr);
@@ -93,7 +93,7 @@ const actions: ActionTree<IGroupState, RootState> = {
     },
     fetchGroups({commit}, {locale}) {
         return groupManager.groups(locale).then((i) => {
-            i.results.forEach((g) => {
+            i.forEach((g) => {
                 commit('setGroup', new Group(g));
             });
         });
@@ -102,7 +102,7 @@ const actions: ActionTree<IGroupState, RootState> = {
     fetchGroupsByMacroGroupId({commit}, {locale,id}) {
         return groupManager.groupsInMacrogroup(locale,id).then((i) => {
             commit('setGroupsOfMacrogroup', {
-                id, gps: i.results.map((g) => {
+                id, gps: i.map((g) => {
                     const gr = new Group(g);
                     commit('setGroup', gr);
                     return gr;
@@ -114,7 +114,7 @@ const actions: ActionTree<IGroupState, RootState> = {
     fetchProjectsByGroupId({commit}, {locale,id}) {
         return groupManager.projectsInGroup(locale,id).then((i) => {
             commit('setProjectsOfGroup', {
-                id, prj: i.results.map((p) => {
+                id, prj: i.map((p) => {
                     return new Project(p);
                 }),
             });

@@ -1,5 +1,4 @@
 import {httpClient, IHttpClient} from '@/datastore/HttpClient';
-import {IGroupRequest, IMacroGroupsRequest, IProjectRequest} from '@/datastore/interfaces/RequestsInterfaces';
 import {ILoginResponse, ILogoutResponse} from '@/datastore/interfaces/LoginInterfaces';
 import * as qs from 'qs';
 import {WhoAmIInterface} from '@/datastore/interfaces/WhoAmIInterface';

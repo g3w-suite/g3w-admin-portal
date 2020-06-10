@@ -39,7 +39,7 @@ const actions: ActionTree<ISettings, RootState> = {
     },
     fetchPictures: ({commit},{locale}) => {
         portalManager.pictures(locale).then((ps) => {
-            const pictures = ps.results.sort((a:IPictures, b:IPictures) => {
+            const pictures = ps.sort((a:IPictures, b:IPictures) => {
                 if (a.order < b.order) {
                     return -1;
                 }

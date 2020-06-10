@@ -1,6 +1,7 @@
 <template>
     <div class="d-flex flex-column">
-        <Search v-if="$route.name === 'mappe'" class="w-100 search_box d-flex d-md-none mb-4"
+        <Search v-if="($route.name === 'mappe' || is_pa )" class="w-100 d-flex search_box mb-4"
+                :class="[is_pa? '' : 'd-flex d-md-none']"
                 v-model="search"></Search>
         <TabNav
                 :activeClass="activeClass"
@@ -87,6 +88,8 @@
 
     export default class TabWidget extends Vue {
         public eboxtype = EBoxType;
+
+        private is_pa = (window as any).IS_PA || false;
 
         get search() {
             return this.$store.getters['group/search']
@@ -186,18 +189,6 @@
 
     .search_box {
         height: 50px;
-
-        .input-group-text {
-            /*border-width: 0 !important;*/
-            //color: white;
-            //background-color: $palette_1_rgb_fourth;
-        }
-
-        input {
-            /*border-width: 0 !important;*/
-            //color: white;
-            //background-color: $palette_1_rgb_fourth;
-        }
     }
 
     #thumbnailModal {

@@ -9,10 +9,3 @@ export interface IPictures {
     author_url: string
     img_obj?: any
 }
-
-export interface IPicturesPagination {
-    count: number
-    next: string | null
-    previous: string | null
-    results : IPictures[]
-}
