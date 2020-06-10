@@ -39,6 +39,7 @@
                 </button>
                 <div class="text-white mt-1" v-if="loginError">
                     {{$t('messages.validation.erroreLogin')}}
+                    <p></p>
                 </div>
             </div>
         </form>
@@ -64,6 +65,7 @@
 
         private username: string = '';
         private password: string = '';
+        private extra_message: string = '';
 
         private passwordError: boolean = false;
         private usernameError: boolean = false;
@@ -98,10 +100,11 @@
                     password: this.password,
                 }).then(() => {
                     return this.$store.dispatch('me/fetchWhoAmI',{locale:this.$i18n.locale})
-                }).catch(() => {
-                    this.loginError = true;
-                }).finally(() => {
+                }).then(()=>{
                     this.$router.push({name: 'home'});
+                }).catch((e) => {
+                    this.extra_message = e
+                    this.loginError = true;
                 })
             }
         }

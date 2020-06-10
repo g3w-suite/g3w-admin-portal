@@ -14,6 +14,7 @@ import {en} from "@/lang/en";
 //     require('@/styles/app.scss');
 // }
 
+
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
     faFacebookSquare,

@@ -45,10 +45,9 @@ const actions: ActionTree<IUserState, RootState> = {
                 dispatch('fetchWhoAmI',{locale});
             } else {
                 commit('setUser', null);
+                throw data.error_form
             }
-        }).catch((e) => {
-            commit('setUser', null);
-        });
+        })
     },
 };
 
