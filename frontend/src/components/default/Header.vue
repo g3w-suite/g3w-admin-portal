@@ -1,12 +1,10 @@
 <template>
     <div class="header w-100 d-flex">
         <div class="header_left d-flex align-items-center justify-content-between">
-            <router-link :to="{name:'home'}" class="img_container d-flex align-items-center h-100 pl-md-3">
-                <!--                <img class="d-none d-md-block logo_apte" src="@/assets/img/pateb.png">-->
-                <!--                <img class="d-block d-md-none logo_apte" src="@/assets/img/patew.png">-->
+            <a :href="info.url_suite_logo" class="img_container d-flex align-items-center h-100 pl-md-3">
                 <img alt="logo" class="logo" :src="info.suite_logo">
-            </router-link>
-            <Search class="h-100 search_box d-none d-md-flex pr-md-5"
+            </a>
+            <Search class="h-100 search_box d-none pr-md-5"
                     :class="{'d-md-flex': ($route.name === 'mappe')}"
                     v-model="search"></Search>
         </div>
@@ -20,9 +18,21 @@
                     icon="language"
                     size="lg"
             >
-                <div class="flag m-auto d-flex justify-content-center h-100 align-items-center">
+                <div class="m-auto d-flex justify-content-center h-100 align-items-center">
                     <country-flag :country='flag' size='normal'/>
                 </div>
+            </g3w-button>
+            <g3w-button
+                    class="button d-flex d-flex justify-content-center align-items-center position-relative"
+                    :class="width"
+                    icon="home"
+            >
+                <router-link
+                    :to="{name:'Home'}"
+                    class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative"
+            >
+                    <font-awesome-icon icon="home" size="lg" class="position-absolute"></font-awesome-icon>
+            </router-link>
             </g3w-button>
             <g3w-button
                     class="button"
@@ -89,9 +99,9 @@
 
         get width() {
             if (this.showAdmin && this.someoneIsLogged) {
-                return 'w-33'
+                return 'w-25'
             }
-            return 'w-50'
+            return 'w-33'
         }
 
         get Icon() {

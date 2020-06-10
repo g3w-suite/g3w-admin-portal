@@ -39,7 +39,8 @@ import {
     faSignOutAlt,
     faPencilAlt,
     faUserShield,
-    faSearch
+    faSearch,
+    faHome
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import {EnvironmentHelper} from "@/EnvironmentHelper";
@@ -65,7 +66,8 @@ library.add(
     faTimes,
     faSignOutAlt,
     faPencilAlt,
-    faSearch
+    faSearch,
+    faHome
 );
 
 Vue.use(BootstrapVue);

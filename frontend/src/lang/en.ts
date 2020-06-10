@@ -24,7 +24,7 @@ export const en: any = {
         //     sottotitolo: 'Sed do eiusmod tempor incididunt',
         // },
         tab: {
-            firstTab: 'Gruppi',
+            firstTab: 'Home',
             // titolo: 'Lorem ipsum dolor sit amet.',
             // sottotitolo: 'Sottotitolo',
             // descrizione: 'In questa sezione puoi trovare una serie di mappe tematiche che riguardano la\n' +

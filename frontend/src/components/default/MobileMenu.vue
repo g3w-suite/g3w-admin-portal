@@ -12,7 +12,7 @@
                     <g3w-button
                             :alwaysExpanded="true"
                             @click="switchLang"
-                            class="left_rounded button pointer"
+                            class="left_rounded mobile_button pointer"
                             icon="language"
                             :class="width"
                             size="lg"
@@ -23,9 +23,20 @@
                     </g3w-button>
                     <g3w-button
                             :alwaysExpanded="true"
+                            class="mobile_button pointer"
+                            icon="home"
+                            :class="width"
+                            size="lg"
+                    >
+                        <div class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative">
+                            <font-awesome-icon icon="home" class="position-absolute" size="lg"></font-awesome-icon>
+                        </div>
+                    </g3w-button>
+                    <g3w-button
+                            :alwaysExpanded="true"
                             :icon="Icon"
                             :class="width"
-                            class="button pointer"
+                            class="mobile_button pointer"
                     >
                         <div
                                 @click="logout"
@@ -45,7 +56,7 @@
                     <g3w-button
                             :alwaysExpanded="true"
                             v-if="showAdmin && someoneIsLogged"
-                            class="button d-flex align-items-center justify-content-center"
+                            class="mobile_button d-flex align-items-center justify-content-center"
                             :class="width"
                             :icon="Icon"
                     >
@@ -90,9 +101,9 @@
 
         get width() {
             if (this.showAdmin && this.someoneIsLogged) {
-                return 'w-33'
+                return 'w-25'
             }
-            return 'w-50'
+            return 'w-33'
         }
 
         private toggleMenu() {
@@ -200,12 +211,6 @@
     .img_container {
         height: $header_height;
 
-    }
-
-    .button {
-        &:hover {
-            @include gis_gradient(30, rgba(242, 19, 123, 0.8), 0%, rgba(22, 10, 64, 0.8), 50%);
-        }
     }
 
 </style>

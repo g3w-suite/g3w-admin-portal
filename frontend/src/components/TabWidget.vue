@@ -3,7 +3,9 @@
         <Search v-if="($route.name === 'mappe' || is_pa )" class="w-100 d-flex search_box mb-4"
                 :class="[is_pa? '' : 'd-flex d-md-none']"
                 v-model="search"></Search>
+
         <TabNav
+                v-if="!search.length"
                 :activeClass="activeClass"
                 :tabs="tabs"
                 @click="handleTabClick"
@@ -13,9 +15,9 @@
             <div aria-labelledby="nav-tab1-tab" class="tab-pane p-4 fade show active" id="nav-tab1" role="tabpanel">
                 <div class="w-100">
                     <div class="p-2 h-100 bg-transparent">
-                        <h2 class="sottotitolo font-abril">{{title}}</h2>
+                        <h2 v-if="!search.length" class="sottotitolo font-abril">{{title}}</h2>
                         <!--                        <h6 class="titolo font-lato">{{$tc("messages.tab.sottotitolo")}}</h6>-->
-                        <p class="descrizione" v-html="description"></p>
+                        <p v-if="!search.length" class="descrizione" v-html="description"></p>
                         <div class="row">
                             <tab-box
                                     :href="mc.LogoLink"
@@ -100,6 +102,9 @@
         }
 
         get boxes() {
+            if(this.search){
+                return this.$store.getters['group/fitleredProjects']
+            }
             // se sono nel primo tab
             const els: Array<MacroGroup | Group> = [];
             if (this.tabs.length == 1) {
@@ -134,6 +139,7 @@
         public mounted() {
             this.$store.dispatch('group/fetchMacroGroups', {locale: this.$i18n.locale});
             this.$store.dispatch('group/fetchGroupsWithNoMacroGroup', {locale: this.$i18n.locale});
+            this.$store.dispatch('group/fetchProjects', {locale: this.$i18n.locale});
         }
 
         get title() {

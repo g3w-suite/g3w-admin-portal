@@ -18,6 +18,7 @@ interface IGroupState {
     Groups: IGroupDict;
     GroupsInMacroGroups: IGroupInMacrogroupDict;
     ProjectsInGroups: IProgectInGroupDict;
+    Projects: Project[];
     ActiveGroup: SuperGroup | null;
     Search: string
 }
@@ -28,6 +29,7 @@ const infoState: IGroupState = {
     Groups: {},
     GroupsInMacroGroups: {},
     ProjectsInGroups: {},
+    Projects: [],
     ActiveGroup: null,
     Search: ''
 };
@@ -39,6 +41,13 @@ const getters: GetterTree<IGroupState, RootState> = {
 
     search(state): string{
         return state.Search
+    },
+
+    fitleredProjects(state): Project[]{
+        const s = state.Search.toLowerCase()
+        return state.Projects.filter((p)=>{
+            return p.title.toLowerCase().includes(s) || p.description.toLowerCase().includes(s)
+        })
     },
 
     activeGroup(state):SuperGroup|null{
@@ -67,6 +76,15 @@ const actions: ActionTree<IGroupState, RootState> = {
 
     search({commit},{s}) {
         commit('search',s);
+    },
+
+    fetchProjects({commit},{locale}){
+        return groupManager.projects(locale).then((i) => {
+            const ps = i.map((p) => {
+                return new Project(p);
+            });
+            commit('setProjects',ps)
+        }).catch();
     },
 
     fetchMacroGroups({commit}, {locale}) {
@@ -147,6 +165,9 @@ const mutations: MutationTree<IGroupState> = {
     },
     setProjectsOfGroup(state, g) {
         Vue.set(state.ProjectsInGroups, g.id, g.prj);
+    },
+    setProjects(state,ps){
+        state.Projects = ps
     },
     search(state, s) {
         state.Search = s

@@ -10,6 +10,7 @@ export interface IGroupManager {
     macrogroups: (locale: string) => Promise<IMacroGroup[]>;
     groupsNoMacrogroups: (locale: string) => Promise<IGroup[]>;
     projectsInGroup: (locale: string, id: number) => Promise<IProject[]>;
+    projects:(locale: string)=> Promise<IProject[]>;
 }
 
 export class GroupManager implements IGroupManager {
@@ -50,6 +51,13 @@ export class GroupManager implements IGroupManager {
      */
     public projectsInGroup(locale: string = 'en', id: number): Promise<IProject[]> {
         return this.httpClient.get<IProject[]>(locale + '/portal/api/group/' + id + '/projects/');
+    }
+
+    /**
+     * ritorna tutti i progetti
+     */
+    public projects(locale: string = 'en'): Promise<IProject[]> {
+        return this.httpClient.get<IProject[]>(locale + '/portal/api/project/');
     }
 }
 

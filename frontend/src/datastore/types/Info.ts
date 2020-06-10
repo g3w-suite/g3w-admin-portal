@@ -43,7 +43,7 @@ export class Info {
         this.groups_map_description = data && data.groups_map_description || '';
         this.login_description = data && data.login_description || '';
         this.suite_logo = data && data.suite_logo || '';
-        this.url_suite_logo = data && data.url_suite_logo || '';
+        this.url_suite_logo = data && data.url_suite_logo || '#';
         this.credits = data && data.credits || '';
         this.main_map_title = data && data.main_map_title || '';
         this.facebook_url = data && data.facebook_url || '';
