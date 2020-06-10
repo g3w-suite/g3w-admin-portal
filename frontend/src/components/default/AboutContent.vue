@@ -6,9 +6,9 @@
                 <div class="scroll h-100 w-100 pl-3 pr-2 pl-md-5">
 
 
-<!--                    <div class="pb-2 pt-5">-->
-<!--                        <h6 class="font-lato">Testo piccolo che non so cosa sia</h6>-->
-<!--                    </div>-->
+                    <!--                    <div class="pb-2 pt-5">-->
+                    <!--                        <h6 class="font-lato">Testo piccolo che non so cosa sia</h6>-->
+                    <!--                    </div>-->
                     <div class="py-2">
                         <h2 class="font-abril">{{settings.about_title}}</h2>
                     </div>
@@ -47,29 +47,47 @@
                         <div class="ml-n3 ml-md-0 py-3">
                             <a
                                     :href="settings.facebook_url"
-                                    class="mr-3 text-white"
+                                    class="mr-3 mb-2 text-white"
                                     v-if="settings.facebook_url.length">
                                 <font-awesome-icon :icon="['fab', 'facebook-square']"
                                                    size="2x"></font-awesome-icon>
                             </a>
                             <a
+                                    :href="settings.twitter_url"
+                                    class="mr-3 mb-2 text-white"
+                                    v-if="settings.twitter_url && settings.twitter_url.length">
+                                <font-awesome-icon :icon="['fab', 'twitter-square']" size="2x"></font-awesome-icon>
+                            </a>
+                            <a
+                                    :href="settings.googleplus_url"
+                                    class="mr-3 mb-2 text-white"
+                                    v-if="settings.googleplus_url && settings.googleplus_url.length">
+                                <font-awesome-icon :icon="['fab', 'google-plus-square']" size="2x"></font-awesome-icon>
+                            </a>
+                            <a
+                                    :href="settings.youtube_url"
+                                    class="mr-3 mb-2 text-white"
+                                    v-if="settings.youtube_url && settings.youtube_url.length">
+                                <font-awesome-icon :icon="['fab', 'youtube']" size="2x"></font-awesome-icon>
+                            </a>
+                            <a
                                     :href="settings.instagram_url"
-                                    class="mr-3 text-white"
-                                    v-if="settings.instagram_url.length">
+                                    class="mr-3 mb-2 text-white"
+                                    v-if="settings.instagram_url && settings.instagram_url.length">
                                 <font-awesome-icon :icon="['fab', 'instagram']" size="2x"></font-awesome-icon>
                             </a>
                             <a
-                                    :href="settings.twitter_url"
-                                    class="mr-3 text-white"
-                                    v-if="settings.twitter_url.length">
-                                <font-awesome-icon :icon="['fab', 'twitter-square']" size="2x"></font-awesome-icon>
+                                    :href="settings.flickr_url"
+                                    class="mr-3 mb-2 text-white"
+                                    v-if="settings.flickr_url && settings.flickr_url.length">
+                                <font-awesome-icon :icon="['fab', 'flickr']" size="2x"></font-awesome-icon>
                             </a>
-                            <!--                    <a-->
-                            <!--                            :href="about.linkedin_url"-->
-                            <!--                            class="mr-3"-->
-                            <!--                            v-if="about.linkedin_url.length">-->
-                            <!--                        <font-awesome-icon :icon="['fab', 'linkedin']" size="xl"></font-awesome-icon>-->
-                            <!--                    </a>-->
+                            <a
+                                    :href="settings.tripadvisor_url"
+                                    class="mr-3 mb-2 text-white"
+                                    v-if="settings.tripadvisor_url && settings.tripadvisor_url.length">
+                                <font-awesome-icon :icon="['fab', 'tripadvisor']" size="2x"></font-awesome-icon>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -120,7 +138,7 @@
                         v-if="settings.twitter_url && settings.twitter_url.length">
                     <font-awesome-icon :icon="['fab', 'twitter-square']" size="lg"></font-awesome-icon>
                 </a>
-                 <a
+                <a
                         :href="settings.googleplus_url"
                         class="mr-3 mb-2 text-white"
                         v-if="settings.googleplus_url && settings.googleplus_url.length">
@@ -157,36 +175,36 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
-import InfoWidget from '@/components/InfoWidget.vue';
-import MainContent from '@/components/default/MainContent.vue';
-import {mapGetters} from "vuex";
+    import {Component, Vue} from 'vue-property-decorator';
+    import InfoWidget from '@/components/InfoWidget.vue';
+    import MainContent from '@/components/default/MainContent.vue';
+    import {mapGetters} from "vuex";
 
-@Component({
-    name:"AboutContent",
-    components: {MainContent, InfoWidget},
-    computed: {
-        ...mapGetters({
-            'settings': 'info/info'
-        })
-    }
-})
+    @Component({
+        name: "AboutContent",
+        components: {MainContent, InfoWidget},
+        computed: {
+            ...mapGetters({
+                'settings': 'info/info'
+            })
+        }
+    })
 
-export default class AboutContent extends Vue {
-    private settings:any;
-    // public created() {
+    export default class AboutContent extends Vue {
+        private settings: any;
+        // public created() {
         // this.$store.dispatch('info/fetchInfo');
-    // }
+        // }
 
-    get telHref() {
-        return 'tel:' + this.settings.about_tel;
+        get telHref() {
+            return 'tel:' + this.settings.about_tel;
+        }
+
+        get emailHref() {
+            return 'to:' + this.settings.about_email;
+        }
+
     }
-
-    get emailHref() {
-        return 'to:' + this.settings.about_email;
-    }
-
-}
 </script>
 
 <style lang="scss" scoped>
@@ -205,7 +223,7 @@ export default class AboutContent extends Vue {
         }
     }
 
-    .tr_content,.br_content{
+    .tr_content, .br_content {
         border-top-left-radius: $gis_rounded_radius;
     }
 
