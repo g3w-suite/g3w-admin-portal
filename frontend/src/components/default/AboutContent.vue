@@ -109,29 +109,47 @@
             <div class="br_content h-100 w-100 gradient text-white qb px-5 py-3">
                 <a
                         :href="settings.facebook_url"
-                        class="mr-3 text-white"
+                        class="mr-3 mb-2 text-white"
                         v-if="settings.facebook_url.length">
                     <font-awesome-icon :icon="['fab', 'facebook-square']"
                                        size="lg"></font-awesome-icon>
                 </a>
                 <a
+                        :href="settings.twitter_url"
+                        class="mr-3 mb-2 text-white"
+                        v-if="settings.twitter_url && settings.twitter_url.length">
+                    <font-awesome-icon :icon="['fab', 'twitter-square']" size="lg"></font-awesome-icon>
+                </a>
+                 <a
+                        :href="settings.googleplus_url"
+                        class="mr-3 mb-2 text-white"
+                        v-if="settings.googleplus_url && settings.googleplus_url.length">
+                    <font-awesome-icon :icon="['fab', 'google-plus-square']" size="lg"></font-awesome-icon>
+                </a>
+                <a
+                        :href="settings.youtube_url"
+                        class="mr-3 mb-2 text-white"
+                        v-if="settings.youtube_url && settings.youtube_url.length">
+                    <font-awesome-icon :icon="['fab', 'youtube']" size="lg"></font-awesome-icon>
+                </a>
+                <a
                         :href="settings.instagram_url"
-                        class="mr-3 text-white"
-                        v-if="settings.instagram_url.length">
+                        class="mr-3 mb-2 text-white"
+                        v-if="settings.instagram_url && settings.instagram_url.length">
                     <font-awesome-icon :icon="['fab', 'instagram']" size="lg"></font-awesome-icon>
                 </a>
                 <a
-                        :href="settings.twitter_url"
-                        class="mr-3 text-white"
-                        v-if="settings.twitter_url.length">
-                    <font-awesome-icon :icon="['fab', 'twitter-square']" size="lg"></font-awesome-icon>
+                        :href="settings.flickr_url"
+                        class="mr-3 mb-2 text-white"
+                        v-if="settings.flickr_url && settings.flickr_url.length">
+                    <font-awesome-icon :icon="['fab', 'flickr']" size="lg"></font-awesome-icon>
                 </a>
-                <!--                    <a-->
-                <!--                            :href="about.linkedin_url"-->
-                <!--                            class="mr-3"-->
-                <!--                            v-if="about.linkedin_url.length">-->
-                <!--                        <font-awesome-icon :icon="['fab', 'linkedin']" size="lg"></font-awesome-icon>-->
-                <!--                    </a>-->
+                <a
+                        :href="settings.tripadvisor_url"
+                        class="mr-3 mb-2 text-white"
+                        v-if="settings.tripadvisor_url && settings.tripadvisor_url.length">
+                    <font-awesome-icon :icon="['fab', 'tripadvisor']" size="lg"></font-awesome-icon>
+                </a>
             </div>
         </template>
 

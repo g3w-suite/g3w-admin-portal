@@ -17,10 +17,14 @@ import {en} from "@/lang/en";
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
+    faGooglePlusSquare,
     faFacebookSquare,
     faTwitterSquare,
     faInstagram,
     faLinkedin,
+    faYoutube,
+    faFlickr,
+    faTripadvisor
 } from '@fortawesome/free-brands-svg-icons';
 
 import {
@@ -60,6 +64,10 @@ library.add(
     faEnvelope,
     faUser,
     faFacebookSquare,
+    faGooglePlusSquare,
+    faYoutube,
+    faFlickr,
+    faTripadvisor,
     faTwitterSquare,
     faInstagram,
     faLinkedin,
