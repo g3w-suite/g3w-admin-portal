@@ -15,7 +15,13 @@ from .serializers import *
 from .filters import *
 
 
-class ProjectsApiView(generics.ListAPIView):
+class PortalApiViewMixin(object):
+
+    # to remove pagination for portal api
+    pagination_class = None
+
+
+class ProjectsApiView(PortalApiViewMixin, generics.ListAPIView):
     """
     API list view for map projects
     """
@@ -23,13 +29,15 @@ class ProjectsApiView(generics.ListAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
+
+
     filter_backends = (
         UserProjectFilter,
         GroupProjectFilter
     )
 
 
-class GroupsApiView(generics.ListAPIView):
+class GroupsApiView(PortalApiViewMixin, generics.ListAPIView):
     """
     API list view for map groups
     """
@@ -43,7 +51,7 @@ class GroupsApiView(generics.ListAPIView):
     )
 
 
-class MacroGroupsApiView(generics.ListAPIView):
+class MacroGroupsApiView(PortalApiViewMixin, generics.ListAPIView):
     """
     API list view for map macrogroups
     """
@@ -90,7 +98,7 @@ class WhoamiApiView(APIView):
         return Response(ret)
 
 
-class PicuresApiView(generics.ListAPIView):
+class PicuresApiView(PortalApiViewMixin, generics.ListAPIView):
     """
     API list view for portal pictures
     """

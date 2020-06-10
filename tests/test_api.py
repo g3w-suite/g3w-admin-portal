@@ -165,15 +165,15 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 1)
-        self.assertNotIn('edit_url', jcontent['results'][0])
+        self.assertEqual(len(jcontent), 1)
+        self.assertNotIn('edit_url', jcontent[0])
 
         # user logged as viewer
         self.assertTrue(client.login(username=self.test_user3, password=self.test_user3))
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 1)
+        self.assertEqual(len(jcontent), 1)
 
         client.logout()
 
@@ -182,8 +182,8 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 2)
-        feature = jcontent['results'][0]
+        self.assertEqual(len(jcontent), 2)
+        feature = jcontent[0]
         self.assertNotIn('edit_url', feature)
 
         client.logout()
@@ -193,8 +193,8 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 2)
-        feature = jcontent['results'][0]
+        self.assertEqual(len(jcontent), 2)
+        feature = jcontent[0]
         self.assertIn('edit_url', feature)
         group = CoreGroup.objects.filter(pk=feature['id'])[0]
         self.assertEqual(feature['edit_url'], reverse('group-update', kwargs={'slug': group.slug}))
@@ -212,17 +212,17 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 0)
+        self.assertEqual(len(jcontent), 0)
 
         # user logged as admin
         self.assertTrue(client.login(username=self.test_user_admin1.username, password=self.test_user_admin1.username))
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 1)
+        self.assertEqual(len(jcontent), 1)
 
         # check for project data
-        result = jcontent['results'][0]
+        result = jcontent[0]
         self.assertEqual(self.project.instance.pk, result['id'])
         self.assertEqual(self.project.instance.title, result['title'])
         map_url = reverse('group-project-map', kwargs={
@@ -241,13 +241,13 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url_by_group)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 1)
+        self.assertEqual(len(jcontent), 1)
 
         url_by_group = reverse('portal-project-by-group-api-list', kwargs={'group_id': self.project_group2.pk})
         response = client.get(url_by_group)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 0)
+        self.assertEqual(len(jcontent), 0)
 
         client.logout()
 
@@ -256,7 +256,7 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 0)
+        self.assertEqual(len(jcontent), 0)
         client.logout()
 
         # ser logged as user3
@@ -264,8 +264,8 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 1)
-        self.assertNotIn('edit_url', jcontent['results'][0])
+        self.assertEqual(len(jcontent), 1)
+        self.assertNotIn('edit_url', jcontent[0])
 
     def test_macrogroup(self):
         """ Test for macrogroup """
@@ -278,16 +278,16 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 2)
-        self.assertNotIn('edit_url', jcontent['results'][0])
+        self.assertEqual(len(jcontent), 2)
+        self.assertNotIn('edit_url', jcontent[0])
 
         # user logged as admin
         self.assertTrue(client.login(username=self.test_user_admin1.username, password=self.test_user_admin1.username))
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 2)
-        feature = jcontent['results'][0]
+        self.assertEqual(len(jcontent), 2)
+        feature = jcontent[0]
         macrogroup = MacroGroup.objects.filter(pk=feature['id'])[0]
         self.assertIn('edit_url', feature)
         edit_url = reverse('macrogroup-update', kwargs={
@@ -303,15 +303,15 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 1)
-        self.assertEqual(jcontent['results'][0]['id'], self.project_group2.pk)
-        self.assertNotIn('edit_url', jcontent['results'][0])
+        self.assertEqual(len(jcontent), 1)
+        self.assertEqual(jcontent[0]['id'], self.project_group2.pk)
+        self.assertNotIn('edit_url', jcontent[0])
 
         url = reverse('portal-group-by-macrogroup-api-list', kwargs={'macrogroup_id': self.macrogroup2.pk})
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 0)
+        self.assertEqual(len(jcontent), 0)
 
         # user logged as admin: Macrogroup1 2 group, Macrogroup2 1 group
         self.assertTrue(client.login(username=self.test_user_admin1.username, password=self.test_user_admin1.username))
@@ -319,8 +319,8 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 2)
-        feature = jcontent['results'][0]
+        self.assertEqual(len(jcontent), 2)
+        feature = jcontent[0]
         group = CoreGroup.objects.filter(pk=feature['id'])[0]
         edit_url = reverse('group-update', kwargs={
             'slug': group.slug
@@ -331,14 +331,14 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 1)
+        self.assertEqual(len(jcontent), 1)
 
         # check Group without MacroGroup
         url = reverse('portal-group-without-macrogroup-api-list')
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 0)
+        self.assertEqual(len(jcontent), 0)
 
         # ad new group without macrogroup
         new_group = CoreGroup(name='Group33', title='Group33', header_logo_img='',
@@ -348,8 +348,8 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(jcontent['count'], 1)
-        self.assertEqual(jcontent['results'][0]['name'], 'Group33')
+        self.assertEqual(len(jcontent), 1)
+        self.assertEqual(jcontent[0]['name'], 'Group33')
 
         client.logout()
 
@@ -381,10 +381,10 @@ class PortalTestAPI(PortalTestsBase):
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
 
-        self.assertEqual(len(jcontent['results']), len(pics))
+        self.assertEqual(len(jcontent), len(pics))
 
         p = pics[0]
-        jp = jcontent['results'][0]
+        jp = jcontent[0]
 
         self.assertEqual(p.author, jp['author'])
         self.assertEqual(p.author_url, jp['author_url'])
