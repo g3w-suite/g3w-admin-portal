@@ -27,7 +27,7 @@
             <b-row no-gutters>
                 <b-col md="5">
                     <a :href="map_url" class="d-block aspect_16_9 map-img" rel="noopener noreferrer" target="_blank">
-                        <div :style="bg_img"
+                        <div
                              class="img_container d-flex text-white square_inner bg-white overflow-hidden">
                             <font-awesome-icon @click="expand" class="expand-arrow m-3 position-absolute"
                                                icon="expand-arrows-alt"
@@ -41,7 +41,7 @@
                                 <font-awesome-icon class="   pencil m-3 position-absolute" icon="pencil-alt"
                                                    size="lg"></font-awesome-icon>
                             </a>
-                            <!--                            <img :src="img_url" class="thumbnail align-self-center w-100"/>-->
+                            <img :src="img_url" class="thumbnail align-self-center w-100"/>
                         </div>
                     </a>
                 </b-col>
@@ -53,7 +53,7 @@
 
                 </b-col>
                 <b-col cols="12" class="d-md-none position-relative">
-                    <b-card-body :title="title" >
+                    <b-card-body :title="title">
                         <b-card-text v-html="description">
                         </b-card-text>
                     </b-card-body>
@@ -90,12 +90,11 @@
             this.$bvModal.show('thumbnailModal');
         }
 
-        get bg_img() {
-            return {
-                backgroundImage: "url('" + this.img_url + "')",
-                backgroundSize: 'cover',
-            }
-        }
+        // get bg_img() {
+        //     return {
+        //         backgroundImage: "url('" + this.img_url + "')",
+        //     }
+        // }
     }
 </script>
 
@@ -160,6 +159,9 @@
     .img_container {
         cursor: pointer;
         position: relative;
+        /*background-size: contain;*/
+        /*background-repeat: no-repeat;*/
+        /*background-position: center;*/
 
         &:hover::before {
             @include trbl(0, 0, 0, 0);

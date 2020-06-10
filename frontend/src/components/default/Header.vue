@@ -40,10 +40,11 @@
                     :icon="Icon"
             >
                 <div
+                        @click="logout"
                         v-if="someoneIsLogged"
                         class="h-100 w-100 text-white d-flex flex-column justify-content-center align-items-center position-relative"
                 >
-                    <font-awesome-icon @click="logout" :icon="Icon" size="lg"></font-awesome-icon>
+                    <font-awesome-icon :icon="Icon" size="lg"></font-awesome-icon>
                 </div>
                 <router-link
                         v-else
