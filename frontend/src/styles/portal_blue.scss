@@ -12,6 +12,20 @@ body.blue {
     border: 1px solid $palette_2_rgb_second !important;
   }
 
+  .search_box {
+    .input-group-text {
+      color: white;
+      border: 1px solid $palette_2_rgb_second !important;
+      background-color: $palette_2_rgb_fourth;
+    }
+
+    input {
+      color: white;
+      border: 1px solid $palette_2_rgb_second !important;
+      background-color: $palette_2_rgb_fourth;
+    }
+  }
+
   .tab-button{
     border-color: $palette_2_rgb_fourth;
   }

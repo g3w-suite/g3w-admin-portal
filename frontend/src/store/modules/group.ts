@@ -19,6 +19,7 @@ interface IGroupState {
     GroupsInMacroGroups: IGroupInMacrogroupDict;
     ProjectsInGroups: IProgectInGroupDict;
     ActiveGroup: SuperGroup | null;
+    Search: string
 }
 
 const infoState: IGroupState = {
@@ -27,12 +28,17 @@ const infoState: IGroupState = {
     Groups: {},
     GroupsInMacroGroups: {},
     ProjectsInGroups: {},
-    ActiveGroup: null
+    ActiveGroup: null,
+    Search: ''
 };
 
 const getters: GetterTree<IGroupState, RootState> = {
     macroGroups(state): IMacroGroupDict {
         return state.MacroGroups;
+    },
+
+    search(state): string{
+        return state.Search
     },
 
     activeGroup(state):SuperGroup|null{
@@ -58,6 +64,11 @@ const actions: ActionTree<IGroupState, RootState> = {
     reset({commit}) {
         commit('reset');
     },
+
+    search({commit},{s}) {
+        commit('search',s);
+    },
+
     fetchMacroGroups({commit}, {locale}) {
         return groupManager.macrogroups(locale).then((i) => {
             i.results.forEach((m: IMacroGroup) => {
@@ -136,6 +147,9 @@ const mutations: MutationTree<IGroupState> = {
     },
     setProjectsOfGroup(state, g) {
         Vue.set(state.ProjectsInGroups, g.id, g.prj);
+    },
+    search(state, s) {
+        state.Search = s
     },
 };
 

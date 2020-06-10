@@ -1,12 +1,15 @@
 <template>
     <div class="header w-100 d-flex">
-        <div class="header_left d-flex align-items-center">
+        <div class="header_left d-flex align-items-center justify-content-between">
             <router-link :to="{name:'home'}" class="img_container d-flex align-items-center h-100 pl-md-3">
                 <!--                <img class="d-none d-md-block logo_apte" src="@/assets/img/pateb.png">-->
                 <!--                <img class="d-block d-md-none logo_apte" src="@/assets/img/patew.png">-->
                 <img alt="logo" class="logo" :src="info.suite_logo">
             </router-link>
+            <Search v-if="$route.name === 'mappe'" class="h-100 search_box d-none d-md-flex pr-md-5"
+                    v-model="search"></Search>
         </div>
+
         <MobileMenu class="d-block pr-3 d-md-none align-self-center"></MobileMenu>
         <div class="header_right d-none d-md-flex">
             <g3w-button
@@ -16,7 +19,7 @@
                     icon="language"
                     size="lg"
             >
-                <div class="flag m-auto d-flex justify-content-center align-items-center">
+                <div class="flag m-auto d-flex justify-content-center h-100 align-items-center">
                     <country-flag :country='flag' size='normal'/>
                 </div>
             </g3w-button>
@@ -45,9 +48,9 @@
                     :class="width"
                     :icon="Icon"
             >
-               <a href="/admin" rel="noopener noreferrer nofollow" class="position-absolute text-white">
-                   <font-awesome-icon  icon="user-shield" size="lg"></font-awesome-icon>
-               </a>
+                <a href="/admin" rel="noopener noreferrer nofollow" class="position-absolute text-white">
+                    <font-awesome-icon icon="user-shield" size="lg"></font-awesome-icon>
+                </a>
             </g3w-button>
         </div>
     </div>
@@ -60,9 +63,10 @@
     import MobileMenu from '@/components/default/MobileMenu.vue';
     import HeaderPA from '@/components/italia/HeaderPA.vue';
     import {mapGetters} from "vuex";
+    import Search from "@/components/Search.vue";
 
     @Component({
-        components: {G3wButton, MobileMenu, CountryFlag},
+        components: {G3wButton, MobileMenu, CountryFlag, Search},
         computed: {
             ...mapGetters({
                 'info': 'info/info',
@@ -73,8 +77,17 @@
 
     export default class Header extends HeaderPA {
         private showAdmin!: any
-        get width(){
-            if(this.showAdmin && this.someoneIsLogged){
+
+        get search() {
+            return this.$store.getters['group/search']
+        }
+
+        set search(val: string) {
+            this.$store.dispatch('group/search', {s: val})
+        }
+
+        get width() {
+            if (this.showAdmin && this.someoneIsLogged) {
                 return 'w-33'
             }
             return 'w-50'
@@ -118,6 +131,23 @@
 
         .header_left {
             flex-grow: 1;
+
+            .search_box {
+                flex: 0 0 300px;
+                max-width: 300px;
+
+                .input-group-text {
+                    /*border-width: 0 !important;*/
+                    //color: white;
+                    //background-color: $palette_1_rgb_fourth;
+                }
+
+                input {
+                    /*border-width: 0 !important;*/
+                    //color: white;
+                    //background-color: $palette_1_rgb_fourth;
+                }
+            }
 
             .img_container {
 

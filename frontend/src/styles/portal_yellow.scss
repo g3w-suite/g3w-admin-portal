@@ -12,6 +12,19 @@ body.yellow {
     border: 1px solid $palette_3_rgb_first !important;
   }
 
+  .search_box{
+    .input-group-text {
+        color: white;
+        border: 1px solid $palette_3_rgb_first !important;
+        background-color: $palette_3_rgb_fourth;
+    }
+    input{
+        color: white;
+        border: 1px solid $palette_3_rgb_first !important;
+        background-color: $palette_3_rgb_fourth;
+    }
+  }
+
   .gis_active {
     background-color: $palette_3_rgb_fourth !important;
   }

@@ -6,6 +6,7 @@ import store from '@/store';
 export class Group extends SuperGroup {
     public id: number;
     public name: string;
+    public description: string;
     public title: string;
     public srid: number;
     public header_logo_link: string | null;
@@ -17,6 +18,7 @@ export class Group extends SuperGroup {
         super();
         this.id = data && data.id || -1;
         this.name = data && data.name || '';
+        this.description = data && data.description || '';
         this.title = data && data.title || '';
         this.srid = data && data.srid || -1;
         this.header_logo_link = data && data.header_logo_link || '';
@@ -36,7 +38,7 @@ export class Group extends SuperGroup {
     }
 
     get Description() {
-        return '';
+        return this.description;
     }
 
     get Logo() {

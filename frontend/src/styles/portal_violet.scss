@@ -12,7 +12,21 @@ body.violet {
     border: 1px solid $palette_1_third !important;
   }
 
-  .tab-button{
+  .search_box {
+    .input-group-text {
+      color: white;
+      border: 1px solid $palette_1_third !important;
+      background-color: $palette_1_fourth;
+    }
+
+    input {
+      color: white;
+      border: 1px solid $palette_1_third !important;
+      background-color: $palette_1_fourth;
+    }
+  }
+
+  .tab-button {
     border-color: $palette_1_rgb_fourth;
   }
 
