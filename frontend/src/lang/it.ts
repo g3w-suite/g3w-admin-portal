@@ -2,6 +2,7 @@ export const it: any = {
     messages: {
         hello: 'ciao',
         menu: {
+            cerca:'CERCA',
             home: 'home',
             mappe: 'mappe',
             info: 'info',

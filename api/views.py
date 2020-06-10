@@ -22,6 +22,7 @@ class ProjectsApiView(generics.ListAPIView):
 
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    pagination_class = None
 
     filter_backends = (
         UserProjectFilter,
