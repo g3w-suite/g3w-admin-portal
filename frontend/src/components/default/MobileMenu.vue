@@ -8,20 +8,21 @@
         </div>
         <transition name="slide-fade">
             <div class="text-white mobileMenu d-flex flex-column" v-if="$store.getters['menu/isVisible']">
-                <div class="d-flex">
+                <div class="d-flex mobile_menu_sub">
                     <g3w-button
                             :alwaysExpanded="true"
                             @click="switchLang"
-                            class="left_rounded mobile_button pointer"
+                            class="left_rounded mobile_button pointer d-flex"
                             icon="language"
                             :class="width"
                             size="lg"
                     >
-                        <div class="flag m-auto d-flex justify-content-center align-items-center">
+                        <div class="align-item-center m-auto d-flex justify-content-center align-items-center">
                             <country-flag :country='flag' size='normal'/>
                         </div>
                     </g3w-button>
                     <g3w-button
+                            @click="goToHome"
                             :alwaysExpanded="true"
                             class="mobile_button pointer"
                             icon="home"
@@ -128,6 +129,13 @@
             this.$store.dispatch('menu/setVisibility', {v: false});
         }
 
+        private goToHome() {
+            if (this.$route.name !== 'home') {
+                this.$router.push({name: 'home'});
+            }
+            this.$store.dispatch('menu/setVisibility', {v: false});
+        }
+
         private goToLogin() {
             if (this.$route.name !== 'login') {
                 this.$router.push({name: 'login'});
@@ -201,6 +209,10 @@
         right: 0;
         bottom: 0;
         z-index: 99;
+
+        .mobile_menu_sub{
+            height: 64px;
+        }
 
         .left_rounded {
             border-top-left-radius: $gis_rounded_radius;
