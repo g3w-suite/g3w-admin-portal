@@ -12,8 +12,7 @@
                     <div class="py-2">
                         <h2 class="font-abril">{{settings.about_title}}</h2>
                     </div>
-                    <div class="py-5">
-                        {{settings.about_description}}
+                    <div class="py-5" v-html="settings.about_description">
                     </div>
 
                     <!--            mobile template-->
@@ -128,7 +127,7 @@
                 <a
                         :href="settings.facebook_url"
                         class="mr-3 mb-2 text-white"
-                        v-if="settings.facebook_url.length">
+                        v-if="settings.facebook_url && settings.facebook_url.length">
                     <font-awesome-icon :icon="['fab', 'facebook-square']"
                                        size="lg"></font-awesome-icon>
                 </a>
