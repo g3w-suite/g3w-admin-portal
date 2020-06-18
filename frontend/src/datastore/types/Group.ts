@@ -2,6 +2,7 @@ import {IGroup} from '@/datastore/interfaces/GroupInterface';
 import {EBoxType} from '@/datastore/interfaces/RequestsInterfaces';
 import {SuperGroup} from '@/datastore/types/SuperGroup';
 import store from '@/store';
+import {i18n} from "@/main";
 
 export class Group extends SuperGroup {
     public id: number;
@@ -59,7 +60,7 @@ export class Group extends SuperGroup {
     }
 
     public fetchProjects() {
-        store.dispatch('group/fetchProjectsByGroupId', {id: this.Id});
+        store.dispatch('group/fetchProjectsByGroupId', {locale: i18n.locale, id: this.Id});
     }
 
 }
