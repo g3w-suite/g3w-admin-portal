@@ -14,6 +14,7 @@ __copyright__ = 'Copyright 2019, Gis3w'
 
 from django.contrib.auth.models import AnonymousUser
 from django.urls import resolve
+from django.db.models import Q
 from rest_framework.filters import BaseFilterBackend
 from core.models import *
 from qdjango.models import Project
@@ -73,3 +74,12 @@ class MacroGroupGroupFilter(BaseFilterBackend):
             queryset = queryset.filter(macrogroups__pk=None)
 
         return queryset
+
+
+class PanoramicProjectFilter(BaseFilterBackend):
+    """A filter backend for portal module for qdjango project , filter by not panoramic"""
+
+    def filter_queryset(self, request, queryset, view):
+
+        # get every panoramic project id
+        return queryset.filter(~Q(pk__in=[g.project_id for g in GroupProjectPanoramic.objects.all()]))

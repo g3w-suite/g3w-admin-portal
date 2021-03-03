@@ -34,7 +34,8 @@ class ProjectsApiView(PortalApiViewMixin, generics.ListAPIView):
 
     filter_backends = (
         UserProjectFilter,
-        GroupProjectFilter
+        GroupProjectFilter,
+        PanoramicProjectFilter
     )
 
 

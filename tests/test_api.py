@@ -16,7 +16,7 @@ from django.utils import translation
 from guardian.compat import get_user_model
 from rest_framework.test import APIClient
 from usersmanage.models import User, Group as UserGroup
-from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup
+from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup, GroupProjectPanoramic
 from qdjango.utils.data import QgisProject
 from portal.models import Picture
 import os
@@ -392,6 +392,37 @@ class PortalTestAPI(PortalTestsBase):
         media_url = getattr(settings, 'MEDIA_URL', '/media/')
         self.assertEqual('%s%s' % (media_url, p.image), jp['image'])
 
+    def test_panorami_project_filter(self):
+        """Test filter remove panoramic project"""
 
+        # instance API client
+        client = APIClient()
 
+        url = reverse('portal-project-api-list')
+
+        self.assertTrue(client.login(username=self.test_user_admin1.username, password=self.test_user_admin1.username))
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(len(jcontent), 1)
+
+        # set project as panoramic
+        gpp = GroupProjectPanoramic.objects.create(group_id=self.group.pk, project_type='qdjango',
+                                             project_id=self.project.instance.pk)
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(len(jcontent), 0)
+
+        #remove project as panoramic
+        gpp.delete()
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(len(jcontent), 1)
+
+        client.logout()
 
