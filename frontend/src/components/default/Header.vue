@@ -170,8 +170,8 @@
             .img_container {
 
                 .logo {
-                    max-height: 70%;
-                    max-width: 70%;
+                    max-height: 100%;
+                    max-width: 100%;
                 }
             }
         }
