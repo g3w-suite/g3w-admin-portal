@@ -81,5 +81,8 @@ class PanoramicProjectFilter(BaseFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
 
-        # get every panoramic project id
-        return queryset.filter(~Q(pk__in=[g.project_id for g in GroupProjectPanoramic.objects.all()]))
+        # get number of project; if only one skip panoramic exclude query:
+        if len(queryset) > 1:
+            queryset = queryset.filter(~Q(pk__in=[g.project_id for g in GroupProjectPanoramic.objects.all()]))
+
+        return queryset

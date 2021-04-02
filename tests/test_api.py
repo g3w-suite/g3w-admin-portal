@@ -28,6 +28,7 @@ TEST_BASE_PATH = '/portal/tests/data/'
 DATASOURCE_PATH = '{}{}'.format(CURRENT_PATH, TEST_BASE_PATH)
 QGS_DB = 'portal_test_project.sqlite'
 QGS_FILE = 'portal_test_project.qgs'
+QGS_FILE_2 = 'portal_test_project2.qgs'
 
 
 @override_settings(
@@ -116,6 +117,12 @@ class PortalTestsBase(TestCase):
         cls.project.title = 'A project'
         cls.project.group = cls.project_group
         cls.project.save()
+
+        # projects
+        qgis_project_file = File(open('{}{}{}'.format(CURRENT_PATH, TEST_BASE_PATH, QGS_FILE_2), 'r'))
+        cls.project2 = QgisProject(qgis_project_file)
+        cls.project2.group = cls.project_group
+        cls.project2.save()
 
         # add permission to anonumous and viewer
         cls.project.instance.addPermissionsToViewers([cls.test_user3.pk])
@@ -219,7 +226,7 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 1)
+        self.assertEqual(len(jcontent), 2)
 
         # check for project data
         result = jcontent[0]
@@ -241,7 +248,7 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url_by_group)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 1)
+        self.assertEqual(len(jcontent), 2)
 
         url_by_group = reverse('portal-project-by-group-api-list', kwargs={'group_id': self.project_group2.pk})
         response = client.get(url_by_group)
@@ -405,7 +412,7 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 1)
+        self.assertEqual(len(jcontent), 2)
 
         # set project as panoramic
         gpp = GroupProjectPanoramic.objects.create(group_id=self.group.pk, project_type='qdjango',
@@ -414,7 +421,7 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 0)
+        self.assertEqual(len(jcontent), 1)
 
         #remove project as panoramic
         gpp.delete()
@@ -422,7 +429,7 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 1)
+        self.assertEqual(len(jcontent), 2)
 
         client.logout()
 
