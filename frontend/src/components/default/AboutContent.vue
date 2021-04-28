@@ -200,7 +200,7 @@
         }
 
         get emailHref() {
-            return 'to:' + this.settings.about_email;
+            return 'mailto:' + this.settings.about_email;
         }
 
     }
