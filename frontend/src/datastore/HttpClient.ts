@@ -12,7 +12,7 @@ class HttpClient implements IHttpClient {
 
     constructor() {
         this.http = axios.create({
-            baseURL: (window as any).API_BASE_URL || 'http://localhost:8000/',
+            baseURL: (window as any).API_BASE_URL || '/',
             withCredentials: false,
             headers: {
                 'Content-Type': 'application/json',
