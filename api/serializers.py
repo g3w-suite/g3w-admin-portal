@@ -43,6 +43,10 @@ class ProjectSerializer(serializers.ModelSerializer):
             'slug': instance.slug
         })
 
+        # try to send title_ur if is not None else get return title
+        feature['title'] = instance.title_ur if instance.title_ur else feature['title']
+
+
         # set picture to MEDIA_URL
         media_url = getattr(settings, 'MEDIA_URL', '/media/')
         feature['thumbnail'] = '%s%s' % (media_url, instance.thumbnail)
