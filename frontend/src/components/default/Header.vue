@@ -60,6 +60,7 @@
                 </router-link>
             </g3w-button>
             <g3w-button
+                    @click="goToAdmin"
                     v-b-tooltip.hover.bottom="$t('messages.tooltip.admin')"
                     v-if="showAdmin && someoneIsLogged"
                     class="button d-flex d-flex justify-content-center align-items-center position-relative"
@@ -128,6 +129,9 @@
             }
         }
 
+        private goToAdmin(){
+            window.location.href = '/admin';
+        }
         private switchLang() {
             if (this.$root.$i18n.locale == 'it') {
                 this.$root.$i18n.locale = 'en';
