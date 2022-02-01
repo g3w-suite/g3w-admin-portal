@@ -26,11 +26,16 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_map_url(self, instance):
         """ Return map url"""
-        return reverse('group-project-map', kwargs={
-            'group_slug': instance.group.slug,
-            'project_type': 'qdjango',
-            'project_id': instance.pk
-        })
+
+        # If url alias is set
+        if instance.url_alias:
+            return reverse('group-project-map-alias', args=[instance.url_alias])
+        else:
+            return reverse('group-project-map', kwargs={
+                'group_slug': instance.group.slug,
+                'project_type': 'qdjango',
+                'project_id': instance.pk
+            })
 
     def to_representation(self, instance):
 
