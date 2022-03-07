@@ -54,7 +54,7 @@ class GroupProjectFilter(BaseFilterBackend):
         Return a filtered queryset by group_id
         """
         if 'group_id' in view.kwargs:
-            queryset = queryset.filter(group_id=view.kwargs['group_id'])
+            queryset = queryset.filter(group_id=view.kwargs['group_id']).order_by('order')
 
         return queryset
 
