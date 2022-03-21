@@ -14,7 +14,7 @@
                        required
                        type="text"
                        v-model="username">
-                <div class="text-white" v-if="usernameError">
+                <div class="error_or_missing" v-if="usernameError">
                     {{$t('messages.validation.requiredField')}}
                 </div>
             </div>
@@ -27,7 +27,7 @@
                        required
                        type="password"
                        v-model="password">
-                <div class="text-white" v-if="passwordError">
+                <div class="error_or_missing" v-if="passwordError">
                     {{$t('messages.validation.requiredField')}}
                 </div>
             </div>
@@ -37,10 +37,10 @@
                         id="button"
                         type="button">{{$t('messages.login.accesso')}}
                 </button>
-                <div class="text-white mt-1" v-if="loginError">
+                <div class="error_or_missing mt-1" v-if="loginError">
                     {{$t('messages.validation.erroreLogin')}}
                     <p></p>
-                </div>
+                </divstyle>
             </div>
         </form>
     </div>
@@ -112,6 +112,10 @@
 </script>
 
 <style>
+    .error_or_missing {
+        font-weight: bold;
+        color: red;
+    }
 
 </style>
 
