@@ -168,6 +168,10 @@ class GenericSuiteDataSerializer(GetUnlanguageFieldsMixin, serializers.ModelSeri
         media_url = getattr(settings, 'MEDIA_URL', '/media/')
         ret['suite_logo'] = '%s%s' % (media_url, instance.suite_logo)
 
+        # Add reset password is settings.RESET_USER_PASSWORD
+        if settings.RESET_USER_PASSWORD:
+            ret['reset_password_url'] = reverse('password_reset')
+
         return ret
 
     class Meta:
