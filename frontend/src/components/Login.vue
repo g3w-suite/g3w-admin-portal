@@ -31,9 +31,6 @@
                     {{$t('messages.validation.requiredField')}}
                 </div>
             </div>
-            <div class="form-group" v-if="settings.reset_password_url">
-                <a :href="settings.reset_password_url">{{$t('messages.login.reset_password_url')}}</a>
-            </div>
             <div class="form-group">
                 <button @click="login"
                         class="col-12 btn btn-primary"
@@ -44,6 +41,9 @@
                     {{$t('messages.validation.erroreLogin')}}
                     <p></p>
                 </div>
+            </div>
+            <div class="form-group" v-if="settings.reset_password_url" >
+                <a style="color: #ffffff !important;" :href="settings.reset_password_url">{{$t('messages.login.reset_password_url')}}</a>
             </div>
         </form>
     </div>
