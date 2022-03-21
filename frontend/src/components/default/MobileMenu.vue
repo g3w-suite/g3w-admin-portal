@@ -81,80 +81,80 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from 'vue-property-decorator';
-    import G3wButton from '@/components/default/g3wButton.vue';
-    import CountryFlag from 'vue-country-flag';
-    import Menu from '@/components/default/Menu.vue';
-    import HeaderPA from '@/components/italia/HeaderPA.vue';
-    import {mapGetters} from "vuex";
+import {Component, Prop, Vue} from 'vue-property-decorator';
+import G3wButton from '@/components/default/g3wButton.vue';
+import CountryFlag from 'vue-country-flag';
+import Menu from '@/components/default/Menu.vue';
+import HeaderPA from '@/components/italia/HeaderPA.vue';
+import {mapGetters} from 'vuex';
 
-    @Component({
-        components: {Menu, G3wButton, CountryFlag},
-        computed: {
-            ...mapGetters({
-                'showAdmin': 'settings/showAdminButton'
-            })
-        }
-    })
-    export default class MobileMenu extends HeaderPA {
-        // private showMenu: boolean = false;
-        private showAdmin!: any
-
-        get width() {
-            if (this.showAdmin && this.someoneIsLogged) {
-                return 'w-25'
-            }
-            return 'w-33'
-        }
-
-        private toggleMenu() {
-            this.$store.dispatch('menu/toggleVisibility');
-        }
-
-        get Icon() {
-            if (this.someoneIsLogged) {
-                return 'sign-out-alt';
-            } else {
-                return 'user-lock';
-            }
-        }
-
-        get flag() {
-            switch (this.$i18n.locale) {
-                case 'en':
-                    return 'it';
-                case 'it':
-                    return 'gb';
-            }
-            this.$store.dispatch('menu/setVisibility', {v: false});
-        }
-
-        private goToHome() {
-            if (this.$route.name !== 'home') {
-                this.$router.push({name: 'home'});
-            }
-            this.$store.dispatch('menu/setVisibility', {v: false});
-        }
-
-        private goToLogin() {
-            if (this.$route.name !== 'login') {
-                this.$router.push({name: 'login'});
-            }
-            this.$store.dispatch('menu/setVisibility', {v: false});
-        }
-
-        private switchLang() {
-            if (this.$root.$i18n.locale === 'it') {
-                this.$root.$i18n.locale = 'en';
-            } else if (this.$root.$i18n.locale === 'en') {
-                this.$root.$i18n.locale = 'it';
-            }
-            this.$store.dispatch('menu/setVisibility', {v: false});
-            this.$router.replace({name: this.$route.name, params: {lang: this.$root.$i18n.locale}});
-            window.location.reload();
-        }
-
+@Component({
+    components: {Menu, G3wButton, CountryFlag},
+    computed: {
+        ...mapGetters({
+            showAdmin: 'settings/showAdminButton'
+        })
     }
+})
+export default class MobileMenu extends HeaderPA {
+    // private showMenu: boolean = false;
+    private showAdmin!: any;
+
+    get width() {
+        if (this.showAdmin && this.someoneIsLogged) {
+            return 'w-25';
+        }
+        return 'w-33';
+    }
+
+    private toggleMenu() {
+        this.$store.dispatch('menu/toggleVisibility');
+    }
+
+    get Icon() {
+        if (this.someoneIsLogged) {
+            return 'sign-out-alt';
+        } else {
+            return 'user-lock';
+        }
+    }
+
+    get flag() {
+        switch (this.$i18n.locale) {
+            case 'en':
+                return 'it';
+            case 'it':
+                return 'gb';
+        }
+        this.$store.dispatch('menu/setVisibility', {v: false});
+    }
+
+    private goToHome() {
+        if (this.$route.name !== 'home') {
+            this.$router.push({name: 'home'});
+        }
+        this.$store.dispatch('menu/setVisibility', {v: false});
+    }
+
+    private goToLogin() {
+        if (this.$route.name !== 'login') {
+            this.$router.push({name: 'login'});
+        }
+        this.$store.dispatch('menu/setVisibility', {v: false});
+    }
+
+    private switchLang() {
+        if (this.$root.$i18n.locale === 'it') {
+            this.$root.$i18n.locale = 'en';
+        } else if (this.$root.$i18n.locale === 'en') {
+            this.$root.$i18n.locale = 'it';
+        }
+        this.$store.dispatch('menu/setVisibility', {v: false});
+        this.$router.replace({name: this.$route.name, params: {lang: this.$root.$i18n.locale}});
+        window.location.reload();
+    }
+
+}
 </script>
 
 <style lang="scss" scoped>

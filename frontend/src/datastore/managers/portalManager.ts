@@ -1,5 +1,5 @@
 import {httpClient, IHttpClient} from '@/datastore/HttpClient';
-import {IPictures} from "@/datastore/interfaces/PortalInterface";
+import {IPictures} from '@/datastore/interfaces/PortalInterface';
 
 export interface IPortalManager {
     pictures: (locale: string) => Promise<IPictures[]>;

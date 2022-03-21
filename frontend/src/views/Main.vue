@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator';
-import MobileCarousel from "@/components/MobileCarousel.vue";
+import MobileCarousel from '@/components/MobileCarousel.vue';
 
 @Component({
     components: {MobileCarousel},

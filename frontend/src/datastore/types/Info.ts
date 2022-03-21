@@ -25,6 +25,7 @@ export class Info {
     public readonly instagram_url: string;
     public readonly flickr_url: string;
     public readonly tripadvisor_url: string;
+    public readonly reset_password_url: string;
 
     constructor();
     constructor(data: IInfo);
@@ -53,5 +54,6 @@ export class Info {
         this.instagram_url = data && data.instagram_url || '';
         this.flickr_url = data && data.flickr_url || '';
         this.tripadvisor_url = data && data.tripadvisor_url || '';
+        this.reset_password_url = data && data.reset_password_url || '';
     }
 }

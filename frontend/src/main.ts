@@ -5,8 +5,8 @@ import routerItalia from './routerItalia';
 import store from './store';
 import VueI18n from 'vue-i18n';
 import BootstrapVue from 'bootstrap-vue';
-import {it} from "@/lang/it";
-import {en} from "@/lang/en";
+import {it} from '@/lang/it';
+import {en} from '@/lang/en';
 
 // if (localStorage.getItem('isPA') === 'true') {
 //     require('@/styles/appPA.scss');
@@ -24,7 +24,7 @@ import {
     faLinkedin,
     faYoutube,
     faFlickr,
-    faTripadvisor
+    faTripadvisor,
 } from '@fortawesome/free-brands-svg-icons';
 
 import {
@@ -45,10 +45,10 @@ import {
     faPencilAlt,
     faUserShield,
     faSearch,
-    faHome
+    faHome,
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {EnvironmentHelper} from "@/EnvironmentHelper";
+import {EnvironmentHelper} from '@/EnvironmentHelper';
 
 library.add(
     faUserShield,
@@ -76,7 +76,7 @@ library.add(
     faSignOutAlt,
     faPencilAlt,
     faSearch,
-    faHome
+    faHome,
 );
 
 Vue.use(BootstrapVue);
@@ -105,8 +105,8 @@ if (EnvironmentHelper.isProduction) {
         'maps',
         'info',
         'news',
-        'archives'
-    ]
+        'archives',
+    ];
 }
 
 new Vue({
@@ -121,11 +121,11 @@ new Vue({
     i18n,
     render: (h) => h(App),
     created: () => {
-        store.dispatch('info/fetchInfo',{locale:i18n.locale});
+        store.dispatch('info/fetchInfo', {locale: i18n.locale});
         store.dispatch('settings/portalSections', {sections: (window as any).PORTAL_SECTIONS});
         store.dispatch('settings/showAdminButton', {show: (window as any).ADMIN_BTN});
-        store.dispatch('settings/fetchPictures',{locale:i18n.locale});
-    }
+        store.dispatch('settings/fetchPictures', {locale: i18n.locale});
+    },
 }).$mount('#app');
 
 if (IS_PA) {

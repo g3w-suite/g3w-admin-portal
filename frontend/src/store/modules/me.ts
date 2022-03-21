@@ -25,7 +25,7 @@ const getters: GetterTree<IUserState, RootState> = {
 
 const actions: ActionTree<IUserState, RootState> = {
 
-    fetchWhoAmI({commit},{locale}) {
+    fetchWhoAmI({commit}, {locale}) {
         return loginManager.who_am_i(locale).then((u) => {
             if (u.is_authenticated) {
                 commit('setUser', new User(u));
@@ -42,12 +42,12 @@ const actions: ActionTree<IUserState, RootState> = {
     login({commit, dispatch}, {locale, username, password}) {
         return loginManager.login(locale, username, password).then((data) => {
             if (data && data.status === ELoginStatus.OK) {
-                dispatch('fetchWhoAmI',{locale});
+                dispatch('fetchWhoAmI', {locale});
             } else {
                 commit('setUser', null);
-                throw data.error_form
+                throw data.error_form;
             }
-        })
+        });
     },
 };
 

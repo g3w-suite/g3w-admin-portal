@@ -1,15 +1,15 @@
 export const en: any = {
     messages: {
         hello: 'hello',
-        tooltip:{
+        tooltip: {
           cambia_lingua: 'Change language',
           home: 'Go to home',
           logout: 'Logout',
           login: 'Login',
-          admin: 'Admin section'
+          admin: 'Admin section',
         },
         menu: {
-            cerca:'SEARCH',
+            cerca: 'SEARCH',
             home: 'home',
             mappe: 'maps',
             info: 'info',
@@ -23,6 +23,7 @@ export const en: any = {
             password: 'Password',
             accesso: 'Login',
             titolo: 'Accesso al sistema di amministrazione',
+            reset_password_url: "Forgot your password?"
             // sottotitolo: 'Quest\'area è riservata agli amministratori e gestori del sistema.',
         },
         // home: {

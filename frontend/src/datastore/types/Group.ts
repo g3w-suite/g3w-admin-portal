@@ -2,7 +2,7 @@ import {IGroup} from '@/datastore/interfaces/GroupInterface';
 import {EBoxType} from '@/datastore/interfaces/RequestsInterfaces';
 import {SuperGroup} from '@/datastore/types/SuperGroup';
 import store from '@/store';
-import {i18n} from "@/main";
+import {i18n} from '@/main';
 
 export class Group extends SuperGroup {
     public id: number;

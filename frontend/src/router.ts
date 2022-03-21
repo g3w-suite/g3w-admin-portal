@@ -7,7 +7,7 @@ import Header from '@/components/default/Header.vue';
 import LoginContent from '@/components/default/LoginContent.vue';
 import MapsContent from '@/components/default/MapsContent.vue';
 import HomeContent from '@/components/default/HomeContent.vue';
-import {i18n} from "@/main";
+import {i18n} from '@/main';
 
 Vue.use(Router);
 

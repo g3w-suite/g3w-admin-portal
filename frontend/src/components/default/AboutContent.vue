@@ -174,36 +174,36 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
-    import InfoWidget from '@/components/InfoWidget.vue';
-    import MainContent from '@/components/default/MainContent.vue';
-    import {mapGetters} from "vuex";
+import {Component, Vue} from 'vue-property-decorator';
+import InfoWidget from '@/components/InfoWidget.vue';
+import MainContent from '@/components/default/MainContent.vue';
+import {mapGetters} from 'vuex';
 
-    @Component({
-        name: "AboutContent",
-        components: {MainContent, InfoWidget},
-        computed: {
-            ...mapGetters({
-                'settings': 'info/info'
-            })
-        }
-    })
+@Component({
+    name: 'AboutContent',
+    components: {MainContent, InfoWidget},
+    computed: {
+        ...mapGetters({
+            settings: 'info/info',
+        }),
+    },
+})
 
-    export default class AboutContent extends Vue {
-        private settings: any;
-        // public created() {
-        // this.$store.dispatch('info/fetchInfo');
-        // }
+export default class AboutContent extends Vue {
+    private settings: any;
+    // public created() {
+    // this.$store.dispatch('info/fetchInfo');
+    // }
 
-        get telHref() {
-            return 'tel:' + this.settings.about_tel;
-        }
-
-        get emailHref() {
-            return 'mailto:' + this.settings.about_email;
-        }
-
+    get telHref() {
+        return 'tel:' + this.settings.about_tel;
     }
+
+    get emailHref() {
+        return 'mailto:' + this.settings.about_email;
+    }
+
+}
 </script>
 
 <style lang="scss" scoped>

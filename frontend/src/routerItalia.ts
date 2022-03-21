@@ -6,7 +6,7 @@ import TabWidget from '@/components/TabWidget.vue';
 import AboutPA from '@/components/italia/AboutPA.vue';
 import LoginPA from '@/components/italia/LoginPA.vue';
 import Home from '@/components/Home.vue';
-import {i18n} from "@/main";
+import {i18n} from '@/main';
 
 Vue.use(Router);
 

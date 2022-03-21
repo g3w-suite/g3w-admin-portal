@@ -12,16 +12,16 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from 'vue-property-decorator';
+import {Component, Prop, Vue} from 'vue-property-decorator';
 
-    @Component({
-        components: {},
-        name: 'Search'
-    })
+@Component({
+    components: {},
+    name: 'Search',
+})
 
-    export default class Search extends Vue {
-        @Prop(String) private readonly value!:string;
-    }
+export default class Search extends Vue {
+    @Prop(String) private readonly value!: string;
+}
 </script>
 
 <style scoped lang="scss">

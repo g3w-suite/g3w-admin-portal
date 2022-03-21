@@ -7,8 +7,8 @@ import {groupManager} from '@/datastore/managers/groupManager';
 import {IGroup} from '@/datastore/interfaces/GroupInterface';
 import {IMacroGroup} from '@/datastore/interfaces/MacroGroupInterface';
 import {IProgectInGroupDict, Project} from '@/datastore/types/Project';
-import {i18n} from "@/main";
-import {SuperGroup} from "@/datastore/types/SuperGroup";
+import {i18n} from '@/main';
+import {SuperGroup} from '@/datastore/types/SuperGroup';
 
 const namespaced: boolean = true;
 
@@ -20,7 +20,7 @@ interface IGroupState {
     ProjectsInGroups: IProgectInGroupDict;
     Projects: Project[];
     ActiveGroup: SuperGroup | null;
-    Search: string
+    Search: string;
 }
 
 const infoState: IGroupState = {
@@ -31,7 +31,7 @@ const infoState: IGroupState = {
     ProjectsInGroups: {},
     Projects: [],
     ActiveGroup: null,
-    Search: ''
+    Search: '',
 };
 
 const getters: GetterTree<IGroupState, RootState> = {
@@ -39,19 +39,19 @@ const getters: GetterTree<IGroupState, RootState> = {
         return state.MacroGroups;
     },
 
-    search(state): string{
-        return state.Search
+    search(state): string {
+        return state.Search;
     },
 
-    fitleredProjects(state): Project[]{
-        const s = state.Search.toLowerCase()
-        return state.Projects.filter((p)=>{
-            return p.title.toLowerCase().includes(s) || p.description.toLowerCase().includes(s)
-        })
+    fitleredProjects(state): Project[] {
+        const s = state.Search.toLowerCase();
+        return state.Projects.filter((p) => {
+            return p.title.toLowerCase().includes(s) || p.description.toLowerCase().includes(s);
+        });
     },
 
-    activeGroup(state):SuperGroup|null{
-        return state.ActiveGroup
+    activeGroup(state): SuperGroup|null {
+        return state.ActiveGroup;
     },
 
     groupsWithNoMacroGroup(state): IGroupDict {
@@ -74,16 +74,16 @@ const actions: ActionTree<IGroupState, RootState> = {
         commit('reset');
     },
 
-    search({commit},{s}) {
-        commit('search',s);
+    search({commit}, {s}) {
+        commit('search', s);
     },
 
-    fetchProjects({commit},{locale}){
+    fetchProjects({commit}, {locale}) {
         return groupManager.projects(locale).then((i) => {
             const ps = i.map((p) => {
                 return new Project(p);
             });
-            commit('setProjects',ps)
+            commit('setProjects', ps);
         }).catch();
     },
 
@@ -95,8 +95,8 @@ const actions: ActionTree<IGroupState, RootState> = {
         }).catch();
     },
 
-    setActiveGroup({commit}, {sg}){
-        commit('setActiveGroup',sg);
+    setActiveGroup({commit}, {sg}) {
+        commit('setActiveGroup', sg);
 
     },
 
@@ -117,8 +117,8 @@ const actions: ActionTree<IGroupState, RootState> = {
         });
     },
 
-    fetchGroupsByMacroGroupId({commit}, {locale,id}) {
-        return groupManager.groupsInMacrogroup(locale,id).then((i) => {
+    fetchGroupsByMacroGroupId({commit}, {locale, id}) {
+        return groupManager.groupsInMacrogroup(locale, id).then((i) => {
             commit('setGroupsOfMacrogroup', {
                 id, gps: i.map((g) => {
                     const gr = new Group(g);
@@ -129,8 +129,8 @@ const actions: ActionTree<IGroupState, RootState> = {
         });
     },
 
-    fetchProjectsByGroupId({commit}, {locale,id}) {
-        return groupManager.projectsInGroup(locale,id).then((i) => {
+    fetchProjectsByGroupId({commit}, {locale, id}) {
+        return groupManager.projectsInGroup(locale, id).then((i) => {
             commit('setProjectsOfGroup', {
                 id, prj: i.map((p) => {
                     return new Project(p);
@@ -148,7 +148,7 @@ const mutations: MutationTree<IGroupState> = {
         state.GroupsInMacroGroups = {};
         state.ProjectsInGroups = {};
     },
-    setActiveGroup(state,sg){
+    setActiveGroup(state, sg) {
         state.ActiveGroup = sg;
     },
     setMacroGroups(state, mc) {
@@ -166,11 +166,11 @@ const mutations: MutationTree<IGroupState> = {
     setProjectsOfGroup(state, g) {
         Vue.set(state.ProjectsInGroups, g.id, g.prj);
     },
-    setProjects(state,ps){
-        state.Projects = ps
+    setProjects(state, ps) {
+        state.Projects = ps;
     },
     search(state, s) {
-        state.Search = s
+        state.Search = s;
     },
 };
 

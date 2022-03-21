@@ -23,4 +23,5 @@ export interface IInfo {
     instagram_url: string;
     flickr_url: string;
     tripadvisor_url: string;
+    reset_password_url: string;
 }

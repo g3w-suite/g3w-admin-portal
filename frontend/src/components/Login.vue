@@ -31,6 +31,9 @@
                     {{$t('messages.validation.requiredField')}}
                 </div>
             </div>
+            <div class="form-group" v-if="settings.reset_password_url">
+                <a :href="settings.reset_password_url">{{$t('messages.login.reset_password_url')}}</a>
+            </div>
             <div class="form-group">
                 <button @click="login"
                         class="col-12 btn btn-primary"
@@ -40,75 +43,74 @@
                 <div class="error_or_missing mt-1" v-if="loginError">
                     {{$t('messages.validation.erroreLogin')}}
                     <p></p>
-                </divstyle>
+                </div>
             </div>
         </form>
     </div>
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from 'vue-property-decorator';
-    import {mapGetters} from "vuex";
+import {Component, Prop, Vue} from 'vue-property-decorator';
+import {mapGetters} from 'vuex';
 
 
-    @Component({
-        name: "Login",
-        computed: {
-            ...mapGetters({
-                'settings': 'info/info'
-            })
-        }
-    })
-    export default class Login extends Vue {
-        @Prop(Boolean) private readonly showLabel!: boolean;
-        @Prop(Boolean) private readonly placeholderUppercase!: boolean;
+@Component({
+    name: 'Login',
+    computed: {
+        ...mapGetters({
+            settings: 'info/info',
+        }),
+    },
+})
+export default class Login extends Vue {
+    @Prop(Boolean) private readonly showLabel!: boolean;
+    @Prop(Boolean) private readonly placeholderUppercase!: boolean;
 
-        private username: string = '';
-        private password: string = '';
-        private extra_message: string = '';
+    private username: string = '';
+    private password: string = '';
+    private extra_message: string = '';
 
-        private passwordError: boolean = false;
-        private usernameError: boolean = false;
-        private loginError: boolean = false;
+    private passwordError: boolean = false;
+    private usernameError: boolean = false;
+    private loginError: boolean = false;
 
-        get passwordPlaceholder() {
-            return this.password.length ? '' : (this.placeholderUppercase ? this.$tc('messages.login.password').toUpperCase() : this.$tc('messages.login.password'));
-        }
+    get passwordPlaceholder() {
+        return this.password.length ? '' : (this.placeholderUppercase ? this.$tc('messages.login.password').toUpperCase() : this.$tc('messages.login.password'));
+    }
 
-        get usernamePlaceholder() {
-            return this.username.length ? '' : (this.placeholderUppercase ? this.$tc('messages.login.username').toUpperCase() : this.$tc('messages.login.username'));
-        }
+    get usernamePlaceholder() {
+        return this.username.length ? '' : (this.placeholderUppercase ? this.$tc('messages.login.username').toUpperCase() : this.$tc('messages.login.username'));
+    }
 
-        get show_label(): boolean {
-            return this.showLabel == undefined ? true : this.showLabel;
-        }
+    get show_label(): boolean {
+        return this.showLabel == undefined ? true : this.showLabel;
+    }
 
-
-        private login() {
-            if (!this.username) {
-                this.usernameError = true;
-            } else if (!this.password) {
-                this.passwordError = true;
-            } else {
-                this.usernameError = false;
-                this.passwordError = false;
-                this.loginError = false;
-                const locale = this.$i18n.locale;
-                this.$store.dispatch('me/login', {
-                    locale,
-                    username: this.username,
-                    password: this.password,
-                }).then(() => {
-                    return this.$store.dispatch('me/fetchWhoAmI',{locale:this.$i18n.locale})
-                }).then(()=>{
-                    this.$router.push({name: 'home'});
-                }).catch((e) => {
-                    this.extra_message = e
-                    this.loginError = true;
-                })
-            }
+    private login() {
+        if (!this.username) {
+            this.usernameError = true;
+        } else if (!this.password) {
+            this.passwordError = true;
+        } else {
+            this.usernameError = false;
+            this.passwordError = false;
+            this.loginError = false;
+            const locale = this.$i18n.locale;
+            this.$store.dispatch('me/login', {
+                locale,
+                username: this.username,
+                password: this.password,
+            }).then(() => {
+                return this.$store.dispatch('me/fetchWhoAmI', {locale: this.$i18n.locale});
+            }).then(() => {
+                this.$router.push({name: 'home'});
+            }).catch((e) => {
+                this.extra_message = e;
+                this.loginError = true;
+            });
         }
     }
+}
 </script>
 
 <style>

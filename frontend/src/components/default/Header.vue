@@ -76,72 +76,72 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
-    import G3wButton from '@/components/default/g3wButton.vue';
-    import CountryFlag from 'vue-country-flag';
-    import MobileMenu from '@/components/default/MobileMenu.vue';
-    import HeaderPA from '@/components/italia/HeaderPA.vue';
-    import {mapGetters} from "vuex";
-    import Search from "@/components/Search.vue";
+import {Component, Vue} from 'vue-property-decorator';
+import G3wButton from '@/components/default/g3wButton.vue';
+import CountryFlag from 'vue-country-flag';
+import MobileMenu from '@/components/default/MobileMenu.vue';
+import HeaderPA from '@/components/italia/HeaderPA.vue';
+import {mapGetters} from 'vuex';
+import Search from '@/components/Search.vue';
 
-    @Component({
-        components: {G3wButton, MobileMenu, CountryFlag, Search},
-        computed: {
-            ...mapGetters({
-                'info': 'info/info',
-                'showAdmin': 'settings/showAdminButton'
-            })
+@Component({
+    components: {G3wButton, MobileMenu, CountryFlag, Search},
+    computed: {
+        ...mapGetters({
+            info: 'info/info',
+            showAdmin: 'settings/showAdminButton',
+        }),
+    },
+})
+
+export default class Header extends HeaderPA {
+    private showAdmin!: any;
+
+    get search() {
+        return this.$store.getters['group/search'];
+    }
+
+    set search(val: string) {
+        this.$store.dispatch('group/search', {s: val});
+    }
+
+    get width() {
+        if (this.showAdmin && this.someoneIsLogged) {
+            return 'w-25';
         }
-    })
+        return 'w-33';
+    }
 
-    export default class Header extends HeaderPA {
-        private showAdmin!: any
-
-        get search() {
-            return this.$store.getters['group/search']
-        }
-
-        set search(val: string) {
-            this.$store.dispatch('group/search', {s: val})
-        }
-
-        get width() {
-            if (this.showAdmin && this.someoneIsLogged) {
-                return 'w-25'
-            }
-            return 'w-33'
-        }
-
-        get Icon() {
-            if (this.someoneIsLogged) {
-                return 'sign-out-alt';
-            } else {
-                return 'user-lock';
-            }
-        }
-
-        get flag() {
-            switch (this.$i18n.locale) {
-                case 'en':
-                    return 'it';
-                case 'it':
-                    return 'gb';
-            }
-        }
-
-        private goToAdmin(){
-            window.location.href = '/admin';
-        }
-        private switchLang() {
-            if (this.$root.$i18n.locale == 'it') {
-                this.$root.$i18n.locale = 'en';
-            } else if (this.$root.$i18n.locale == 'en') {
-                this.$root.$i18n.locale = 'it';
-            }
-            this.$router.replace({name: this.$route.name, params: {lang: this.$root.$i18n.locale}});
-            window.location.reload();
+    get Icon() {
+        if (this.someoneIsLogged) {
+            return 'sign-out-alt';
+        } else {
+            return 'user-lock';
         }
     }
+
+    get flag() {
+        switch (this.$i18n.locale) {
+            case 'en':
+                return 'it';
+            case 'it':
+                return 'gb';
+        }
+    }
+
+    private goToAdmin() {
+        window.location.href = '/admin';
+    }
+    private switchLang() {
+        if (this.$root.$i18n.locale == 'it') {
+            this.$root.$i18n.locale = 'en';
+        } else if (this.$root.$i18n.locale == 'en') {
+            this.$root.$i18n.locale = 'it';
+        }
+        this.$router.replace({name: this.$route.name, params: {lang: this.$root.$i18n.locale}});
+        window.location.reload();
+    }
+}
 </script>
 
 <style lang="scss" scoped>

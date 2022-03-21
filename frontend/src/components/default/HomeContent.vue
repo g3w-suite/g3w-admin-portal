@@ -12,17 +12,17 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from 'vue-property-decorator';
-    import MainContent from '@/components/default/MainContent.vue';
-    import Home from '@/components/Home.vue';
-    import {mapGetters} from "vuex";
-    import {IPictures} from "@/datastore/interfaces/PortalInterface";
+import {Component, Prop, Vue} from 'vue-property-decorator';
+import MainContent from '@/components/default/MainContent.vue';
+import Home from '@/components/Home.vue';
+import {mapGetters} from 'vuex';
+import {IPictures} from '@/datastore/interfaces/PortalInterface';
 
-    @Component({
-        components: {MainContent, Home},
-    })
-    export default class HomeContent extends Home {
-    }
+@Component({
+    components: {MainContent, Home},
+})
+export default class HomeContent extends Home {
+}
 </script>
 
 <style lang="scss">

@@ -1,21 +1,21 @@
 import {ActionTree, GetterTree, MutationTree} from 'vuex';
 import {RootState} from '@/store/types';
-import {portalManager} from "@/datastore/managers/portalManager";
-import {IPictures} from "@/datastore/interfaces/PortalInterface";
-import {i18n} from "@/main";
+import {portalManager} from '@/datastore/managers/portalManager';
+import {IPictures} from '@/datastore/interfaces/PortalInterface';
+import {i18n} from '@/main';
 
 const namespaced: boolean = true;
 
 interface ISettings {
     portalSections: string[];
-    showAdminButton: boolean,
-    pictures: IPictures[]
+    showAdminButton: boolean;
+    pictures: IPictures[];
 }
 
 const settings: ISettings = {
     portalSections: [],
     showAdminButton: false,
-    pictures: []
+    pictures: [],
 };
 
 const getters: GetterTree<ISettings, RootState> = {
@@ -25,21 +25,21 @@ const getters: GetterTree<ISettings, RootState> = {
     showAdminButton: (state) => {
         return state.showAdminButton;
     },
-    pictures:(state) =>{
-        return state.pictures
-    }
+    pictures: (state) => {
+        return state.pictures;
+    },
 };
 
 const actions: ActionTree<ISettings, RootState> = {
     portalSections: ({commit}, {sections}) => {
-        commit('portalSections', sections)
+        commit('portalSections', sections);
     },
     showAdminButton: ({commit}, {show}) => {
-        commit('showAdminButton', show)
+        commit('showAdminButton', show);
     },
-    fetchPictures: ({commit},{locale}) => {
+    fetchPictures: ({commit}, {locale}) => {
         portalManager.pictures(locale).then((ps) => {
-            const pictures = ps.sort((a:IPictures, b:IPictures) => {
+            const pictures = ps.sort((a: IPictures, b: IPictures) => {
                 if (a.order < b.order) {
                     return -1;
                 }
@@ -47,11 +47,11 @@ const actions: ActionTree<ISettings, RootState> = {
                     return 1;
                 }
                 return 0;
-            })
-            commit('setPictures',pictures)
-        })
+            });
+            commit('setPictures', pictures);
+        });
     },
-}
+};
 
 const mutations: MutationTree<ISettings> = {
     portalSections: (state, sections) => {
@@ -61,9 +61,9 @@ const mutations: MutationTree<ISettings> = {
         state.showAdminButton = show;
     },
     setPictures: (state, ps) => {
-        state.pictures = ps
+        state.pictures = ps;
     },
-}
+};
 
 
 export default {

@@ -14,21 +14,21 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from 'vue-property-decorator';
-    import {mapGetters} from "vuex";
-    //da migliorare? soluzione migliore?
-    let logo = require('@/assets/img/logo_g3wsuite.png')
+import {Component, Prop, Vue} from 'vue-property-decorator';
+import {mapGetters} from 'vuex';
+// da migliorare? soluzione migliore?
+const logo = require('@/assets/img/logo_g3wsuite.png');
 
-    @Component({
-        components: {},
-        computed: {
-            ...mapGetters({
-                'settings': 'info/info'
-            })
-        }
-    })
-    export default class Home extends Vue {
-    }
+@Component({
+    components: {},
+    computed: {
+        ...mapGetters({
+            settings: 'info/info',
+        }),
+    },
+})
+export default class Home extends Vue {
+}
 </script>
 
 <style lang="scss" scoped>

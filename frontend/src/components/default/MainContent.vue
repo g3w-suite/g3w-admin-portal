@@ -40,24 +40,24 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
-import {mapGetters} from "vuex";
+import {mapGetters} from 'vuex';
 
 @Component({
     components: {},
-    computed:{
+    computed: {
         ...mapGetters({
-            pictures: 'settings/pictures'
-        })
-    }
+            pictures: 'settings/pictures',
+        }),
+    },
 })
 
 export default class AboutContent extends Vue {
     private index: number = 0;
 
-    mounted() {
+    public mounted() {
         window.setInterval(() => {
             this.index++;
-        }, 30000)
+        }, 30000);
     }
 }
 </script>

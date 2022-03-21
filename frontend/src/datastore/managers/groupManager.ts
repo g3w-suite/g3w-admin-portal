@@ -1,16 +1,16 @@
 import {httpClient, IHttpClient} from '@/datastore/HttpClient';
-import {IGroup} from "@/datastore/interfaces/GroupInterface";
-import {IProject} from "@/datastore/interfaces/ProjectInterface";
-import {IMacroGroup} from "@/datastore/interfaces/MacroGroupInterface";
+import {IGroup} from '@/datastore/interfaces/GroupInterface';
+import {IProject} from '@/datastore/interfaces/ProjectInterface';
+import {IMacroGroup} from '@/datastore/interfaces/MacroGroupInterface';
 
 
 export interface IGroupManager {
     groups: (locale: string) => Promise<IGroup[]>;
-    groupsInMacrogroup: (locale: string,id: number) => Promise<IGroup[]>;
+    groupsInMacrogroup: (locale: string, id: number) => Promise<IGroup[]>;
     macrogroups: (locale: string) => Promise<IMacroGroup[]>;
     groupsNoMacrogroups: (locale: string) => Promise<IGroup[]>;
     projectsInGroup: (locale: string, id: number) => Promise<IProject[]>;
-    projects:(locale: string)=> Promise<IProject[]>;
+    projects: (locale: string) => Promise<IProject[]>;
 }
 
 export class GroupManager implements IGroupManager {

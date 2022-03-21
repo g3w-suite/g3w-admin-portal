@@ -6,7 +6,7 @@ import group from '@/store/modules/group';
 import me from '@/store/modules/me';
 import modal from '@/store/modules/modal';
 import menu from '@/store/modules/menu';
-import settings from "@/store/modules/settings";
+import settings from '@/store/modules/settings';
 
 Vue.use(Vuex);
 
@@ -26,7 +26,7 @@ const store: StoreOptions<RootState> = {
     me,
     modal,
     menu,
-    settings
+    settings,
   },
   getters: {
     showLoader(state): boolean {

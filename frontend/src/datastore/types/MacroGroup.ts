@@ -3,7 +3,7 @@ import {EBoxType} from '@/datastore/interfaces/RequestsInterfaces';
 import {Group} from '@/datastore/types/Group';
 import store from '@/store';
 import {SuperGroup} from '@/datastore/types/SuperGroup';
-import {i18n} from "@/main";
+import {i18n} from '@/main';
 
 export class MacroGroup extends SuperGroup {
     public id: number;
