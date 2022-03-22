@@ -63,6 +63,7 @@ class PortalView(TemplateView):
             'PORTAL_SECTIONS': json.dumps(getattr(settings, 'PORTAL_SECTIONS', [])),
             'ADMIN_BTN': json.dumps(getattr(settings, 'PORTAL_ADMIN_BTN', False)),
             'PORTAL_COLOR': getattr(settings, 'PORTAL_COLOR', 'violet'),
+            'LANGUAGES': [l[0] for l in settings.LANGUAGES]
         }
 
 
