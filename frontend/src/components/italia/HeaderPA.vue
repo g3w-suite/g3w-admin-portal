@@ -110,6 +110,8 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {mapGetters} from "vuex";
+import {APP_LANGUAGES} from '@/main';
+
 
 @Component({
     components: {},
@@ -122,6 +124,10 @@ import {mapGetters} from "vuex";
 })
 
 export default class HeaderPA extends Vue {
+
+    get languages(){
+        return APP_LANGUAGES;
+    }
 
     get whoIs() {
         return this.$store.getters['me/me'];

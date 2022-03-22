@@ -11,14 +11,13 @@
 
         <MobileMenu class="d-block pr-3 d-md-none align-self-center"></MobileMenu>
         <div class="header_right d-none d-md-flex">
-            <g3w-button
+            <g3w-button v-if="showLanguagesButton"
                     v-b-tooltip.hover.bottom="$t('messages.tooltip.cambia_lingua')"
                     @click="switchLang"
                     class="tl_tounded button"
                     :class="width"
                     icon="language"
-                    size="lg"
-            >
+                    size="lg">
                 <div class="m-auto d-flex justify-content-center h-100 align-items-center">
                     <country-flag :country='flag' size='normal'/>
                 </div>
@@ -27,12 +26,10 @@
                     v-b-tooltip.hover.bottom="$t('messages.tooltip.home')"
                     class="button d-flex d-flex justify-content-center align-items-center position-relative"
                     :class="width"
-                    icon="home"
-            >
+                    icon="home">
                 <router-link
                     :to="{name:'Home'}"
-                    class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative"
-            >
+                    class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative">
                     <font-awesome-icon icon="home" size="lg" class="position-absolute"></font-awesome-icon>
             </router-link>
             </g3w-button>
@@ -40,22 +37,19 @@
 
                     class="button"
                     :class="width"
-                    :icon="Icon"
-            >
+                    :icon="Icon">
                 <div
                         v-b-tooltip.hover.bottom="$t('messages.tooltip.logout')"
                         @click="logout"
                         v-if="someoneIsLogged"
-                        class="h-100 w-100 text-white d-flex flex-column justify-content-center align-items-center position-relative"
-                >
+                        class="h-100 w-100 text-white d-flex flex-column justify-content-center align-items-center position-relative">
                     <font-awesome-icon :icon="Icon" size="lg"></font-awesome-icon>
                 </div>
                 <router-link
                         v-b-tooltip.hover.bottom="$t('messages.tooltip.login')"
                         v-else
                         :to="{name:'login'}"
-                        class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative"
-                >
+                        class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative">
                     <font-awesome-icon class="position-absolute" :icon="Icon" size="lg"></font-awesome-icon>
                 </router-link>
             </g3w-button>
@@ -65,8 +59,7 @@
                     v-if="showAdmin && someoneIsLogged"
                     class="button d-flex d-flex justify-content-center align-items-center position-relative"
                     :class="width"
-                    :icon="Icon"
-            >
+                    :icon="Icon">
                 <a href="/admin" rel="noopener noreferrer nofollow" class="position-absolute text-white">
                     <font-awesome-icon icon="user-shield" size="lg"></font-awesome-icon>
                 </a>
@@ -91,7 +84,10 @@ import Search from '@/components/Search.vue';
             info: 'info/info',
             showAdmin: 'settings/showAdminButton',
         }),
-    },
+        showLanguagesButton(){
+            return this.languages.length > 1;
+        }
+    }
 })
 
 export default class Header extends HeaderPA {
@@ -106,10 +102,11 @@ export default class Header extends HeaderPA {
     }
 
     get width() {
+
         if (this.showAdmin && this.someoneIsLogged) {
-            return 'w-25';
+            return this.showLanguagesButton ? 'w-25' : 'w-33';
         }
-        return 'w-33';
+        return this.showLanguagesButton ? 'w-33' : 'w-50';
     }
 
     get Icon() {

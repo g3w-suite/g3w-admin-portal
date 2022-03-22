@@ -7,7 +7,7 @@ import Header from '@/components/default/Header.vue';
 import LoginContent from '@/components/default/LoginContent.vue';
 import MapsContent from '@/components/default/MapsContent.vue';
 import HomeContent from '@/components/default/HomeContent.vue';
-import {i18n} from '@/main';
+import {i18n, APP_LANGUAGES} from '@/main';
 
 Vue.use(Router);
 
@@ -63,7 +63,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     const lang = to.params.lang;
-    if (!['en', 'it'].includes(lang)) {
+    if (!APP_LANGUAGES.includes(lang)) {
         return next('/it');
     }
     if (i18n.locale !== lang) {

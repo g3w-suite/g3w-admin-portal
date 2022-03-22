@@ -8,13 +8,8 @@ import BootstrapVue from 'bootstrap-vue';
 import {it} from '@/lang/it';
 import {en} from '@/lang/en';
 
-// if (localStorage.getItem('isPA') === 'true') {
-//     require('@/styles/appPA.scss');
-// } else {
-//     require('@/styles/app.scss');
-// }
-
-
+//SUPPORT LANGUAGES TRANSLATIONS I18N
+const DEFAULT_SUPPORTED_LANGUAGES = ['it', 'en'];
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
     faGooglePlusSquare,
@@ -95,6 +90,13 @@ export const i18n = new VueI18n({
 Vue.config.productionTip = false;
 
 let IS_PA;
+let LANGUAGES = ['it']; // default and supported languages
+if (window.LANGUAGES && Array.isArray(window.LANGUAGES)){
+    LANGUAGES = window.LANGUAGES.filter(lang => DEFAULT_SUPPORTED_LANGUAGES.indexOf(lang) !== -1);
+    if (LANGUAGES.length === 0) LANGUAGES = ['it'];
+}
+
+export const APP_LANGUAGES = LANGUAGES;
 
 if (EnvironmentHelper.isProduction) {
     IS_PA = (window as any).IS_PA;
