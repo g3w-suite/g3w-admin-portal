@@ -120,9 +120,9 @@ export default class Header extends HeaderPA {
     get flag() {
         switch (this.$i18n.locale) {
             case 'en':
-                return 'it';
-            case 'it':
                 return 'gb';
+            case 'it':
+                return 'it';
         }
     }
 
