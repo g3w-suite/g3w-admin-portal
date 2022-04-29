@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <h2 class="font-abril">{{$tc("messages.login.titolo")}}</h2>
+        <h2 class="font-abril">{{settings.login_title || $tc("messages.login.titolo")}}</h2>
         <h6 class="font-lato" v-html="settings.login_description"></h6>
 
         <form class="form">
