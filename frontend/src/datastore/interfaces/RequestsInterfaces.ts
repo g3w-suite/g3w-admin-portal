@@ -21,10 +21,10 @@ import {IProject} from '@/datastore/interfaces/ProjectInterface';
 // }
 
 export enum EBoxType {
-    'SUPER',
-    'MG',
-    'G',
-    'P',
+  'SUPER',
+  'MG',
+  'G',
+  'P',
 }
 
 

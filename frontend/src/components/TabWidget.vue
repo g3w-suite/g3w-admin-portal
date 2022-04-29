@@ -1,111 +1,111 @@
 <template>
-    <div class="d-flex flex-column">
-        <Search v-if="($route.name === 'mappe' || is_pa )" class="w-100 d-flex search_box mb-4" :class="[is_pa? '' : 'd-flex d-md-none']" v-model="search"></Search>
-        <TabNav v-if="!search.length" :activeClass="activeClass" :tabs="tabs" @click="handleTabClick" id="TabNav"></TabNav>
-        <div class="tab-content" id="TabContent">
-            <div aria-labelledby="nav-tab1-tab" class="tab-pane p-4 fade show active" id="nav-tab1" role="tabpanel">
-                <div class="w-100">
-                    <div class="p-2 h-100 bg-transparent">
-                        <h2 v-if="!search.length" class="sottotitolo font-abril">{{title}}</h2>
-                        <p v-if="!search.length" class="descrizione" v-html="description"></p>
-                        <div class="row" style="max-height: 50vh; overflow-y: auto">
-                            <tab-box v-for="mc in boxes" :href="mc.LogoLink" :id="mc.Id" :img_url="mc.Logo" :key="'mc_' + mc.Key" :title="mc.Title" :type="mc.InstanceOf" :edit_url="mc.edit_url" :map_url="mc.map_url" :description="mc.description" @click="handleBoxClick" :class="{ 'col-12 col-md-6 col-lg-4 mb-4': mc.InstanceOf != eboxtype.P,'col-12 mb-4': mc.InstanceOf == eboxtype.P}">
-                            </tab-box>
-                        </div>
-                    </div>
-                </div>
+  <div class="d-flex flex-column">
+    <Search v-if="($route.name === 'mappe' || is_pa )" class="w-100 d-flex search_box mb-4" :class="[is_pa? '' : 'd-flex d-md-none']" v-model="search"></Search>
+    <TabNav v-if="!search.length" :activeClass="activeClass" :tabs="tabs" @click="handleTabClick" id="TabNav"></TabNav>
+    <div class="tab-content" id="TabContent">
+      <div aria-labelledby="nav-tab1-tab" class="tab-pane p-4 fade show active" id="nav-tab1" role="tabpanel">
+        <div class="w-100">
+          <div class="p-2 h-100 bg-transparent">
+            <h2 v-if="!search.length" class="sottotitolo font-abril">{{title}}</h2>
+            <p v-if="!search.length" class="descrizione" v-html="description"></p>
+            <div class="row" style="max-height: 50vh; overflow-y: auto">
+              <tab-box v-for="mc in boxes" :href="mc.LogoLink" :id="mc.Id" :img_url="mc.Logo" :key="'mc_' + mc.Key" :title="mc.Title" :type="mc.InstanceOf" :edit_url="mc.edit_url" :map_url="mc.map_url" :description="mc.description" @click="handleBoxClick" :class="{ 'col-12 col-md-6 col-lg-4 mb-4': mc.InstanceOf != eboxtype.P,'col-12 mb-4': mc.InstanceOf == eboxtype.P}">
+              </tab-box>
             </div>
+          </div>
         </div>
-        <b-modal centered backdrop id="thumbnailModal" size="xl" :title="$store.getters['modal/title']">
-            <template v-slot:default>
-                <div>
-                    <img :src="$store.getters['modal/url']" class="w-100">
-                </div>
-            </template>
-            <template v-slot:modal-footer="footer">
-                <div></div>
-            </template>
-        </b-modal>
+      </div>
     </div>
+    <b-modal centered backdrop id="thumbnailModal" size="xl" :title="$store.getters['modal/title']">
+      <template v-slot:default>
+        <div>
+          <img :src="$store.getters['modal/url']" class="w-100">
+        </div>
+      </template>
+      <template v-slot:modal-footer="footer">
+        <div></div>
+      </template>
+    </b-modal>
+  </div>
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from 'vue-property-decorator';
-import TabButton from '@/components/TabButton.vue';
-import {Group, IGroupDict} from '@/datastore/types/Group';
-import {IMacroGroupDict, MacroGroup} from '@/datastore/types/MacroGroup';
-import TabBox from '@/components/TabBox.vue';
-import {EBoxType} from '@/datastore/interfaces/RequestsInterfaces';
-import {SuperGroup} from '@/datastore/types/SuperGroup';
-import TabNav from '@/components/TabNav.vue';
-import {mapGetters} from 'vuex';
-import {Info} from '@/datastore/types/Info';
-import Search from '@/components/Search.vue';
+  import {Component, Prop, Vue} from 'vue-property-decorator';
+  import TabButton from '@/components/TabButton.vue';
+  import {Group, IGroupDict} from '@/datastore/types/Group';
+  import {IMacroGroupDict, MacroGroup} from '@/datastore/types/MacroGroup';
+  import TabBox from '@/components/TabBox.vue';
+  import {EBoxType} from '@/datastore/interfaces/RequestsInterfaces';
+  import {SuperGroup} from '@/datastore/types/SuperGroup';
+  import TabNav from '@/components/TabNav.vue';
+  import {mapGetters} from 'vuex';
+  import {Info} from '@/datastore/types/Info';
+  import Search from '@/components/Search.vue';
 
-// groups with no macrogroups and macrogroups
+  // groups with no macrogroups and macrogroups
 
-interface IGWNM_AND_MG_Dict {
+  interface IGWNM_AND_MG_Dict {
     [key: string]: IGroupDict | IMacroGroupDict;
-}
+  }
 
-@Component({
+  @Component({
     components: {TabNav, TabBox, TabButton, Search},
     computed: {
-        ...mapGetters({
-            settings: 'info/info',
-        }),
+      ...mapGetters({
+        settings: 'info/info',
+      }),
     },
-})
+  })
 
-export default class TabWidget extends Vue {
+  export default class TabWidget extends Vue {
 
     get search() {
-        return this.$store.getters['group/search'];
+      return this.$store.getters['group/search'];
     }
 
     set search(val: string) {
-        this.$store.dispatch('group/search', {s: val});
+      this.$store.dispatch('group/search', {s: val});
     }
 
     get boxes() {
-        if (this.search) {
-            return this.$store.getters['group/fitleredProjects'];
+      if (this.search) {
+        return this.$store.getters['group/fitleredProjects'];
+      }
+      // se sono nel primo tab
+      const els: Array<MacroGroup | Group> = [];
+      if (this.tabs.length == 1) {
+        let obj = this.$store.getters['group/macroGroups'];
+        for (const i in obj) {
+          els.push(obj[i] as MacroGroup);
         }
-        // se sono nel primo tab
-        const els: Array<MacroGroup | Group> = [];
-        if (this.tabs.length == 1) {
-            let obj = this.$store.getters['group/macroGroups'];
-            for (const i in obj) {
-                els.push(obj[i] as MacroGroup);
-            }
-            obj = this.$store.getters['group/groupsWithNoMacroGroup'];
-            for (const i in obj) {
-                els.push(obj[i] as Group);
-            }
-            return els;
-        } else if (this.tabs.length > 1) {
-            const activeEl = this.stackElementTab[this.stackElementTab.length - 1];
-            if (activeEl.InstanceOf == EBoxType.MG) {
-                return (activeEl as MacroGroup).Groups;
-            }
-            if (activeEl.InstanceOf == EBoxType.G) {
-                return (activeEl as Group).Projects;
-            }
+        obj = this.$store.getters['group/groupsWithNoMacroGroup'];
+        for (const i in obj) {
+          els.push(obj[i] as Group);
         }
+        return els;
+      } else if (this.tabs.length > 1) {
+        const activeEl = this.stackElementTab[this.stackElementTab.length - 1];
+        if (activeEl.InstanceOf == EBoxType.MG) {
+          return (activeEl as MacroGroup).Groups;
+        }
+        if (activeEl.InstanceOf == EBoxType.G) {
+          return (activeEl as Group).Projects;
+        }
+      }
     }
 
     get title() {
-        if (this.tabs.length == 1) {
-            return this.settings.groups_title;
-        }
-        return this.$store.getters['group/activeGroup'].title || this.$store.getters['group/activeGroup'].name;
+      if (this.tabs.length == 1) {
+        return this.settings.groups_title;
+      }
+      return this.$store.getters['group/activeGroup'].title || this.$store.getters['group/activeGroup'].name;
     }
 
     get description() {
-        if (this.tabs.length == 1) {
-            return this.settings.groups_map_description;
-        }
-        return this.$store.getters['group/activeGroup'].description;
+      if (this.tabs.length == 1) {
+        return this.settings.groups_map_description;
+      }
+      return this.$store.getters['group/activeGroup'].description;
     }
     public eboxtype = EBoxType;
 
@@ -120,60 +120,60 @@ export default class TabWidget extends Vue {
     private settings!: Info;
 
     public mounted() {
-        this.$store.dispatch('group/fetchMacroGroups', {locale: this.$i18n.locale});
-        this.$store.dispatch('group/fetchGroupsWithNoMacroGroup', {locale: this.$i18n.locale});
-        this.$store.dispatch('group/fetchProjects', {locale: this.$i18n.locale});
+      this.$store.dispatch('group/fetchMacroGroups', {locale: this.$i18n.locale});
+      this.$store.dispatch('group/fetchGroupsWithNoMacroGroup', {locale: this.$i18n.locale});
+      this.$store.dispatch('group/fetchProjects', {locale: this.$i18n.locale});
     }
 
     public created() {
-        this.tabs = [this.$tc(`messages.menu.${this.$route.name}`).toUpperCase()];
+      this.tabs = [this.$tc(`messages.menu.${this.$route.name}`).toUpperCase()];
     }
 
     private handleTabClick(idx: number) {
-        this.tabs.splice(idx + 1, this.tabs.length);
-        this.stackElementTab.splice(idx, this.stackElementTab.length);
-        this.$store.dispatch('group/setActiveGroup', {sg: this.stackElementTab[this.stackElementTab.length - 1]});
+      this.tabs.splice(idx + 1, this.tabs.length);
+      this.stackElementTab.splice(idx, this.stackElementTab.length);
+      this.$store.dispatch('group/setActiveGroup', {sg: this.stackElementTab[this.stackElementTab.length - 1]});
     }
 
     private handleBoxClick(id: number, type: EBoxType) {
-        // console.log(id,type);
-        let el: SuperGroup = new SuperGroup();
-        if (type == EBoxType.P) {
-            return false;
-        }
-        switch (type) {
-            case EBoxType.MG:
-                el = this.$store.getters['group/macroGroups'][id];
-                (el as MacroGroup).fetchGroups();
-                break;
-            case EBoxType.G:
-                el = this.$store.getters['group/groups'][id];
-                (el as Group).fetchProjects();
-                break;
-        }
+      // console.log(id,type);
+      let el: SuperGroup = new SuperGroup();
+      if (type == EBoxType.P) {
+        return false;
+      }
+      switch (type) {
+        case EBoxType.MG:
+          el = this.$store.getters['group/macroGroups'][id];
+          (el as MacroGroup).fetchGroups();
+          break;
+        case EBoxType.G:
+          el = this.$store.getters['group/groups'][id];
+          (el as Group).fetchProjects();
+          break;
+      }
 
-        this.$store.dispatch('group/setActiveGroup', {sg: el});
-        this.stackElementTab = this.stackElementTab.concat(el);
-        // @ts-ignore
-        this.tabs = this.tabs.concat(el.title || el.name);
+      this.$store.dispatch('group/setActiveGroup', {sg: el});
+      this.stackElementTab = this.stackElementTab.concat(el);
+      // @ts-ignore
+      this.tabs = this.tabs.concat(el.title || el.name);
     }
-}
+  }
 </script>
 
 <style lang="scss">
-    .search_box {
-        height: 50px;
+  .search_box {
+    height: 50px;
+  }
+  #thumbnailModal {
+    .modal-footer {
+      height: 0;
+      padding: 0;
     }
-    #thumbnailModal {
-        .modal-footer {
-            height: 0;
-            padding: 0;
-        }
-        .modal-body {
-            padding: 24px;
-        }
+    .modal-body {
+      padding: 24px;
     }
-    .modal-backdrop {
-        opacity: 0.7;
-    }
+  }
+  .modal-backdrop {
+    opacity: 0.7;
+  }
 </style>

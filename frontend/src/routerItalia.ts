@@ -11,57 +11,57 @@ import {i18n} from '@/main';
 Vue.use(Router);
 
 const routerItalia = new Router({
-    // mode: 'history',
-    base: process.env.BASE_URL,
-    routes: [
+  // mode: 'history',
+  base: process.env.BASE_URL,
+  routes: [
+    {
+      path: '/:lang/',
+      component: MainItalia,
+      children: [
         {
-            path: '/:lang/',
-            component: MainItalia,
-            children: [
-                {
-                    path: 'home/',
-                    name: 'home',
-                    alias: '',
-                    components: {
-                        header: HeaderPA,
-                        default: Home,
-                    },
-                },
-                {
-                    path: 'info/',
-                    name: 'info',
-                    components: {
-                        header: HeaderPA,
-                        default: AboutPA,
-                    },
-                },
-                {
-                    path: 'maps/',
-                    name: 'mappe',
-                    components: {
-                        header: HeaderPA,
-                        default: TabWidget,
-                    },
-                },
-                {
-                    path: 'login/',
-                    name: 'login',
-                    components: {
-                        header: HeaderPA,
-                        default: LoginPA,
-                    },
-                },
-            ],
+          path: 'home/',
+          name: 'home',
+          alias: '',
+          components: {
+            header: HeaderPA,
+            default: Home,
+          },
         },
-    ],
+        {
+          path: 'info/',
+          name: 'info',
+          components: {
+            header: HeaderPA,
+            default: AboutPA,
+          },
+        },
+        {
+          path: 'maps/',
+          name: 'mappe',
+          components: {
+            header: HeaderPA,
+            default: TabWidget,
+          },
+        },
+        {
+          path: 'login/',
+          name: 'login',
+          components: {
+            header: HeaderPA,
+            default: LoginPA,
+          },
+        },
+      ],
+    },
+  ],
 });
 
 
 routerItalia.beforeEach((to, from, next) => {
-    const lang = to.params.lang;
-    if (!['en', 'it'].includes(lang)) return next('/it');
-    if (i18n.locale !== lang) i18n.locale = lang;
-    return next();
+  const lang = to.params.lang;
+  if (!['en', 'it'].includes(lang)) return next('/it');
+  if (i18n.locale !== lang) i18n.locale = lang;
+  return next();
 });
 
 export default routerItalia;

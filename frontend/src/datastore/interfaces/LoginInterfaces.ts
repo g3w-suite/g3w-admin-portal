@@ -1,15 +1,15 @@
 export enum ELoginStatus {
-    'OK' = 'ok',
-    'ERROR' = 'error',
+  'OK' = 'ok',
+  'ERROR' = 'error',
 }
 
 export interface ILoginResponse {
-    status: ELoginStatus;
-    error_form?: object;
-    message?: string;
+  status: ELoginStatus;
+  error_form?: object;
+  message?: string;
 }
 
 export interface ILogoutResponse {
-    status: ELoginStatus;
-    message?: string;
+  status: ELoginStatus;
+  message?: string;
 }

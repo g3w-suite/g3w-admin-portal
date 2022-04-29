@@ -4,31 +4,31 @@ import * as qs from 'qs';
 import {WhoAmIInterface} from '@/datastore/interfaces/WhoAmIInterface';
 
 export interface ILoginManager {
-    login: (locale: string, username: string, password: string) => Promise<ILoginResponse>;
-    logout: (locale: string) => Promise<ILogoutResponse>;
-    who_am_i: (locale: string) => Promise<WhoAmIInterface>;
+  login: (locale: string, username: string, password: string) => Promise<ILoginResponse>;
+  logout: (locale: string) => Promise<ILogoutResponse>;
+  who_am_i: (locale: string) => Promise<WhoAmIInterface>;
 }
 
 export class LoginManager implements ILoginManager {
 
-    constructor(private httpClient: IHttpClient) {
-    }
+  constructor(private httpClient: IHttpClient) {
+  }
 
-    public login(locale: string, username: string, password: string): Promise<ILoginResponse> {
-        return this.httpClient.post<ILoginResponse>(locale + '/jx/login/', qs.stringify({username, password}), {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        });
-    }
+  public login(locale: string, username: string, password: string): Promise<ILoginResponse> {
+    return this.httpClient.post<ILoginResponse>(locale + '/jx/login/', qs.stringify({username, password}), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+  }
 
-    public who_am_i(locale: string = 'en'): Promise<WhoAmIInterface> {
-        return this.httpClient.get<WhoAmIInterface>(locale + '/portal/api/whoami/');
-    }
+  public who_am_i(locale: string = 'en'): Promise<WhoAmIInterface> {
+    return this.httpClient.get<WhoAmIInterface>(locale + '/portal/api/whoami/');
+  }
 
-    public logout(locale: string = 'en'): Promise<ILogoutResponse> {
-        return this.httpClient.get<ILogoutResponse>(locale + '/jx/logout/');
-    }
+  public logout(locale: string = 'en'): Promise<ILogoutResponse> {
+    return this.httpClient.get<ILogoutResponse>(locale + '/jx/logout/');
+  }
 }
 
 export const loginManager: LoginManager = new LoginManager(httpClient);

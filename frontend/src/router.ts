@@ -12,60 +12,60 @@ import {i18n, APP_LANGUAGES} from '@/main';
 Vue.use(Router);
 
 const router = new Router({
-    // mode: 'history',
-    base: process.env.BASE_URL,
-    routes: [
+  // mode: 'history',
+  base: process.env.BASE_URL,
+  routes: [
+    {
+      path: '/:lang/',
+      component: Main,
+      children: [
         {
-            path: '/:lang/',
-            component: Main,
-            children: [
-                {
-                    path: 'home/',
-                    name: 'home',
-                    alias: '',
-                    components: {
-                        header: Header,
-                        default: HomeContent,
-                        menu: Menu,
-                    },
-                },
-                {
-                    path: 'info/',
-                    name: 'info',
-                    components: {
-                        header: Header,
-                        default: AboutContent,
-                        menu: Menu,
-                    },
-                },
-                {
-                    path: 'maps/',
-                    name: 'mappe',
-                    components: {
-                        header: Header,
-                        default: MapsContent,
-                        menu: Menu,
-                    },
-                },
-                {
-                    path: 'login/',
-                    name: 'login',
-                    components: {
-                        header: Header,
-                        default: LoginContent,
-                        menu: Menu,
-                    },
-                },
-            ],
+          path: 'home/',
+          name: 'home',
+          alias: '',
+          components: {
+            header: Header,
+            default: HomeContent,
+            menu: Menu,
+          },
         },
-    ],
+        {
+          path: 'info/',
+          name: 'info',
+          components: {
+            header: Header,
+            default: AboutContent,
+            menu: Menu,
+          },
+        },
+        {
+          path: 'maps/',
+          name: 'mappe',
+          components: {
+            header: Header,
+            default: MapsContent,
+            menu: Menu,
+          },
+        },
+        {
+          path: 'login/',
+          name: 'login',
+          components: {
+            header: Header,
+            default: LoginContent,
+            menu: Menu,
+          },
+        },
+      ],
+    },
+  ],
 });
 
 router.beforeEach((to, from, next) => {
-    const lang = to.params.lang;
-    if (!APP_LANGUAGES.includes(lang)) return next('/it');
-    if (i18n.locale !== lang) i18n.locale = lang;
-    return next();
+  const lang = to.params.lang;
+  if (!APP_LANGUAGES.includes(lang)) return next('/it');
+  if (i18n.locale !== lang) i18n.locale = lang;
+  return next();
 });
 
 export default router;
