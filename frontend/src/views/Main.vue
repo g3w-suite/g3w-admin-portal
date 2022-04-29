@@ -1,12 +1,6 @@
 <template>
-    <div class="scroll vh-100 d-flex flex-column"
-         id="main"
-         :class="[$store.getters['menu/isVisible'] ? 'overlay' : '']"
-    >
-        <MobileCarousel
-                v-if="$route.name === 'home'"
-               class="d-md-none d-block vh-100 w-100 position-absolute bg_image"
-        ></MobileCarousel>
+    <div class="scroll vh-100 d-flex flex-column" id="main" :class="[$store.getters['menu/isVisible'] ? 'overlay' : '']">
+        <MobileCarousel v-if="$route.name === 'home'" class="d-md-none d-block vh-100 w-100 position-absolute bg_image"></MobileCarousel>
         <div class="z-100 header d-flex py-4 pl-4 pr-4 pr-md-0">
             <router-view name="header"></router-view>
         </div>
@@ -32,32 +26,19 @@ export default class Main extends Vue {
 </script>
 
 <style lang="scss">
-
     @import '../styles/_variables.scss';
     @import '../styles/mixin';
-
     #main.overlay{
-
         @include media-breakpoint-down(sm) {
-            &:after {
-                @include trbl(0, 0, 0, 0);
-                content: "";
-                position: absolute;
-                background-image: url(~@/assets/img/sfondo.jpg);
-                background-size: cover;
-                opacity: 0.5;
-            }
+            &:after {}
         }
     }
-
     .content {
-
         @include media-breakpoint-down(sm) {
             width: 100%;
         }
         width: (100 - $menu_width);
     }
-
     .menu {
         width: $menu_width;
     }

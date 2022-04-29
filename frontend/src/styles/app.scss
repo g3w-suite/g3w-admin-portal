@@ -18,17 +18,7 @@ body:not(.pa) {
 
   &:before {
     @extend .trbl-0;
-    content: "";
-    position: absolute;
-    background-image: url(~@/assets/img/sfondo.jpg);
-    background-size: cover;
   }
-
-  //@include media-breakpoint-down(sm){
-  //  &:before {
-  //    background-image: url(~@/assets/img/monti.jpg);
-  //  }
-  //}
 
   //personalizzazione scrollbar
 

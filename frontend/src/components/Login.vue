@@ -1,9 +1,7 @@
 <template>
-
     <div>
         <h2 class="font-abril">{{$tc("messages.login.titolo")}}</h2>
         <h6 class="font-lato" v-html="settings.login_description"></h6>
-
         <form class="form">
             <div class="form-group">
                 <label for="username" v-if="show_label">{{$t('messages.login.username')}}</label>
@@ -27,9 +25,7 @@
                        required
                        type="password"
                        v-model="password">
-                <div class="error_or_missing" v-if="passwordError">
-                    {{$t('messages.validation.requiredField')}}
-                </div>
+                <div class="error_or_missing" v-if="passwordError">{{$t('messages.validation.requiredField')}}</div>
             </div>
             <div class="form-group">
                 <button @click="login"
@@ -37,8 +33,7 @@
                         id="button"
                         type="button">{{$t('messages.login.accesso')}}
                 </button>
-                <div class="error_or_missing mt-1" v-if="loginError">
-                    {{$t('messages.validation.erroreLogin')}}
+                <div class="error_or_missing mt-1" v-if="loginError">{{$t('messages.validation.erroreLogin')}}
                     <p></p>
                 </div>
             </div>
@@ -52,7 +47,6 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator';
 import {mapGetters} from 'vuex';
-
 
 @Component({
     name: 'Login',

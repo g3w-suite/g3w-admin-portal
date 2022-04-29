@@ -17,42 +17,30 @@
                                 <div class="link-list-wrapper collapse" id="menu1">
                                     <ul class="link-list">
                                         <li>
-                                            <router-link class="list-item text-capitalize" :to="{name:'home'}"
-                                                         :class="{'active' : $route.name === 'home' }">
+                                            <router-link class="list-item text-capitalize" :to="{name:'home'}" :class="{'active' : $route.name === 'home' }">
                                                 {{$t("messages.menu.home")}}
                                             </router-link>
                                         </li>
                                         <li v-if="sections.includes('maps')">
-                                            <router-link class="list-item text-capitalize" :to="{name:'mappe'}"
-                                                         :class="{'active' : $route.name === 'mappe' }"
-                                            >
+                                            <router-link class="list-item text-capitalize" :to="{name:'mappe'}" :class="{'active' : $route.name === 'mappe' }">
                                                 {{$t("messages.menu.mappe")}}
                                             </router-link>
                                         </li>
                                         <li v-if="sections.includes('info')">
-                                            <router-link class="list-item text-capitalize" :to="{name:'info'}"
-                                                         :class="{'active' : $route.name === 'info' }">
+                                            <router-link class="list-item text-capitalize" :to="{name:'info'}" :class="{'active' : $route.name === 'info' }">
                                                 {{$t("messages.menu.info")}}
                                             </router-link>
                                         </li>
                                         <li v-if="sections.includes('news')">
-                                            <router-link class="list-item text-capitalize" :to="{name:'home'}"
-                                                         :class="{'active' : $route.name === 'home' }">
+                                            <router-link class="list-item text-capitalize" :to="{name:'home'}" :class="{'active' : $route.name === 'home' }">
                                                 {{$t("messages.menu.news")}}
                                             </router-link>
                                         </li>
                                         <li v-if="sections.includes('archives')">
-                                            <router-link class="list-item text-capitalize" :to="{name:'home'}"
-                                                         :class="{'active' : $route.name === 'home' }">
+                                            <router-link class="list-item text-capitalize" :to="{name:'home'}" :class="{'active' : $route.name === 'home' }">
                                                 {{$t("messages.menu.archivi")}}
                                             </router-link>
                                         </li>
-<!--                                        <li>-->
-<!--                                            <router-link v-if="!someoneIsLogged" class="list-item text-capitalize" :to="{name:'login'}"-->
-<!--                                                         :class="{'active' : $route.name === 'login' }">-->
-<!--                                                {{$t("messages.menu.login")}}-->
-<!--                                            </router-link>-->
-<!--                                        </li>-->
                                     </ul>
                                 </div>
                             </nav>
@@ -72,14 +60,14 @@
                                             <div class="link-list-wrapper">
                                                 <ul class="link-list">
                                                     <li>
-                                                        <router-link class="list-item"
-                                                                     :to="{ name: 'home', params: { lang: 'it' } }">
-                                                            <span>{{$t("messages.language.it")}}</span></router-link>
+                                                        <router-link class="list-item" :to="{ name: 'home', params: { lang: 'it' } }">
+                                                            <span>{{$t("messages.language.it")}}</span>
+                                                        </router-link>
                                                     </li>
                                                     <li>
-                                                        <router-link  class="list-item"
-                                                                     :to="{ name: 'home', params: { lang: 'en' } }">
-                                                            <span>{{$t("messages.language.en")}}</span></router-link>
+                                                        <router-link  class="list-item" :to="{ name: 'home', params: { lang: 'en' } }">
+                                                            <span>{{$t("messages.language.en")}}</span>
+                                                        </router-link>
                                                     </li>
                                                 </ul>
                                             </div>
@@ -148,7 +136,6 @@ export default class HeaderPA extends Vue {
     }
 
     public mounted() {
-        // appena apro la barra guardo se c'e' qualcuno loggato
         this.$store.dispatch('me/fetchWhoAmI',{locale:this.$i18n.locale});
     }
 }

@@ -2,7 +2,10 @@
 @import "mixin";
 
 body.violet {
-
+  .header {
+    background-color: $palette_1_fourth !important;
+    margin-bottom: 3px;
+  }
   .gradient {
     @include gis_gradient(30, $palette_1_rgb_second, 0%, $palette_1_rgb_fourth, 50%);
   }
@@ -39,7 +42,9 @@ body.violet {
   }
 
   .tab-content {
-    @include gis_gradient(30, $palette_1_rgb_second, 0%, $palette_1_rgb_fourth, 50%);
+    //@include gis_gradient(30, $palette_1_rgb_second, 0%, $palette_1_rgb_fourth, 50%);
+    background-color: $palette_1_fourth !important;
+
   }
 
 }

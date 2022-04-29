@@ -63,12 +63,8 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
     const lang = to.params.lang;
-    if (!APP_LANGUAGES.includes(lang)) {
-        return next('/it');
-    }
-    if (i18n.locale !== lang) {
-        i18n.locale = lang;
-    }
+    if (!APP_LANGUAGES.includes(lang)) return next('/it');
+    if (i18n.locale !== lang) i18n.locale = lang;
     return next();
 });
 

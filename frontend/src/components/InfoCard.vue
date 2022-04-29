@@ -20,7 +20,6 @@ import {Component, Prop, Vue} from 'vue-property-decorator';
 export default class InfoCard extends Vue {
     @Prop(String) private readonly title!: string;
     @Prop(String) private readonly text!: string;
-
 }
 </script>
 

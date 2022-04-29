@@ -1,19 +1,10 @@
 <template>
     <div v-if="type != eboxtype.P">
-        <div @click="$emit('click', id, type)"
-             class="aspect_16_9 map-img"
-        >
-            <div
-                    class="img_container d-flex text-white square_inner bg-white overflow-hidden">
-                <font-awesome-icon @click="expand" class="expand-arrow m-3 position-absolute"
-                                   icon="expand-arrows-alt"
-                                   size="lg"></font-awesome-icon>
-                <a
-                        :href="edit_url"
-                        v-if="type === eboxtype.P"
-                >
-                    <font-awesome-icon class="   pencil m-3 position-absolute" icon="pencil-alt"
-                                       size="lg"></font-awesome-icon>
+        <div @click="$emit('click', id, type)" class="aspect_16_9 map-img">
+            <div class="img_container d-flex text-white square_inner bg-white overflow-hidden">
+                <font-awesome-icon @click="expand" class="expand-arrow m-3 position-absolute" icon="expand-arrows-alt" size="lg"></font-awesome-icon>
+                <a :href="edit_url" v-if="type === eboxtype.P">
+                    <font-awesome-icon class="   pencil m-3 position-absolute" icon="pencil-alt" size="lg"></font-awesome-icon>
                 </a>
                 <img :src="img_url" class="thumbnail align-self-center w-100"/>
             </div>
@@ -27,19 +18,10 @@
             <b-row no-gutters>
                 <b-col md="5">
                     <a :href="map_url" class="d-block aspect_16_9 map-img" rel="noopener noreferrer" target="_blank">
-                        <div
-                             class="img_container d-flex text-white square_inner bg-white overflow-hidden">
-                            <font-awesome-icon @click="expand" class="expand-arrow m-3 position-absolute"
-                                               icon="expand-arrows-alt"
-                                               size="lg"></font-awesome-icon>
-                            <a
-                                    :href="edit_url"
-                                    rel="noopener noreferrer"
-                                    target="_blank"
-                                    v-if="type === eboxtype.P"
-                            >
-                                <font-awesome-icon class="   pencil m-3 position-absolute" icon="pencil-alt"
-                                                   size="lg"></font-awesome-icon>
+                        <div class="img_container d-flex text-white square_inner bg-white overflow-hidden">
+                            <font-awesome-icon @click="expand" class="expand-arrow m-3 position-absolute" icon="expand-arrows-alt" size="lg"></font-awesome-icon>
+                            <a :href="edit_url" rel="noopener noreferrer" target="_blank" v-if="type === eboxtype.P">
+                                <font-awesome-icon class="pencil m-3 position-absolute" icon="pencil-alt" size="lg"></font-awesome-icon>
                             </a>
                             <img :src="img_url" class="thumbnail align-self-center w-100"/>
                         </div>
@@ -47,15 +29,12 @@
                 </b-col>
                 <b-col md="7" class="d-none d-md-block position-relative overflow-y-scoll">
                     <b-card-body :title="title" class="card-description">
-                        <b-card-text v-html="description">
-                        </b-card-text>
+                        <b-card-text v-html="description"></b-card-text>
                     </b-card-body>
-
                 </b-col>
                 <b-col cols="12" class="d-md-none position-relative">
                     <b-card-body :title="title">
-                        <b-card-text v-html="description">
-                        </b-card-text>
+                        <b-card-text v-html="description"></b-card-text>
                     </b-card-body>
                 </b-col>
             </b-row>
@@ -90,33 +69,22 @@
             this.$bvModal.show('thumbnailModal');
         }
 
-        // get bg_img() {
-        //     return {
-        //         backgroundImage: "url('" + this.img_url + "')",
-        //     }
-        // }
     }
 </script>
 
 <style lang="scss" scoped>
-
     @import "../styles/mixin";
-
     .map-img {
         &:hover {
             background-color: gray;
         }
     }
-
     .overflow-y-scoll {
         overflow-y: scroll;
     }
-
     .project-card {
-        /*background-color: white;*/
         color: black;
     }
-
     .card-description {
         position: absolute;
         left: 0;
@@ -127,7 +95,6 @@
 
     .title {
         height: 50px;
-
         .title_ellipsis {
             position: absolute;
             left: 0;
@@ -137,15 +104,12 @@
             text-overflow: ellipsis;
         }
     }
-
     .expand-arrow {
         cursor: pointer;
-
         &:hover {
             color: blue;
         }
     }
-
     .pencil {
         cursor: pointer;
         right: 0;
@@ -155,14 +119,9 @@
             color: blue;
         }
     }
-
     .img_container {
         cursor: pointer;
         position: relative;
-        /*background-size: contain;*/
-        /*background-repeat: no-repeat;*/
-        /*background-position: center;*/
-
         &:hover::before {
             @include trbl(0, 0, 0, 0);
             content: "";

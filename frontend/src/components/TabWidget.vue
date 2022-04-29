@@ -1,51 +1,21 @@
 <template>
     <div class="d-flex flex-column">
-        <Search v-if="($route.name === 'mappe' || is_pa )" class="w-100 d-flex search_box mb-4"
-                :class="[is_pa? '' : 'd-flex d-md-none']"
-                v-model="search"></Search>
-
-        <TabNav
-                v-if="!search.length"
-                :activeClass="activeClass"
-                :tabs="tabs"
-                @click="handleTabClick"
-                id="TabNav"
-        ></TabNav>
+        <Search v-if="($route.name === 'mappe' || is_pa )" class="w-100 d-flex search_box mb-4" :class="[is_pa? '' : 'd-flex d-md-none']" v-model="search"></Search>
+        <TabNav v-if="!search.length" :activeClass="activeClass" :tabs="tabs" @click="handleTabClick" id="TabNav"></TabNav>
         <div class="tab-content" id="TabContent">
             <div aria-labelledby="nav-tab1-tab" class="tab-pane p-4 fade show active" id="nav-tab1" role="tabpanel">
                 <div class="w-100">
                     <div class="p-2 h-100 bg-transparent">
                         <h2 v-if="!search.length" class="sottotitolo font-abril">{{title}}</h2>
-                        <!--                        <h6 class="titolo font-lato">{{$tc("messages.tab.sottotitolo")}}</h6>-->
                         <p v-if="!search.length" class="descrizione" v-html="description"></p>
                         <div class="row">
-                            <tab-box
-                                    :href="mc.LogoLink"
-                                    :id="mc.Id"
-                                    :img_url="mc.Logo"
-                                    :key="'mc_' + mc.Key"
-                                    :title="mc.Title"
-                                    :type="mc.InstanceOf"
-                                    :edit_url="mc.edit_url"
-                                    :map_url="mc.map_url"
-                                    :description="mc.description"
-                                    @click="handleBoxClick"
-                                    :class="{
-                                        'col-12 col-md-6 col-lg-4 mb-4': mc.InstanceOf != eboxtype.P,
-                                        'col-12 mb-4': mc.InstanceOf == eboxtype.P
-                                            }"
-                                    v-for="mc in boxes">
+                            <tab-box v-for="mc in boxes" :href="mc.LogoLink" :id="mc.Id" :img_url="mc.Logo" :key="'mc_' + mc.Key" :title="mc.Title" :type="mc.InstanceOf" :edit_url="mc.edit_url" :map_url="mc.map_url" :description="mc.description" @click="handleBoxClick" :class="{ 'col-12 col-md-6 col-lg-4 mb-4': mc.InstanceOf != eboxtype.P,'col-12 mb-4': mc.InstanceOf == eboxtype.P}">
                             </tab-box>
-
                         </div>
                     </div>
                 </div>
             </div>
-            <!--            <div class="tab-pane p-4 fade" id="nav-tab2" role="tabpanel" aria-labelledby="nav-tab2-tab">Contenuto 2</div>-->
-            <!--            <div class="tab-pane p-4 fade" id="nav-tab3" role="tabpanel" aria-labelledby="nav-tab3-tab">Contenuto 3</div>-->
         </div>
-
-        <!--        modal ingrandimento immagini-->
         <b-modal centered backdrop id="thumbnailModal" size="xl" :title="$store.getters['modal/title']">
             <template v-slot:default>
                 <div>
@@ -56,7 +26,6 @@
                 <div></div>
             </template>
         </b-modal>
-
     </div>
 </template>
 
@@ -157,7 +126,7 @@ export default class TabWidget extends Vue {
     }
 
     public created() {
-        this.tabs = [this.$tc('messages.tab.firstTab')];
+        this.tabs = [this.$tc(`messages.menu.${this.$route.name}`).toUpperCase()];
     }
 
     private handleTabClick(idx: number) {
@@ -192,24 +161,19 @@ export default class TabWidget extends Vue {
 </script>
 
 <style lang="scss">
-
     .search_box {
         height: 50px;
     }
-
     #thumbnailModal {
         .modal-footer {
             height: 0;
             padding: 0;
         }
-
         .modal-body {
             padding: 24px;
         }
     }
-
     .modal-backdrop {
         opacity: 0.7;
     }
-
 </style>

@@ -1,7 +1,6 @@
 <template>
     <div class="ButtonMenu">
-        <div @click="toggleMenu"
-             class=" innerButton rounded d-flex flex-column justify-content-around align-items-center">
+        <div @click="toggleMenu" class=" innerButton rounded d-flex flex-column justify-content-around align-items-center">
             <span class="line w-100"></span>
             <span class="line w-100"></span>
             <span class="line w-100"></span>
@@ -9,71 +8,31 @@
         <transition name="slide-fade">
             <div class="text-white mobileMenu d-flex flex-column" v-if="$store.getters['menu/isVisible']">
                 <div class="d-flex mobile_menu_sub">
-                    <g3w-button
-                            :alwaysExpanded="true"
-                            @click="switchLang"
-                            class="left_rounded mobile_button pointer d-flex"
-                            icon="language"
-                            :class="width"
-                            size="lg"
-                    >
+                    <g3w-button :alwaysExpanded="true" @click="switchLang" class="left_rounded mobile_button pointer d-flex" icon="language" :class="width" size="lg">
                         <div class="align-item-center m-auto d-flex justify-content-center align-items-center">
                             <country-flag :country='flag' size='normal'/>
                         </div>
                     </g3w-button>
-                    <g3w-button
-                            @click="goToHome"
-                            :alwaysExpanded="true"
-                            class="mobile_button pointer"
-                            icon="home"
-                            :class="width"
-                            size="lg"
-                    >
+                    <g3w-button @click="goToHome" :alwaysExpanded="true" class="mobile_button pointer" icon="home" :class="width" size="lg">
                         <div class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative">
                             <font-awesome-icon icon="home" class="position-absolute" size="lg"></font-awesome-icon>
                         </div>
                     </g3w-button>
-                    <g3w-button
-                            :alwaysExpanded="true"
-                            :icon="Icon"
-                            :class="width"
-                            class="mobile_button pointer"
-                    >
-                        <div
-                                @click="logout"
-                                class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative"
-                                v-if="someoneIsLogged"
-                        >
+                    <g3w-button :alwaysExpanded="true" :icon="Icon" :class="width" class="mobile_button pointer">
+                        <div @click="logout" class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative" v-if="someoneIsLogged">
                             <font-awesome-icon :icon="Icon" class="position-absolute" size="lg"></font-awesome-icon>
                         </div>
-                        <div
-                                @click="goToLogin"
-                                class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative"
-                                v-else
-                        >
+                        <div @click="goToLogin" class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative" v-else>
                             <font-awesome-icon :icon="Icon" class="position-absolute" size="lg"></font-awesome-icon>
                         </div>
                     </g3w-button>
-                    <g3w-button
-                            :alwaysExpanded="true"
-                            v-if="showAdmin && someoneIsLogged"
-                            class="mobile_button d-flex align-items-center justify-content-center"
-                            :class="width"
-                            :icon="Icon"
-                    >
+                    <g3w-button :alwaysExpanded="true" v-if="showAdmin && someoneIsLogged" class="mobile_button d-flex align-items-center justify-content-center" :class="width" :icon="Icon">
                         <a href="/admin" rel="noopener noreferrer nofollow" class="position-absolute text-white">
                             <font-awesome-icon icon="user-shield" size="lg"></font-awesome-icon>
                         </a>
                     </g3w-button>
                 </div>
-                <Menu
-                        :alwaysExpanded="true"
-                        @buttonClicked="$store.dispatch('menu/setVisibility',{v:false})"
-                        class="d-flex flex-grow-1"
-                        hoverClasses="gradient"
-                >
-
-                </Menu>
+                <Menu :alwaysExpanded="true" @buttonClicked="$store.dispatch('menu/setVisibility',{v:false})" class="d-flex flex-grow-1" hoverClasses="gradient"></Menu>
             </div>
         </transition>
     </div>

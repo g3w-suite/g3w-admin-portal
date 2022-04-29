@@ -1,13 +1,7 @@
 <template>
-    <a :class="[active ? activeClass: '', active ? 'active' : '']"
-       @click="$emit('click',idx)"
-       aria-controls="nav-tab"
-       aria-selected="true"
-       class="nav-item nav-link"
-       data-toggle="tab"
-       href="#nav-tab"
-       id="nav-tab1-tab"
-       role="tab"><span class="tab_title font-weight-bold">{{text}}</span></a>
+    <a :class="[active ? activeClass: '', active ? 'active' : '']" @click="$emit('click',idx)" aria-controls="nav-tab" aria-selected="true" class="nav-item nav-link" data-toggle="tab" href="#nav-tab" id="nav-tab1-tab" role="tab">
+        <span class="tab_title font-weight-bold">{{text}}</span>
+    </a>
 </template>
 
 <script lang="ts">

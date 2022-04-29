@@ -1,15 +1,8 @@
 <template>
-    <div
-            class="position-relative"
-            :style="style"
-            style="background-position: center center">
-        <span class="photo_info pr-4 pb-3"
-        :style="infoStyle"
-        >Photo by
+    <div class="position-relative" :style="style" style="background-position: center center">
+        <span class="photo_info pr-4 pb-3" :style="infoStyle">Photo by
             <a v-if="info.author_url" :style="infoStyle" :href="info.author_url"><u>{{info.author}}</u></a>
-            <template v-else>
-                {{info.author}}
-            </template>
+            <template v-else>{{info.author}}</template>
         </span>
     </div>
 </template>

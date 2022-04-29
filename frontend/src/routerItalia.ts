@@ -59,12 +59,8 @@ const routerItalia = new Router({
 
 routerItalia.beforeEach((to, from, next) => {
     const lang = to.params.lang;
-    if (!['en', 'it'].includes(lang)) {
-        return next('/it');
-    }
-    if (i18n.locale !== lang) {
-        i18n.locale = lang;
-    }
+    if (!['en', 'it'].includes(lang)) return next('/it');
+    if (i18n.locale !== lang) i18n.locale = lang;
     return next();
 });
 

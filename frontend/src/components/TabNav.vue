@@ -1,16 +1,8 @@
 <template>
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <TabButton
-                    :active="idx === tabs.length - 1"
-                    :activeClass="activeClass"
-                    :idx="idx"
-                    :key="idx"
-                    :text="b"
-                    @click="(idx) => { $emit( 'click' ,idx)}"
-                    class="tab-button"
-                    v-for="(b,idx) in tabs"
-            ></TabButton>
+            <TabButton v-for="(b,idx) in tabs" :active="idx === tabs.length - 1" :activeClass="activeClass" :idx="idx" :key="idx" :text="b" @click="idx => $emit( 'click' , idx)" class="tab-button">
+            </TabButton>
         </div>
     </nav>
 </template>
@@ -26,12 +18,14 @@ import TabButton from '@/components/TabButton.vue';
 export default class TabNav extends Vue {
     @Prop({type: Array, required: true}) private readonly tabs!: string[];
     @Prop(String) private readonly activeClass!: string;
+    public mounted() {
+        console.log(this.tabs)
+    }
 
 }
 </script>
 
 <style lang="scss" scoped>
-
     .nav-tabs{
         border-bottom-color: transparent;
     }

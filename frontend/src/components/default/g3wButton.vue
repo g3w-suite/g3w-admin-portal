@@ -1,26 +1,13 @@
 <template>
-    <div
-            :class="[expanded ? 'expanded-class': '', isHover ? hoverClasses: '']"
-            @click="$emit('click')"
-            @mouseleave="mouseLeave"
-            @mouseover="mouseOver"
-            @mouseout="mouseOut"
-            class="g3wButton"
-    >
+    <div :class="[expanded ? 'expanded-class': '', isHover ? hoverClasses: '']" @click="$emit('click')"
+         @mouseleave="mouseLeave" @mouseover="mouseOver" @mouseout="mouseOut" class="g3wButton">
         <slot name="default">
-
-            <router-link
-                    :to="{name:to}"
-                    class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative"
-            >
+            <router-link :to="{name:to}" class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative">
                 <transition name="fade">
-                    <h3
-                            class="text-uppercase font-weight-bold position-absolute"
-                            v-show="showText">{{text_}}</h3>
+                    <h3 class="text-uppercase font-weight-bold position-absolute" v-show="showText">{{text_}}</h3>
                 </transition>
                 <transition name="fade">
-                    <font-awesome-icon :icon="icon" :size="size" class="position-absolute"
-                                       v-show="!showText"></font-awesome-icon>
+                    <font-awesome-icon :icon="icon" :size="size" class="position-absolute" v-show="!showText"></font-awesome-icon>
                 </transition>
             </router-link>
         </slot>
@@ -78,25 +65,17 @@ export default class g3wButton extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
     @import "../../styles/_variables.scss";
-
     .g3wButton {
-        /*background-color: $palette_viola_fourth;*/
         opacity: 0.7;
-        /*border: 1px solid $palette_viola_third;*/
-
         @include media-breakpoint-down(sm){
             opacity: 1;
         }
     }
-
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s;
     }
-
-    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
-    {
+    .fade-enter, .fade-leave-to {
         opacity: 0;
     }
 </style>

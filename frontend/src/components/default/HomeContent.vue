@@ -1,13 +1,10 @@
 <template>
     <MainContent>
-
         <template slot="tl-container">
             <div class="tl_content h-100 gradient text-white p-3">
-                <home class="h-100 w-100 d-flex flex-column p-3" id=Home>
-                </home>
+                <home class="h-100 w-100 d-flex flex-column p-3" id=Home></home>
             </div>
         </template>
-
     </MainContent>
 </template>
 

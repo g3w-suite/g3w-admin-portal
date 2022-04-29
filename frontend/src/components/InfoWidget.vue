@@ -8,9 +8,7 @@
             </div>
         </div>
         <div class="text-lg-center text-xl-left text-left text_container pl-5 pl-xl-3 pl-lg-0">
-            <slot name="default">
-                {{text}}
-            </slot>
+            <slot name="default">{{text}}</slot>
         </div>
     </div>
 </template>
@@ -30,9 +28,7 @@ export default class InfoWidget extends Vue {
 </script>
 
 <style lang="scss" scoped>
-
     @import "../styles/_variables.scss";
-
     .g3w-white-border {
         border: 1px solid $white;
     }
