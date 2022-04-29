@@ -1,7 +1,7 @@
 <template>
     <div class="g3w-project-search position-relative p-3 p-md-0">
-        <div class="tl_content h-100 text-white p-3 p-md-5">
-            <Search class="w-100 search_box d-none"  style="margin-bottom: 5px;" :class="{'d-md-flex': ($route.name === 'mappe')}" v-model="search"></Search>
+        <div class="h-100 text-white p-2 pr-3">
+            <Search class="w-100 search_box d-none" style="margin-bottom: 5px;" :class="{'d-md-flex': ($route.name === 'mappe')}" v-model="search"></Search>
             <tab-widget activeClass="gis_active"></tab-widget>
         </div>
     </div>

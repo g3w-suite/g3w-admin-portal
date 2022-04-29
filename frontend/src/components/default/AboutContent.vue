@@ -2,8 +2,8 @@
     <MainContent>
 
         <template slot="tl-container">
-            <div class="tl_content h-100 gradient text-white p-3">
-                <div class="scroll h-100 w-100 pl-3 pr-2 pl-md-5">
+            <div class="h-100 gradient text-white p-3">
+                <div class="scroll-auto h-100 w-100 pl-3 pr-2 pl-md-5">
                     <div class="py-2">
                         <h2 class="font-abril">{{settings.about_title}}</h2>
                     </div>
@@ -51,7 +51,7 @@
         </template>
 
         <template slot="tr-container">
-            <div class="tr_content h-100 w-100 gradient d-none d-md-flex flex-column p-5 text-white">
+            <div class="h-100 w-100 gradient d-none d-md-flex flex-column p-5 text-white">
                 <info-widget :text="settings.about_name" class="mb-2" icon="user"></info-widget>
                 <info-widget :text="settings.about_tel" class="mb-2" icon="phone-alt">
                     <a :href="telHref" class="text-white p-0">{{settings.about_tel}}</a>
@@ -134,7 +134,7 @@ export default class AboutContent extends Vue {
         }
     }
     .tr_content, .br_content {
-        border-top-left-radius: $gis_rounded_radius;
+        //border-top-left-radius: $gis_rounded_radius;
     }
 
     .qt {

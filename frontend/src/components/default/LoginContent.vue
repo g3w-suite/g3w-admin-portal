@@ -1,7 +1,7 @@
 <template>
     <MainContent>
         <template slot="tl-container">
-            <div class="tl_content h-100 gradient text-white p-3">
+            <div class="h-100 gradient text-white p-3">
                 <login :placeholderUppercase="true" class="h-100 w-100 d-flex flex-column p-3" id="loginForm"></login>
             </div>
         </template>

@@ -1,16 +1,16 @@
 <template>
     <div v-if="type != eboxtype.P">
         <div @click="$emit('click', id, type)" class="aspect_16_9 map-img">
-            <div class="img_container d-flex text-white square_inner bg-white overflow-hidden">
+            <div class="img_container d-flex text-white square_inner bg-skin-dark overflow-hidden">
                 <font-awesome-icon @click="expand" class="expand-arrow m-3 position-absolute" icon="expand-arrows-alt" size="lg"></font-awesome-icon>
                 <a :href="edit_url" v-if="type === eboxtype.P">
-                    <font-awesome-icon class="   pencil m-3 position-absolute" icon="pencil-alt" size="lg"></font-awesome-icon>
+                    <font-awesome-icon class=" pencil m-3 position-absolute" icon="pencil-alt" size="lg"></font-awesome-icon>
                 </a>
                 <img :src="img_url" class="thumbnail align-self-center w-100"/>
             </div>
         </div>
-        <div class="text-uppercase text-black title mt-3 bg-white d-flex justify-content-center align-items-center position-relative">
-            <p class="px-2 title_ellipsis text-center">{{title}}</p>
+        <div class="text-uppercase text-black title mt-3 map-item d-flex justify-content-center align-items-center position-relative">
+            <p style="font-weight: bold;" class="px-2 bold title_ellipsis text-center">{{title ||  $t('messages.maps.group')}}</p>
         </div>
     </div>
     <div v-else class="project-card d-flex">

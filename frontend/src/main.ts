@@ -90,9 +90,9 @@ export const i18n = new VueI18n({
 Vue.config.productionTip = false;
 
 let IS_PA;
-let LANGUAGES = ['it']; // default and supported languages
-if (window.LANGUAGES && Array.isArray(window.LANGUAGES)){
-    LANGUAGES = window.LANGUAGES.filter(lang => DEFAULT_SUPPORTED_LANGUAGES.indexOf(lang) !== -1);
+let LANGUAGES = ['it', 'en']; // default and supported languages
+if ((window as any).LANGUAGES && Array.isArray((window as any).LANGUAGES)){
+    LANGUAGES = (window as any).LANGUAGES.filter((lang: string)  => DEFAULT_SUPPORTED_LANGUAGES.indexOf(lang) !== -1);
     if (LANGUAGES.length === 0) LANGUAGES = ['it'];
 }
 
@@ -113,11 +113,8 @@ if (EnvironmentHelper.isProduction) {
 
 new Vue({
     router: (() => {
-        if (IS_PA) {
-            return routerItalia;
-        } else {
-            return router;
-        }
+        if (IS_PA) return routerItalia;
+        else return router;
     })(),
     store,
     i18n,

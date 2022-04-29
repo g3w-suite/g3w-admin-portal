@@ -18,10 +18,6 @@ import TabButton from '@/components/TabButton.vue';
 export default class TabNav extends Vue {
     @Prop({type: Array, required: true}) private readonly tabs!: string[];
     @Prop(String) private readonly activeClass!: string;
-    public mounted() {
-        console.log(this.tabs)
-    }
-
 }
 </script>
 

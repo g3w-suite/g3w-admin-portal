@@ -67,7 +67,7 @@ export default class g3wButton extends Vue {
 <style lang="scss" scoped>
     @import "../../styles/_variables.scss";
     .g3wButton {
-        opacity: 0.7;
+        opacity: 0.9;
         @include media-breakpoint-down(sm){
             opacity: 1;
         }

@@ -2,43 +2,64 @@
 @import "mixin";
 
 body.red {
-
+  background-color: #f0f2f5;
+  .header {
+    background-color: $palette_red_second !important;
+    margin-bottom: 3px;
+  }
   .gradient {
-    @include gis_gradient(30, $palette_2_rgb_second, 0%, $palette_2_rgb_fourth, 50%);
+    background-color: $palette_red_second;
   }
 
   .g3wButton {
-    background-color: $palette_2_rgb_fourth !important;
-    border: 1px solid $palette_2_rgb_second !important;
-
+    background-color: $palette_red_first !important;
     &.mobile_button:hover {
-        @include gis_gradient(30, $palette_2_rgb_second, 0%, $palette_2_rgb_fourth, 50%);
+      @include gis_gradient(30, $palette_1_rgb_second, 0%, $palette_1_rgb_fourth, 50%);
+    }
+    &.header-icon {
+      opacity: 1;
     }
   }
 
   .search_box {
     .input-group-text {
       color: white;
-      border: 1px solid $palette_2_rgb_second !important;
-      background-color: $palette_2_rgb_fourth;
+      border: 1px solid $palette_red_first !important;
+      background-color: $palette_red_second;
     }
 
     input {
       color: white;
-      border: 1px solid $palette_2_rgb_second !important;
-      background-color: $palette_2_rgb_fourth;
+      border: 1px solid $palette_red_first !important;
+      background-color: $palette_red_first;
+      font-weight: bold;
+    }
+  }
+  .info {
+    .content {
+      //background-color: $palette_red_second;
     }
   }
 
-  .tab-button{
-    border-color: $palette_2_rgb_fourth;
+  .tab-button {
+    border-color: $palette_red_first;
   }
 
   .gis_active {
-    background-color: $palette_2_rgb_fourth !important;
+    background-color: $palette_red_second !important;
   }
 
   .tab-content {
-    @include gis_gradient(30, $palette_2_rgb_second, 0%, $palette_2_rgb_fourth, 50%);
+    background-color: $palette_red_second !important;
   }
+
+  .map-item {
+    background-color: $palette_red_first;
+    color: #ffffff;
+    border-radius: 5px;
+    p {
+      margin: 0 !important;
+    }
+  }
+
 }

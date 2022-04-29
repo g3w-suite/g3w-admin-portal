@@ -8,7 +8,7 @@
                     <div class="p-2 h-100 bg-transparent">
                         <h2 v-if="!search.length" class="sottotitolo font-abril">{{title}}</h2>
                         <p v-if="!search.length" class="descrizione" v-html="description"></p>
-                        <div class="row">
+                        <div class="row" style="max-height: 50vh; overflow-y: auto">
                             <tab-box v-for="mc in boxes" :href="mc.LogoLink" :id="mc.Id" :img_url="mc.Logo" :key="'mc_' + mc.Key" :title="mc.Title" :type="mc.InstanceOf" :edit_url="mc.edit_url" :map_url="mc.map_url" :description="mc.description" @click="handleBoxClick" :class="{ 'col-12 col-md-6 col-lg-4 mb-4': mc.InstanceOf != eboxtype.P,'col-12 mb-4': mc.InstanceOf == eboxtype.P}">
                             </tab-box>
                         </div>
@@ -98,7 +98,7 @@ export default class TabWidget extends Vue {
         if (this.tabs.length == 1) {
             return this.settings.groups_title;
         }
-        return this.$store.getters['group/activeGroup'].title;
+        return this.$store.getters['group/activeGroup'].title || this.$store.getters['group/activeGroup'].name;
     }
 
     get description() {
@@ -155,7 +155,7 @@ export default class TabWidget extends Vue {
         this.$store.dispatch('group/setActiveGroup', {sg: el});
         this.stackElementTab = this.stackElementTab.concat(el);
         // @ts-ignore
-        this.tabs = this.tabs.concat(el.title);
+        this.tabs = this.tabs.concat(el.title || el.name);
     }
 }
 </script>

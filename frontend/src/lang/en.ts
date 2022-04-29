@@ -39,5 +39,8 @@ export const en: any = {
             it: 'ita',
             en: 'eng',
         },
+        maps: {
+            group: 'Group'
+        }
     },
 };

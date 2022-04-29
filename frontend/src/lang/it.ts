@@ -26,7 +26,7 @@ export const it: any = {
             reset_password_url: "Password dimenticata?"
         },
         tab: {
-            firstTab: 'Pippo',
+            firstTab: 'Home',
         },
         about: {
             chisiamo: 'chi siamo',
@@ -43,5 +43,8 @@ export const it: any = {
             requiredField: 'Questo campo è obbligatorio',
             erroreLogin: 'Errore di login',
         },
+        maps: {
+            group: 'Gruppo'
+        }
     },
 };

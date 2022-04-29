@@ -15,15 +15,15 @@
                 </transition-group>
             </slot>
         </div>
-        <div class="content w-100 d-md-flex flex-wrap pr-lg-5 d-block">
-            <div class="content_left p-4">
+        <div class="content w-100 d-md-flex flex-wrap pr-lg-2 d-block">
+            <div class="content_left p-2">
                 <slot name="tl-container"></slot>
             </div>
-            <div class="content_right d-none d-lg-block p-3">
+            <div class="content_right d-none d-lg-block p-2">
                 <slot name="tr-container"></slot>
             </div>
             <div class="content_left d-none d-lg-block"></div>
-            <div class="content_right d-none d-lg-block p-3">
+            <div class="content_right d-none d-lg-block p-2">
                 <slot name="br-container"></slot>
             </div>
         </div>

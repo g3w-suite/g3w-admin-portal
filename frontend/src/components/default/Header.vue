@@ -2,15 +2,15 @@
     <div class="header w-100 d-flex">
         <div class="header_left d-flex align-items-center justify-content-between">
             <a :href="info.url_suite_logo" class="img_container d-flex align-items-center h-100 pl-md-3">
-                <img alt="logo" class="logo" :src="info.suite_logo">
+                <img alt="logo" class="logo" src="https://www.comune.altamura.ba.it/images/2019/12/06/logo-ridimensionato.png">
             </a>
         </div>
         <MobileMenu class="d-block pr-3 d-md-none align-self-center"></MobileMenu>
-        <div class="header_right d-none d-md-flex">
+        <div class="header_right d-none d-md-flex mr-2">
             <g3w-button v-if="showLanguagesButton"
                     v-b-tooltip.hover.bottom="$t('messages.tooltip.cambia_lingua')"
                     @click="switchLang"
-                    class="tl_tounded button"
+                    class="button header-icon"
                     :class="width"
                     icon="language"
                     size="lg">
@@ -18,14 +18,15 @@
                     <country-flag :country='flag' size='normal'/>
                 </div>
             </g3w-button>
-            <g3w-button v-b-tooltip.hover.bottom="$t('messages.tooltip.home')" class="button d-flex d-flex justify-content-center align-items-center position-relative"
+            <g3w-button v-b-tooltip.hover.bottom="$t('messages.tooltip.home')"
+                        class="button header-icon d-flex d-flex justify-content-center align-items-center position-relative"
                     :class="width"
                     icon="home">
                 <router-link :to="{name:'Home'}" class="h-100 w-100 text-white d-flex justify-content-center align-items-center position-relative">
                     <font-awesome-icon icon="home" size="lg" class="position-absolute"></font-awesome-icon>
             </router-link>
             </g3w-button>
-            <g3w-button class="button" :class="width" :icon="Icon">
+            <g3w-button class="button header-icon" :class="width" :icon="Icon">
                 <div v-b-tooltip.hover.bottom="$t('messages.tooltip.logout')" @click="logout" v-if="someoneIsLogged" class="h-100 w-100 text-white d-flex flex-column justify-content-center align-items-center position-relative">
                     <font-awesome-icon :icon="Icon" size="lg"></font-awesome-icon>
                 </div>
@@ -34,7 +35,7 @@
                 </router-link>
             </g3w-button>
             <g3w-button @click="goToAdmin" v-b-tooltip.hover.bottom="$t('messages.tooltip.admin')" v-if="showAdmin && someoneIsLogged"
-                    class="button d-flex d-flex justify-content-center align-items-center position-relative"
+                    class="button header-icon d-flex d-flex justify-content-center align-items-center position-relative"
                     :class="width"
                     :icon="Icon">
                 <a href="/admin" rel="noopener noreferrer nofollow" class="position-absolute text-white">
