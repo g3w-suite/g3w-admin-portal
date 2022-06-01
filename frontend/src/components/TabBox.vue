@@ -68,7 +68,6 @@
       this.$store.dispatch('modal/setUrl', {url: this.img_url || ''});
       this.$bvModal.show('thumbnailModal');
     }
-
   }
 </script>
 
@@ -107,7 +106,7 @@
   .expand-arrow {
     cursor: pointer;
     &:hover {
-      color: blue;
+      transform: scale(1.5);
     }
   }
   .pencil {
@@ -116,7 +115,7 @@
     color: white;
 
     &:hover {
-      color: blue;
+      transform: scale(1.5);
     }
   }
   .img_container {

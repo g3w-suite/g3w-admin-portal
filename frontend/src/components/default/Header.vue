@@ -3,6 +3,10 @@
     <div class="header_left d-flex align-items-center justify-content-between">
       <a :href="info.url_suite_logo" class="img_container d-flex align-items-center h-100 pl-md-3">
         <img alt="logo" class="logo" src="https://www.comune.altamura.ba.it/images/2019/12/06/logo-ridimensionato.png">
+        <div class="title_and_subtitle" style="display: flex; flex-direction: column; color: #ffffff; justify-content: space-between; margin-left: 10px;">
+          <span style="font-size:36px; font-weight: bold">Comune Altamura</span>
+          <span>Sistema Informativo Territoriale</span>
+        </div>
       </a>
     </div>
     <MobileMenu class="d-block pr-3 d-md-none align-self-center"></MobileMenu>
@@ -54,9 +58,10 @@
   import HeaderPA from '@/components/italia/HeaderPA.vue';
   import {mapGetters} from 'vuex';
   import Search from '@/components/Search.vue';
+  import Menu from "@/components/default/Menu.vue";
 
   @Component({
-    components: {G3wButton, MobileMenu, CountryFlag, Search},
+    components: {Menu, G3wButton, MobileMenu, CountryFlag, Search},
     computed: {
       ...mapGetters({
         info: 'info/info',
@@ -115,7 +120,7 @@
   @import "../../styles/_variables.scss";
 
   .header {
-    height: $header_height;
+    //height: $header_height;
 
     .header_left {
       flex-grow: 1;

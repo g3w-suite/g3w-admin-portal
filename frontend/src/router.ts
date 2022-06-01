@@ -48,6 +48,24 @@ const router = new Router({
           },
         },
         {
+          path: 'maps/:name',
+          name: 'mappe',
+          components: {
+            header: Header,
+            default: MapsContent,
+            menu: Menu,
+          },
+        },
+        {
+          path: 'maps/group/:id',
+          name: 'mappe',
+          components: {
+            header: Header,
+            default: MapsContent,
+            menu: Menu,
+          },
+        },
+        {
           path: 'login/',
           name: 'login',
           components: {

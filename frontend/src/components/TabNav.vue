@@ -1,7 +1,7 @@
 <template>
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-      <TabButton v-for="(b,idx) in tabs" :active="idx === tabs.length - 1" :activeClass="activeClass" :idx="idx" :key="idx" :text="b" @click="idx => $emit( 'click' , idx)" class="tab-button">
+      <TabButton v-for="(b,idx) in tabs" :active="idx === tabs.length - 1" :activeClass="activeClass" :idx="idx" :key="idx" :text="b" @click="handleClick" class="tab-button">
       </TabButton>
     </div>
   </nav>
@@ -18,6 +18,9 @@
   export default class TabNav extends Vue {
     @Prop({type: Array, required: true}) private readonly tabs!: string[];
     @Prop(String) private readonly activeClass!: string;
+    public handleClick(idx: number){
+      this.$emit( 'click' , idx)
+    }
   }
 </script>
 

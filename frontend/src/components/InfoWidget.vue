@@ -31,6 +31,7 @@
   @import "../styles/_variables.scss";
   .g3w-white-border {
     border: 1px solid $white;
+    border-radius: 3px;
   }
   .icon_container{
     width: $icon_width;

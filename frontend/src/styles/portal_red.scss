@@ -2,23 +2,39 @@
 @import "mixin";
 
 body.red {
-  background-color: #f0f2f5;
+
   .header {
-    background-color: $palette_red_second !important;
+    background-color: $palette_red_second;
     margin-bottom: 3px;
   }
+
   .gradient {
     background-color: $palette_red_second;
   }
+  .g3wsuitelogo-container{
+    border-top: 3px solid $palette_red_first;
+    box-sizing: border-box;
+  }
+
+  .expand-arrow {
+    font-weight: bold;
+    border-radius: 3px;
+    padding: 1px;
+    border: 2px solid $palette_red_first;
+  }
 
   .g3wButton {
-    background-color: $palette_red_first !important;
+    background-color: $palette_red_first;
     &.mobile_button:hover {
       @include gis_gradient(30, $palette_1_rgb_second, 0%, $palette_1_rgb_fourth, 50%);
     }
     &.header-icon {
       opacity: 1;
     }
+  }
+
+  .bar-loader:before {
+    background-color: $palette_red_first !important;
   }
 
   .search_box {
@@ -51,6 +67,7 @@ body.red {
 
   .tab-content {
     background-color: $palette_red_second !important;
+    //border-radius: $border-radius-5;
   }
 
   .map-item {

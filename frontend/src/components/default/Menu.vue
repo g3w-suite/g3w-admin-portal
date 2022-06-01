@@ -35,7 +35,7 @@
     border-bottom-left-radius: $gis_rounded_radius;
   }
   ::v-deep .expanded-class {
-    width: 100% !important;
+    width: 75% !important;
   }
   .buttonMenu {}
   .Menu {
@@ -45,10 +45,10 @@
       cursor: pointer;
       transition: 500ms;
       margin-bottom: 2px;
-      max-height: 250px;
+      max-height: 150px;
       width: 50%;
       &:hover {
-        width: 100%;
+        width: 75%;
       }
     }
   }
