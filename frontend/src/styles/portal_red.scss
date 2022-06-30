@@ -26,7 +26,7 @@ body.red {
   .g3wButton {
     background-color: $palette_red_first;
     &.mobile_button:hover {
-      @include gis_gradient(30, $palette_1_rgb_second, 0%, $palette_1_rgb_fourth, 50%);
+      @include gis_gradient(30, $palette_red_first, 0%, $palette_red_second, 50%);
     }
     &.header-icon {
       opacity: 1;
