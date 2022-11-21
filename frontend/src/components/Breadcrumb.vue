@@ -3,7 +3,7 @@
     <ul>
       <li v-for="(text, idx) in tabs">
         <a v-if="idx + 1 != tabs.length" @click.prevent.stop="$emit('click', idx)">{{text}}</a>
-        <template v-else>{{text}}</template>
+        <template v-else aria-current="page">{{text}}</template>
       </li>
     </ul>
   </nav>
