@@ -3,6 +3,6 @@ module.exports = {
   outputDir: '../static/frontend/',
   filenameHashing: false,
   devServer: {
-    proxy:  'http://192.168.1.3:8001',
+    proxy:  'http://127.0.0.1:8000',
   }
 }

@@ -1,49 +1,44 @@
-import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
-import routerItalia from './routerItalia';
-import store from './store';
-import VueI18n from 'vue-i18n';
-import BootstrapVue from 'bootstrap-vue';
-import {it} from '@/lang/it';
-import {en} from '@/lang/en';
-
-//SUPPORT LANGUAGES TRANSLATIONS I18N
-const DEFAULT_SUPPORTED_LANGUAGES = ['it', 'en'];
-import {library} from '@fortawesome/fontawesome-svg-core';
+import { en } from '@/locale/en';
+import { it } from '@/locale/it';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faGooglePlusSquare,
   faFacebookSquare,
-  faTwitterSquare,
+  faFlickr,
+  faGooglePlusSquare,
   faInstagram,
   faLinkedin,
+  faTwitterSquare,
   faYoutube,
-  faFlickr,
-  faTripadvisor,
+  /* faTripadvisor */
 } from '@fortawesome/free-brands-svg-icons';
-
 import {
-  faUserSecret,
-  faKey,
-  faMapMarkerAlt,
-  faInbox,
-  faNewspaper,
-  faInfo,
-  faUser,
-  faUserLock,
-  faLanguage,
-  faPhoneAlt,
   faEnvelope,
   faExpandArrowsAlt,
-  faTimes,
-  faSignOutAlt,
-  faPencilAlt,
-  faUserShield,
-  faSearch,
+  faGear,
   faHome,
+  faInbox,
+  faInfo,
+  faKey,
+  faLanguage,
+  faMapMarkerAlt,
+  faNewspaper,
+  faPencilAlt,
+  faPhoneAlt,
+  faSearch,
+  faSignOutAlt,
+  faTimes,
+  faUser,
+  faUserLock,
+  faUserSecret,
+  faUserShield,
 } from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {EnvironmentHelper} from '@/EnvironmentHelper';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Vue from 'vue';
+import Fragment from 'vue-fragment';
+import VueI18n from 'vue-i18n';
+import App from './App.vue';
+import router from './router';
+import store from './store';
 
 library.add(
   faUserShield,
@@ -62,7 +57,7 @@ library.add(
   faGooglePlusSquare,
   faYoutube,
   faFlickr,
-  faTripadvisor,
+  /* faTripadvisor, */
   faTwitterSquare,
   faInstagram,
   faLinkedin,
@@ -72,98 +67,91 @@ library.add(
   faPencilAlt,
   faSearch,
   faHome,
+  faGear,
 );
 
-Vue.use(BootstrapVue);
+Vue.use(Fragment.Plugin);
 Vue.use(VueI18n);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
-
-export const i18n = new VueI18n({
-  locale: 'it',
-  fallbackLocale: 'it',
-  messages: {
-    it,
-    en,
-  },
-});
-
 Vue.config.productionTip = false;
+
+export const i18n = new VueI18n({ locale: 'it', fallbackLocale: 'it', messages: { it, en } });
+
+const opts  =  {
+  favicon:    'https://www.comune.altamura.ba.it/templates/shaper_helixultimate/favicon.ico',
+  stylesheet: 'https://unpkg.com/@picocss/pico@1.5.6/css/pico.min.css',
+  theme:      'light'
+}
+
+if (opts.stylesheet) {
+  const css = document.createElement('link');
+  css.setAttribute('rel', 'stylesheet');
+  css.setAttribute('href', opts.stylesheet);
+  document.body.appendChild(css);
+}
+
+if (opts.theme) {
+  document.documentElement.setAttribute('data-theme', opts.theme);
+}
+
+if (opts.favicon) {
+  const icon = document.querySelector('link[rel~=\'icon\']') || document.createElement('link');
+  icon.setAttribute('rel', 'icon');
+  icon.setAttribute('href', opts.favicon);
+}
 
 /**
  * Set all classes and id to customize in color
  */
 const ELEMENT_TO_SET_CUSTOM_COLOR = {
-  'getElementsByClassName': [
+  getElementsByClassName: [
     'header',
     'gradient',
-    'g3wButton'
+    'g3wButton',
   ],
-  'getElementById': []
+  getElementById: [],
 };
 
-
-let IS_PA;
+const SUPPORTED_LANGUAGES = ['it', 'en'];
 let LANGUAGES = ['it', 'en']; // default and supported languages
-if ((window as any).LANGUAGES && Array.isArray((window as any).LANGUAGES)){
-  LANGUAGES = (window as any).LANGUAGES.filter((lang: string)  => DEFAULT_SUPPORTED_LANGUAGES.indexOf(lang) !== -1);
-  if (LANGUAGES.length === 0) LANGUAGES = ['it'];
+const global = (window as any);
+
+if (global.LANGUAGES && Array.isArray(global.LANGUAGES)) {
+  LANGUAGES = global.LANGUAGES
+              .filter((lang: string)  => SUPPORTED_LANGUAGES.indexOf(lang) !== -1);
+  if (LANGUAGES.length === 0) { LANGUAGES = [ 'it' ]; }
 }
 
-export const APP_LANGUAGES = LANGUAGES;
-
-if (EnvironmentHelper.isProduction) {
-  IS_PA = (window as any).IS_PA;
-} else {
-  IS_PA = localStorage.getItem('isPA') === 'true';
-  (window as any).ADMIN_BTN = true;
-  (window as any).PORTAL_SECTIONS = [
-    'maps',
-    'info',
-    'news',
-    'archives',
-  ];
-}
+global.ADMIN_BTN = true;
+global.PORTAL_SECTIONS = [
+  'maps',
+  'info',
+];
 
 new Vue({
-  router: (() => {
-    if (IS_PA) return routerItalia;
-    else return router;
-  })(),
+  router,
   store,
   i18n,
   render: (h) => h(App),
   created: () => {
-    store.dispatch('info/fetchInfo', {locale: i18n.locale});
-    store.dispatch('settings/portalSections', {sections: (window as any).PORTAL_SECTIONS});
-    store.dispatch('settings/showAdminButton', {show: (window as any).ADMIN_BTN});
-    store.dispatch('settings/fetchPictures', {locale: i18n.locale});
+    store.dispatch('info/fetchInfo', { locale: i18n.locale });
+    store.dispatch('settings/portalSections', { sections: global.PORTAL_SECTIONS });
+    store.dispatch('settings/showAdminButton', { show: global.ADMIN_BTN });
+    store.dispatch('settings/fetchPictures', { locale: i18n.locale });
   },
-  async mounted(){
+  async mounted() {
     await this.$nextTick();
-    if ((window as any).CUSTOM_COLOR) {
-      Object.keys(ELEMENT_TO_SET_CUSTOM_COLOR).forEach((elementSelectorType: string) =>{
+    if (global.CUSTOM_COLOR) {
+      Object.keys(ELEMENT_TO_SET_CUSTOM_COLOR).forEach((elementSelectorType: string) => {
         const selectorElement = (ELEMENT_TO_SET_CUSTOM_COLOR as any)[elementSelectorType] || [];
         selectorElement.forEach((selector: string) => {
-          const elements = document[elementSelectorType](selector);
+          const elements = (document as any)[elementSelectorType](selector);
           const elementsLength = elements.length;
-          for (let i=0; i< elementsLength; i++){
-            elements[i].style.backgroundColor = selector === 'g3wButton' ? 'orange': 'yellow';
+          for (let i = 0; i < elementsLength; i++) {
+            elements[i].style.backgroundColor = selector === 'g3wButton' ? 'orange' : 'yellow';
           }
-        })
-      })
+        });
+      });
     }
-  }
+  },
 }).$mount('#app');
-
-if (IS_PA) {
-
-  const btIta = document.createElement('link');
-
-  btIta.setAttribute('rel', 'stylesheet');
-  btIta.setAttribute('type', 'text/css');
-  btIta.setAttribute('href', '/static/frontend/bootstrap-italia/css/bootstrap-italia.min.css');
-
-  document.body.appendChild(btIta);
-
-  document.body.classList.add('pa');
-}

@@ -8,5 +8,15 @@
       "node_modules/**"
     ]
   },
-  "rules": {}
+  "rules": {
+    "variable-name": [
+      true,
+      "allow-snake-case"
+    ],
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "object-literal-sort-keys": false
+  }
 }
