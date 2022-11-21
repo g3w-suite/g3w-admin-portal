@@ -4,6 +4,7 @@
     <!-- TOP MENU -->
     <nav class="container-fluid">
 
+      <!-- ORGANIZATION NAME -->
       <ul>
         <li v-if="info.suite_org_url">
           <a :href="info.suite_org_url">
@@ -87,6 +88,11 @@
       </ul>
 
       <ul>
+        <li>
+          <a href="#" class="secondary">
+            <font-awesome-icon icon="search" size="lg" />
+          </a>
+        </li>
         <li>
           <a href="#" @click.prevent="toggleSecondaryMenu" class="secondary">
             <font-awesome-icon :icon="secondaryMenuVisible ? 'bars' : 'xmark'" size="lg" />

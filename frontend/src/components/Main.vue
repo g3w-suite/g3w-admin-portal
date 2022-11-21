@@ -3,8 +3,8 @@
     <Header />
     
     <!-- <router-view name="header"></router-view> -->
-    <header>
-      <Carousel v-if="$route.name === 'home'" class="bg_image h-100"></Carousel>
+    <header v-if="$route.name === 'home'">
+      <Carousel class="bg_image h-100"></Carousel>
       <div class="container">
         <input
           type="search"
