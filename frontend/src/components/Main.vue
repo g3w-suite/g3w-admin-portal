@@ -1,10 +1,12 @@
 <template>
   <fragment>
+
     <Header />
-    
-    <!-- <router-view name="header"></router-view> -->
+
+    <!-- <router-view name="header" /> -->
+
     <header v-if="$route.name === 'home'">
-      <Carousel class="bg_image h-100"></Carousel>
+      <Carousel />
       <div class="container">
         <input
           type="search"
@@ -19,9 +21,11 @@
     </header>
 
     <main class="container">
-      <router-view></router-view>
+      <router-view />
     </main>
+
     <Footer />
+
   </fragment>
 </template>
 
