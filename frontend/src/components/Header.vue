@@ -85,8 +85,8 @@
             id="search"
             name="search"
             class="hide-on-mobile"
-            :placeholder="$t('messages.menu.search')"
-            :aria-label="$t('messages.menu.search')"
+            :placeholder="$t('messages.menu.search_placeholder')"
+            :aria-label="$t('messages.menu.search_placeholder')"
             @input="$emit('input', $event.target.value)"
           />
         </li>
@@ -96,21 +96,23 @@
 
     <!-- MAIN MENU -->
     <nav class="container-fluid">
-      <li>
-          <router-link :to="{ name: 'home' }" aria-label="Back home" class="secondary">
-            Home
+      <ul>
+        <li>
+            <router-link :to="{ name: 'home' }" aria-label="Back home" class="secondary">
+              {{ $t('messages.menu.home') }}
+            </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'mappe' }" class="secondary">
+            {{ $t('messages.menu.catalog') }}
           </router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'mappe' }" class="secondary">
-            Maps
-        </router-link>
-      </li>
-      <li>
-        <router-link :to="{ name: 'mappe' }" class="secondary">
-            Info
-        </router-link>
-      </li>
+        </li>
+        <li>
+          <router-link :to="{ name: 'ricerca' }" class="secondary">
+            {{ $t('messages.menu.search') }}
+          </router-link>
+        </li>
+      </ul>
     </nav>
 
   </fragment>
@@ -190,7 +192,6 @@
     position: sticky;
     top: 0;
     // background: var(--background-color);
-    justify-content: start;
     z-index: 10;
   }
 

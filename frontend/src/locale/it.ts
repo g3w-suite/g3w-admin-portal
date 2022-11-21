@@ -1,3 +1,4 @@
+// @todo
 export const it: any = {
   messages: {
 
@@ -16,8 +17,9 @@ export const it: any = {
     },
 
     menu: {
-      search: 'Cerca',
-      home: 'home',
+      search: 'Ricerca',
+      search_placeholder: 'Cerca',
+      home: 'Home',
       mappe: 'mappe',
       info: 'info',
       news: 'news',
@@ -25,6 +27,7 @@ export const it: any = {
       login: 'Login',
       logout: 'Logout',
       admin: 'Admin',
+      catalog: 'Catalogo'
     },
 
     login: {

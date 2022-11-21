@@ -17,7 +17,8 @@ export const en: any = {
 
     menu: {
       search: 'Search',
-      home: 'home',
+      search_placeholder: 'Search',
+      home: 'Home',
       mappe: 'maps',
       info: 'info',
       news: 'news',
@@ -25,6 +26,7 @@ export const en: any = {
       login: 'Login',
       logout: 'Logout',
       admin: 'Admin',
+      catalog: 'Catalog'
     },
 
     login: {

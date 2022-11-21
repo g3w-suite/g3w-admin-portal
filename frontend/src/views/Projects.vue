@@ -10,8 +10,8 @@
       id="search"
       name="search"
       v-model="search"
-      :placeholder="$t('messages.menu.search')"
-      :aria-label="$t('messages.menu.search')"
+      :placeholder="$t('messages.menu.search_placeholder')"
+      :aria-label="$t('messages.menu.search_placeholder')"
       @input="$emit('input', $event.target.value)"
     />
 
