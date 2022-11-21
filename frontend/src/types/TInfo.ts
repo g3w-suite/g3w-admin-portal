@@ -28,6 +28,12 @@ export class Info {
   public readonly tripadvisor_url: string;
   public readonly reset_password_url: string;
 
+  /**
+   * @TODO implement this in config
+   */
+  public readonly suite_org_url: string = 'http://www.regione.puglia.it/';
+  public readonly suite_org_name: string = 'Regione Puglia';
+
   constructor();
   constructor(data: IInfo);
   constructor(data?: any) {

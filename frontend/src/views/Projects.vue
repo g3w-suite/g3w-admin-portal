@@ -5,7 +5,7 @@
     <progress v-if="loading"></progress>
 
     <!-- SEARCH BOX -->
-    <input
+    <!-- <input
       type="search"
       id="search"
       name="search"
@@ -13,7 +13,7 @@
       :placeholder="$t('messages.menu.search_placeholder')"
       :aria-label="$t('messages.menu.search_placeholder')"
       @input="$emit('input', $event.target.value)"
-    />
+    /> -->
 
     <!-- BREADCRUMBS -->
     <Breadcrumb
@@ -58,6 +58,7 @@ import { Info } from '@/types/TInfo';
 import { IMacroGroupDict, MacroGroup } from '@/types/TMacroGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Route } from 'vue-router';
 import { mapGetters } from 'vuex';
 
 // groups with no macrogroups and macrogroups
@@ -181,6 +182,13 @@ export default class Projects extends Vue {
     this.stackElementTab = this.stackElementTab.concat(el);
     this.tabs = this.tabs.concat(el.title || el.name);
   }
+
+  public async beforeRouteUpdate(to: Route, from: Route) {
+    console.log(to, from);
+    // react to route changes...
+    // this.userData = await fetchUser(to.params.id)
+  }
+
 }
 </script>
 

@@ -1,8 +1,23 @@
 <template>
   <fragment>
     <Header />
+    
     <!-- <router-view name="header"></router-view> -->
-    <Carousel v-if="$route.name === 'home'" class="bg_image h-100"></Carousel>
+    <header>
+      <Carousel v-if="$route.name === 'home'" class="bg_image h-100"></Carousel>
+      <div class="container">
+        <input
+          type="search"
+          id="search"
+          name="search"
+          v-model="search"
+          :placeholder="$t('messages.menu.search_placeholder')"
+          :aria-label="$t('messages.menu.search_placeholder')"
+          @input="$emit('input', $event.target.value)"
+        />
+      </div>
+    </header>
+
     <main class="container">
       <router-view></router-view>
     </main>
@@ -31,3 +46,26 @@
 
   }
 </script>
+
+<style lang="scss" scoped>
+  body > header {
+    padding: 0;
+  }
+  body > header {
+    display: grid;
+    grid-template-areas: "box";
+  }
+
+  header > *,
+  header::before {
+    grid-area: box;
+  }
+
+  header > .container {
+    place-self: center;
+  }
+
+  input[type="search"] {
+    background-color: #fff;
+  }
+</style>

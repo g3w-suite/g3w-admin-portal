@@ -31,6 +31,9 @@ import {
   faUserLock,
   faUserSecret,
   faUserShield,
+  faBars,
+  faXmark,
+  faArrowUpRightFromSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Vue from 'vue';
@@ -68,6 +71,9 @@ library.add(
   faSearch,
   faHome,
   faGear,
+  faBars,
+  faXmark,
+  faArrowUpRightFromSquare,
 );
 
 Vue.use(Fragment.Plugin);

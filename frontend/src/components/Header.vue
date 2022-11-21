@@ -5,6 +5,14 @@
     <nav class="container-fluid">
 
       <ul>
+        <li v-if="info.suite_org_url">
+          <a :href="info.suite_org_url">
+            <font-awesome-icon icon="arrow-up-right-from-square" size="sm" /> {{info.suite_org_name}}
+          </a>
+        </li>
+      </ul>
+
+      <ul>
 
         <!-- ADMIN LINK -->
         <li v-if="isLoggedIn">
@@ -71,7 +79,7 @@
         </li>
 
         <!-- TITLE -->
-        <li class="hide-on-mobile">
+        <li>
           <span style="display:block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color);">{{info.title}}</span>
           <span>{{info.sub_title}}</span>
         </li>
@@ -80,23 +88,14 @@
 
       <ul>
         <li>
-          <input
-            type="search"
-            id="search"
-            name="search"
-            class="hide-on-mobile"
-            :placeholder="$t('messages.menu.search_placeholder')"
-            :aria-label="$t('messages.menu.search_placeholder')"
-            @input="$emit('input', $event.target.value)"
-          />
+          <a href="#" @click.prevent="toggleSecondaryMenu" class="secondary">
+            <font-awesome-icon :icon="secondaryMenuVisible ? 'bars' : 'xmark'" size="lg" />
+            MENU
+          </a>
         </li>
       </ul>
 
-    </nav>
-
-    <!-- MAIN MENU -->
-    <nav class="container-fluid">
-      <ul>
+      <ul :hidden="secondaryMenuVisible">
         <li>
             <router-link :to="{ name: 'home' }" aria-label="Back home" class="secondary">
               {{ $t('messages.menu.home') }}
@@ -113,6 +112,7 @@
           </router-link>
         </li>
       </ul>
+
     </nav>
 
   </fragment>
@@ -145,6 +145,8 @@
     public flag_it: string  = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAMCAYAAABvEu28AAAAlElEQVQoU2NkeMnwn+E7AwPDZyD+BsRQ8N/sP4KDzGJkxCrOyPAAaNAXqCEgGmaQI/EGgVQyMlyGuuguqkX/I4g36DXYoJNAg74CWS/JM+gtUNurUYNQAw8t+mkQRnuAsQZKiKCYQwLERv9NeKythxoESoxICfJN/BvsKVtEBC4OUgHCkOhfhN2ga2HXsBukpYXVIAB75l/0TlWQpQAAAABJRU5ErkJggg==';
     public flag_en: string  = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAMCAYAAABvEu28AAAB8ElEQVQoU62SXUiTYRTHf28QNCjLFpUEuwlEhT6IhdIoChJvMqhEcSLUyowZCW7vhTTvpgwmElMkk00v5pbQK5R9UAoaYRgDqS6UJHcxLIlcr1asCdHb0wMNaYNuPPDA/zznnP/5VIzWVoOODlIpKC7uI5FI8lcikQZq3YelGu18jd3en7FZLGbuXd/LgREfm1UVZTX8xsgbdEF3NxQV4XJN0dX1TAaEQhe5dNMm8UD7FA7HoMTNV0q5ZXoO+kcIBrn/ZA4FOg3VaaU5dZdtP3TyhoZ48fITNTV3aGk5jd1/QQZHVE0kGKffYaF0rI9dHg9UVlJfP0A4PPGHqN2ANQoKlCyn2dlVdpwqlERfHsyQf9ublWxpKS6saRRDCOk0YjiZ/teDD2VlUt03PZ3TnojH+azrgggEk+DJ6fb/z/fCRRdvA4k2qrX1wx4evsrxY3v4WlfHN1M++jUPO88ekf2tTMxTUrIdRkdZ9np5Vd5IQyhBZtjQZjQ12ejpqchyyrX+f5M1Lpp5NP4WJRZbMawHTSxUV7O4aQuBtUOMPJ6TVahqBWeCNyR+eDmA3/9U4qoqKz7fOZa1KAviIGOFNpSfmmbMi1Inj56nTYuTTH7PrMrpPEl5VByekLFaL729kxmb2bwVt/sE+3f/4l0gwG/CjeZfBzqg4wAAAABJRU5ErkJggg==';
 
+    public secondaryMenuVisible:boolean | null = true;
+
     get languages() {
       return ['it', 'en']; // APP_LANGUAGES;
     }
@@ -169,30 +171,44 @@
     public mounted() {
       this.$store.dispatch('me/fetchWhoAmI', { locale: this.$i18n.locale });
     }
+
+    public toggleSecondaryMenu() {
+      this.secondaryMenuVisible = this.secondaryMenuVisible ? null : true;
+    }
   }
 </script>
 
 <style lang="scss" scoped>
   body > nav:nth-of-type(1) {
-    justify-content: end;
+    // justify-content: end;
     // background-color: var(--contrast-focus);
     --nav-element-spacing-vertical: var(--nav-element-spacing-horizontal);
   }
 
-  body > nav:nth-of-type(2) li {
-    padding: calc( var(--nav-element-spacing-vertical) / 2) var(--nav-element-spacing-horizontal);
-  }
+  // body > nav:nth-of-type(2) li {
+  //   padding: calc( var(--nav-element-spacing-vertical) / 2) var(--nav-element-spacing-horizontal);
+  // }
 
   body > nav {
     border-bottom: var(--nav-border-color, rgba(115, 130, 140, 0.2)) 1px solid;
     background-color: var(--background-color);
   }
 
-  body > nav:nth-of-type(3) {
+  body > nav:nth-of-type(2) > ul:last-of-type {
+    border-top: var(--nav-border-color, rgba(115, 130, 140, 0.2)) 1px solid;
+    justify-content: space-around;
+  }
+
+  body > nav:nth-of-type(2) {
     position: sticky;
     top: 0;
     // background: var(--background-color);
     z-index: 10;
+    flex-wrap: wrap;
+  }
+
+  body > nav:nth-of-type(2) > ul:last-of-type {
+    flex-basis: 100%;
   }
 
   nav .logo {

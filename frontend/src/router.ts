@@ -61,14 +61,12 @@ const router = new Router({
         {
           path: 'maps/:name',
           name: 'mappe',
-          components: {
-            default: Projects,
-          },
+          component: Projects
         },
         {
           path: 'maps/group/:id',
           name: 'mappe',
-          components: Projects,
+          component: Projects,
         },
         /**
          * @TODO 404 PAGE: https://v3.router.vuejs.org/guide/essentials/history-mode.html#caveat

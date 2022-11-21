@@ -48,7 +48,8 @@ export default class Carousel extends Vue {
 
   figure > img {
     width:100%;
-    height: 400px;
+    min-height: 400px;
+    height: 80vh;
     aspect-ratio: 16/9;
     object-fit: cover;
   }
