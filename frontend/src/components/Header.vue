@@ -1,78 +1,119 @@
 <template>
-  <nav class="container-fluid">
+  <fragment>
 
-    <!-- TOP LEFT -->
-    <ul>
+    <!-- TOP MENU -->
+    <nav class="container-fluid">
 
-      <!-- LOGO -->
+      <ul>
+
+        <!-- ADMIN LINK -->
+        <li v-if="isLoggedIn">
+          <router-link :to="{ name: 'admin' }" class="secondary">
+            <font-awesome-icon icon="gear" size="lg" />
+            <span class="hide-on-mobile"> {{$t('messages.menu.admin')}}</span>
+          </router-link>
+        </li>
+
+        <!-- LOGOUT LINK -->
+        <li v-if="isLoggedIn">
+          <a href="#" @click="logout" class="secondary">
+            <font-awesome-icon icon="sign-out-alt" size="lg" />
+            <span class="hide-on-mobile"> {{$t('messages.menu.logout')}}</span>
+          </a>
+        </li>
+
+        <!-- LOGIN LINK -->
+        <li v-else>
+          <router-link :to="{ name: 'login' }" class="secondary">
+            <font-awesome-icon icon="user" size="lg" />
+            <span class="hide-on-mobile"> {{$t('messages.menu.login')}}</span>
+          </router-link>
+        </li>
+
+        <!-- LANGUAGE SELECTOR -->
+        <li>
+          <details role="list" dir="ltr">
+            <summary aria-haspopup="listbox" role="link" class="secondary">
+              <img alt="Choose a language" :title="$t('messages.language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
+              <span class="hide-on-mobile">{{$t('messages.language.' + $i18n.locale)}}</span>
+            </summary>
+            <ul role="listbox">
+              <li>
+                <router-link :to="{ name: 'home', params: { lang: 'it' } }" class="secondary">
+                  <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
+                  <span>{{$t('messages.language.it')}}</span>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{ name: 'home', params: { lang: 'en' } }" class="secondary">
+                  <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
+                  <span>{{$t('messages.language.en')}}</span>
+                </router-link>
+              </li>
+            </ul>
+          </details>
+        </li>
+
+        </ul>
+
+    </nav>
+
+    <!-- HEADER MENU -->
+    <nav class="container-fluid">
+
+      <ul>
+
+        <!-- LOGO -->
+        <li>
+          <router-link :to="{ name:'home' }" aria-label="Back home" class="secondary">
+            <img :src="info.suite_logo || info.url_suite_logo || g3w_logo" :alt="info.title" class="logo" />
+          </router-link>
+        </li>
+
+        <!-- TITLE -->
+        <li class="hide-on-mobile">
+          <span style="display:block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color);">{{info.title}}</span>
+          <span>{{info.sub_title}}</span>
+        </li>
+
+      </ul>
+
+      <ul>
+        <li>
+          <input
+            type="search"
+            id="search"
+            name="search"
+            class="hide-on-mobile"
+            :placeholder="$t('messages.menu.search')"
+            :aria-label="$t('messages.menu.search')"
+            @input="$emit('input', $event.target.value)"
+          />
+        </li>
+      </ul>
+
+    </nav>
+
+    <!-- MAIN MENU -->
+    <nav class="container-fluid">
       <li>
-        <router-link :to="{name:'home'}" aria-label="Back home" class="secondary">
-          <img :src="info.suite_logo || info.url_suite_logo || g3w_logo" :alt="info.title" class="logo" />
-        </router-link>
+          <router-link :to="{ name: 'home' }" aria-label="Back home" class="secondary">
+            Home
+          </router-link>
       </li>
-
-      <!-- TITLE -->
-      <li class="hide-on-mobile">
-        <span style="display:block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color);">{{info.title}}</span>
-        <span>{{info.sub_title}}</span>
-      </li>
-
-    </ul>
-
-    <!-- TOP RIGHT -->
-    <ul>
-
-      <!-- ADMIN LINK -->
-      <li v-if="isLoggedIn">
-        <router-link :to="{name:'admin'}" class="secondary">
-          <font-awesome-icon icon="gear" size="lg" />
-          <span class="hide-on-mobile"> {{$t('messages.menu.admin')}}</span>
-        </router-link>
-      </li>
-
-      <!-- LOGOUT LINK -->
-      <li v-if="isLoggedIn">
-        <a href="#" @click="logout" class="secondary">
-          <font-awesome-icon icon="sign-out-alt" size="lg" />
-          <span class="hide-on-mobile"> {{$t('messages.menu.logout')}}</span>
-        </a>
-      </li>
-
-      <!-- LOGIN LINK -->
-      <li v-else>
-        <router-link :to="{name:'login'}" class="secondary">
-          <font-awesome-icon icon="user" size="lg" />
-          <span class="hide-on-mobile"> {{$t('messages.menu.login')}}</span>
-        </router-link>
-      </li>
-
-      <!-- LANGUAGE SELECTOR -->
       <li>
-        <details role="list" dir="ltr">
-          <summary aria-haspopup="listbox" role="link" class="secondary">
-            <img alt="Choose a language" :title="$t('messages.language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
-            <span class="hide-on-mobile">{{$t('messages.language.' + $i18n.locale)}}</span>
-          </summary>
-          <ul role="listbox">
-            <li>
-              <router-link :to="{ name: 'home', params: { lang: 'it' } }" class="secondary">
-                <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
-                <span>{{$t('messages.language.it')}}</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="{ name: 'home', params: { lang: 'en' } }" class="secondary">
-                <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
-                <span>{{$t('messages.language.en')}}</span>
-              </router-link>
-            </li>
-          </ul>
-        </details>
+        <router-link :to="{ name: 'mappe' }" class="secondary">
+            Maps
+        </router-link>
       </li>
+      <li>
+        <router-link :to="{ name: 'mappe' }" class="secondary">
+            Info
+        </router-link>
+      </li>
+    </nav>
 
-    </ul>
-
-  </nav>
+  </fragment>
 </template>
 
 <script lang="ts">
@@ -82,7 +123,7 @@
   // import { APP_LANGUAGES } from '@/main';
 
   @Component({
-    components: {},
+    components: { },
     computed: {
       ...mapGetters({
         sections: 'settings/portalSections',
@@ -130,15 +171,27 @@
 </script>
 
 <style lang="scss" scoped>
-  body > nav:first-of-type {
-    position: sticky;
-    top: 0;
-    background: var(--background-color);
-    z-index: 100;
+  body > nav:nth-of-type(1) {
+    justify-content: end;
+    // background-color: var(--contrast-focus);
+    --nav-element-spacing-vertical: var(--nav-element-spacing-horizontal);
   }
 
-  body > nav:first-of-type li {
+  body > nav:nth-of-type(2) li {
     padding: calc( var(--nav-element-spacing-vertical) / 2) var(--nav-element-spacing-horizontal);
+  }
+
+  body > nav {
+    border-bottom: var(--nav-border-color, rgba(115, 130, 140, 0.2)) 1px solid;
+    background-color: var(--background-color);
+  }
+
+  body > nav:nth-of-type(3) {
+    position: sticky;
+    top: 0;
+    // background: var(--background-color);
+    justify-content: start;
+    z-index: 10;
   }
 
   nav .logo {

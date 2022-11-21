@@ -11,12 +11,13 @@
       name="search"
       v-model="search"
       :placeholder="$t('messages.menu.search')"
+      :aria-label="$t('messages.menu.search')"
       @input="$emit('input', $event.target.value)"
     />
 
     <!-- BREADCRUMBS -->
     <Breadcrumb
-      v-if="!search.length"
+      v-if="!search.length && 1 !== tabs.length"
       id="breadcrumb"
       :tabs="tabs"
       @click="handleTabClick"
@@ -44,14 +45,6 @@
         @click="getGroups({ id: box.Id }, box.InstanceOf)"
       />
     </div>
-
-    <!-- BREADCRUMBS -->
-    <Breadcrumb
-      v-if="!search.length"
-      id="breadcrumb"
-      :tabs="tabs"
-      @click="handleTabClick"
-    />
 
   </fragment>
 </template>

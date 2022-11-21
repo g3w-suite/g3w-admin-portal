@@ -5,7 +5,7 @@
 
         <div>
           <span style="display:block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color);">{{info.about_title}}</span>
-          <span>{{info.about_description}}</span>
+          <p>{{info.about_description}}</p>
         </div>
 
         <address>
@@ -34,26 +34,26 @@
           </p>
 
           <p class="social-icons">
-            <a v-if="info.facebook_url" :href="info.facebook_url">
-              <font-awesome-icon icon="fab facebook-square" size="lg" />
+            <a v-if="info.facebook_url" :href="info.facebook_url" aria-label="Youtube">
+              <font-awesome-icon :icon="['fab', 'facebook-square']" size="lg" />
             </a>
-            <a v-if="info.twitter_url" :href="info.twitter_url">
-              <font-awesome-icon icon="fab twitter-square" size="lg" />
+            <a v-if="info.twitter_url" :href="info.twitter_url" aria-label="Twitter">
+              <font-awesome-icon :icon="['fab', 'twitter-square']" size="lg" />
             </a>
-            <a v-if="info.googleplus_url" :href="info.googleplus_url">
-              <font-awesome-icon icon="fab google-plus-square" size="lg" />
+            <a v-if="info.googleplus_url" :href="info.googleplus_url" aria-label="Google Plus">
+              <font-awesome-icon :icon="['fab', 'google-plus-square']" size="lg" />
             </a>
-            <a v-if="info.youtube_url" :href="info.youtube_url">
-              <font-awesome-icon icon="fab youtube" size="lg" />
+            <a v-if="info.youtube_url" :href="info.youtube_url" aria-label="Youtube">
+              <font-awesome-icon :icon="['fab', 'youtube']" size="lg" />
             </a>
-            <a v-if="info.instagram_url" :href="info.instagram_url">
-              <font-awesome-icon icon="fab instagram" size="lg" />
+            <a v-if="info.instagram_url" :href="info.instagram_url" aria-label="Instagram">
+              <font-awesome-icon :icon="['fab', 'instagram']" size="lg" />
             </a>
-            <a v-if="info.flickr_url" :href="info.flickr_url">
-              <font-awesome-icon icon="fab flickr" size="lg"></font-awesome-icon>
+            <a v-if="info.flickr_url" :href="info.flickr_url" aria-label="Flickr">
+              <font-awesome-icon :icon="['fab', 'flickr']" size="lg"></font-awesome-icon>
             </a>
-            <a v-if="info.tripadvisor_url" :href="info.tripadvisor_url">
-              <font-awesome-icon icon="fab tripadvisor" size="lg"></font-awesome-icon>
+            <a v-if="info.tripadvisor_url" :href="info.tripadvisor_url" aria-label="Trip Advisor">
+              <font-awesome-icon :icon="['fab', 'tripadvisor']" size="lg"></font-awesome-icon>
             </a>
           </p>
 

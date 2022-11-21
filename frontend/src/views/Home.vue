@@ -10,14 +10,13 @@
 <script lang="ts">
 import { Info } from '@/types/TInfo';
 import Projects from '@/views/Projects.vue';
-import { Fragment } from 'vue-fragment';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
 // const logo = require('@/assets/img/logo_g3wsuite.png');
 
 @Component({
-  components: { Projects, Fragment },
+  components: { Projects },
   computed: {
     ...mapGetters({
       settings: 'info/info',

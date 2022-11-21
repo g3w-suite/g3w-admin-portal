@@ -5,11 +5,10 @@
 </template>
 
 <script lang="ts">
-import { Fragment } from 'vue-fragment';
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
-  components: { Fragment },
+  components: { },
 })
 export default class NotFound extends Vue { }
 </script>

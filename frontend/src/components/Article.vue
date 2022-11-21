@@ -3,8 +3,8 @@
   <!-- PROJECT ARTICLE -->
   <article v-if="type !== boxtype.P">
 
-    <figure style="cursor:pointer;" @click="$emit('click', id, type)">
-      <img loading="lazy" :src="img_url" @load="get_average_color" />
+    <figure style="cursor:pointer;" @click="$emit('click', id, type)" tabindex="0">
+      <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('messages.maps.group')" />
       <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3>{{title ||  $t('messages.maps.group')}}</h3></figcaption>
     </figure>
  
@@ -25,7 +25,7 @@
     </p>
 
     <figure>
-      <img loading="lazy" :src="img_url" @load="get_average_color" />
+      <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
     </figure>
 
     <hgroup>
