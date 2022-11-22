@@ -89,15 +89,16 @@
 
       <ul>
         <li>
-          <a href="#" class="secondary">
+          <router-link :to="{ name: 'search' }" class="contrast outline">
             <font-awesome-icon icon="search" size="lg" />
-          </a>
+            Catalogo
+          </router-link>
         </li>
         <li>
-          <a href="#" @click.prevent="toggleSecondaryMenu" class="secondary">
+          <button @click="toggleSecondaryMenu" class="contrast outline">
             <font-awesome-icon :icon="secondaryMenuVisible ? 'bars' : 'xmark'" size="lg" />
             MENU
-          </a>
+          </button>
         </li>
       </ul>
 
@@ -113,7 +114,7 @@
           </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'ricerca' }" class="secondary">
+          <router-link :to="{ name: 'search' }" class="secondary">
             {{ $t('messages.menu.search') }}
           </router-link>
         </li>

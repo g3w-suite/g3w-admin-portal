@@ -8,6 +8,7 @@ import store from './store';
 
 // import About from '@/views/About.vue';
 import Projects from '@/views/Projects.vue';
+import Search from '@/views/Search.vue';
 // import NotFound from '@/views/NotFound.vue';
 
 Vue.use(Router);
@@ -68,6 +69,11 @@ const router = new Router({
           name: 'mappe',
           component: Projects,
         },
+        {
+          path: 'search/',
+          name: 'search',
+          component: Projects,
+        },
         /**
          * @TODO 404 PAGE: https://v3.router.vuejs.org/guide/essentials/history-mode.html#caveat
          */
@@ -82,6 +88,9 @@ const router = new Router({
       ],
     },
   ],
+  scrollBehavior (to, from, savedPosition) {
+    if (to.hash) return { selector: to.hash, behavior: 'smooth', offset: { x: 0, y: 100 } }
+  },
 });
 
 router.beforeEach((to, from, next) => {

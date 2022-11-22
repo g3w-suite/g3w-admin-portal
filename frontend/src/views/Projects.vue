@@ -4,17 +4,6 @@
     <!-- SPINNER -->
     <progress v-if="loading"></progress>
 
-    <!-- SEARCH BOX -->
-    <!-- <input
-      type="search"
-      id="search"
-      name="search"
-      v-model="search"
-      :placeholder="$t('messages.menu.search_placeholder')"
-      :aria-label="$t('messages.menu.search_placeholder')"
-      @input="$emit('input', $event.target.value)"
-    /> -->
-
     <!-- BREADCRUMBS -->
     <Breadcrumb
       v-if="!search.length && 1 !== tabs.length"
@@ -23,8 +12,19 @@
       @click="handleTabClick"
     />
 
+    <!-- SEARCH BOX -->
+    <input
+      v-if="$route.name !== 'home'"
+      type="search"
+      id="search"
+      name="search"
+      v-model="search"
+      :placeholder="$t('messages.menu.search_placeholder')"
+      :aria-label="$t('messages.menu.search_placeholder')"
+    />
+
     <!-- PAGE CONTENT -->
-    <hgroup v-if="!search.length">
+    <hgroup v-if="$route.name === 'home'">
       <h2>{{title}}</h2>
       <p v-html="description"></p>
     </hgroup>

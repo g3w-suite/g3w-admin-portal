@@ -18,7 +18,7 @@ export const it: any = {
 
     menu: {
       search: 'Ricerca',
-      search_placeholder: 'Cerca',
+      search_placeholder: 'Cerca una mappa nel catalogo',
       home: 'Home',
       mappe: 'mappe',
       info: 'info',

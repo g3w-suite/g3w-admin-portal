@@ -3,7 +3,6 @@
     <span class="subtitle h5 show-on-mobile">{{settings.sub_title}}</span>
     <h1 class="title show-on-mobile">{{settings.title}}</h1>
     <Projects />
-    <p v-html="settings.home_description"></p>
   </fragment>
 </template>
 

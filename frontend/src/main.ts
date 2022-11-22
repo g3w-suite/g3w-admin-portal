@@ -1,5 +1,9 @@
 import { en } from '@/locale/en';
 import { it } from '@/locale/it';
+import '@fontsource/titillium-web/400.css';
+import '@fontsource/titillium-web/400-italic.css';
+import '@fontsource/titillium-web/700.css';
+import '@fontsource/titillium-web/700-italic.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faFacebookSquare,
