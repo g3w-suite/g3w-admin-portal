@@ -109,7 +109,7 @@
             </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'mappe' }" class="secondary">
+          <router-link :to="{ name: 'maps' }" class="secondary">
             {{ $t('messages.menu.catalog') }}
           </router-link>
         </li>

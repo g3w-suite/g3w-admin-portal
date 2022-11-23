@@ -20,7 +20,7 @@ export const it: any = {
       search: 'Ricerca',
       search_placeholder: 'Cerca una mappa nel catalogo',
       home: 'Home',
-      mappe: 'mappe',
+      maps: 'mappe',
       info: 'info',
       news: 'news',
       archivi: 'archivi',

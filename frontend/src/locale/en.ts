@@ -19,7 +19,7 @@ export const en: any = {
       search: 'Search',
       search_placeholder: 'Find a map in the catalog',
       home: 'Home',
-      mappe: 'maps',
+      maps: 'maps',
       info: 'info',
       news: 'news',
       archivi: 'archives',

@@ -1,14 +1,12 @@
 import Main from '@/components/Main.vue';
 import { i18n } from '@/main';
-import Home from '@/views/Home.vue';
-import Login from '@/views/Login.vue';
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from './store';
 
-// import About from '@/views/About.vue';
+import Home from '@/views/Home.vue';
+import Login from '@/views/Login.vue';
 import Projects from '@/views/Projects.vue';
-import Search from '@/views/Search.vue';
 // import NotFound from '@/views/NotFound.vue';
 
 Vue.use(Router);
@@ -36,10 +34,27 @@ const router = new Router({
           path: 'admin/',
           name: 'admin',
           beforeEnter() {
-            location.href = store.getters['me/isLoggedIn']? 'http://127.0.0.1:8000' : '/';
+            location.href = store.getters['me/isLoggedIn'] ? 'http://127.0.0.1:8000' : '/';
           },
         },
-
+        {
+          path: 'search/',
+          name: 'search',
+          component: Projects,
+        },
+        /**
+         * @TODO MAPS ARCHIVE (maps/group/:id)
+         */
+        {
+          path: 'maps/:name',
+          name: 'mappa',
+          component: Projects
+        },
+        {
+          path: 'group/:id',
+          name: 'gruppo',
+          component: Projects,
+        },
         // {
         //   path: 'info/',
         //   name: 'info',
@@ -50,30 +65,12 @@ const router = new Router({
         // },
         // {
         //   path: 'maps/',
-        //   name: 'mappe',
+        //   name: 'maps',
         //   components: {
         //     // header: Header,
         //     default: Projects,
         //   },
         // },
-        /**
-         * @TODO MAPS ARCHIVE (maps/group/:id)
-         */
-        {
-          path: 'maps/:name',
-          name: 'mappe',
-          component: Projects
-        },
-        {
-          path: 'maps/group/:id',
-          name: 'mappe',
-          component: Projects,
-        },
-        {
-          path: 'search/',
-          name: 'search',
-          component: Projects,
-        },
         /**
          * @TODO 404 PAGE: https://v3.router.vuejs.org/guide/essentials/history-mode.html#caveat
          */
@@ -89,13 +86,13 @@ const router = new Router({
     },
   ],
   scrollBehavior (to, from, savedPosition) {
-    if (to.hash) return { selector: to.hash, behavior: 'smooth', offset: { x: 0, y: 100 } }
+    if (to.hash) return { selector: to.hash, behavior: 'smooth', offset: { x: 0, y: 100 } };
   },
 });
 
 router.beforeEach((to, from, next) => {
   const lang = to.params.lang;
-  if (!['en', 'it'].includes(lang)) { return next('/it'); }
+  if (!['en', 'it'].includes(lang)) { return next('/it/'); }
   if (i18n.locale !== lang) { i18n.locale = lang; }
   // if (!to.matched.length) { return next(`/${lang}/404`); }
   const titlePrefix = '';

@@ -41,7 +41,7 @@
         :edit_url="box.edit_url"
         :map_url="box.map_url"
         :description="box.description"
-        :class="'boxtype_' + boxtype[box.InstanceOf]"
+        :class="boxtype[box.InstanceOf] + '-' + box.Id + ' boxtype_' + boxtype[box.InstanceOf]"
         @click="getGroups({ id: box.Id }, box.InstanceOf)"
       />
     </div>
