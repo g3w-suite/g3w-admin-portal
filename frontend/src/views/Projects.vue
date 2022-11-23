@@ -9,7 +9,7 @@
       v-if="!search.length && 1 !== tabs.length"
       id="breadcrumb"
       :tabs="tabs"
-      @click="handleTabClick"
+      @click="onBreadcrumbClick"
     />
 
     <!-- SEARCH BOX -->
@@ -152,7 +152,7 @@ export default class Projects extends Vue {
     this.tabs = [this.$tc(`messages.menu.${this.$route.name}`).toUpperCase()];
   }
 
-  public handleTabClick(idx: number) {
+  public onBreadcrumbClick(idx: number) {
     this.tabs.splice(idx + 1, this.tabs.length);
     this.stackElementTab.splice(idx, this.stackElementTab.length);
     this.$store.dispatch('group/setActiveGroup', {sg: this.stackElementTab[this.stackElementTab.length - 1]});

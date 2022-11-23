@@ -27,7 +27,7 @@ export const it: any = {
       login: 'Login',
       logout: 'Logout',
       admin: 'Admin',
-      catalog: 'Catalogo'
+      catalog: 'Catalogo',
     },
 
     login: {

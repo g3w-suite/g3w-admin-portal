@@ -67,7 +67,7 @@
 
     </nav>
 
-    <!-- HEADER MENU -->
+    <!-- MAIN MENU -->
     <nav class="container-fluid">
 
       <ul>
@@ -80,7 +80,7 @@
         </li>
 
         <!-- TITLE -->
-        <li>
+        <li class="hide-on-mobile">
           <span style="display:block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color);">{{info.title}}</span>
           <span>{{info.sub_title}}</span>
         </li>

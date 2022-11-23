@@ -1,9 +1,9 @@
 import { en } from '@/locale/en';
 import { it } from '@/locale/it';
-import '@fontsource/titillium-web/400.css';
 import '@fontsource/titillium-web/400-italic.css';
-import '@fontsource/titillium-web/700.css';
+import '@fontsource/titillium-web/400.css';
 import '@fontsource/titillium-web/700-italic.css';
+import '@fontsource/titillium-web/700.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faFacebookSquare,
@@ -16,6 +16,8 @@ import {
   /* faTripadvisor */
 } from '@fortawesome/free-brands-svg-icons';
 import {
+  faArrowUpRightFromSquare,
+  faBars,
   faEnvelope,
   faExpandArrowsAlt,
   faGear,
@@ -35,9 +37,7 @@ import {
   faUserLock,
   faUserSecret,
   faUserShield,
-  faBars,
   faXmark,
-  faArrowUpRightFromSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Vue from 'vue';
@@ -79,35 +79,23 @@ library.add(
   faXmark,
   faArrowUpRightFromSquare,
 );
+import config from './config';
 
-Vue.use(Fragment.Plugin);
-Vue.use(VueI18n);
-Vue.component('font-awesome-icon', FontAwesomeIcon);
-Vue.config.productionTip = false;
-
-export const i18n = new VueI18n({ locale: 'it', fallbackLocale: 'it', messages: { it, en } });
-
-const opts  =  {
-  favicon:    'https://www.comune.altamura.ba.it/templates/shaper_helixultimate/favicon.ico',
-  stylesheet: 'https://unpkg.com/@picocss/pico@1.5.6/css/pico.min.css',
-  theme:      'light'
-}
-
-if (opts.stylesheet) {
+if (config.stylesheet) {
   const css = document.createElement('link');
   css.setAttribute('rel', 'stylesheet');
-  css.setAttribute('href', opts.stylesheet);
+  css.setAttribute('href', config.stylesheet);
   document.body.appendChild(css);
 }
 
-if (opts.theme) {
-  document.documentElement.setAttribute('data-theme', opts.theme);
+if (config.theme) {
+  document.documentElement.setAttribute('data-theme', config.theme);
 }
 
-if (opts.favicon) {
+if (config.favicon) {
   const icon = document.querySelector('link[rel~=\'icon\']') || document.createElement('link');
   icon.setAttribute('rel', 'icon');
-  icon.setAttribute('href', opts.favicon);
+  icon.setAttribute('href', config.favicon);
 }
 
 /**
@@ -122,21 +110,14 @@ const ELEMENT_TO_SET_CUSTOM_COLOR = {
   getElementById: [],
 };
 
-const SUPPORTED_LANGUAGES = ['it', 'en'];
-let LANGUAGES = ['it', 'en']; // default and supported languages
-const global = (window as any);
+Vue.use(Fragment.Plugin);
+Vue.use(VueI18n);
 
-if (global.LANGUAGES && Array.isArray(global.LANGUAGES)) {
-  LANGUAGES = global.LANGUAGES
-              .filter((lang: string)  => SUPPORTED_LANGUAGES.indexOf(lang) !== -1);
-  if (LANGUAGES.length === 0) { LANGUAGES = [ 'it' ]; }
-}
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-global.ADMIN_BTN = true;
-global.PORTAL_SECTIONS = [
-  'maps',
-  'info',
-];
+Vue.config.productionTip = false;
+
+export const i18n = new VueI18n({ locale: 'it', fallbackLocale: 'it', messages: { it, en } });
 
 new Vue({
   router,
@@ -145,13 +126,13 @@ new Vue({
   render: (h) => h(App),
   created: () => {
     store.dispatch('info/fetchInfo', { locale: i18n.locale });
-    store.dispatch('settings/portalSections', { sections: global.PORTAL_SECTIONS });
-    store.dispatch('settings/showAdminButton', { show: global.ADMIN_BTN });
+    store.dispatch('settings/portalSections', { sections: config.portal_sections });
+    store.dispatch('settings/showAdminButton', { show: config.admin_btn });
     store.dispatch('settings/fetchPictures', { locale: i18n.locale });
   },
   async mounted() {
     await this.$nextTick();
-    if (global.CUSTOM_COLOR) {
+    if ((window as any).CUSTOM_COLOR) {
       Object.keys(ELEMENT_TO_SET_CUSTOM_COLOR).forEach((elementSelectorType: string) => {
         const selectorElement = (ELEMENT_TO_SET_CUSTOM_COLOR as any)[elementSelectorType] || [];
         selectorElement.forEach((selector: string) => {

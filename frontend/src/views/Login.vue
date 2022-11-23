@@ -66,7 +66,7 @@ import { mapGetters } from 'vuex';
   },
 })
 export default class Login extends Vue {
-  
+
   @Prop(Boolean) public readonly showLabel!: boolean;
   @Prop(Boolean) public readonly placeholderUppercase!: boolean;
 
@@ -105,7 +105,7 @@ export default class Login extends Vue {
       ? true
       : this.showLabel;
   }
-  
+
   public login() {
     if (!this.username) {
       this.usernameError = true;

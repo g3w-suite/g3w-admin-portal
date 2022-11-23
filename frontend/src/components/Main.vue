@@ -31,41 +31,41 @@
 </template>
 
 <script lang="ts">
-  import { Info } from '@/types/TInfo';
-  import Carousel from '@/components/Carousel.vue';
-  import Footer from '@/components/Footer.vue';
-  import Navbar from '@/components/Navbar.vue';
-  import { Component, Prop, Vue } from 'vue-property-decorator';
-  import { mapGetters } from 'vuex';
+import Carousel from '@/components/Carousel.vue';
+import Footer from '@/components/Footer.vue';
+import Navbar from '@/components/Navbar.vue';
+import { Info } from '@/types/TInfo';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
 
-  @Component({
-    components: { Navbar, Footer, Carousel },
-    computed: {
-      ...mapGetters({
-        info: 'info/info',
-        }),
-    }
-  })
+@Component({
+  components: { Navbar, Footer, Carousel },
+  computed: {
+    ...mapGetters({
+      info: 'info/info',
+      }),
+  },
+})
 
-  export default class Main extends Vue {
-    public info!: Info;
+export default class Main extends Vue {
+  public info!: Info;
 
-    @Prop(String) public search!: string;
+  @Prop(String) public search!: string;
 
-    // get search() {
-    //   return this.$store.getters['group/search'];
-    // }
+  // get search() {
+  //   return this.$store.getters['group/search'];
+  // }
 
-    // set search(val: string) {
-    //   this.$store.dispatch('group/search', { s: val });
-    // }
+  // set search(val: string) {
+  //   this.$store.dispatch('group/search', { s: val });
+  // }
 
-    onSearchSubmit(e:Event) {
-      this.$router.push( { path: '/search', query: { key: 'q', value: this.search }});
-      console.log(e);
-    }
-
+  public onSearchSubmit(e: Event) {
+    this.$router.push( { path: '/search', query: { key: 'q', value: this.search }});
+    console.log(e);
   }
+
+}
 </script>
 
 <style lang="scss" scoped>
