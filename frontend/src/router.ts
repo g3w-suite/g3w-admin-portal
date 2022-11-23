@@ -1,7 +1,7 @@
 import Main from '@/components/Main.vue';
 import { i18n } from '@/main';
 import Vue from 'vue';
-import Router from 'vue-router';
+import Router, { Route } from 'vue-router';
 import store from './store';
 import config from './config';
 
@@ -25,11 +25,22 @@ const router = new Router({
           name: 'home',
           alias: '',
           component: Home,
+          meta: {
+            breadcrumb: [
+              { name: 'home', text: 'Home' }
+            ]
+          }
         },
         {
           path: 'login/',
           name: 'login',
           component: Login,
+          meta: {
+            breadcrumb: [
+              { name: 'home', text: 'Home' },
+              { name: 'login', text: 'Login' }
+            ]
+          }
         },
         {
           path: 'admin/',
@@ -42,14 +53,26 @@ const router = new Router({
           path: 'search/',
           name: 'search',
           component: Projects,
+          meta: {
+            breadcrumb: [
+              { name: 'home', text: 'Home' },
+              { name: 'search', text: 'Search' }
+            ]
+          }
         },
         /**
          * @TODO MAPS ARCHIVE (maps/group/:id)
          */
         {
-          path: 'maps/:group/:id/',
-          name: 'map',
+          path: 'maps/:group?/:id?/',
+          name: 'maps',
           component: Projects,
+          meta: {
+            breadcrumb: [
+              { name: 'home', text: 'Home' },
+              { name: 'maps', text: 'Maps' }
+            ]
+          }
         },
         // {
         //   path: 'group/:id',
@@ -81,6 +104,12 @@ const router = new Router({
           path: ':catchAll(.*)',
           name: '404',
           component: NotFound,
+          meta: {
+            breadcrumb: [
+              { name: 'home', text: 'Home' },
+              { name: '404', text: '404' }
+            ]
+          }
         },
       ],
     },

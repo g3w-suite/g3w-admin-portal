@@ -1,5 +1,5 @@
 <template>
-  <footer data-theme="dark" style="background-color: var(--background-color); padding-bottom: 0;">
+  <footer id="footer" data-theme="dark" style="background-color: var(--background-color); padding-bottom: 0;">
     <section class="container" style="margin-bottom: 0;">
       <div class="grid">
 

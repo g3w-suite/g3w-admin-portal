@@ -2,7 +2,7 @@
   <fragment>
 
     <!-- TOP MENU -->
-    <nav class="container-fluid">
+    <nav id="top-menu" class="container-fluid">
 
       <!-- ORGANIZATION NAME -->
       <ul>
@@ -68,7 +68,7 @@
     </nav>
 
     <!-- MAIN MENU -->
-    <nav class="container-fluid">
+    <nav id="main-menu" class="container-fluid">
 
       <ul>
 

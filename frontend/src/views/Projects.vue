@@ -8,7 +8,7 @@
     <Breadcrumb
       v-if="!search.length && 1 !== tabs.length"
       id="breadcrumb"
-      :tabs="tabs"
+      :breadcrumbs="tabs"
       @click="onBreadcrumbClick"
     />
 
@@ -146,6 +146,11 @@ export default class Projects extends Vue {
     } else if (undefined !== name) {
       this.getGroups({ name }, EBoxType.G);
     }
+
+    /**
+     * @TODO make use of "$route.matched" property for dynamic breadcrumb generation?
+     */
+    console.log(this.$route.matched);
   }
 
   public created() {

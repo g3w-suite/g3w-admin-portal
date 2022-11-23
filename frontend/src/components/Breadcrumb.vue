@@ -1,9 +1,17 @@
 <template>
-  <nav aria-label="breadcrumb">
+  <nav
+    v-if="breadcrumbs.length > 1"
+    aria-label="breadcrumb"
+    class="container"
+  >
     <ul>
-      <li v-for="(text, idx) in tabs">
-        <a v-if="idx + 1 != tabs.length" @click.prevent.stop="$emit('click', idx)">{{text}}</a>
-        <template v-else aria-current="page">{{text}}</template>
+      <li v-for="(route, idx) in breadcrumbs ">
+        <router-link
+          :to="{ name: route.name }"
+          :aria-current="idx + 1 != breadcrumbs.length ? undefined : 'page'"
+        >
+          {{ route.text }}
+        </router-link>
       </li>
     </ul>
   </nav>
@@ -11,13 +19,14 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { RouteRecord } from 'vue-router';
 
 @Component({
   components: { },
 })
 
 export default class Breadcrumb extends Vue {
-  @Prop({ type: Array, required: true }) public readonly tabs!: string[];
+  @Prop({ type: Array, required: true }) public readonly breadcrumbs!: Array<JSON>;
 }
 </script>
 

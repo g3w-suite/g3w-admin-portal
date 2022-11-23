@@ -21,7 +21,10 @@
       </form>
     </header>
 
-    <main class="container">
+    <!-- BREADCRUMBS -->
+    <Breadcrumb id="breadcrumb" :breadcrumbs="$route.meta.breadcrumb" @click="onBreadcrumbClick" />
+
+    <main id="content" class="container">
       <router-view />
     </main>
 
@@ -34,12 +37,13 @@
 import Carousel from '@/components/Carousel.vue';
 import Footer from '@/components/Footer.vue';
 import Navbar from '@/components/Navbar.vue';
+import Breadcrumb from '@/components/Breadcrumb.vue';
 import { Info } from '@/types/TInfo';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
 @Component({
-  components: { Navbar, Footer, Carousel },
+  components: { Navbar, Footer, Carousel, Breadcrumb },
   computed: {
     ...mapGetters({
       info: 'info/info',
@@ -63,6 +67,13 @@ export default class Main extends Vue {
   public onSearchSubmit(e: Event) {
     this.$router.push( { path: '/search', query: { key: 'q', value: this.search }});
     console.log(e);
+  }
+
+  public onBreadcrumbClick(idx: number) {
+    console.log(idx);
+    // this.tabs.splice(idx + 1, this.tabs.length);
+    // this.stackElementTab.splice(idx, this.stackElementTab.length);
+    // this.$store.dispatch('group/setActiveGroup', {sg: this.stackElementTab[this.stackElementTab.length - 1]});
   }
 
 }
