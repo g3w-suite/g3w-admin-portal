@@ -1,7 +1,7 @@
 <template>
   <fragment>
 
-    <Header />
+    <Navbar />
 
     <!-- <router-view name="header" /> -->
 
@@ -34,12 +34,12 @@
   import { Info } from '@/types/TInfo';
   import Carousel from '@/components/Carousel.vue';
   import Footer from '@/components/Footer.vue';
-  import Header from '@/components/Header.vue';
-  import { Component, Vue } from 'vue-property-decorator';
+  import Navbar from '@/components/Navbar.vue';
+  import { Component, Prop, Vue } from 'vue-property-decorator';
   import { mapGetters } from 'vuex';
 
   @Component({
-    components: { Header, Footer, Carousel },
+    components: { Navbar, Footer, Carousel },
     computed: {
       ...mapGetters({
         info: 'info/info',
@@ -50,7 +50,7 @@
   export default class Main extends Vue {
     public info!: Info;
 
-    public search!: string;
+    @Prop(String) public search!: string;
 
     // get search() {
     //   return this.$store.getters['group/search'];

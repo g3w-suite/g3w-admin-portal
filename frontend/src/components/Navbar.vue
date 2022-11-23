@@ -142,7 +142,7 @@
     },
   })
 
-  export default class Header extends Vue {
+  export default class Navbar extends Vue {
 
     public sections!: string[];
     public showAdmin!: boolean;
@@ -152,7 +152,7 @@
     public flag_it: string  = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAMCAYAAABvEu28AAAAlElEQVQoU2NkeMnwn+E7AwPDZyD+BsRQ8N/sP4KDzGJkxCrOyPAAaNAXqCEgGmaQI/EGgVQyMlyGuuguqkX/I4g36DXYoJNAg74CWS/JM+gtUNurUYNQAw8t+mkQRnuAsQZKiKCYQwLERv9NeKythxoESoxICfJN/BvsKVtEBC4OUgHCkOhfhN2ga2HXsBukpYXVIAB75l/0TlWQpQAAAABJRU5ErkJggg==';
     public flag_en: string  = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAMCAYAAABvEu28AAAB8ElEQVQoU62SXUiTYRTHf28QNCjLFpUEuwlEhT6IhdIoChJvMqhEcSLUyowZCW7vhTTvpgwmElMkk00v5pbQK5R9UAoaYRgDqS6UJHcxLIlcr1asCdHb0wMNaYNuPPDA/zznnP/5VIzWVoOODlIpKC7uI5FI8lcikQZq3YelGu18jd3en7FZLGbuXd/LgREfm1UVZTX8xsgbdEF3NxQV4XJN0dX1TAaEQhe5dNMm8UD7FA7HoMTNV0q5ZXoO+kcIBrn/ZA4FOg3VaaU5dZdtP3TyhoZ48fITNTV3aGk5jd1/QQZHVE0kGKffYaF0rI9dHg9UVlJfP0A4PPGHqN2ANQoKlCyn2dlVdpwqlERfHsyQf9ublWxpKS6saRRDCOk0YjiZ/teDD2VlUt03PZ3TnojH+azrgggEk+DJ6fb/z/fCRRdvA4k2qrX1wx4evsrxY3v4WlfHN1M++jUPO88ekf2tTMxTUrIdRkdZ9np5Vd5IQyhBZtjQZjQ12ejpqchyyrX+f5M1Lpp5NP4WJRZbMawHTSxUV7O4aQuBtUOMPJ6TVahqBWeCNyR+eDmA3/9U4qoqKz7fOZa1KAviIGOFNpSfmmbMi1Inj56nTYuTTH7PrMrpPEl5VByekLFaL729kxmb2bwVt/sE+3f/4l0gwG/CjeZfBzqg4wAAAABJRU5ErkJggg==';
 
-    public secondaryMenuVisible:boolean | null = true;
+    public secondaryMenuVisible: boolean | null = true;
 
     get languages() {
       return ['it', 'en']; // APP_LANGUAGES;
