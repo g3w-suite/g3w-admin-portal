@@ -22,7 +22,7 @@
     </header>
 
     <!-- BREADCRUMBS -->
-    <Breadcrumb id="breadcrumb" :breadcrumbs="$route.meta.breadcrumb" @click="onBreadcrumbClick" />
+    <Breadcrumb id="breadcrumb" :breadcrumbs="$route.meta.breadcrumb" />
 
     <main id="content" class="container">
       <router-view />
@@ -67,13 +67,6 @@ export default class Main extends Vue {
   public onSearchSubmit(e: Event) {
     this.$router.push( { path: '/search', query: { key: 'q', value: this.search }});
     console.log(e);
-  }
-
-  public onBreadcrumbClick(idx: number) {
-    console.log(idx);
-    // this.tabs.splice(idx + 1, this.tabs.length);
-    // this.stackElementTab.splice(idx, this.stackElementTab.length);
-    // this.$store.dispatch('group/setActiveGroup', {sg: this.stackElementTab[this.stackElementTab.length - 1]});
   }
 
 }

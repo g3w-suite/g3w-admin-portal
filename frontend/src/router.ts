@@ -26,9 +26,7 @@ const router = new Router({
           alias: '',
           component: Home,
           meta: {
-            breadcrumb: [
-              { name: 'home', text: 'Home' }
-            ]
+            breadcrumb: [ 'home' ]
           }
         },
         {
@@ -36,10 +34,7 @@ const router = new Router({
           name: 'login',
           component: Login,
           meta: {
-            breadcrumb: [
-              { name: 'home', text: 'Home' },
-              { name: 'login', text: 'Login' }
-            ]
+            breadcrumb: [ 'home', 'login' ]
           }
         },
         {
@@ -54,10 +49,7 @@ const router = new Router({
           name: 'search',
           component: Projects,
           meta: {
-            breadcrumb: [
-              { name: 'home', text: 'Home' },
-              { name: 'search', text: 'Search' }
-            ]
+            breadcrumb: [ 'home', 'search' ]
           }
         },
         /**
@@ -68,36 +60,10 @@ const router = new Router({
           name: 'maps',
           component: Projects,
           meta: {
-            breadcrumb: [
-              { name: 'home', text: 'Home' },
-              { name: 'maps', text: 'Maps' }
-            ]
+            breadcrumb: [ 'home', 'maps' ]
           }
         },
-        // {
-        //   path: 'group/:id',
-        //   name: 'group',
-        //   component: Projects,
-        // },
-        // {
-        //   path: 'info/',
-        //   name: 'info',
-        //   components: {
-        //     // header: Header,
-        //     default: About,
-        //   },
-        // },
-        // {
-        //   path: 'maps/',
-        //   name: 'maps',
-        //   components: {
-        //     // header: Header,
-        //     default: Projects,
-        //   },
-        // },
         /**
-         * 404 PAGE
-         * 
          * @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#caveat
          */
         {
@@ -105,15 +71,15 @@ const router = new Router({
           name: '404',
           component: NotFound,
           meta: {
-            breadcrumb: [
-              { name: 'home', text: 'Home' },
-              { name: '404', text: '404' }
-            ]
+            breadcrumb: [ 'home', '404' ]
           }
         },
       ],
     },
   ],
+  /**
+   * @link https://v3.router.vuejs.org/guide/advanced/scroll-behavior.html
+   */
   scrollBehavior(to, from, savedPosition) {
     if (to.hash) { return { selector: to.hash, behavior: 'smooth', offset: { x: 0, y: 100 } }; }
   },
@@ -122,7 +88,7 @@ const router = new Router({
 function updateTitleTab(to: Route) : void {
   const titlePrefix = '';
   const titleSuffix = ' | ' + (store.getters['info/info'].title || 'G3W-SUITE');
-  const pageName = to.meta && to.meta.title ? to.meta.title : (((to.name as string)[0].toUpperCase() + (to.name as string).slice(1)));
+  const pageName = to.meta.title || (to.name && (to.name[0].toUpperCase() + to.name.slice(1))) || '';
   (document as any).title = titlePrefix + pageName + titleSuffix;
 }
 

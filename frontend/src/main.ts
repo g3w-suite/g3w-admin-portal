@@ -4,81 +4,13 @@ import '@fontsource/titillium-web/400-italic.css';
 import '@fontsource/titillium-web/400.css';
 import '@fontsource/titillium-web/700-italic.css';
 import '@fontsource/titillium-web/700.css';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faFacebookSquare,
-  faFlickr,
-  faGooglePlusSquare,
-  faInstagram,
-  faLinkedin,
-  faTwitterSquare,
-  faYoutube,
-  /* faTripadvisor */
-} from '@fortawesome/free-brands-svg-icons';
-import {
-  faArrowUpRightFromSquare,
-  faBars,
-  faEnvelope,
-  faExpandArrowsAlt,
-  faGear,
-  faHome,
-  faInbox,
-  faInfo,
-  faKey,
-  faLanguage,
-  faMapMarkerAlt,
-  faNewspaper,
-  faPencilAlt,
-  faPhoneAlt,
-  faSearch,
-  faSignOutAlt,
-  faTimes,
-  faUser,
-  faUserLock,
-  faUserSecret,
-  faUserShield,
-  faXmark,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import '@/icons';
 import Vue from 'vue';
 import Fragment from 'vue-fragment';
 import VueI18n from 'vue-i18n';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-
-library.add(
-  faUserShield,
-  faUserSecret,
-  faKey,
-  faMapMarkerAlt,
-  faInbox,
-  faNewspaper,
-  faInfo,
-  faUserLock,
-  faLanguage,
-  faPhoneAlt,
-  faEnvelope,
-  faUser,
-  faFacebookSquare,
-  faGooglePlusSquare,
-  faYoutube,
-  faFlickr,
-  /* faTripadvisor, */
-  faTwitterSquare,
-  faInstagram,
-  faLinkedin,
-  faExpandArrowsAlt,
-  faTimes,
-  faSignOutAlt,
-  faPencilAlt,
-  faSearch,
-  faHome,
-  faGear,
-  faBars,
-  faXmark,
-  faArrowUpRightFromSquare,
-);
 import config from './config';
 
 if (config.stylesheet) {
@@ -112,8 +44,6 @@ const ELEMENT_TO_SET_CUSTOM_COLOR = {
 
 Vue.use(Fragment.Plugin);
 Vue.use(VueI18n);
-
-Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 

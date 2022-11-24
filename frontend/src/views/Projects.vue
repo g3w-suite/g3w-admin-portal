@@ -154,7 +154,7 @@ export default class Projects extends Vue {
   }
 
   public created() {
-    this.tabs = [this.$tc(`messages.menu.${this.$route.name}`).toUpperCase()];
+    this.tabs = [this.$tc(`messages.menu.${this.$route.name}`)];
   }
 
   public onBreadcrumbClick(idx: number) {

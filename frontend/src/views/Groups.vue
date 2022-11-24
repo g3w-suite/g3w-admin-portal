@@ -1,1 +1,0 @@
-<!-- TODO: split and refactor "@/views/Projects.vue" into "@/views/Groups.vue" -->
