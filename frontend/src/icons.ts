@@ -1,8 +1,6 @@
 /**
  * @file include in generated bundle only selected Fontawesome icons.
  */
-import Vue from 'vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faFacebookSquare,
@@ -38,6 +36,8 @@ import {
   faUserShield,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Vue from 'vue';
 
 library.add(
   faUserShield,

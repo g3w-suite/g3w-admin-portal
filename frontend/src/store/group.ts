@@ -21,14 +21,14 @@ const groupState: IGroupState = {
 };
 
 const getters: GetterTree<IGroupState, IRootState> = {
-  macroGroups:            (state): IMacroGroupDict   => state.MacroGroups,
-  search:                 (state): string            => state.Search,
-  activeGroup:            (state): SuperGroup | null => state.ActiveGroup,
-  groupsWithNoMacroGroup: (state): IGroupDict        => state.GroupsWithNoMacroGroup,
-  groupsInMacroGroup:     (state): Function          => (id: number) => state.GroupsInMacroGroups[id],
-  groups:                 (state): IGroupDict        => state.Groups,
-  projectsInGroup:        (state): Function          => (id: number) => state.ProjectsInGroups[id],
-  filteredProjects:       (state): Project[]         => {
+  macroGroups:            (state): IMacroGroupDict           => state.MacroGroups,
+  search:                 (state): string                    => state.Search,
+  activeGroup:            (state): SuperGroup | null         => state.ActiveGroup,
+  groupsWithNoMacroGroup: (state): IGroupDict                => state.GroupsWithNoMacroGroup,
+  groupsInMacroGroup:     (state): (id: number) => Group[]   => (id: number) => state.GroupsInMacroGroups[id],
+  groups:                 (state): IGroupDict                => state.Groups,
+  projectsInGroup:        (state): (id: number) => Project[] => (id: number) => state.ProjectsInGroups[id],
+  filteredProjects:       (state): Project[]                 => {
     const s = state.Search.toLowerCase();
     return state.Projects.filter(
       (p) => p.title.toLowerCase().includes(s) || p.description.toLowerCase().includes(s),

@@ -25,7 +25,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 })
 
 export default class Breadcrumb extends Vue {
-  @Prop({ type: Array, required: true }) public readonly breadcrumbs!: Array<JSON>;
+  @Prop({ type: Array, required: true }) public readonly breadcrumbs!: JSON[];
 }
 </script>
 

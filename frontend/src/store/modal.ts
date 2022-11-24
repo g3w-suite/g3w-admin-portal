@@ -23,7 +23,7 @@ const mutations: MutationTree<IModalState> = {
     state.img_link = '';
     state.title = '';
   },
-  setUrl:   (state, url): void => { state.img_link = url; },
+  setUrl:   (state, url): void   => { state.img_link = url; },
   setTitle: (state, title): void => { state.title = title; },
 };
 

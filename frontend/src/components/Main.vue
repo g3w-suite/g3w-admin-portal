@@ -34,10 +34,10 @@
 </template>
 
 <script lang="ts">
+import Breadcrumb from '@/components/Breadcrumb.vue';
 import Carousel from '@/components/Carousel.vue';
 import Footer from '@/components/Footer.vue';
 import Navbar from '@/components/Navbar.vue';
-import Breadcrumb from '@/components/Breadcrumb.vue';
 import { Info } from '@/types/TInfo';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
