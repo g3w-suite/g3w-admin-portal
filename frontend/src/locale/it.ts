@@ -28,8 +28,8 @@ export const it: any = {
       logout: 'Logout',
       admin: 'Admin',
       catalog: 'Catalogo',
-      group: 'Gruppo',
-      organization: 'Organizzazione',
+      group: 'Gruppi',
+      organization: 'Organizzazioni',
       map: 'Mappa',
     },
 

@@ -118,7 +118,7 @@
         <li>
           <router-link :to="{ name: 'group' }" class="secondary">
             <!-- {{ $t('messages.menu.search') }} -->
-            Temi
+            Gruppi
           </router-link>
         </li>
       </ul>

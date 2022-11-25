@@ -1,16 +1,16 @@
 <template>
 
-  <!-- PROJECT ARTICLE -->
+  <!-- GROUP ARTICLE -->
   <article v-if="type !== boxtype.P">
-    <router-link :to="(type === boxtype.MG ? '/organization/' : '/group/' ) + id"">
-      <figure style="cursor:pointer;">
+    <router-link :to="(type === boxtype.MG ? '/organization/' : '/group/' ) + id">
+      <figure>
         <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('messages.maps.group')" />
         <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3>{{title ||  $t('messages.maps.group')}}</h3></figcaption>
       </figure>
     </router-link>
    </article>
 
-  <!-- GROUP ARTICLE -->
+  <!-- PROJECT ARTICLE -->
   <article v-else>
 
     <p class="grid">

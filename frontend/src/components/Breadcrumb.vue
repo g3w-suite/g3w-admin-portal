@@ -5,12 +5,12 @@
     class="container"
   >
     <ul>
-      <li v-for="(name, idx) in breadcrumbs ">
+      <li v-for="(crumb, idx) in breadcrumbs ">
         <router-link
-          :to="{ name: name.name }"
+          :to="{ name: crumb.name }"
           :aria-current="idx + 1 != breadcrumbs.length ? undefined : 'page'"
         >
-          {{ $t('messages.menu.' + name.name) }}
+          {{ crumb.text ? crumb.text : $t('messages.menu.' + crumb.name) }}
         </router-link>
       </li>
     </ul>
@@ -36,7 +36,7 @@ export default class Breadcrumb extends Vue {
       let title = (/*this.root ||*/ 'home');
       const titleSeparator = ' | ';
 
-      let breadcrumbs = [ { name: title, path } ];
+      let breadcrumbs = [ { name: title, path, text: '' } ];
 
       const route   = (this.$route.path                        ).split('/');
       const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
@@ -44,19 +44,24 @@ export default class Breadcrumb extends Vue {
       console.log(this.$route);
       console.log(route, matched);
 
-      for(let i = 2; i < route.length; i++)
-      {
+      for(let i = 2; i < route.length; i++) {
         let name = (matched[i] || route[i]);
+
         console.log(name);
-        
+
         if (route[i] == '') continue;
+
         if (i == 2 && route.length >= 2 ) title = '';
         else title += titleSeparator;
 
         title += this.$i18n.t('messages.menu.' + name);
         path  += '/'  + name;
     
-        breadcrumbs.push({ name: name, path: path });
+        breadcrumbs.push({
+          name: name,
+          path: path,
+          text: (i > 2 && i === route.length - 1 ? this.$store.getters['group/activeGroup'].name : '')
+        });
       }
 
       window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
