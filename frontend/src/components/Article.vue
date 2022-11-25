@@ -13,6 +13,15 @@
   <!-- PROJECT ARTICLE -->
   <article v-else>
 
+    <figure>
+      <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
+    </figure>
+
+    <hgroup>
+      <h3>{{title}}</h3>
+      <div v-if="description" v-html="description"></div>
+    </hgroup>
+
     <p class="grid">
       <a :href="map_url" rel="noopener noreferrer" target="_blank">
         <font-awesome-icon icon="expand-arrows-alt" size="lg" />
@@ -23,15 +32,6 @@
         <span> Edit</span>
       </a>
     </p>
-
-    <figure>
-      <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
-    </figure>
-
-    <hgroup>
-      <h3>{{title}}</h3>
-      <div v-if="description" v-html="description"></div>
-    </hgroup>
 
   </article>
 
