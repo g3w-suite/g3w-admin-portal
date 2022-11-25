@@ -26,7 +26,6 @@ const router = new Router({
           alias: '',
           component: Home,
           meta: {
-            breadcrumb: [ 'home' ],
           },
         },
         {
@@ -34,7 +33,6 @@ const router = new Router({
           name: 'login',
           component: Login,
           meta: {
-            breadcrumb: [ 'home', 'login' ],
           },
         },
         {
@@ -49,18 +47,27 @@ const router = new Router({
           name: 'search',
           component: Projects,
           meta: {
-            breadcrumb: [ 'home', 'search' ],
           },
         },
-        /**
-         * @TODO MAPS ARCHIVE (maps/group/:id)
-         */
         {
-          path: 'maps/:group?/:id?/',
-          name: 'maps',
+          path: 'group/:id?/',
+          name: 'group',
           component: Projects,
           meta: {
-            breadcrumb: [ 'home', 'maps' ],
+          },
+        },
+        {
+          path: 'organization/:id?/',
+          name: 'organization',
+          component: Projects,
+          meta: {
+          },
+        },
+        {
+          path: 'map/:id?/',
+          name: 'map',
+          component: Projects,
+          meta: {
           },
         },
         /**
@@ -71,7 +78,6 @@ const router = new Router({
           name: '404',
           component: NotFound,
           meta: {
-            breadcrumb: [ 'home', '404' ],
           },
         },
       ],
@@ -85,19 +91,17 @@ const router = new Router({
   },
 });
 
-function updateTitleTab(to: Route): void {
-  const titlePrefix = '';
-  const titleSuffix = ' | ' + (store.getters['info/info'].title || 'G3W-SUITE');
-  const pageName = to.meta.title || (to.name && (to.name[0].toUpperCase() + to.name.slice(1))) || '';
-  (document as any).title = titlePrefix + pageName + titleSuffix;
-}
-
 router.beforeEach((to, from, next) => {
   const lang = to.params.lang;
   if (!config.languages.includes(lang)) { return next(`/it${to.path}`); }
-  if (i18n.locale !== lang) { i18n.locale = lang; }
-  store.subscribe((mutation) => 'info/setInfo' === mutation.type && updateTitleTab(to));
-  updateTitleTab(to);
+  if (i18n.locale !== lang) { 
+    i18n.locale = lang;
+    /**
+     * @TODO dispatch a "changeLanguage" action or make use of "i18n.locale" within REST API calls
+     */
+    store.dispatch('info/fetchInfo', { locale: i18n.locale });
+    store.dispatch('settings/fetchPictures', { locale: i18n.locale });
+  }
   return next();
 });
 

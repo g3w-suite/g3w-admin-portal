@@ -2,13 +2,13 @@
 
   <!-- PROJECT ARTICLE -->
   <article v-if="type !== boxtype.P">
-
-    <figure style="cursor:pointer;" @click="$emit('click', id, type)" tabindex="0">
-      <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('messages.maps.group')" />
-      <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3>{{title ||  $t('messages.maps.group')}}</h3></figcaption>
-    </figure>
- 
-  </article>
+    <router-link :to="(type === boxtype.MG ? '/organization/' : '/group/' ) + id"">
+      <figure style="cursor:pointer;">
+        <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('messages.maps.group')" />
+        <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3>{{title ||  $t('messages.maps.group')}}</h3></figcaption>
+      </figure>
+    </router-link>
+   </article>
 
   <!-- GROUP ARTICLE -->
   <article v-else>
@@ -94,7 +94,7 @@ export default class TabBox extends Vue {
     position: relative;
   }
 
-  article > figure > img {
+  article figure > img {
     aspect-ratio: 1;
     min-height: 200px;
     object-fit: cover;
@@ -112,11 +112,11 @@ export default class TabBox extends Vue {
   /**
    * GROUP ARTICLE
    */
-  article.boxtype_G {
+  article:is(.boxtype_G, .boxtype_MG) {
     padding: 0;
   }
 
-  .boxtype_G figure {
+  :is(.boxtype_G, .boxtype_MG) figure {
     width: 100%;
     height: 100%;
     margin: 0;
@@ -129,11 +129,11 @@ export default class TabBox extends Vue {
     position: relative;
   }
 
-  .boxtype_G figure > * {
+  :is(.boxtype_G, .boxtype_MG) figure > * {
     grid-area: box;
   }
   
-  .boxtype_G figcaption {
+  :is(.boxtype_G, .boxtype_MG) figcaption {
     color: #fff;
     place-self: start stretch;
     background: transparent;
@@ -146,11 +146,12 @@ export default class TabBox extends Vue {
     padding-right: 0.5rem;
   }
 
-  .boxtype_G figcaption > *:first-letter {
+  :is(.boxtype_G, .boxtype_MG) figcaption > *:first-letter {
     text-transform: uppercase;
   }
 
-  .boxtype_G figcaption, .boxtype_G figcaption > * {
+  :is(.boxtype_G, .boxtype_MG) figcaption,
+  :is(.boxtype_G, .boxtype_MG) figcaption > * {
     margin: 0;
     color: #fff;
     font-weight: normal;

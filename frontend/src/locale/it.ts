@@ -28,6 +28,9 @@ export const it: any = {
       logout: 'Logout',
       admin: 'Admin',
       catalog: 'Catalogo',
+      group: 'Gruppo',
+      organization: 'Organizzazione',
+      map: 'Mappa',
     },
 
     login: {

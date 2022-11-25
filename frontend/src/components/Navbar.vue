@@ -104,18 +104,21 @@
 
       <ul :hidden="secondaryMenuVisible">
         <li>
-            <router-link :to="{ name: 'home' }" aria-label="Back home" class="secondary">
-              {{ $t('messages.menu.home') }}
+            <router-link :to="{ name: 'search' }" class="secondary">
+              <!-- {{ $t('messages.menu.home') }} -->
+              Dati
             </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'maps' }" class="secondary">
-            {{ $t('messages.menu.catalog') }}
+          <router-link :to="{ name: 'organization' }" class="secondary">
+            <!-- {{ $t('messages.menu.catalog') }} -->
+            Organizzazioni
           </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'search' }" class="secondary">
-            {{ $t('messages.menu.search') }}
+          <router-link :to="{ name: 'group' }" class="secondary">
+            <!-- {{ $t('messages.menu.search') }} -->
+            Temi
           </router-link>
         </li>
       </ul>

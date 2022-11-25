@@ -4,14 +4,6 @@
     <!-- SPINNER -->
     <progress v-if="loading"></progress>
 
-    <!-- BREADCRUMBS -->
-    <Breadcrumb
-      v-if="!search.length && 1 !== tabs.length"
-      id="breadcrumb"
-      :breadcrumbs="tabs"
-      @click="onBreadcrumbClick"
-    />
-
     <!-- SEARCH BOX -->
     <input
       v-if="$route.name !== 'home'"
@@ -42,7 +34,6 @@
         :map_url="box.map_url"
         :description="box.description"
         :class="boxtype[box.InstanceOf] + '-' + box.Id + ' boxtype_' + boxtype[box.InstanceOf]"
-        @click="getGroups({ id: box.Id }, box.InstanceOf)"
       />
     </div>
 
@@ -68,7 +59,7 @@ import { mapGetters } from 'vuex';
 // }
 
 @Component({
-  components: { Breadcrumb, Article },
+  components: { Article },
   computed: {
     ...mapGetters({
       settings: 'info/info',
@@ -82,7 +73,7 @@ export default class Projects extends Vue {
 
   public boxtype        = EBoxType;
   public loading        = true; // loading
-  public tabs: string[] = [];
+  public crumbs: string[] = [];
 
   private stackElementTab: SuperGroup[] = [];
 
@@ -99,7 +90,7 @@ export default class Projects extends Vue {
       return this.$store.getters['group/filteredProjects'];
     }
     const elements: Array<MacroGroup | Group> = [];
-    if (this.tabs.length === 1) {
+    if (this.crumbs.length === 1) {
       const macroGroups   = this.$store.getters['group/macroGroups'];
       const noMacroGroups = this.$store.getters['group/groupsWithNoMacroGroup'];
       for (const i in macroGroups) {
@@ -109,7 +100,7 @@ export default class Projects extends Vue {
         elements.push(noMacroGroups[i] as Group);
       }
       return elements;
-    } else if (this.tabs.length > 1) {
+    } else if (this.crumbs.length > 1) {
       const activeEl = this.stackElementTab[this.stackElementTab.length - 1];
       if (activeEl.InstanceOf === EBoxType.MG) {
         return (activeEl as MacroGroup).Groups;
@@ -121,13 +112,13 @@ export default class Projects extends Vue {
   }
 
   get title() {
-    return 1 === this.tabs.length
+    return 1 === this.crumbs.length
       ? this.settings.groups_title
       : this.$store.getters['group/activeGroup'].title || this.$store.getters['group/activeGroup'].name;
   }
 
   get description() {
-    return 1 === this.tabs.length
+    return 1 === this.crumbs.length
       ? this.settings.groups_map_description
       : this.$store.getters['group/activeGroup'].description;
   }
@@ -142,7 +133,7 @@ export default class Projects extends Vue {
     ]);
     this.loading = false;
     if (undefined !== id) {
-      this.getGroups({ id: 1 * parseInt(id, 10) }, EBoxType.G);
+      this.getGroups({ id: parseInt(id, 10) }, EBoxType.G);
     } else if (undefined !== name) {
       this.getGroups({ name }, EBoxType.G);
     }
@@ -150,18 +141,18 @@ export default class Projects extends Vue {
     /**
      * @TODO make use of "$route.matched" property for dynamic breadcrumb generation?
      */
-    console.log(this.$route.matched);
+    // console.log(this.$route.matched);
   }
 
   public created() {
-    this.tabs = [this.$tc(`messages.menu.${this.$route.name}`)];
+    this.crumbs = [this.$tc(`messages.menu.${this.$route.name}`)];
   }
 
-  public onBreadcrumbClick(idx: number) {
-    this.tabs.splice(idx + 1, this.tabs.length);
-    this.stackElementTab.splice(idx, this.stackElementTab.length);
-    this.$store.dispatch('group/setActiveGroup', {sg: this.stackElementTab[this.stackElementTab.length - 1]});
-  }
+  // public onBreadcrumbClick(idx: number) {
+  //   this.tabs.splice(idx + 1, this.tabs.length);
+  //   this.stackElementTab.splice(idx, this.stackElementTab.length);
+  //   this.$store.dispatch('group/setActiveGroup', {sg: this.stackElementTab[this.stackElementTab.length - 1]});
+  // }
 
   public getGroups(param: { id?: number, name?: string }, type: EBoxType) {
     const { id, name } = param;
@@ -185,14 +176,14 @@ export default class Projects extends Vue {
     }
     this.$store.dispatch('group/setActiveGroup', { sg: el });
     this.stackElementTab = this.stackElementTab.concat(el);
-    this.tabs = this.tabs.concat(el.title || el.name);
+    this.crumbs = this.crumbs.concat(el.title || el.name);
   }
 
-  public async beforeRouteUpdate(to: Route, from: Route) {
-    console.log(to, from);
-    // react to route changes...
-    // this.userData = await fetchUser(to.params.id)
-  }
+  // public async beforeRouteUpdate(to: Route, from: Route) {
+  //   console.log(to, from);
+  //   // react to route changes...
+  //   // this.userData = await fetchUser(to.params.id)
+  // }
 
 }
 </script>

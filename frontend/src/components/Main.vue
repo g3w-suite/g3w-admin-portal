@@ -21,8 +21,7 @@
       </form>
     </header>
 
-    <!-- BREADCRUMBS -->
-    <Breadcrumb id="breadcrumb" :breadcrumbs="$route.meta.breadcrumb" />
+    <Breadcrumb id="breadcrumb" />
 
     <main id="content" class="container">
       <router-view />
