@@ -21,7 +21,7 @@
       <p v-html="description"></p>
     </hgroup>
 
-    <div class="grid">
+    <div :class="$route.name !== 'group' ? 'grid' : ''">
       <Article
         v-for="box in boxes"
         :href="box.LogoLink"

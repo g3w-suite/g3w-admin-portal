@@ -11,27 +11,28 @@
    </article>
 
   <!-- PROJECT ARTICLE -->
-  <article v-else>
+  <article v-else  class="grid">
 
-    <figure>
-      <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
-    </figure>
+    <div>
+      <figure>
+        <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
+      </figure>
+      <p class="grid">
+        <a :href="map_url" rel="noopener noreferrer" target="_blank">
+          <font-awesome-icon icon="expand-arrows-alt" size="lg" />
+          <span> View</span>
+        </a>
+        <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn']" :href="edit_url" rel="noopener noreferrer" target="_blank">
+          <font-awesome-icon icon="pencil-alt" size="lg" />
+          <span> Edit</span>
+        </a>
+      </p>
+    </div>
 
     <hgroup>
       <h3>{{title}}</h3>
-      <div v-if="description" v-html="description"></div>
+      <div v-html="description"></div>
     </hgroup>
-
-    <p class="grid">
-      <a :href="map_url" rel="noopener noreferrer" target="_blank">
-        <font-awesome-icon icon="expand-arrows-alt" size="lg" />
-        <span> View</span>
-      </a>
-      <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn']" :href="edit_url" rel="noopener noreferrer" target="_blank">
-        <font-awesome-icon icon="pencil-alt" size="lg" />
-        <span> Edit</span>
-      </a>
-    </p>
 
   </article>
 
@@ -90,7 +91,7 @@ export default class TabBox extends Vue {
     padding: var(--block-spacing-horizontal);
   }
 
-  article > figure {
+  article figure {
     position: relative;
   }
 
