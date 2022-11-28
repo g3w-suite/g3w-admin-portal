@@ -61,12 +61,19 @@
 
       </div>
     </section>
+    <!-- TODO: allow users to edit cookie, privacy and credits links -->
     <nav style="background-color: var(--contrast-inverse);">
       <div class="container">
         <ul>
-          <li><a href="#" class="contrast">Cookie</a></li>
-          <li><a href="#" class="contrast">Privacy</a></li>
-          <li><a href="#" class="contrast">Credits</a></li>
+          <li v-if="info.cookiepolicy_url">
+            <a :href="info.cookiepolicy_url" class="contrast">Cookie</a>
+          </li>
+          <li v-if="info.privacypolicy_url">
+            <a :href="info.privacypolicy_url" class="contrast">Privacy</a>
+          </li>
+          <li v-if="info.credits_url">
+            <a :href="info.credits_url" class="contrast">Credits</a>
+          </li>
         </ul>
       </div>
     </nav>

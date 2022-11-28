@@ -36,7 +36,7 @@ export default class Breadcrumb extends Vue {
       let title = (/*this.root ||*/ 'home');
       const titleSeparator = ' | ';
 
-      let breadcrumbs = [ { name: title, path, text: '' } ];
+      let breadcrumbs = [ { name: title, path, /*text: ''*/ } ];
 
       const route   = (this.$route.path                        ).split('/');
       const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
@@ -60,7 +60,7 @@ export default class Breadcrumb extends Vue {
         breadcrumbs.push({
           name: name,
           path: path,
-          text: (i > 2 && i === route.length - 1 ? this.$store.getters['group/activeGroup'].name : '')
+          // text: (i > 2 && i === route.length - 1 ? this.$store.getters['group/activeGroup'].name : '')
         });
       }
 

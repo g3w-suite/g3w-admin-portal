@@ -28,6 +28,7 @@ const getters: GetterTree<IGroupState, IRootState> = {
   groupsInMacroGroup:     (state): (id: number) => Group[]   => (id: number) => state.GroupsInMacroGroups[id],
   groups:                 (state): IGroupDict                => state.Groups,
   projectsInGroup:        (state): (id: number) => Project[] => (id: number) => state.ProjectsInGroups[id],
+  projects:               (state): Project[]                 => state.Projects,
   filteredProjects:       (state): Project[]                 => {
     const s = state.Search.toLowerCase();
     return state.Projects.filter(

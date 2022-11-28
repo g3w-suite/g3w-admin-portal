@@ -13,7 +13,7 @@ import Projects from '@/views/Projects.vue';
 Vue.use(Router);
 
 const router = new Router({
-  mode: 'history',
+  // mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {

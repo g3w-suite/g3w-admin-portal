@@ -6,7 +6,7 @@
 
     <!-- SEARCH BOX -->
     <input
-      v-if="$route.name !== 'home'"
+      v-if="$route.name === 'search'"
       type="search"
       id="search"
       name="search"
@@ -21,7 +21,7 @@
       <p v-html="description"></p>
     </hgroup>
 
-    <div :class="$route.name !== 'group' ? 'grid' : ''">
+    <div :class="$route.name === 'group' || $route.name === 'search'  ? '' : 'grid'">
       <Article
         v-for="box in boxes"
         :href="box.LogoLink"
@@ -88,6 +88,9 @@ export default class Projects extends Vue {
   get boxes() {
     if (this.search) {
       return this.$store.getters['group/filteredProjects'];
+    }
+    if (this.$route.name === 'search') {
+      return this.$store.getters['group/projects'];
     }
     const elements: Array<MacroGroup | Group> = [];
     if (this.crumbs.length === 1) {
