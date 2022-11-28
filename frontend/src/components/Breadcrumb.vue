@@ -36,10 +36,11 @@ export default class Breadcrumb extends Vue {
       let title = (/*this.root ||*/ 'home');
       const titleSeparator = ' | ';
 
-      let breadcrumbs = [ { name: title, path, /*text: ''*/ } ];
+      let breadcrumbs = [ { name: title, path, text: '' } ];
 
       const route   = (this.$route.path                        ).split('/');
       const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
+
 
       console.log(this.$route);
       console.log(route, matched);
@@ -56,12 +57,14 @@ export default class Breadcrumb extends Vue {
 
         title += this.$i18n.t('messages.menu.' + name);
         path  += '/'  + name;
-    
+        // in case of group router, get current active name
+
         breadcrumbs.push({
           name: name,
           path: path,
-          // text: (i > 2 && i === route.length - 1 ? this.$store.getters['group/activeGroup'].name : '')
-        });
+          text: ((i > 2 && i === route.length - 1) && this.$store.getters['group/activeGroup']) ? this.$store.getters['group/activeGroup'].name : ''
+        })
+
       }
 
       window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
