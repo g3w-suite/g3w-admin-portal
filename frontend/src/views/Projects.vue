@@ -21,7 +21,7 @@
       <p v-html="description"></p>
     </hgroup>
 
-    <div :class="$route.name === 'group' || $route.name === 'search'  ? '' : 'grid'">
+    <div :class="($route.name === 'group' && $route.params.id !== undefined) || $route.name === 'search'  ? '' : 'grid'">
       <Article
         v-for="box in boxes"
         :href="box.LogoLink"
@@ -86,39 +86,51 @@ export default class Projects extends Vue {
   }
 
   get boxes() {
-    if (this.search) {
-      return this.$store.getters['group/filteredProjects'];
-    }
-    if (this.$route.name === 'search') {
-      return this.$store.getters['group/projects'];
-    }
+    /**
+     * @TODO convert the the folowing filter into a store getter (es. "group/getAllGroups")
+     */
     const elements: Array<MacroGroup | Group> = [];
     const macroGroups   = this.$store.getters['group/macroGroups'];
     const noMacroGroups = this.$store.getters['group/groupsWithNoMacroGroup'];
     for (const i in macroGroups) {
       elements.push(macroGroups[i] as MacroGroup);
     }
-
     for (const i in noMacroGroups) {
       elements.push(noMacroGroups[i] as Group);
     }
+    /** */
 
-    if (this.$route.name === 'home') return elements;
-    else if (this.$route.name === 'organization') {
-      if (typeof this.$route.params.id === "undefined") return this.$store.getters['group/macroGroups'];
-      else return this.$store.getters['group/macroGroups'] ? this.$store.getters['group/groupsInMacroGroup'](this.$route.params.id) : [];
-    } else if (this.$route.name === 'group'){
-      if (typeof this.$route.params.id === "undefined") return this.$store.getters['group/groupsWithNoMacroGroup'];
-      else return this.$store.getters['group/groups'] ? this.$store.getters['group/projectsInGroup'](this.$route.params.id) : [];
+    switch(this.$route.name) {
+      case 'home':
+        return elements;
+      case 'organization':
+        return this.$route.params.id
+          ? this.$store.getters['group/groupsInMacroGroup'](this.$route.params.id)
+          : macroGroups;
+      case 'group':
+        return this.$route.params.id
+            ? this.$store.getters['group/projectsInGroup'](this.$route.params.id)
+            : noMacroGroups;
+      default:
+        return this.search
+          ? this.$store.getters['group/filteredProjects']
+          : this.$store.getters['group/projects'];
     }
+
   }
 
+  /**
+   * @FIXME show group title on "group/:id" and "organization/:id" route
+   */
   get title() {
     return 1 === this.crumbs.length
       ? this.settings.groups_title
       : this.$store.getters['group/activeGroup'].title || this.$store.getters['group/activeGroup'].name;
   }
 
+  /**
+   * @FIXME show group description on "group/:id" and "organization/:id" route
+   */
   get description() {
     return 1 === this.crumbs.length
       ? this.settings.groups_map_description
@@ -126,7 +138,7 @@ export default class Projects extends Vue {
   }
 
   public async mounted() {
-    const { params:{id}, name } = this.$route;
+    const { params, name } = this.$route;
     const locale = this.$i18n.locale;
     await Promise.allSettled([
       this.$store.dispatch('group/fetchMacroGroups', { locale }),
@@ -134,14 +146,9 @@ export default class Projects extends Vue {
       this.$store.dispatch('group/fetchProjects', { locale }),
     ]);
     this.loading = false;
-    if (typeof id !== "undefined") {
-      this.getGroups({ id: parseInt(id, 10) }, name === 'group' ? EBoxType.G: EBoxType.MG);
+    if (undefined !== params.id) {
+      this.getGroups({ id: parseInt(params.id, 10) }, name === 'group' ? EBoxType.G: EBoxType.MG);
     }
-
-    /**
-     * @TODO make use of "$route.matched" property for dynamic breadcrumb generation?
-     */
-
   }
 
   public created() {

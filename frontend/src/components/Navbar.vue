@@ -81,7 +81,7 @@
 
         <!-- TITLE -->
         <li class="hide-on-mobile">
-          <span style="display:block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color);">{{info.title}}</span>
+          <span class="h1">{{info.title}}</span>
           <span>{{info.sub_title}}</span>
         </li>
 
@@ -91,34 +91,31 @@
         <li>
           <router-link :to="{ name: 'search' }" class="contrast outline">
             <font-awesome-icon icon="search" size="lg" />
-            Catalogo
+            {{ $t('messages.menu.catalog') }}
           </router-link>
         </li>
         <li>
           <button @click="toggleSecondaryMenu" class="contrast outline">
             <font-awesome-icon :icon="secondaryMenuVisible ? 'bars' : 'xmark'" size="lg" />
-            MENU
+            {{ $t('messages.menu.toggle') }}
           </button>
         </li>
       </ul>
 
       <ul :hidden="secondaryMenuVisible">
         <li>
-            <router-link :to="{ name: 'search' }" class="secondary">
-              <!-- {{ $t('messages.menu.home') }} -->
-              Dati
+            <router-link :to="{ name: 'home' }" class="secondary" :title="$t('messages.tooltip.home')">
+              {{ $t('messages.menu.data') }}
             </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'organization' }" class="secondary">
-            <!-- {{ $t('messages.menu.catalog') }} -->
-            Organizzazioni
+          <router-link :to="{ name: 'group' }" class="secondary">
+            {{ $t('messages.menu.group') }}
           </router-link>
         </li>
         <li>
-          <router-link :to="{ name: 'group' }" class="secondary">
-            <!-- {{ $t('messages.menu.search') }} -->
-            Gruppi
+          <router-link :to="{ name: 'organization' }" class="secondary">
+            {{ $t('messages.menu.organization') }}
           </router-link>
         </li>
       </ul>
@@ -223,5 +220,11 @@
 
   nav .logo {
     max-height: 4rem;
+  }
+  nav .h1 {
+    display:block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--h1-color);
   }
 </style>
