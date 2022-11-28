@@ -1,7 +1,7 @@
 import Main from '@/components/Main.vue';
 import { i18n } from '@/main';
 import Vue from 'vue';
-import Router, { Route } from 'vue-router';
+import Router, { Route, RouterMode } from 'vue-router';
 import config from './config';
 import store from './store';
 
@@ -13,7 +13,7 @@ import Projects from '@/views/Projects.vue';
 Vue.use(Router);
 
 const router = new Router({
-  // mode: 'history',
+  mode: config.router_mode,
   base: process.env.BASE_URL,
   routes: [
     {
@@ -39,7 +39,7 @@ const router = new Router({
           path: 'admin/',
           name: 'admin',
           beforeEnter() {
-            location.href = store.getters['me/isLoggedIn'] ? 'http://127.0.0.1:8000' : '/';
+            location.href = store.getters['me/isLoggedIn'] ? config.admin_url : '/';
           },
         },
         {
