@@ -46,9 +46,10 @@ export default class Breadcrumb extends Vue {
       console.log(route, matched);
 
       for(let i = 2; i < route.length; i++) {
+        let text;
         let name = (matched[i] || route[i]);
 
-        console.log(name);
+        console.log(route[i]);
 
         if (route[i] == '') continue;
 
@@ -58,23 +59,27 @@ export default class Breadcrumb extends Vue {
         title += this.$i18n.t('messages.menu.' + name);
         path  += '/'  + name;
         // in case of group router, get current active name
-
+        if ((i > 2 && i === route.length - 1)) {
+          const {name} = this.$route;
+          if (name == 'organization') {
+            const macro = this.$store.getters['group/macroGroups'] && this.$store.getters['group/macroGroups'][route[i]];
+            text = macro ? macro.title : '';
+          } else if (name === 'group') {
+            const group = this.$store.getters['group/groups'] && this.$store.getters['group/groups'][route[i]];
+            text = group ? group.name : '';
+          }
+        }
         breadcrumbs.push({
           name: name,
           path: path,
-          text: ((i > 2 && i === route.length - 1) && this.$store.getters['group/activeGroup']) ? this.$store.getters['group/activeGroup'].name : ''
+          text
         })
-
       }
 
       window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
 
       return breadcrumbs;
   }
-
-  // public async beforeRouteUpdate(to: Route, from: Route) {
-  //   this.breadcrumbs = 
-  // }
 }
 </script>
 

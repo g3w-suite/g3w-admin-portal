@@ -93,24 +93,23 @@ export default class Projects extends Vue {
       return this.$store.getters['group/projects'];
     }
     const elements: Array<MacroGroup | Group> = [];
-    if (this.crumbs.length === 1) {
-      const macroGroups   = this.$store.getters['group/macroGroups'];
-      const noMacroGroups = this.$store.getters['group/groupsWithNoMacroGroup'];
-      for (const i in macroGroups) {
-        elements.push(macroGroups[i] as MacroGroup);
-      }
-      for (const i in noMacroGroups) {
-        elements.push(noMacroGroups[i] as Group);
-      }
-      return elements;
-    } else if (this.crumbs.length > 1) {
-      const activeEl = this.stackElementTab[this.stackElementTab.length - 1];
-      if (activeEl.InstanceOf === EBoxType.MG) {
-        return (activeEl as MacroGroup).Groups;
-      }
-      if (activeEl.InstanceOf === EBoxType.G) {
-        return (activeEl as Group).Projects;
-      }
+    const macroGroups   = this.$store.getters['group/macroGroups'];
+    const noMacroGroups = this.$store.getters['group/groupsWithNoMacroGroup'];
+    for (const i in macroGroups) {
+      elements.push(macroGroups[i] as MacroGroup);
+    }
+
+    for (const i in noMacroGroups) {
+      elements.push(noMacroGroups[i] as Group);
+    }
+
+    if (this.$route.name === 'home') return elements;
+    else if (this.$route.name === 'organization') {
+      if (typeof this.$route.params.id === "undefined") return this.$store.getters['group/macroGroups'];
+      else return this.$store.getters['group/macroGroups'] ? this.$store.getters['group/groupsInMacroGroup'](this.$route.params.id) : [];
+    } else if (this.$route.name === 'group'){
+      if (typeof this.$route.params.id === "undefined") return this.$store.getters['group/groupsWithNoMacroGroup'];
+      else return this.$store.getters['group/groups'] ? this.$store.getters['group/projectsInGroup'](this.$route.params.id) : [];
     }
   }
 
@@ -127,7 +126,7 @@ export default class Projects extends Vue {
   }
 
   public async mounted() {
-    const { id, name } = this.$route.params;
+    const { params:{id}, name } = this.$route;
     const locale = this.$i18n.locale;
     await Promise.allSettled([
       this.$store.dispatch('group/fetchMacroGroups', { locale }),
@@ -135,30 +134,23 @@ export default class Projects extends Vue {
       this.$store.dispatch('group/fetchProjects', { locale }),
     ]);
     this.loading = false;
-    if (undefined !== id) {
-      this.getGroups({ id: parseInt(id, 10) }, EBoxType.G);
-    } else if (undefined !== name) {
-      this.getGroups({ name }, EBoxType.G);
+    if (typeof id !== "undefined") {
+      this.getGroups({ id: parseInt(id, 10) }, name === 'group' ? EBoxType.G: EBoxType.MG);
     }
 
     /**
      * @TODO make use of "$route.matched" property for dynamic breadcrumb generation?
      */
-    // console.log(this.$route.matched);
+
   }
 
   public created() {
     this.crumbs = [this.$tc(`messages.menu.${this.$route.name}`)];
   }
 
-  // public onBreadcrumbClick(idx: number) {
-  //   this.tabs.splice(idx + 1, this.tabs.length);
-  //   this.stackElementTab.splice(idx, this.stackElementTab.length);
-  //   this.$store.dispatch('group/setActiveGroup', {sg: this.stackElementTab[this.stackElementTab.length - 1]});
-  // }
-
   public getGroups(param: { id?: number, name?: string }, type: EBoxType) {
     const { id, name } = param;
+    console.log(id)
     let el: SuperGroup = new SuperGroup();
     if (EBoxType.P === type) { return false; }
     switch (type) {
@@ -178,15 +170,8 @@ export default class Projects extends Vue {
         break;
     }
     this.$store.dispatch('group/setActiveGroup', { sg: el });
-    this.stackElementTab = this.stackElementTab.concat(el);
-    this.crumbs = this.crumbs.concat(el.title || el.name);
   }
 
-  // public async beforeRouteUpdate(to: Route, from: Route) {
-  //   console.log(to, from);
-  //   // react to route changes...
-  //   // this.userData = await fetchUser(to.params.id)
-  // }
 
 }
 </script>
