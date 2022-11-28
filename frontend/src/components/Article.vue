@@ -20,11 +20,11 @@
       <p class="grid">
         <a :href="map_url" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="expand-arrows-alt" size="lg" />
-          <span> View</span>
+          <span> {{ $t('messages.maps.view') }}</span>
         </a>
         <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn']" :href="edit_url" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="pencil-alt" size="lg" />
-          <span> Edit</span>
+          <span> {{ $t('messages.maps.edit') }}</span>
         </a>
       </p>
     </div>
@@ -108,6 +108,14 @@ export default class TabBox extends Vue {
     color: #fff;
     margin: 1rem;
     left: 0;
+  }
+
+  .boxtype_P hgroup {
+    grid-column: span 2;
+  }
+
+  article.boxtype_P {
+    margin: var(--block-spacing-vertical) 0;
   }
 
   /**

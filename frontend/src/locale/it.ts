@@ -65,6 +65,8 @@ export const it: any = {
 
     maps: {
       group: 'Gruppo',
+      edit: 'Modifica',
+      view: 'Visualizza',
     },
 
   },

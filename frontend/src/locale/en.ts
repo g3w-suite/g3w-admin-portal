@@ -55,6 +55,8 @@ export const en: any = {
 
     maps: {
       group: 'Group',
+      edit: 'Edit',
+      sview: 'View',
     },
   },
 };
