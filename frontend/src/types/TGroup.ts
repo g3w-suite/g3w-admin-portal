@@ -24,8 +24,11 @@ export class Group extends SuperGroup {
     this.srid             = data && data.srid || -1;
     this.header_logo_link = data && data.header_logo_link || '';
     this.header_logo_img  = data && data.header_logo_img || '';
+    // in case of empty title try to get title from name property
+    if (!this.title){
+      this.title = this.name;
+    }
   }
-
   get Key() {
     return EBoxType[this.InstanceOf] + '_' + this.id;
   }
