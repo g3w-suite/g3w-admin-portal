@@ -70,6 +70,9 @@ export default class Breadcrumb extends Vue {
 
         path  += '/'  + name;
 
+        /**
+         * @FIXME title tab names for "group" and "organization"
+         */
         // in case of group router, get current active name
         // if (this.isLastCrumb(route, i)) {
         //   if ('organization' === this.$route.name) {
