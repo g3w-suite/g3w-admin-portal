@@ -2,7 +2,7 @@
   <article class="grid">
     
     <div>
-      <h2>{{settings.login_title || $tc("messages.login.titolo")}}</h2>
+      <h2>{{settings.login_title || $tc("messages.login.title")}}</h2>
 
       <form @keyup.enter="login">
 
@@ -16,7 +16,7 @@
           type="text"
           v-model="username"
         />
-        <p class="error_or_missing" v-if="usernameError">{{$t('messages.validation.requiredField')}}</p>
+        <p class="error_or_missing" v-if="usernameError">{{$t('messages.login.requiredField')}}</p>
 
         <!-- PASSWORD FIELD -->
         <label for="password" v-if="show_label">{{$t('messages.login.password')}}</label>
@@ -28,16 +28,16 @@
           type="password"
           v-model="password"
         />
-        <p class="error_or_missing" v-if="passwordError">{{$t('messages.validation.requiredField')}}</p>
+        <p class="error_or_missing" v-if="passwordError">{{$t('messages.login.requiredField')}}</p>
 
         <!-- SUBMIT BUTTON -->
         <button
           @click="login"
           id="button"
           type="button"
-          class="contrast">{{$t('messages.login.accesso')}}
+          class="contrast">{{$t('messages.login.submit')}}
         </button>
-        <p class="error_or_missing" v-if="loginError">{{$t('messages.validation.erroreLogin')}}</p>
+        <p class="error_or_missing" v-if="loginError">{{$t('messages.login.erroreLogin')}}</p>
 
         <!-- RESET PASSWORD LINK -->
         <div v-if="settings.reset_password_url" >

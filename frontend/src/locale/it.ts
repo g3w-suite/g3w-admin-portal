@@ -2,14 +2,12 @@
 export const it: any = {
   messages: {
 
-    hello: 'ciao',
-
     footer: {
       contacts: 'Contatti',
     },
 
     tooltip: {
-      cambia_lingua: 'Cambia lingua',
+      choose_language: 'Seleziona una lingua',
       home: 'Vai alla home',
       logout: 'Logout',
       login: 'Entra',
@@ -22,8 +20,6 @@ export const it: any = {
       home: 'Home',
       maps: 'mappe',
       info: 'info',
-      news: 'news',
-      archivi: 'archivi',
       login: 'Login',
       logout: 'Logout',
       admin: 'Admin',
@@ -36,31 +32,16 @@ export const it: any = {
     login: {
       username: 'Username',
       password: 'Password',
-      accesso: 'Accesso',
-      titolo: 'Accedi al sistema di amministrazione',
+      submit: 'Accesso',
+      title: 'Accedi al sistema di amministrazione',
       reset_password_url: 'Password dimenticata?',
-    },
-
-    tab: {
-      firstTab: 'Home',
-    },
-
-    about: {
-      chisiamo: 'chi siamo',
-      telefono: 'contatti telefonici',
-      email: 'indirizzo email',
-      dovesiamo: 'dove siamo',
-      social: 'social',
+      requiredField: 'Questo campo è obbligatorio',
+      erroreLogin: 'Errore di login',
     },
 
     language: {
       it: 'Italiano',
       en: 'English',
-    },
-
-    validation: {
-      requiredField: 'Questo campo è obbligatorio',
-      erroreLogin: 'Errore di login',
     },
 
     maps: {

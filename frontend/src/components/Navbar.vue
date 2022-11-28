@@ -43,7 +43,7 @@
         <li>
           <details role="list" dir="ltr">
             <summary aria-haspopup="listbox" role="link" class="secondary">
-              <img alt="Choose a language" :title="$t('messages.language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
+              <img :alt="$t('messages.tooltip.choose_language')" :title="$t('messages.language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
               <span class="hide-on-mobile">{{$t('messages.language.' + $i18n.locale)}}</span>
             </summary>
             <ul role="listbox">
