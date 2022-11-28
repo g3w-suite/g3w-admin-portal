@@ -119,12 +119,18 @@ export default class Projects extends Vue {
 
   }
 
+  /**
+   * @FIXME show group title on "group/:id" and "organization/:id" route
+   */
   get title() {
     return 1 === this.crumbs.length
       ? this.settings.groups_title
       : this.$store.getters['group/activeGroup'].title || this.$store.getters['group/activeGroup'].name;
   }
 
+  /**
+   * @FIXME show group description on "group/:id" and "organization/:id" route
+   */
   get description() {
     return 1 === this.crumbs.length
       ? this.settings.groups_map_description
