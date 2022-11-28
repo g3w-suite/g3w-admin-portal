@@ -29,10 +29,13 @@ export class Info {
   public readonly reset_password_url: string;
 
   /**
-   * @TODO implement this in config
+   * @TODO add the following in "g3w-admin" REST API
    */
-  public readonly suite_org_url: string = 'http://www.regione.puglia.it/';
-  public readonly suite_org_name: string = 'Regione Puglia';
+  public readonly suite_org_url: string      = process.env.VUE_APP_SUITE_ORG_URL;
+  public readonly suite_org_name: string     = process.env.VUE_APP_SUITE_ORG_NAME;
+  public readonly cookie_policy_url: string  = process.env.VUE_APP_COOKIE_POLICY_URL;
+  public readonly privacy_policy_url: string = process.env.VUE_APP_PRIVACY_POLICY_URL;
+  public readonly credits_url: string        = process.env.VUE_APP_CREDITS_URL;
 
   constructor();
   constructor(data: IInfo);

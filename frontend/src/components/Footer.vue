@@ -65,11 +65,11 @@
     <nav style="background-color: var(--contrast-inverse);">
       <div class="container">
         <ul>
-          <li v-if="info.cookiepolicy_url">
-            <a :href="info.cookiepolicy_url" class="contrast">Cookie</a>
+          <li v-if="info.cookie_policy_url">
+            <a :href="info.cookie_policy_url" class="contrast">Cookie</a>
           </li>
-          <li v-if="info.privacypolicy_url">
-            <a :href="info.privacypolicy_url" class="contrast">Privacy</a>
+          <li v-if="info.privacy_policy_url">
+            <a :href="info.privacy_policy_url" class="contrast">Privacy</a>
           </li>
           <li v-if="info.credits_url">
             <a :href="info.credits_url" class="contrast">Credits</a>
