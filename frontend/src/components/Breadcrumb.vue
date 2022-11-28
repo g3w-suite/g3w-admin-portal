@@ -69,13 +69,13 @@ export default class Breadcrumb extends Vue {
             text = group ? group.name : '';
           }
         }
+        title = text || title;
         breadcrumbs.push({
           name: name,
           path: path,
           text
         })
       }
-
       window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
 
       return breadcrumbs;
