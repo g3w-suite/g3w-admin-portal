@@ -86,17 +86,19 @@ export default class Projects extends Vue {
   }
 
   get boxes() {
+    /**
+     * @TODO convert the the folowing filter into a store getter (es. "group/getAllGroups")
+     */
     const elements: Array<MacroGroup | Group> = [];
     const macroGroups   = this.$store.getters['group/macroGroups'];
     const noMacroGroups = this.$store.getters['group/groupsWithNoMacroGroup'];
-
     for (const i in macroGroups) {
       elements.push(macroGroups[i] as MacroGroup);
     }
-
     for (const i in noMacroGroups) {
       elements.push(noMacroGroups[i] as Group);
     }
+    /** */
 
     switch(this.$route.name) {
       case 'home':
