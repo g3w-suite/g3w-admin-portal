@@ -130,7 +130,7 @@ export default class Projects extends Vue {
   }
 
   public async mounted() {
-    const { params:{id}, name } = this.$route;
+    const { params, name } = this.$route;
     const locale = this.$i18n.locale;
     await Promise.allSettled([
       this.$store.dispatch('group/fetchMacroGroups', { locale }),
@@ -138,8 +138,8 @@ export default class Projects extends Vue {
       this.$store.dispatch('group/fetchProjects', { locale }),
     ]);
     this.loading = false;
-    if (typeof id !== "undefined") {
-      this.getGroups({ id: parseInt(id, 10) }, name === 'group' ? EBoxType.G: EBoxType.MG);
+    if (undefined !== params.id) {
+      this.getGroups({ id: parseInt(params.id, 10) }, name === 'group' ? EBoxType.G: EBoxType.MG);
     }
   }
 
