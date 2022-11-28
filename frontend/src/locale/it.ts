@@ -23,10 +23,12 @@ export const it: any = {
       login: 'Login',
       logout: 'Logout',
       admin: 'Admin',
-      catalog: 'Catalogo',
+      data: 'Dati',
       group: 'Gruppi',
       organization: 'Organizzazioni',
       map: 'Mappa',
+      toggle: 'MENU',
+      catalog: 'Catalogo',
     },
 
     login: {

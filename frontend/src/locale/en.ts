@@ -22,6 +22,10 @@ export const en: any = {
       login: 'Login',
       logout: 'Logout',
       admin: 'Admin',
+      data: 'Data',
+      group: 'Groups',
+      organization: 'Organizations',
+      toggle: 'MENU',
       catalog: 'Catalog',
     },
 
