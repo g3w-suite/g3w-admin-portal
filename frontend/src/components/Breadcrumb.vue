@@ -36,7 +36,7 @@ export default class Breadcrumb extends Vue {
       let title = (/*this.root ||*/ 'Home');
       const titleSeparator = ' - ';
 
-      let breadcrumbs = [ { name: title, path, text: '' } ];
+      let breadcrumbs = [ { name: 'home', path, text: '' } ];
 
       const route   = (this.$route.path                        ).split('/');
       const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
@@ -63,11 +63,9 @@ export default class Breadcrumb extends Vue {
 
         let name = (matched[i] || route[i]);
         let activeCrumb = (activeGroup && activeGroup.name) || '';
-
         title += this.isLastCrumb(route, i)
           ? activeCrumb
           : this.$i18n.t('messages.menu.' + name);
-
         path  += '/'  + name;
 
         /**
@@ -88,16 +86,16 @@ export default class Breadcrumb extends Vue {
         //   path: path,
         //   text
         // });
+
+        // dynamically generate breadcrumb text for current activeGroup
         const text = this.isLastCrumb(route, i) ? activeCrumb : '';
         breadcrumbs.push({
           name: name,
           path: path,
-          // dynamically generate breadcrumb text for current activeGroup
           text
         });
         title = text || title;
       }
-
       // dynamically update document title text
       window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
 
