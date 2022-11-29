@@ -37,18 +37,6 @@ if (config.favicon) {
   icon.setAttribute('href', config.favicon);
 }
 
-/**
- * Set all classes and id to customize in color
- */
-const ELEMENT_TO_SET_CUSTOM_COLOR = {
-  getElementsByClassName: [
-    'header',
-    'gradient',
-    'g3wButton',
-  ],
-  getElementById: [],
-};
-
 Vue.use(Fragment.Plugin);
 Vue.use(VueI18n);
 
@@ -66,20 +54,5 @@ new Vue({
     store.dispatch('settings/portalSections', { sections: config.portal_sections });
     store.dispatch('settings/showAdminButton', { show: config.admin_btn });
     store.dispatch('settings/fetchPictures', { locale: i18n.locale });
-  },
-  async mounted() {
-    await this.$nextTick();
-    if ((window as any).CUSTOM_COLOR) {
-      Object.keys(ELEMENT_TO_SET_CUSTOM_COLOR).forEach((elementSelectorType: string) => {
-        const selectorElement = (ELEMENT_TO_SET_CUSTOM_COLOR as any)[elementSelectorType] || [];
-        selectorElement.forEach((selector: string) => {
-          const elements = (document as any)[elementSelectorType](selector);
-          const elementsLength = elements.length;
-          for (let i = 0; i < elementsLength; i++) {
-            elements[i].style.backgroundColor = selector === 'g3wButton' ? 'orange' : 'yellow';
-          }
-        });
-      });
-    }
   },
 }).$mount('#app');
