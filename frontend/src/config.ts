@@ -1,4 +1,4 @@
-import { RouterMode } from "vue-router";
+import { RouterMode } from 'vue-router';
 
 const config  =  {
   favicon:    process.env.VUE_APP_FAVICON,
@@ -11,7 +11,7 @@ const config  =  {
   admin_btn: true,
   admin_url: 'http://127.0.0.1:8000',
   /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations */
-  router_mode: (process.env.VUE_APP_HISTORY_MODE as RouterMode)
+  router_mode: (process.env.VUE_APP_HISTORY_MODE as RouterMode),
 };
 
 export default config;

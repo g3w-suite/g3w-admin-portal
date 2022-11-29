@@ -13,9 +13,7 @@ export class Group extends SuperGroup {
   public header_logo_link: string | null;
   public header_logo_img: string;
 
-  constructor();
-  constructor(data: IGroup);
-  constructor(data?: any) {
+  constructor(data: IGroup) {
     super();
     this.id               = data && data.id || -1;
     this.name             = data && data.name || '';
@@ -24,8 +22,9 @@ export class Group extends SuperGroup {
     this.srid             = data && data.srid || -1;
     this.header_logo_link = data && data.header_logo_link || '';
     this.header_logo_img  = data && data.header_logo_img || '';
+
     // in case of empty title try to get title from name property
-    if (!this.title){
+    if (!this.title) {
       this.title = this.name;
     }
   }

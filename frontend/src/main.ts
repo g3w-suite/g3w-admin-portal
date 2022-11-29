@@ -1,17 +1,17 @@
+import '@/icons';
 import { en } from '@/locale/en';
 import { it } from '@/locale/it';
 import '@fontsource/titillium-web/400-italic.css';
 import '@fontsource/titillium-web/400.css';
 import '@fontsource/titillium-web/700-italic.css';
 import '@fontsource/titillium-web/700.css';
-import '@/icons';
 import Vue from 'vue';
 import Fragment from 'vue-fragment';
 import VueI18n from 'vue-i18n';
 import App from './App.vue';
+import config from './config';
 import router from './router';
 import store from './store';
-import config from './config';
 
 if (config.stylesheet) {
   const css = document.createElement('link');
@@ -51,11 +51,11 @@ export const i18n = new VueI18n({ locale: 'it', fallbackLocale: 'it', messages: 
 
 /**
  * Reusable Vue Breadcrumb component
- * 
- * 
+ *
+ *
  * @see https://github.com/NxtChg/pieces/tree/master/js/vue/vs-crumbs
  * @see https://github.com/samturrell/vue-breadcrumbs/
- * 
+ *
  * @requires vue-router
  * @requires runtimeCompiler: true
  */
@@ -104,12 +104,12 @@ export const i18n = new VueI18n({ locale: 'it', fallbackLocale: 'it', messages: 
 //       {
 //         let name = (matched[i] || route[i]);
 //         console.log(name);
-        
+
 //         if (route[i] == '') continue;
 
 //         title += titleSeparator + i18n.t('messages.menu.' + name);
 //         path  += '/'  + name;
-    
+
 //         breadcrumbs.push({ name: name, path: path });
 //       }
 

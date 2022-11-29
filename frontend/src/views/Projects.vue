@@ -100,7 +100,7 @@ export default class Projects extends Vue {
     }
     /** */
 
-    switch(this.$route.name) {
+    switch (this.$route.name) {
       case 'home':
         return elements;
       case 'organization':
@@ -147,7 +147,7 @@ export default class Projects extends Vue {
     ]);
     this.loading = false;
     if (undefined !== params.id) {
-      this.getGroups({ id: parseInt(params.id, 10) }, name === 'group' ? EBoxType.G: EBoxType.MG);
+      this.getGroups({ id: parseInt(params.id, 10) }, name === 'group' ? EBoxType.G : EBoxType.MG);
     }
   }
 
@@ -157,7 +157,7 @@ export default class Projects extends Vue {
 
   public getGroups(param: { id?: number, name?: string }, type: EBoxType) {
     const { id, name } = param;
-    console.log(id)
+    console.log(id);
     let el: SuperGroup = new SuperGroup();
     if (EBoxType.P === type) { return false; }
     switch (type) {

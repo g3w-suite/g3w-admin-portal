@@ -29,40 +29,48 @@ export default class Breadcrumb extends Vue {
 
   get breadcrumbs() {
     // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
-    
-    if (!this.$route) return [];
 
-      let path = '/' + this.$i18n.locale;
-      let title = (/*this.root ||*/ 'Home');
-      const titleSeparator = ' - ';
+    if (!this.$route) {
+      console.warn('[vue-router] dependency is missing');
+      return [];
+    }
 
-      let breadcrumbs = [ { name: 'home', path, text: '' } ];
+    let path = '/' + this.$i18n.locale;
+    let title = (/*this.root ||*/ 'Home');
+    const titleSeparator = ' - ';
 
-      const route   = (this.$route.path                        ).split('/');
-      const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
+    const breadcrumbs = [ { name: 'home', path, text: '' } ];
+
+    // 404 page
+    if ('404' === this.$route.name) {
+      breadcrumbs.push({ name: '404', path: path + '404', text: '404' });
+      return breadcrumbs;
+    }
+
+    const route   = (this.$route.path                        ).split('/');
+    const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
 
       // ignore parent ":lang" route (ref: router.ts)
-      route.shift();
-      route.shift();
-      matched.shift();
+    route.shift();
+    route.shift();
+    matched.shift();
 
-      console.log(this.$route);
-      console.log(route, matched);
+    console.log(this.$route);
+    console.log(route, matched);
 
-      let activeGroup = this.$store.getters['group/activeGroup'];
+    const activeGroup = this.$store.getters['group/activeGroup'];
 
-      for(let i = 0; i < route.length; i++) {
+    for (let i = 0; i < route.length; i++) {
 
         console.log(route[i]);
 
-        if (route[i] == '') continue;
+        if (route[i] == '') { continue; }
 
-        if (i == 0) title = '';       // 0 = home
-        else title += titleSeparator;
+        if (i == 0) { title = ''; } else { title += titleSeparator; }
 
 
-        let name = (matched[i] || route[i]);
-        let activeCrumb = (activeGroup && activeGroup.name) || '';
+        const name = (matched[i] || route[i]);
+        const activeCrumb = (activeGroup && activeGroup.name) || '';
         title += this.isLastCrumb(route, i)
           ? activeCrumb
           : this.$i18n.t('messages.menu.' + name);
@@ -90,19 +98,19 @@ export default class Breadcrumb extends Vue {
         // dynamically generate breadcrumb text for current activeGroup
         const text = this.isLastCrumb(route, i) ? activeCrumb : '';
         breadcrumbs.push({
-          name: name,
-          path: path,
-          text
+          name,
+          path,
+          text,
         });
         title = text || title;
       }
       // dynamically update document title text
-      window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
+    window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
 
-      return breadcrumbs;
+    return breadcrumbs;
   }
 
-  public isLastCrumb(breadcrumbs: Array<any>, i: number) {
+  public isLastCrumb(breadcrumbs: any[], i: number) {
     return i > 0 && i === breadcrumbs.length - 1;
   }
 

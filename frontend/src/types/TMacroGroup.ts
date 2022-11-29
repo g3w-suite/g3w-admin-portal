@@ -12,9 +12,7 @@ export class MacroGroup extends SuperGroup {
   public logo_img: string;
   public logo_link: string | null;
 
-  constructor();
-  constructor(data: IMacroGroup);
-  constructor(data?: any) {
+  constructor(data: IMacroGroup) {
     super();
     this.id          = data && data.id || -1;
     this.title       = data && data.title || '';

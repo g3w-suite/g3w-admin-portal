@@ -1,5 +1,5 @@
 interface  IWhoAmIData {
-  lastn_ame: string;
+  last_name: string;
   first_name: string;
 }
 

@@ -94,7 +94,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const lang = to.params.lang;
   if (!config.languages.includes(lang)) { return next(`/it${to.path}`); }
-  if (i18n.locale !== lang) { 
+  if (i18n.locale !== lang) {
     i18n.locale = lang;
     /**
      * @TODO dispatch a "changeLanguage" action or make use of "i18n.locale" within REST API calls

@@ -1,7 +1,7 @@
 import { IInfo } from '@/types/IInfo';
 
 export class Info {
-  public readonly id: string;
+  public readonly id: number | string;
   public readonly title: string;
   public readonly sub_title: string;
   public readonly home_description: string;
@@ -37,9 +37,7 @@ export class Info {
   public readonly privacy_policy_url: string = process.env.VUE_APP_PRIVACY_POLICY_URL;
   public readonly credits_url: string        = process.env.VUE_APP_CREDITS_URL;
 
-  constructor();
-  constructor(data: IInfo);
-  constructor(data?: any) {
+  constructor(data: IInfo) {
     this.id                     = data && data.id || -1;
     this.title                  = data && data.title || '';
     this.sub_title              = data && data.sub_title || '';
