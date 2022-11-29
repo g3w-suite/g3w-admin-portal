@@ -28,6 +28,7 @@
 </template>
 
 <script lang="ts">
+import { SuperGroup } from '@/types/TSuperGroup';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
@@ -65,7 +66,7 @@ export default class Breadcrumb extends Vue {
     route.shift();
     matched.shift();
 
-    const activeGroup = this.$store.getters['group/activeGroup'];
+    const activeGroup: SuperGroup = this.$store.getters['group/activeGroup'];
 
     for (let i = 0; i < route.length; i++) {
 
@@ -75,32 +76,13 @@ export default class Breadcrumb extends Vue {
       if (i === 0) { title = ''; } else { title += titleSeparator; }
 
       const name = (matched[i] || route[i]);
-      const activeCrumb = (activeGroup && activeGroup.name) || '';
+      const activeCrumb = (activeGroup && activeGroup.title) || '';
 
       path  += '/'  + name;
 
       title += this.isLastCrumb(route, i)
         ? activeCrumb
         : this.$i18n.t('messages.menu.' + name);
-
-      /**
-       * @FIXME title tab names for "group" and "organization"
-       */
-      // in case of group router, get current active name
-      // if (this.isLastCrumb(route, i)) {
-      //   if ('organization' === this.$route.name) {
-      //     const macro = this.$store.getters['group/macroGroups'] && this.$store.getters['group/macroGroups'][route[i]];
-      //     text = macro ? macro.title : '';
-      //   } else if ('group' === this.$route.name) {
-      //     const group = this.$store.getters['group/groups'] && this.$store.getters['group/groups'][route[i]];
-      //     text = group ? group.name : '';
-      //   }
-      // }
-      // breadcrumbs.push({
-      //   name: name,
-      //   path: path,
-      //   text
-      // });
 
       // dynamically generate breadcrumb text for current activeGroup
       const text = this.isLastCrumb(route, i) ? activeCrumb : '';
