@@ -88,6 +88,7 @@ const router = new Router({
    */
   scrollBehavior(to, from, savedPosition) {
     if (to.hash) { return { selector: to.hash, behavior: 'smooth', offset: { x: 0, y: 100 } }; }
+    return new Promise((resolve) => setTimeout(() => resolve({ x: 0, y: 0 }), 500));
   },
 });
 
