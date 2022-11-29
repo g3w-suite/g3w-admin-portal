@@ -9,7 +9,7 @@ const config  =  {
   portal_sections: [ 'maps', 'info' ],
   /** @deprecated */
   admin_btn: true,
-  admin_url: 'http://127.0.0.1:8000',
+  admin_url: process.env.VUE_APP_ADMIN_URL,
   /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations */
   router_mode: (process.env.VUE_APP_HISTORY_MODE as RouterMode),
 };

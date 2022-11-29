@@ -5,7 +5,7 @@ import { IRootState } from '@/types/IRootState';
 import { Group, IGroupDict } from '@/types/TGroup';
 import { IMacroGroupDict, MacroGroup } from '@/types/TMacroGroup';
 import { Project } from '@/types/TProject';
-import { SuperGroup } from '@/types/TSuperGroup';
+import { ISuperGroupDict, SuperGroup } from '@/types/TSuperGroup';
 import Vue from 'vue';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
@@ -24,6 +24,7 @@ const getters: GetterTree<IGroupState, IRootState> = {
   macroGroups:            (state): IMacroGroupDict           => state.MacroGroups,
   search:                 (state): string                    => state.Search,
   activeGroup:            (state): SuperGroup | null         => state.ActiveGroup,
+  superGroups:            (state): ISuperGroupDict           => Object.assign({}, state.MacroGroups, state.Groups),
   groupsWithNoMacroGroup: (state): IGroupDict                => state.GroupsWithNoMacroGroup,
   groupsInMacroGroup:     (state): (id: number) => Group[]   => (id: number) => state.GroupsInMacroGroups[id],
   groups:                 (state): IGroupDict                => state.Groups,

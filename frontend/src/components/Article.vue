@@ -18,11 +18,11 @@
         <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
       </figure>
       <p class="grid">
-        <a :href="map_url" rel="noopener noreferrer" target="_blank">
+        <a :href="get_admin_url(map_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="expand-arrows-alt" size="lg" />
           <span> {{ $t('messages.maps.view') }}</span>
         </a>
-        <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn']" :href="edit_url" rel="noopener noreferrer" target="_blank">
+        <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn']" :href="get_admin_url(edit_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="pencil-alt" size="lg" />
           <span> {{ $t('messages.maps.edit') }}</span>
         </a>
@@ -45,7 +45,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component({
   components: {},
 })
-export default class TabBox extends Vue {
+export default class Article extends Vue {
 
   public boxtype = EBoxType;
 
@@ -61,9 +61,16 @@ export default class TabBox extends Vue {
   public avgColor: string = '0,0,0';
 
   /**
+   * Return absolute URL to G3W-ADMIN server.
+   */
+  public get_admin_url(folder: string): string {
+    return process.env.VUE_APP_ADMIN_URL + folder;
+  }
+
+  /**
    * Compute the avergare color of a image
    */
-  public get_average_color(src: string = this.img_url) {
+  public get_average_color(src: string = this.img_url): string {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     const img = new Image();
@@ -118,6 +125,9 @@ export default class TabBox extends Vue {
     margin: var(--block-spacing-vertical) 0;
   }
 
+  article.boxtype_P:first-of-type {
+    margin-top: 0;
+  }
   /**
    * GROUP ARTICLE
    */

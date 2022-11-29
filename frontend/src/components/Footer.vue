@@ -52,6 +52,7 @@
             <a v-if="info.flickr_url" :href="info.flickr_url" aria-label="Flickr">
               <font-awesome-icon :icon="['fab', 'flickr']" size="lg"></font-awesome-icon>
             </a>
+            <!-- DEPRECATED: https://github.com/FortAwesome/Font-Awesome/issues/18180 -->
             <a v-if="info.tripadvisor_url" :href="info.tripadvisor_url" aria-label="Trip Advisor">
               <font-awesome-icon :icon="['fab', 'tripadvisor']" size="lg"></font-awesome-icon>
             </a>
@@ -61,7 +62,6 @@
 
       </div>
     </section>
-    <!-- TODO: allow users to edit cookie, privacy and credits links -->
     <nav style="background-color: var(--contrast-inverse);">
       <div class="container">
         <ul>

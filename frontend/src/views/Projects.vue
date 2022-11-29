@@ -42,7 +42,6 @@
 
 <script lang="ts">
 import Article from '@/components/Article.vue';
-import Breadcrumb from '@/components/Breadcrumb.vue';
 import { EBoxType } from '@/types/EBoxType';
 import { Group, IGroupDict } from '@/types/TGroup';
 import { Info } from '@/types/TInfo';
@@ -75,8 +74,6 @@ export default class Projects extends Vue {
   public loading        = true; // loading
   public crumbs: string[] = [];
 
-  private stackElementTab: SuperGroup[] = [];
-
   get search() {
     return this.$store.getters['group/search'];
   }
@@ -86,37 +83,26 @@ export default class Projects extends Vue {
   }
 
   get boxes() {
-    /**
-     * @TODO convert the the folowing filter into a store getter (es. "group/getAllGroups")
-     */
-    const elements: Array<MacroGroup | Group> = [];
-    const macroGroups   = this.$store.getters['group/macroGroups'];
-    const noMacroGroups = this.$store.getters['group/groupsWithNoMacroGroup'];
-    for (const i in macroGroups) {
-      elements.push(macroGroups[i] as MacroGroup);
-    }
-    for (const i in noMacroGroups) {
-      elements.push(noMacroGroups[i] as Group);
-    }
-    /** */
-
     switch (this.$route.name) {
+
       case 'home':
-        return elements;
+        return this.$store.getters['group/superGroups'];
+
       case 'organization':
         return this.$route.params.id
           ? this.$store.getters['group/groupsInMacroGroup'](this.$route.params.id)
-          : macroGroups;
+          : this.$store.getters['group/macroGroups'];
+
       case 'group':
         return this.$route.params.id
             ? this.$store.getters['group/projectsInGroup'](this.$route.params.id)
-            : noMacroGroups;
+            : this.$store.getters['group/groupsWithNoMacroGroup'];
+
       default:
         return this.search
           ? this.$store.getters['group/filteredProjects']
           : this.$store.getters['group/projects'];
     }
-
   }
 
   /**
@@ -155,12 +141,12 @@ export default class Projects extends Vue {
     this.crumbs = [this.$tc(`messages.menu.${this.$route.name}`)];
   }
 
-  public getGroups(param: { id?: number, name?: string }, type: EBoxType) {
+  public getGroups(param: { id?: number, name?: string }, type: EBoxType.G | EBoxType.MG) {
     const { id, name } = param;
-    console.log(id);
     let el: SuperGroup = new SuperGroup();
-    if (EBoxType.P === type) { return false; }
+
     switch (type) {
+
       case EBoxType.MG:
         const macroGroups = this.$store.getters['group/macroGroups'];
         el = undefined !== id
@@ -168,6 +154,7 @@ export default class Projects extends Vue {
           : Object.values(macroGroups).find((mc: MacroGroup) => mc.name === name);
         (el as MacroGroup).fetchGroups();
         break;
+
       case EBoxType.G:
         const groups = this.$store.getters['group/groups'];
         el = undefined !== id
@@ -175,7 +162,9 @@ export default class Projects extends Vue {
           : Object.values(groups).find((g: Group) => g.name === name);
         (el as Group).fetchProjects();
         break;
+
     }
+
     this.$store.dispatch('group/setActiveGroup', { sg: el });
   }
 

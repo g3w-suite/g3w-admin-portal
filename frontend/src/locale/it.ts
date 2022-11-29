@@ -29,6 +29,7 @@ export const it: any = {
       map: 'Mappa',
       toggle: 'MENU',
       catalog: 'Catalogo',
+      404: 'Pagina non trovata',
     },
 
     login: {

@@ -27,6 +27,7 @@ export const en: any = {
       organization: 'Organizations',
       toggle: 'MENU',
       catalog: 'Catalog',
+      404: 'Page Not Found',
     },
 
     login: {

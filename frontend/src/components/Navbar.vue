@@ -129,7 +129,7 @@
   import { Info } from '@/types/TInfo';
   import { Component, Prop, Vue } from 'vue-property-decorator';
   import { mapGetters } from 'vuex';
-  // import { APP_LANGUAGES } from '@/main';
+  import config from '@/config';
 
   @Component({
     components: { },
@@ -155,7 +155,7 @@
     public secondaryMenuVisible: boolean | null = true;
 
     get languages() {
-      return ['it', 'en']; // APP_LANGUAGES;
+      return config.languages;
     }
 
     get whoIs() {

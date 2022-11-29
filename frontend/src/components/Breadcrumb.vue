@@ -50,61 +50,64 @@ export default class Breadcrumb extends Vue {
     const route   = (this.$route.path                        ).split('/');
     const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
 
-      // ignore parent ":lang" route (ref: router.ts)
+    // ignore parent ":lang" route (ref: router.ts)
     route.shift();
     route.shift();
     matched.shift();
 
-    console.log(this.$route);
-    console.log(route, matched);
+    console.log(route);
 
     const activeGroup = this.$store.getters['group/activeGroup'];
 
     for (let i = 0; i < route.length; i++) {
 
-        console.log(route[i]);
+      // skip empty routes
+      if (route[i] == '') { continue; }
 
-        if (route[i] == '') { continue; }
+      if (i === 0) { title = ''; }
+      else { title += titleSeparator; }
 
-        if (i == 0) { title = ''; } else { title += titleSeparator; }
+      const name = (matched[i] || route[i]);
+      const activeCrumb = (activeGroup && activeGroup.name) || '';
 
+      path  += '/'  + name;
 
-        const name = (matched[i] || route[i]);
-        const activeCrumb = (activeGroup && activeGroup.name) || '';
-        title += this.isLastCrumb(route, i)
-          ? activeCrumb
-          : this.$i18n.t('messages.menu.' + name);
-        path  += '/'  + name;
+      title += this.isLastCrumb(route, i)
+        ? activeCrumb
+        : this.$i18n.t('messages.menu.' + name);
 
-        /**
-         * @FIXME title tab names for "group" and "organization"
-         */
-        // in case of group router, get current active name
-        // if (this.isLastCrumb(route, i)) {
-        //   if ('organization' === this.$route.name) {
-        //     const macro = this.$store.getters['group/macroGroups'] && this.$store.getters['group/macroGroups'][route[i]];
-        //     text = macro ? macro.title : '';
-        //   } else if ('group' === this.$route.name) {
-        //     const group = this.$store.getters['group/groups'] && this.$store.getters['group/groups'][route[i]];
-        //     text = group ? group.name : '';
-        //   }
-        // }
-        // breadcrumbs.push({
-        //   name: name,
-        //   path: path,
-        //   text
-        // });
+      /**
+       * @FIXME title tab names for "group" and "organization"
+       */
+      // in case of group router, get current active name
+      // if (this.isLastCrumb(route, i)) {
+      //   if ('organization' === this.$route.name) {
+      //     const macro = this.$store.getters['group/macroGroups'] && this.$store.getters['group/macroGroups'][route[i]];
+      //     text = macro ? macro.title : '';
+      //   } else if ('group' === this.$route.name) {
+      //     const group = this.$store.getters['group/groups'] && this.$store.getters['group/groups'][route[i]];
+      //     text = group ? group.name : '';
+      //   }
+      // }
+      // breadcrumbs.push({
+      //   name: name,
+      //   path: path,
+      //   text
+      // });
 
-        // dynamically generate breadcrumb text for current activeGroup
-        const text = this.isLastCrumb(route, i) ? activeCrumb : '';
-        breadcrumbs.push({
-          name,
-          path,
-          text,
-        });
-        title = text || title;
-      }
-      // dynamically update document title text
+      // dynamically generate breadcrumb text for current activeGroup
+      const text = this.isLastCrumb(route, i) ? activeCrumb : '';
+
+      breadcrumbs.push({
+        name,
+        path,
+        text,
+      });
+
+      title = text || title;
+    }
+
+    // dynamically update document title text
     window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
 
     return breadcrumbs;
