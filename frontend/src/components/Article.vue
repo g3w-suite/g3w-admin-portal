@@ -164,6 +164,7 @@ export default class Article extends Vue {
     background: rgb(var(--figcaption-background-color), 0.25);
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+    font-weight: 700;
   }
 
   :is(.boxtype_G, .boxtype_MG) figcaption > *:first-letter {
