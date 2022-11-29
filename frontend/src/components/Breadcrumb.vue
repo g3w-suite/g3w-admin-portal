@@ -1,3 +1,13 @@
+<!--
+/**
+ * Reusable Vue Breadcrumb component
+ *
+ * @see https://github.com/NxtChg/pieces/tree/master/js/vue/vs-crumbs
+ * @see https://github.com/samturrell/vue-breadcrumbs/
+ *
+ * @requires vue-router
+ */
+-->
 <template>
   <nav
     v-if="breadcrumbs.length > 1"
@@ -36,7 +46,7 @@ export default class Breadcrumb extends Vue {
     }
 
     let path = '/' + this.$i18n.locale;
-    let title = (/*this.root ||*/ 'Home');
+    let title = 'Home';
     const titleSeparator = ' - ';
 
     const breadcrumbs = [ { name: 'home', path, text: '' } ];
@@ -55,17 +65,14 @@ export default class Breadcrumb extends Vue {
     route.shift();
     matched.shift();
 
-    console.log(route);
-
     const activeGroup = this.$store.getters['group/activeGroup'];
 
     for (let i = 0; i < route.length; i++) {
 
       // skip empty routes
-      if (route[i] == '') { continue; }
+      if (route[i] === '') { continue; }
 
-      if (i === 0) { title = ''; }
-      else { title += titleSeparator; }
+      if (i === 0) { title = ''; } else { title += titleSeparator; }
 
       const name = (matched[i] || route[i]);
       const activeCrumb = (activeGroup && activeGroup.name) || '';

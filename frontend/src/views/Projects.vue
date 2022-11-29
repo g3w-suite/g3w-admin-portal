@@ -133,7 +133,14 @@ export default class Projects extends Vue {
     ]);
     this.loading = false;
     if (undefined !== params.id) {
-      this.getGroups({ id: parseInt(params.id, 10) }, name === 'group' ? EBoxType.G : EBoxType.MG);
+      this.setActiveGroup(
+        {
+          id: params.id
+        },
+        name === 'group'
+          ? EBoxType.G
+          : EBoxType.MG
+      );
     }
   }
 
@@ -141,9 +148,11 @@ export default class Projects extends Vue {
     this.crumbs = [this.$tc(`messages.menu.${this.$route.name}`)];
   }
 
-  public getGroups(param: { id?: number, name?: string }, type: EBoxType.G | EBoxType.MG) {
-    const { id, name } = param;
+  public setActiveGroup(param: { id?: number | string }, type: EBoxType.G | EBoxType.MG) {
+    const { id } = param;
     let el: SuperGroup = new SuperGroup();
+
+    console.log(type);
 
     switch (type) {
 
@@ -151,7 +160,8 @@ export default class Projects extends Vue {
         const macroGroups = this.$store.getters['group/macroGroups'];
         el = undefined !== id
           ? macroGroups[id]
-          : Object.values(macroGroups).find((mc: MacroGroup) => mc.name === name);
+          : Object.values(macroGroups).find((mc: MacroGroup) => mc.name === id);
+        console.log(macroGroups, id);
         (el as MacroGroup).fetchGroups();
         break;
 
@@ -159,15 +169,18 @@ export default class Projects extends Vue {
         const groups = this.$store.getters['group/groups'];
         el = undefined !== id
           ? groups[id]
-          : Object.values(groups).find((g: Group) => g.name === name);
+          : Object.values(groups).find((g: Group) => g.name === id);
+        console.log(groups, id);
         (el as Group).fetchProjects();
         break;
+
+        default:
+          this.$router.push({name: '404'});
 
     }
 
     this.$store.dispatch('group/setActiveGroup', { sg: el });
   }
-
 
 }
 </script>

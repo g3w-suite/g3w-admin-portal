@@ -20,6 +20,13 @@ if (config.stylesheet) {
   document.body.appendChild(css);
 }
 
+if (config.color) {
+  document.documentElement.setAttribute('data-color', config.color);
+  document.documentElement.style.setProperty('--custom-color', config.color);
+  document.documentElement.style.setProperty('--header-color', config.color);
+  document.documentElement.style.setProperty('--header-color-alt', process.env.VUE_APP_CSS_COLOR_ALT || config.color);
+}
+
 if (config.theme) {
   document.documentElement.setAttribute('data-theme', config.theme);
 }
@@ -48,77 +55,6 @@ Vue.use(VueI18n);
 Vue.config.productionTip = false;
 
 export const i18n = new VueI18n({ locale: 'it', fallbackLocale: 'it', messages: { it, en } });
-
-/**
- * Reusable Vue Breadcrumb component
- *
- *
- * @see https://github.com/NxtChg/pieces/tree/master/js/vue/vs-crumbs
- * @see https://github.com/samturrell/vue-breadcrumbs/
- *
- * @requires vue-router
- * @requires runtimeCompiler: true
- */
-// Vue.component('vs-crumbs',
-// {
-//   template:
-//     `
-//     <nav
-//     v-if="crumbs.length > 1"
-//     aria-label="breadcrumb"
-//     class="container"
-//   >
-//     <ul>
-//       <li v-for="(crumb, idx) in crumbs ">
-//         <router-link
-//           :to="crumb.path"
-//           :aria-current="idx != crumbs.length - 1 ? undefined : 'page'"
-//         >
-//           {{ $t('messages.menu.' + crumb.name) }}
-//         </router-link>
-//       </li>
-//     </ul>
-//   </nav>
-//     `,
-
-//   props: { root: String },
-
-//   computed: {
-//     crumbs() {
-
-//       if (!this.$route) return [];
-
-//       let path = '/' + i18n.locale;
-//       let title = (this.root || 'home');
-//       const titleSeparator = ' | ';
-
-//       let breadcrumbs = [ { name: title, path } ];
-
-//       const route   = (this.$route.path                        ).split('/');
-//       const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
-
-//       console.log(this.$route);
-//       console.log(route, matched);
-
-//       for(let i = 2; i < route.length; i++)
-//       {
-//         let name = (matched[i] || route[i]);
-//         console.log(name);
-
-//         if (route[i] == '') continue;
-
-//         title += titleSeparator + i18n.t('messages.menu.' + name);
-//         path  += '/'  + name;
-
-//         breadcrumbs.push({ name: name, path: path });
-//       }
-
-//       window.document.title = title + titleSeparator + (store.getters['info/info'].title || 'G3W-SUITE');
-
-//       return breadcrumbs;
-//     }
-//   }
-// });
 
 new Vue({
   router,
