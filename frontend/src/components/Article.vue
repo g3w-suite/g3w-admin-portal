@@ -70,10 +70,11 @@ export default class Article extends Vue {
   /**
    * Compute the avergare color of a image
    */
-  public get_average_color(src: string = this.img_url): string {
+  public get_average_color(src: string | any = this.img_url): string {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     const img = new Image();
+    src = (src.target && src.target.src) || src;
     img.setAttribute('crossOrigin', '');
     img.src = src;
     if (ctx) {
