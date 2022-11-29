@@ -6,35 +6,36 @@
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
     <meta name=viewport content="width=device-width,initial-scale=1">
-    <link rel=icon href=/favicon.ico>
-    <script>window.__PUBLIC_PATH__ = '/static/frontend/bootstrap-italia/fonts';</script>
-
     <title>{{ admin_page_title }}</title>
-    <script src="{% static "frontend/bootstrap-italia/js/bootstrap-italia.bundle.min.js" %}"></script>
-    <link href="{% static "frontend/css/app.css" %}" rel=stylesheet>
+    <link rel=icon href=/favicon.ico>
+    <link rel=preload as=style  href="{% static 'frontend/css/app.css' %}">
+    <link rel=preload as=style  href="{% static 'frontend/css/chunk-vendors.css' %}">
+    <link rel=preload as=script href="{% static 'frontend/js/app.js' %}">
+    <link rel=preload as=script href="{% static 'frontend/js/chunk-vendors.js' %}">
+    <link rel=stylesheet href="{% static 'frontend/css/chunk-vendors.css' %}">
+    <link rel=stylesheet href="{% static 'frontend/css/app.css' %}">
     {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
-     {% for css in SETTINGS.G3WSUITE_CUSTOM_CSS %}
-      <link rel="stylesheet" type="text/css" href="{{ css }}" />
-     {% endfor %}
-  {% endif %}
+        {% for css in SETTINGS.G3WSUITE_CUSTOM_CSS %}
+            <link rel="stylesheet" type="text/css" href="{{ css }}" />
+        {% endfor %}
+    {% endif %}
 </head>
 <body class="{% if not IS_PA %}{{ PORTAL_COLOR }}{% endif %}">
-<noscript><strong>We're sorry but gis3w_suite-frontend doesn't work properly without JavaScript enabled. Please enable
-    it to continue.</strong></noscript>
-<script>
-    window.IS_PA = {{ IS_PA|yesno:"true,false" }}
-    window.API_BASE_URL = '{{ API_BASE_URL }}'
-    window.PORTAL_SECTIONS = {{ PORTAL_SECTIONS|safe }}
-    window.ADMIN_BTN = {{ ADMIN_BTN }}
-    window.LANGUAGES = {{ LANGUAGES|safe }}
-</script>
-<div id=app></div>
-<script src="{% static "frontend/js/chunk-vendors.js" %}"></script>
-<script src="{% static "frontend/js/app.js" %}"></script>
-{% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
-     {% for js in SETTINGS.G3WSUITE_CUSTOM_JS %}
-      <script src="{{ js }}"></script>
-     {% endfor %}
-  {% endif %}
+    <noscript><strong>You must enable JavaScript to continue.</strong></noscript>
+    <script>
+        window.API_BASE_URL = '{{ API_BASE_URL }}'
+        window.LANGUAGES = {{ LANGUAGES|safe }}
+        // window.IS_PA = {{ IS_PA|yesno:"true,false" }}
+        // window.PORTAL_SECTIONS = {{ PORTAL_SECTIONS|safe }}
+        // window.ADMIN_BTN = {{ ADMIN_BTN }}
+    </script>
+    <div id=app></div>
+    <script src="{% static 'frontend/js/chunk-vendors.js' %}"></script>
+    <script src="{% static 'frontend/js/app.js' %}"></script>
+    {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
+        {% for js in SETTINGS.G3WSUITE_CUSTOM_JS %}
+            <script src="{{ js }}"></script>
+        {% endfor %}
+    {% endif %}
 </body>
 </html>
