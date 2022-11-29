@@ -8,8 +8,13 @@
     <header v-if="$route.name === 'home'">
       <Carousel />
       
-      <div v-if="info.home_description" class="container" data-theme="dark" v-html="info.home_description"></div>
-      <form v-else class="container" @keyup.enter="onSearchSubmit">
+      <div
+        v-if="info.home_description"
+        class="container"
+        data-theme="dark"
+        v-html="info.home_description"
+      ></div>
+      <!-- <form v-else class="container" @keyup.enter="onSearchSubmit">
         <input
           type="search"
           id="search"
@@ -18,7 +23,7 @@
           :placeholder="$t('messages.menu.search_placeholder')"
           :aria-label="$t('messages.menu.search_placeholder')"
         />
-      </form>
+      </form> -->
     </header>
 
     <Breadcrumb id="breadcrumb" />
@@ -63,10 +68,10 @@ export default class Main extends Vue {
   //   this.$store.dispatch('group/search', { s: val });
   // }
 
-  public onSearchSubmit(e: Event) {
-    this.$router.push( { path: '/search', query: { key: 'q', value: this.search }});
-    console.log(e);
-  }
+  // public onSearchSubmit(e: Event) {
+  //   this.$router.push( { path: '/search', query: { key: 'q', value: this.search }});
+  //   console.log(e);
+  // }
 
 }
 </script>

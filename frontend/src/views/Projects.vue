@@ -48,7 +48,6 @@ import { Info } from '@/types/TInfo';
 import { IMacroGroupDict, MacroGroup } from '@/types/TMacroGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Route } from 'vue-router';
 import { mapGetters } from 'vuex';
 
 // groups with no macrogroups and macrogroups
@@ -152,8 +151,6 @@ export default class Projects extends Vue {
     const { id } = param;
     let el: SuperGroup = new SuperGroup();
 
-    console.log(type);
-
     switch (type) {
 
       case EBoxType.MG:
@@ -161,7 +158,6 @@ export default class Projects extends Vue {
         el = undefined !== id
           ? macroGroups[id]
           : Object.values(macroGroups).find((mc: MacroGroup) => mc.name === id);
-        console.log(macroGroups, id);
         (el as MacroGroup).fetchGroups();
         break;
 
@@ -170,12 +166,12 @@ export default class Projects extends Vue {
         el = undefined !== id
           ? groups[id]
           : Object.values(groups).find((g: Group) => g.name === id);
-        console.log(groups, id);
         (el as Group).fetchProjects();
         break;
 
-        default:
-          this.$router.push({name: '404'});
+      default:
+        this.$router.push({name: '404'});
+        break;
 
     }
 
