@@ -25,7 +25,7 @@ const getters: GetterTree<IGroupState, IRootState> = {
   search:                 (state): string                    => state.Search,
   activeGroup:            (state): SuperGroup | null         => state.ActiveGroup,
   /** @FIXME prevent Group->ID and Macrogroup->ID collisions (ref: Object.assign)  */
-  superGroups:            (state): ISuperGroupDict           => Object.assign({}, state.MacroGroups, state.Groups),
+  superGroups:            (state): ISuperGroupDict           => Object.assign({}, state.MacroGroups, state.GroupsWithNoMacroGroup),
   groupsWithNoMacroGroup: (state): IGroupDict                => state.GroupsWithNoMacroGroup,
   groupsInMacroGroup:     (state): (id: number) => Group[]   => (id: number) => state.GroupsInMacroGroups[id],
   groups:                 (state): IGroupDict                => state.Groups,
