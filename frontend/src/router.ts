@@ -8,7 +8,7 @@ import store from './store';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import NotFound from '@/views/NotFound.vue';
-import Projects from '@/views/Projects.vue';
+import Projects from '@/components/Projects.vue';
 import Search from '@/views/Search.vue';
 
 Vue.use(Router);

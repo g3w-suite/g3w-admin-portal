@@ -8,13 +8,13 @@
       :placeholder="$t('messages.menu.search_placeholder')"
       :aria-label="$t('messages.menu.search_placeholder')"
     />
-    <Projects />
+    <Projects :boxes="$store.getters['group/search'] ? $store.getters['group/filteredProjects'] : $store.getters['group/projects']" />
   </fragment>
 </template>
 
 <script lang="ts">
 import { Info } from '@/types/TInfo';
-import Projects from '@/views/Projects.vue';
+import Projects from '@/components/Projects.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 

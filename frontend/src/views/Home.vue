@@ -6,13 +6,13 @@
       <h2>{{ settings.groups_title }}</h2>
       <p v-html="settings.groups_map_description"></p>
     </hgroup>
-    <Projects />
+    <Projects :boxes="$store.getters['group/superGroups']" />
   </fragment>
 </template>
 
 <script lang="ts">
 import { Info } from '@/types/TInfo';
-import Projects from '@/views/Projects.vue';
+import Projects from '@/components/Projects.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 

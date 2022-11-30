@@ -1,7 +1,7 @@
 <template>
   <div :class="($route.name === 'group' && $route.params.id !== undefined) || $route.name === 'search'  ? '' : 'grid'">
     <Article
-      v-for="box in boxes"
+      v-for="box in _boxes"
       :href="box.LogoLink"
       :id="box.Id"
       :img_url="box.Logo"
@@ -19,9 +19,10 @@
 <script lang="ts">
 import Article from '@/components/Article.vue';
 import { EBoxType } from '@/types/EBoxType';
+import { MacroGroup, IMacroGroupDict } from '@/types/TMacroGroup';
 import { Group, IGroupDict } from '@/types/TGroup';
+import { Project } from '@/types/TProject';
 import { Info } from '@/types/TInfo';
-import { IMacroGroupDict, MacroGroup } from '@/types/TMacroGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
@@ -43,17 +44,18 @@ import { mapGetters } from 'vuex';
 
 export default class Projects extends Vue {
 
+  @Prop(Array) public readonly boxes!: Array<MacroGroup | Group | Project>;
+
   public settings!: Info;
 
   public boxtype        = EBoxType;
-  public loading        = true; // loading
-  public crumbs: string[] = [];
+  // public crumbs: string[] = [];
 
-  get boxes() {
+  /**
+   * @TODO remove switch($route.name) and get all "boxes" as throught the component @Prop
+   */
+  get _boxes() {
     switch (this.$route.name) {
-
-      case 'home':
-        return this.$store.getters['group/superGroups'];
 
       case 'organization':
         return this.$route.params.id
@@ -66,9 +68,8 @@ export default class Projects extends Vue {
             : this.$store.getters['group/groupsWithNoMacroGroup'];
 
       default:
-        return this.$store.getters['group/search']
-          ? this.$store.getters['group/filteredProjects']
-          : this.$store.getters['group/projects'];
+      return this.boxes || [];
+
     }
   }
 
@@ -112,9 +113,9 @@ export default class Projects extends Vue {
     this.$store.dispatch('hideLoader');
   }
 
-  public created() {
-    this.crumbs = [this.$tc(`messages.menu.${this.$route.name}`)];
-  }
+  // public created() {
+  //   this.crumbs = [this.$tc(`messages.menu.${this.$route.name}`)];
+  // }
 
   public setActiveGroup(param: { id?: number | string }, type: EBoxType.G | EBoxType.MG) {
     const { id } = param;
