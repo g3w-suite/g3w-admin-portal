@@ -7,9 +7,9 @@
       <form @keyup.enter="login">
 
         <!-- USERNAME FIELD -->
-        <label for="username" v-if="show_label">{{$t('messages.login.username')}}</label>
+        <label for="username">{{$t('messages.login.username')}}</label>
         <input
-          :placeholder="usernamePlaceholder"
+          :placeholder="$tc('messages.login.username')"
           autocomplete="username"
           id="username"
           required
@@ -19,9 +19,9 @@
         <p class="error_or_missing" v-if="usernameError">{{$t('messages.login.requiredField')}}</p>
 
         <!-- PASSWORD FIELD -->
-        <label for="password" v-if="show_label">{{$t('messages.login.password')}}</label>
+        <label for="password">{{$t('messages.login.password')}}</label>
         <input
-          :placeholder="passwordPlaceholder"
+          :placeholder="$tc('messages.login.password')"
           autocomplete="current-password"
           id="password"
           required
@@ -67,9 +67,6 @@ import { mapGetters } from 'vuex';
 })
 export default class Login extends Vue {
 
-  @Prop(Boolean) public readonly showLabel!: boolean;
-  @Prop(Boolean) public readonly placeholderUppercase!: boolean;
-
   public settings!: Info;
 
   public username: string = '';
@@ -79,32 +76,6 @@ export default class Login extends Vue {
   public usernameError: boolean = false;
   public loginError: boolean = false;
   private extra_message: string = '';
-
-  get passwordPlaceholder() {
-    return this.password.length
-      ? ''
-      : (
-        this.placeholderUppercase
-          ? this.$tc('messages.login.password').toUpperCase()
-          : this.$tc('messages.login.password')
-        );
-  }
-
-  get usernamePlaceholder() {
-    return this.username.length
-      ? ''
-      : (
-        this.placeholderUppercase
-          ? this.$tc('messages.login.username').toUpperCase()
-          : this.$tc('messages.login.username')
-        );
-  }
-
-  get show_label(): boolean {
-    return undefined === this.showLabel
-      ? true
-      : this.showLabel;
-  }
 
   public login() {
     if (!this.username) {

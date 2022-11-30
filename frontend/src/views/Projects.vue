@@ -134,11 +134,11 @@ export default class Projects extends Vue {
     if (undefined !== params.id) {
       this.setActiveGroup(
         {
-          id: params.id,
+          id: params.id
         },
         name === 'group'
           ? EBoxType.G
-          : EBoxType.MG,
+          : EBoxType.MG
       );
     }
   }
