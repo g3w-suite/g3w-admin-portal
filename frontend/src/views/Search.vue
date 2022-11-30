@@ -1,11 +1,13 @@
 <template>
   <fragment>
-    <span class="subtitle h5 show-on-mobile">{{settings.sub_title}}</span>
-    <h1 class="title show-on-mobile">{{settings.title}}</h1>
-    <hgroup>
-      <h2>{{ settings.groups_title }}</h2>
-      <p v-html="settings.groups_map_description"></p>
-    </hgroup>
+    <input
+      type="search"
+      id="search"
+      name="search"
+      v-model="search"
+      :placeholder="$t('messages.menu.search_placeholder')"
+      :aria-label="$t('messages.menu.search_placeholder')"
+    />
     <Projects />
   </fragment>
 </template>
@@ -16,8 +18,6 @@ import Projects from '@/views/Projects.vue';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
-// const logo = require('@/assets/img/logo_g3wsuite.png');
-
 @Component({
   components: { Projects },
   computed: {
@@ -26,8 +26,16 @@ import { mapGetters } from 'vuex';
     }),
   },
 })
-export default class Home extends Vue {
+export default class Search extends Vue {
   public settings!: Info;
+
+  get search() {
+    return this.$store.getters['group/search'];
+  }
+
+  set search(val: string) {
+    this.$store.dispatch('group/search', {s: val});
+  }
 }
 </script>
 

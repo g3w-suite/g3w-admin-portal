@@ -11,7 +11,3 @@ export class SuperGroup {
     return EBoxType.SUPER;
   }
 }
-
-export interface ISuperGroupDict {
-  [key: number]: SuperGroup;
-}

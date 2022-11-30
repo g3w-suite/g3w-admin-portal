@@ -1,43 +1,19 @@
 <template>
-  <fragment>
-
-    <!-- SPINNER -->
-    <progress v-if="$store.getters.showLoader"></progress>
-
-    <!-- SEARCH BOX -->
-    <input
-      v-if="$route.name === 'search'"
-      type="search"
-      id="search"
-      name="search"
-      v-model="search"
-      :placeholder="$t('messages.menu.search_placeholder')"
-      :aria-label="$t('messages.menu.search_placeholder')"
+  <div :class="($route.name === 'group' && $route.params.id !== undefined) || $route.name === 'search'  ? '' : 'grid'">
+    <Article
+      v-for="box in boxes"
+      :href="box.LogoLink"
+      :id="box.Id"
+      :img_url="box.Logo"
+      :key="'mc_' + box.Key"
+      :title="box.Title"
+      :type="box.InstanceOf"
+      :edit_url="box.edit_url"
+      :map_url="box.map_url"
+      :description="box.description"
+      :class="boxtype[box.InstanceOf] + '-' + box.Id + ' boxtype_' + boxtype[box.InstanceOf]"
     />
-
-    <!-- PAGE CONTENT -->
-    <hgroup v-if="$route.name === 'home'">
-      <h2>{{title}}</h2>
-      <p v-html="description"></p>
-    </hgroup>
-
-    <div :class="($route.name === 'group' && $route.params.id !== undefined) || $route.name === 'search'  ? '' : 'grid'">
-      <Article
-        v-for="box in boxes"
-        :href="box.LogoLink"
-        :id="box.Id"
-        :img_url="box.Logo"
-        :key="'mc_' + box.Key"
-        :title="box.Title"
-        :type="box.InstanceOf"
-        :edit_url="box.edit_url"
-        :map_url="box.map_url"
-        :description="box.description"
-        :class="boxtype[box.InstanceOf] + '-' + box.Id + ' boxtype_' + boxtype[box.InstanceOf]"
-      />
-    </div>
-
-  </fragment>
+  </div>
 </template>
 
 <script lang="ts">
@@ -73,20 +49,11 @@ export default class Projects extends Vue {
   public loading        = true; // loading
   public crumbs: string[] = [];
 
-  get search() {
-    return this.$store.getters['group/search'];
-  }
-
-  set search(val: string) {
-    this.$store.dispatch('group/search', {s: val});
-  }
-
   get boxes() {
     switch (this.$route.name) {
 
       case 'home':
-        let elements: SuperGroup[] = [];
-        return elements = [...Object.values<SuperGroup>(this.$store.getters['group/macroGroups']), ...Object.values<SuperGroup>( this.$store.getters['group/groupsWithNoMacroGroup'])];
+        return this.$store.getters['group/superGroups'];
 
       case 'organization':
         return this.$route.params.id
@@ -99,7 +66,7 @@ export default class Projects extends Vue {
             : this.$store.getters['group/groupsWithNoMacroGroup'];
 
       default:
-        return this.search
+        return this.$store.getters['group/search']
           ? this.$store.getters['group/filteredProjects']
           : this.$store.getters['group/projects'];
     }
@@ -108,31 +75,30 @@ export default class Projects extends Vue {
   /**
    * @FIXME show group title on "group/:id" and "organization/:id" route
    */
-  get title() {
-    return 1 === this.crumbs.length
-      ? this.settings.groups_title
-      : this.$store.getters['group/activeGroup'].title || this.$store.getters['group/activeGroup'].name;
-  }
+  // get title() {
+  //   return 1 === this.crumbs.length
+  //     ? this.settings.groups_title
+  //     : this.$store.getters['group/activeGroup'].title || this.$store.getters['group/activeGroup'].name;
+  // }
 
   /**
    * @FIXME show group description on "group/:id" and "organization/:id" route
    */
-  get description() {
-    return 1 === this.crumbs.length
-      ? this.settings.groups_map_description
-      : this.$store.getters['group/activeGroup'].description;
-  }
+  // get description() {
+  //   return 1 === this.crumbs.length
+  //     ? this.settings.groups_map_description
+  //     : this.$store.getters['group/activeGroup'].description;
+  // }
 
   public async mounted() {
+    this.$store.dispatch('showLoader');
     const { params, name } = this.$route;
     const locale = this.$i18n.locale;
-    this.$store.dispatch('showLoader')
     await Promise.allSettled([
       this.$store.dispatch('group/fetchMacroGroups', { locale }),
       this.$store.dispatch('group/fetchGroupsWithNoMacroGroup', { locale }),
       this.$store.dispatch('group/fetchProjects', { locale }),
     ])
-    this.$store.dispatch('hideLoader')
     if (undefined !== params.id) {
       this.setActiveGroup(
         {
@@ -143,6 +109,7 @@ export default class Projects extends Vue {
           : EBoxType.MG
       );
     }
+    this.$store.dispatch('hideLoader');
   }
 
   public created() {

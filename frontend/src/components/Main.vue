@@ -29,6 +29,8 @@
     <Breadcrumb id="breadcrumb" />
 
     <main id="content" class="container">
+      <progress v-if="$store.getters.showLoader"></progress>
+
       <router-view />
     </main>
 
