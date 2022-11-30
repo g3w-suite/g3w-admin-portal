@@ -16,15 +16,18 @@
     <link rel=stylesheet href="{% static 'frontend/css/app.css' %}">
     {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
         {% for css in SETTINGS.G3WSUITE_CUSTOM_CSS %}
-            <link rel="stylesheet" type="text/css" href="{{ css }}" />
+            <link rel="stylesheet" href="{{ css }}" />
         {% endfor %}
     {% endif %}
+    {% if SETTINGS.PORTAL_CUSTOM_CSS %}
+        <style>{{ SETTINGS.PORTAL_CUSTOM_CSS | safe }}</style>
+    {% endif %}
 </head>
-<body class="{% if not IS_PA %}{{ PORTAL_COLOR }}{% endif %}">
+<body>
     <noscript><strong>You must enable JavaScript to continue.</strong></noscript>
     <script>
         window.API_BASE_URL = '{{ API_BASE_URL }}'
-        window.LANGUAGES = {{ LANGUAGES|safe }}
+        window.LANGUAGES = {{ LANGUAGES | safe }}
         // window.IS_PA = {{ IS_PA|yesno:"true,false" }}
         // window.PORTAL_SECTIONS = {{ PORTAL_SECTIONS|safe }}
         // window.ADMIN_BTN = {{ ADMIN_BTN }}

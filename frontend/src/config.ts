@@ -2,9 +2,9 @@ import { RouterMode } from 'vue-router';
 
 const config  =  {
   favicon:    process.env.VUE_APP_FAVICON,
-  stylesheet: process.env.VUE_APP_CSS_URL,
+  // stylesheet: process.env.VUE_APP_CSS_URL,
   theme:      (window as any).theme || process.env.VUE_APP_CSS_THEME,
-  color:      (window as any).color || process.env.VUE_APP_CSS_COLOR,
+  // color:      (window as any).color || process.env.VUE_APP_CSS_COLOR,
   languages:  process.env.VUE_APP_LANGUAGES.split(', '),
   /** @deprecated */
   portal_sections: [ 'maps', 'info' ],

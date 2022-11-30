@@ -13,19 +13,19 @@ import config from './config';
 import router from './router';
 import store from './store';
 
-if (config.stylesheet) {
-  const css = document.createElement('link');
-  css.setAttribute('rel', 'stylesheet');
-  css.setAttribute('href', config.stylesheet);
-  document.body.appendChild(css);
-}
+// if (config.stylesheet) {
+//   const css = document.createElement('link');
+//   css.setAttribute('rel', 'stylesheet');
+//   css.setAttribute('href', config.stylesheet);
+//   document.body.appendChild(css);
+// }
 
-if (config.color) {
-  document.documentElement.setAttribute('data-color', config.color);
-  document.documentElement.style.setProperty('--custom-color', config.color);
-  document.documentElement.style.setProperty('--header-color', config.color);
-  document.documentElement.style.setProperty('--header-color-alt', process.env.VUE_APP_CSS_COLOR_ALT || config.color);
-}
+// if (config.color) {
+//   document.documentElement.setAttribute('data-color', config.color);
+//   document.documentElement.style.setProperty('--custom-color', config.color);
+//   document.documentElement.style.setProperty('--header-color', config.color);
+//   document.documentElement.style.setProperty('--header-color-alt', process.env.VUE_APP_CSS_COLOR_ALT || config.color);
+// }
 
 if (config.theme) {
   document.documentElement.setAttribute('data-theme', config.theme);
