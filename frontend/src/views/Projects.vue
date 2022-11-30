@@ -134,11 +134,11 @@ export default class Projects extends Vue {
     if (undefined !== params.id) {
       this.setActiveGroup(
         {
-          id: params.id
+          id: params.id,
         },
         name === 'group'
           ? EBoxType.G
-          : EBoxType.MG
+          : EBoxType.MG,
       );
     }
   }
@@ -157,7 +157,7 @@ export default class Projects extends Vue {
         const macroGroups = this.$store.getters['group/macroGroups'];
         el = undefined !== id
           ? macroGroups[id]
-          : Object.values(macroGroups).find((mc: MacroGroup) => mc.name === id);
+          : Object.values(macroGroups).find((mc: MacroGroup) => mc.title === id);
         (el as MacroGroup).fetchGroups();
         break;
 
