@@ -2,7 +2,7 @@
   <fragment>
 
     <!-- SPINNER -->
-    <progress v-if="loading"></progress>
+    <progress v-if="$store.getters.showLoader"></progress>
 
     <!-- SEARCH BOX -->
     <input
@@ -125,12 +125,13 @@ export default class Projects extends Vue {
   public async mounted() {
     const { params, name } = this.$route;
     const locale = this.$i18n.locale;
+    this.$store.dispatch('showLoader')
     await Promise.allSettled([
       this.$store.dispatch('group/fetchMacroGroups', { locale }),
       this.$store.dispatch('group/fetchGroupsWithNoMacroGroup', { locale }),
       this.$store.dispatch('group/fetchProjects', { locale }),
-    ]);
-    this.loading = false;
+    ])
+    this.$store.dispatch('hideLoader')
     if (undefined !== params.id) {
       this.setActiveGroup(
         {
