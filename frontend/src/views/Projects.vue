@@ -85,7 +85,8 @@ export default class Projects extends Vue {
     switch (this.$route.name) {
 
       case 'home':
-        return this.$store.getters['group/superGroups'];
+        let elements: SuperGroup[] = [];
+        return elements = [...Object.values<SuperGroup>(this.$store.getters['group/macroGroups']), ...Object.values<SuperGroup>( this.$store.getters['group/groupsWithNoMacroGroup'])];
 
       case 'organization':
         return this.$route.params.id
