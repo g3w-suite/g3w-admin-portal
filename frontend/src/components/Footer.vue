@@ -87,37 +87,45 @@
             <input type="submit" aria-label="Close" value="" class="close" />
           </form>
           <!-- <a href="#close" aria-label="Close" class="close" ></a> -->
-          <a target="_blank" href="https://g3wsuite.it/" title="Applicativo realizzato con il framework OS">
-            <img
-              src="/static/client/images/g3wsuite_logo.png"
-              alt="G3W SUITE"
-              class="g3w-suite-logo"
-              style="max-height: 50px;"
-            >
-          </a>
           <div style="color: #fff">Applicativo realizzato con il framework Open Source</div>
         </header>
-        <div>
+        <section style="text-align:center; min-width: 50vw;">
+          <p>
+            <a target="_blank" href="https://g3wsuite.it/" title="Applicativo realizzato con il framework OS">
+              <img
+                src="/static/client/images/g3wsuite_logo.png"
+                alt="G3W SUITE"
+                class="g3w-suite-logo"
+                style="max-height: 50px;"
+              >
+            </a>
+          </p>
           <p>Pubblica e gestisci i tuoi progetti QGIS sul Web</p>
-          <div class="credit-title-logo g3w-credits-block">
-              Framework sviluppato da
-              <a href="http://www.gis3w.it" target="_blank" style="text-align: center;">
-                <img src="/static/client/images/logo_gis3w_156_85.png" alt="" class="img-responsive center-block" style="margin-left: 5px;" width="60">
-              </a>
-          </div>
-          <address id="address-credits" style="line-height: 1.3; text-align: center; margin-top: 5px; display: flex; justify-content: center;">
-            <span style="padding: 2px;">
-              <span aria-hidden="true" class="fas fa-map-marker-alt" style="color: rgb(149, 173, 54); font-weight: bold;"></span> Montecatini Terme - Italy
-            </span>
-            <span style="padding: 2px;">
-              <span aria-hidden="true" class="fas fa-mobile" style="color: rgb(149, 173, 54);"></span> +39 393 8534336
-            </span>
-            <span style="padding: 2px;">
-              <span aria-hidden="true" class="fas fa-envelope" style="color: rgb(149, 173, 54);"></span> <a href="mailto:info@gis3w.it" style="color: rgb(0, 0, 0);"> info@gis3w.it</a>
-            </span>
-          </address>
-        </div>
-        <p>test custom credits</p>
+          <p>
+            <a href="https://maps.google.com/?q=V.le%20G.%20Verdi%2051016,%20Montecatini%20Terme,%20Italy" target="_blank" rel="noopener noreferrer">
+              <font-awesome-icon icon="map-marker-alt" /> Montecatini Terme - Italy
+            </a>
+          </p>
+          <p>
+            <a href="tel:+393938534336">
+              <font-awesome-icon icon="phone-alt" /> +39 393 8534336
+            </a>
+          </p>
+          <p>
+            <a href="mailto:info@gis3w.it"> 
+              <font-awesome-icon icon="envelope" /> info@gis3w.it
+            </a>
+          </p>
+        </section>
+        <footer>
+          <p>
+            Framework sviluppato da
+            <a href="http://www.gis3w.it" target="_blank">
+              <img src="/static/client/images/logo_gis3w_156_85.png" alt="Gis3w s.n.c" width="60">
+            </a>
+          </p>
+        </footer>
+        <!-- <p>test custom credits</p> -->
       </article>
     </dialog>
   </fragment>

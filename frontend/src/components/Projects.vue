@@ -40,9 +40,9 @@ import { Route } from 'vue-router';
 //   [key: string]: IGroupDict | IMacroGroupDict;
 // }
 
-Component.registerHooks([
-  'beforeRouteUpdate'
-])
+// Component.registerHooks([
+//   'beforeRouteUpdate'
+// ])
 
 @Component({
   components: { Article },
@@ -69,11 +69,17 @@ export default class Projects extends Vue {
     switch (this.$route.name) {
 
       case 'organization':
+        if (this.$route.params.id) {
+          this.setActiveGroup({ id: this.$route.params.id }, EBoxType.MG );
+        }
         return this.$route.params.id
           ? this.$store.getters['group/groupsInMacroGroup'](this.$route.params.id)
           : this.$store.getters['group/macroGroups'];
 
       case 'group':
+        if (this.$route.params.id) {
+          this.setActiveGroup({ id: this.$route.params.id }, EBoxType.G );
+        }
         return this.$route.params.id
             ? this.$store.getters['group/projectsInGroup'](this.$route.params.id)
             : this.$store.getters['group/groupsWithNoMacroGroup'];
@@ -163,19 +169,19 @@ export default class Projects extends Vue {
     this.$store.dispatch('group/setActiveGroup', { sg });
   }
 
-  public async beforeRouteUpdate(to: Route, from: Route, next: Function) {
-  if (to.params.id) {
-    this.setActiveGroup(
-      {
-        id: to.params.id
-      },
-      to.name === 'group'
-        ? EBoxType.G
-        : EBoxType.MG
-    );
-  }
-  next()
-}
+  // public async beforeRouteUpdate(to: Route, from: Route, next: Function) {
+  //   if (to.params.id) {
+  //     this.setActiveGroup(
+  //       {
+  //         id: to.params.id
+  //       },
+  //       to.name === 'group'
+  //         ? EBoxType.G
+  //         : EBoxType.MG
+  //     );
+  //   }
+  //   next();
+  // }
 
 }
 </script>
