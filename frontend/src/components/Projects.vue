@@ -119,24 +119,24 @@ export default class Projects extends Vue {
 
   public setActiveGroup(param: { id?: number | string }, type: EBoxType.G | EBoxType.MG) {
     const { id } = param;
-    let el: SuperGroup = new SuperGroup();
+    let sg: SuperGroup = new SuperGroup();
 
     switch (type) {
 
       case EBoxType.MG:
         const macroGroups = this.$store.getters['group/macroGroups'];
-        el = undefined !== id
+        sg = undefined !== id
           ? macroGroups[id]
-          : Object.values(macroGroups).find((mc: MacroGroup) => mc.title === id);
-        (el as MacroGroup).fetchGroups();
+          : Object.values(macroGroups).find((mc) => (mc as MacroGroup).title === id);
+        (sg as MacroGroup).fetchGroups();
         break;
 
       case EBoxType.G:
         const groups = this.$store.getters['group/groups'];
-        el = undefined !== id
+        sg = undefined !== id
           ? groups[id]
-          : Object.values(groups).find((g: Group) => g.name === id);
-        (el as Group).fetchProjects();
+          : Object.values(groups).find((g) => (g as Group).name === id);
+        (sg as Group).fetchProjects();
         break;
 
       default:
@@ -145,7 +145,7 @@ export default class Projects extends Vue {
 
     }
 
-    this.$store.dispatch('group/setActiveGroup', { sg: el });
+    this.$store.dispatch('group/setActiveGroup', { sg });
   }
 
 }
