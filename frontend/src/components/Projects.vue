@@ -40,6 +40,10 @@ import { Route } from 'vue-router';
 //   [key: string]: IGroupDict | IMacroGroupDict;
 // }
 
+Component.registerHooks([
+  'beforeRouteUpdate'
+])
+
 @Component({
   components: { Article },
   computed: {
@@ -159,18 +163,19 @@ export default class Projects extends Vue {
     this.$store.dispatch('group/setActiveGroup', { sg });
   }
 
-  public async beforeRouteUpdate(to: Route, from: Route) {
-    if (to.params.id) {
-      this.setActiveGroup(
-        {
-          id: to.params.id
-        },
-        to.name === 'group'
-          ? EBoxType.G
-          : EBoxType.MG
-      );
-    }
+  public async beforeRouteUpdate(to: Route, from: Route, next: Function) {
+  if (to.params.id) {
+    this.setActiveGroup(
+      {
+        id: to.params.id
+      },
+      to.name === 'group'
+        ? EBoxType.G
+        : EBoxType.MG
+    );
   }
+  next()
+}
 
 }
 </script>
