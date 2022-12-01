@@ -105,7 +105,7 @@
       <ul :hidden="secondaryMenuVisible">
         <li>
             <router-link :to="{ name: 'home' }" class="secondary" :title="$t('messages.tooltip.home')">
-              {{ $t('messages.menu.data') }}
+              {{ $t('messages.menu.home') }}
             </router-link>
         </li>
         <li>

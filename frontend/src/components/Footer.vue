@@ -6,7 +6,7 @@
 
           <div>
             <span style="display:block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color);">{{info.about_title}}</span>
-            <p>{{info.about_description}}</p>
+            <div v-html="info.about_description"></div>
           </div>
 
           <address>
