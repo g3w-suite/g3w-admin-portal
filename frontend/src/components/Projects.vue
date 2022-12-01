@@ -32,6 +32,7 @@ import { Info } from '@/types/TInfo';
 import { SuperGroup } from '@/types/TSuperGroup';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
+import { Route } from 'vue-router';
 
 // groups with no macrogroups and macrogroups
 
@@ -74,7 +75,7 @@ export default class Projects extends Vue {
             : this.$store.getters['group/groupsWithNoMacroGroup'];
 
       default:
-      return this.boxes || [];
+        return this.boxes || [];
 
     }
   }
@@ -156,6 +157,19 @@ export default class Projects extends Vue {
     }
 
     this.$store.dispatch('group/setActiveGroup', { sg });
+  }
+
+  public async beforeRouteUpdate(to: Route, from: Route) {
+    if (to.params.id) {
+      this.setActiveGroup(
+        {
+          id: to.params.id
+        },
+        to.name === 'group'
+          ? EBoxType.G
+          : EBoxType.MG
+      );
+    }
   }
 
 }
