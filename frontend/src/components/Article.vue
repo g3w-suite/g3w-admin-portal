@@ -39,6 +39,7 @@
 </template>
 
 <script lang="ts">
+import config from '@/config';
 import { EBoxType } from '@/types/EBoxType';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
@@ -64,7 +65,7 @@ export default class Article extends Vue {
    * Return absolute URL to G3W-ADMIN server.
    */
   public get_admin_url(folder: string): string {
-    return process.env.VUE_APP_ADMIN_URL + folder;
+    return config.admin_base_url + folder;
   }
 
   /**

@@ -1,5 +1,8 @@
 import { RouterMode } from 'vue-router';
 
+
+console.log(process.env.VUE_APP_ADMIN_URL);
+
 const config  =  {
   favicon:    process.env.VUE_APP_FAVICON,
   // stylesheet: process.env.VUE_APP_CSS_URL,
@@ -11,6 +14,7 @@ const config  =  {
   /** @deprecated */
   admin_btn: true,
   admin_url: process.env.VUE_APP_ADMIN_URL,
+  admin_base_url: process.env.VUE_APP_ADMIN_BASE_URL,
   /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations */
   router_mode: (process.env.VUE_APP_HISTORY_MODE as RouterMode),
 };
