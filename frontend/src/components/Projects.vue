@@ -1,19 +1,25 @@
 <template>
-  <div :class="($route.name === 'group' && $route.params.id !== undefined) || $route.name === 'search'  ? '' : 'grid'">
-    <Article
-      v-for="box in _boxes"
-      :href="box.LogoLink"
-      :id="box.Id"
-      :img_url="box.Logo"
-      :key="'mc_' + box.Key"
-      :title="box.Title"
-      :type="box.InstanceOf"
-      :edit_url="box.edit_url"
-      :map_url="box.map_url"
-      :description="box.description"
-      :class="boxtype[box.InstanceOf] + '-' + box.Id + ' boxtype_' + boxtype[box.InstanceOf]"
-    />
-  </div>
+  <section>
+    <hgroup v-if="$route.params.id">
+      <h2>{{ title }}</h2>
+      <p v-html="description"></p>
+    </hgroup>
+    <div :class="($route.name === 'group' && $route.params.id !== undefined) || $route.name === 'search'  ? '' : 'grid'">
+      <Article
+        v-for="box in _boxes"
+        :href="box.LogoLink"
+        :id="box.Id"
+        :img_url="box.Logo"
+        :key="'mc_' + box.Key"
+        :title="box.Title"
+        :type="box.InstanceOf"
+        :edit_url="box.edit_url"
+        :map_url="box.map_url"
+        :description="box.description"
+        :class="boxtype[box.InstanceOf] + '-' + box.Id + ' boxtype_' + boxtype[box.InstanceOf]"
+      />
+    </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -76,20 +82,24 @@ export default class Projects extends Vue {
   /**
    * @FIXME show group title on "group/:id" and "organization/:id" route
    */
-  // get title() {
-  //   return 1 === this.crumbs.length
-  //     ? this.settings.groups_title
-  //     : this.$store.getters['group/activeGroup'].title || this.$store.getters['group/activeGroup'].name;
-  // }
+  get title(): string {
+    const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
+    return sg ? sg.title : this.settings.groups_title;
+    // return 1 === this.crumbs.length
+    //   ? this.settings.groups_title
+    //   : this.$store.getters['group/activeGroup'].title || this.$store.getters['group/activeGroup'].name;
+  }
 
   /**
    * @FIXME show group description on "group/:id" and "organization/:id" route
    */
-  // get description() {
+  get description(): string {
+    const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
+    return sg ? sg.description : this.settings.groups_map_description;
   //   return 1 === this.crumbs.length
   //     ? this.settings.groups_map_description
   //     : this.$store.getters['group/activeGroup'].description;
-  // }
+  }
 
   public async mounted() {
     this.$store.dispatch('showLoader');
