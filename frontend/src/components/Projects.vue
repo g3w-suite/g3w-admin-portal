@@ -58,6 +58,7 @@ export default class Projects extends Vue {
   public settings!: Info;
 
   public boxtype        = EBoxType;
+  searchUnsubscribe: any = null;
   // public crumbs: string[] = [];
 
   /**
@@ -71,6 +72,12 @@ export default class Projects extends Vue {
     switch (name) {
       case 'home':
         boxes = this.$store.getters['group/superGroups'];
+        break;
+      case 'search':
+        boxes = this.$store.getters['group/search'] ? this.$store.getters['group/filteredProjects'] : this.$store.getters['group/projects'];
+        this.searchUnsubscribe = this.$store.subscribe(mutation => {
+          if (mutation.type === 'group/search') this.boxes = this.$store.getters['group/filteredProjects'];
+        });
         break;
       case 'organization':
         id && await this.setActiveGroup({ id }, EBoxType.MG );
@@ -88,7 +95,7 @@ export default class Projects extends Vue {
       default:
     }
     // got o window top after change
-    window.scrollTo(0,0)
+    window.scrollTo(0,0);
     this.boxes = boxes;
   }
 
@@ -159,6 +166,10 @@ export default class Projects extends Vue {
     }
 
     this.$store.dispatch('group/setActiveGroup', { sg });
+  }
+
+  public beforeDestroy(){
+    this.searchUnsubscribe()
   }
 
 
