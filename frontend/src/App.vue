@@ -10,6 +10,7 @@
   // $primary-600: #d81b60;
   // $primary-700: #c2185b;
 
+  @import "../node_modules/dialog-polyfill/dist/dialog-polyfill.css";
   @import '@picocss/pico/scss/pico.scss';
 
   :root {

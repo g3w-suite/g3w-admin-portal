@@ -140,6 +140,7 @@
 import { Info } from '@/types/TInfo';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
+import dialogPolyfill from 'dialog-polyfill';
 
 @Component({
   components: { },
@@ -153,7 +154,11 @@ import { mapGetters } from 'vuex';
 export default class Footer extends Vue {
   public info!: Info;
 
-  public showModal(){
+  public mounted() {
+    dialogPolyfill.registerDialog((window as any).document.querySelector('#credits-modal'));
+  }
+
+  public showModal() {
     (window as any).document.querySelector('#credits-modal').showModal();
   }
 }
