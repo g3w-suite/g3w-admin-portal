@@ -6,7 +6,7 @@
     </hgroup>
     <div :class="($route.name === 'group' && $route.params.id !== undefined) || $route.name === 'search'  ? '' : 'grid'">
       <Article
-        v-for="box in boxes"
+        v-for="box in boxes || pboxes"
         :href="box.LogoLink"
         :id="box.Id"
         :img_url="box.Logo"
@@ -54,41 +54,31 @@ import { Route } from 'vue-router';
 })
 
 export default class Projects extends Vue {
+  @Prop(Array) public readonly boxes!: Array<MacroGroup | Group | Project>;
 
   public settings!: Info;
 
   public boxtype        = EBoxType;
-  searchUnsubscribe: any = null;
   // public crumbs: string[] = [];
 
   /**
    * @TODO remove switch($route.name) and get all "boxes" as throught the component @Prop
    */
-  public boxes: Array<MacroGroup | Group | Project> = [];
+  public pboxes: Array<MacroGroup | Group | Project> = this.boxes || [];
   @Watch('$route', {immediate: false})
   async setBoxes(to: Route, from: Route) {
     const {params:{id}, name} = to;
-    let boxes: Array<MacroGroup | Group | Project> = [];
     switch (name) {
-      case 'home':
-        boxes = this.$store.getters['group/superGroups'];
-        break;
-      case 'search':
-        boxes = this.$store.getters['group/search'] ? this.$store.getters['group/filteredProjects'] : this.$store.getters['group/projects'];
-        this.searchUnsubscribe = this.$store.subscribe(mutation => {
-          if (mutation.type === 'group/search') this.boxes = this.$store.getters['group/filteredProjects'];
-        });
-        break;
       case 'organization':
         id && await this.setActiveGroup({ id }, EBoxType.MG );
-        boxes = id
+        this.pboxes = id
           ? this.$store.getters['group/groupsInMacroGroup'](id)
           : this.$store.getters['group/macroGroups'];
         break;
 
       case 'group':
         id && await this.setActiveGroup({ id}, EBoxType.G );
-        boxes = id
+        this.pboxes = id
             ? this.$store.getters['group/projectsInGroup'](id)
             : this.$store.getters['group/groupsWithNoMacroGroup'];
         break;
@@ -96,7 +86,6 @@ export default class Projects extends Vue {
     }
     // got o window top after change
     window.scrollTo(0,0);
-    this.boxes = boxes;
   }
 
   /**
@@ -123,7 +112,6 @@ export default class Projects extends Vue {
 
   public async mounted() {
     this.$store.dispatch('showLoader');
-    const { params, name } = this.$route;
     const locale = this.$i18n.locale;
     await Promise.allSettled([
       this.$store.dispatch('group/fetchMacroGroups', { locale }),
@@ -131,7 +119,8 @@ export default class Projects extends Vue {
       this.$store.dispatch('group/fetchProjects', { locale }),
     ]);
     this.$store.dispatch('hideLoader');
-    this.setBoxes(this.$route, this.$route)
+    this.setBoxes(this.$route, this.$route);
+    window.scrollTo(0,0);
   }
 
   // public created() {
@@ -167,11 +156,6 @@ export default class Projects extends Vue {
 
     this.$store.dispatch('group/setActiveGroup', { sg });
   }
-
-  public beforeDestroy(){
-    this.searchUnsubscribe()
-  }
-
 
 }
 </script>

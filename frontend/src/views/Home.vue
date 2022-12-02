@@ -6,14 +6,14 @@
       <h2>{{ settings.groups_title }}</h2>
       <p v-html="settings.groups_map_description"></p>
     </hgroup>
-    <Projects />
+    <Projects :boxes="this.$store.getters['group/superGroups']"/>
   </fragment>
 </template>
 
 <script lang="ts">
 import { Info } from '@/types/TInfo';
 import Projects from '@/components/Projects.vue';
-import { Component, Vue } from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
 // const logo = require('@/assets/img/logo_g3wsuite.png');

@@ -8,7 +8,7 @@
       :placeholder="$t('messages.menu.search_placeholder')"
       :aria-label="$t('messages.menu.search_placeholder')"
     />
-    <Projects />
+    <Projects :boxes="$store.getters['group/search'] ? $store.getters['group/filteredProjects'] : $store.getters['group/projects']" />
   </fragment>
 </template>
 
