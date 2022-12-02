@@ -6,7 +6,7 @@
       <h2>{{ settings.groups_title }}</h2>
       <p v-html="settings.groups_map_description"></p>
     </hgroup>
-    <Projects :boxes="$store.getters['group/superGroups']" />
+    <Projects />
   </fragment>
 </template>
 

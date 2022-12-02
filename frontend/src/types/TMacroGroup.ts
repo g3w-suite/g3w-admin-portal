@@ -55,7 +55,7 @@ export class MacroGroup extends SuperGroup {
   }
 
   public fetchGroups() {
-    store.dispatch('group/fetchGroupsByMacroGroupId', {locale: i18n.locale, id: this.Id});
+    return store.dispatch('group/fetchGroupsByMacroGroupId', {locale: i18n.locale, id: this.Id});
   }
 }
 

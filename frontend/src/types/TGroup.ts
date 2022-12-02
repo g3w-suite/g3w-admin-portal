@@ -62,7 +62,7 @@ export class Group extends SuperGroup {
   }
 
   public fetchProjects() {
-    store.dispatch('group/fetchProjectsByGroupId', { locale: i18n.locale, id: this.Id });
+    return store.dispatch('group/fetchProjectsByGroupId', { locale: i18n.locale, id: this.Id });
   }
 
 }

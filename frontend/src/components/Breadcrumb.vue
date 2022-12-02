@@ -10,7 +10,7 @@
 -->
 <template>
   <nav
-    v-if="breadcrumbs.length > 1"
+    v-if="!$store.getters.showLoader && breadcrumbs.length > 1"
     aria-label="breadcrumb"
     class="container"
   >

@@ -8,7 +8,8 @@
             <span style="display:block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color);">{{info.about_title}}</span>
             <div v-html="info.about_description"></div>
           </div>
-
+          <!--  Empty space  -->
+          <div></div>
           <address>
             <h3>{{$t('messages.footer.contacts')}}</h3>
 

@@ -6,7 +6,7 @@
     </hgroup>
     <div :class="($route.name === 'group' && $route.params.id !== undefined) || $route.name === 'search'  ? '' : 'grid'">
       <Article
-        v-for="box in _boxes"
+        v-for="box in boxes"
         :href="box.LogoLink"
         :id="box.Id"
         :img_url="box.Logo"
@@ -30,7 +30,7 @@ import { Group, IGroupDict } from '@/types/TGroup';
 import { Project } from '@/types/TProject';
 import { Info } from '@/types/TInfo';
 import { SuperGroup } from '@/types/TSuperGroup';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue , Watch} from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { Route } from 'vue-router';
 
@@ -55,8 +55,6 @@ import { Route } from 'vue-router';
 
 export default class Projects extends Vue {
 
-  @Prop(Array) public readonly boxes!: Array<MacroGroup | Group | Project>;
-
   public settings!: Info;
 
   public boxtype        = EBoxType;
@@ -65,29 +63,31 @@ export default class Projects extends Vue {
   /**
    * @TODO remove switch($route.name) and get all "boxes" as throught the component @Prop
    */
-  get _boxes() {
-    switch (this.$route.name) {
-
+  public boxes: Array<MacroGroup | Group | Project> = [];
+  @Watch('$route', {immediate: false})
+  async setBoxes(to: Route, from: Route) {
+    const {params:{id}, name} = to;
+    let boxes: Array<MacroGroup | Group | Project> = [];
+    switch (name) {
+      case 'home':
+        boxes = this.$store.getters['group/superGroups'];
+        break;
       case 'organization':
-        if (this.$route.params.id) {
-          this.setActiveGroup({ id: this.$route.params.id }, EBoxType.MG );
-        }
-        return this.$route.params.id
-          ? this.$store.getters['group/groupsInMacroGroup'](this.$route.params.id)
+        id && await this.setActiveGroup({ id }, EBoxType.MG );
+        boxes = id
+          ? this.$store.getters['group/groupsInMacroGroup'](id)
           : this.$store.getters['group/macroGroups'];
+        break;
 
       case 'group':
-        if (this.$route.params.id) {
-          this.setActiveGroup({ id: this.$route.params.id }, EBoxType.G );
-        }
-        return this.$route.params.id
-            ? this.$store.getters['group/projectsInGroup'](this.$route.params.id)
+        id && await this.setActiveGroup({ id}, EBoxType.G );
+        boxes = id
+            ? this.$store.getters['group/projectsInGroup'](id)
             : this.$store.getters['group/groupsWithNoMacroGroup'];
-
+        break;
       default:
-        return this.boxes || [];
-
     }
+    this.boxes = boxes;
   }
 
   /**
@@ -120,25 +120,16 @@ export default class Projects extends Vue {
       this.$store.dispatch('group/fetchMacroGroups', { locale }),
       this.$store.dispatch('group/fetchGroupsWithNoMacroGroup', { locale }),
       this.$store.dispatch('group/fetchProjects', { locale }),
-    ])
-    if (undefined !== params.id) {
-      this.setActiveGroup(
-        {
-          id: params.id
-        },
-        name === 'group'
-          ? EBoxType.G
-          : EBoxType.MG
-      );
-    }
+    ]);
     this.$store.dispatch('hideLoader');
+    this.setBoxes(this.$route, this.$route)
   }
 
   // public created() {
   //   this.crumbs = [this.$tc(`messages.menu.${this.$route.name}`)];
   // }
 
-  public setActiveGroup(param: { id?: number | string }, type: EBoxType.G | EBoxType.MG) {
+  public async setActiveGroup(param: { id?: number | string }, type: EBoxType.G | EBoxType.MG) {
     const { id } = param;
     let sg: SuperGroup = new SuperGroup();
 
@@ -149,7 +140,7 @@ export default class Projects extends Vue {
         sg = undefined !== id
           ? macroGroups[id]
           : Object.values(macroGroups).find((mc) => (mc as MacroGroup).title === id);
-        (sg as MacroGroup).fetchGroups();
+        await (sg as MacroGroup).fetchGroups();
         break;
 
       case EBoxType.G:
@@ -157,31 +148,17 @@ export default class Projects extends Vue {
         sg = undefined !== id
           ? groups[id]
           : Object.values(groups).find((g) => (g as Group).name === id);
-        (sg as Group).fetchProjects();
+        await (sg as Group).fetchProjects();
         break;
 
       default:
         this.$router.push({name: '404'});
         break;
-
     }
 
     this.$store.dispatch('group/setActiveGroup', { sg });
   }
 
-  // public async beforeRouteUpdate(to: Route, from: Route, next: Function) {
-  //   if (to.params.id) {
-  //     this.setActiveGroup(
-  //       {
-  //         id: to.params.id
-  //       },
-  //       to.name === 'group'
-  //         ? EBoxType.G
-  //         : EBoxType.MG
-  //     );
-  //   }
-  //   next();
-  // }
 
 }
 </script>
