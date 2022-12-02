@@ -30,6 +30,7 @@ FRONTEND_APP = 'portal'
 
 # CSS OVERRIDES based on Pico.css v1.5.6 (https://picocss.com)
 PORTAL_CUSTOM_CSS = """
+/* Navigation Menu colors */
 nav#top-menu  { --nav-background-color: #c30c26; }
 nav#main-menu { --nav-background-color: #af0b22; }
 
@@ -47,6 +48,12 @@ nav#main-menu {
   --contrast: var(--nav-color, --contrast-hover);
   --icon-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='rgb(255, 255, 255)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   --primary-hover: #1ab3e6;
+}
+
+/* 16:9 images */
+main#content article figure > img {
+  aspect-ratio: 16/9;
+  object-fit: contain;
 }
 """
 
