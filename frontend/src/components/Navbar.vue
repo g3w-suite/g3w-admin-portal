@@ -17,7 +17,7 @@
 
         <!-- ADMIN LINK -->
         <li v-if="isLoggedIn">
-          <router-link :to="{ name: 'admin' }" class="secondary">
+          <router-link :to="{ name: 'admin' }" :title="$t('messages.tooltip.admin')" class="secondary">
             <font-awesome-icon icon="gear" size="lg" />
             <span class="hide-on-mobile"> {{$t('messages.menu.admin')}}</span>
           </router-link>
@@ -25,7 +25,7 @@
 
         <!-- LOGOUT LINK -->
         <li v-if="isLoggedIn">
-          <a href="#" @click="logout" class="secondary">
+          <a href="#" @click="logout" :title="$t('messages.tooltip.logout')" class="secondary">
             <font-awesome-icon icon="sign-out-alt" size="lg" />
             <span class="hide-on-mobile"> {{$t('messages.menu.logout')}}</span>
           </a>
@@ -33,7 +33,7 @@
 
         <!-- LOGIN LINK -->
         <li v-else>
-          <router-link :to="{ name: 'login' }" class="secondary">
+          <router-link :to="{ name: 'login' }" :title="$t('messages.tooltip.login')" class="secondary">
             <font-awesome-icon icon="user" size="lg" />
             <span class="hide-on-mobile"> {{$t('messages.menu.login')}}</span>
           </router-link>
@@ -89,13 +89,13 @@
 
       <ul>
         <li>
-          <router-link :to="{ name: 'search' }" class="contrast outline">
+          <router-link :to="{ name: 'search' }" :title="$t('messages.menu.search_placeholder')" class="contrast outline">
             <font-awesome-icon icon="search" size="lg" />
             {{ $t('messages.menu.catalog') }}
           </router-link>
         </li>
         <li>
-          <button @click="toggleSecondaryMenu" class="contrast outline">
+          <button @click="toggleSecondaryMenu" :title="$t('messages.tooltip.menu')" class="contrast outline">
             <font-awesome-icon :icon="secondaryMenuVisible ? 'bars' : 'xmark'" size="lg" />
             {{ $t('messages.menu.toggle') }}
           </button>

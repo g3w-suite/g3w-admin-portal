@@ -11,6 +11,7 @@ export const en: any = {
       logout: 'Logout',
       login: 'Login',
       admin: 'Admin section',
+      menu: 'Toggle menu',
     },
 
     menu: {
