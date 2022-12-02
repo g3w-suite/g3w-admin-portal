@@ -113,11 +113,11 @@
             {{ $t('messages.menu.group') }}
           </router-link>
         </li>
-        <li>
+        <!-- <li>
           <router-link :to="{ name: 'organization' }" class="secondary">
             {{ $t('messages.menu.organization') }}
           </router-link>
-        </li>
+        </li> -->
       </ul>
 
     </nav>
