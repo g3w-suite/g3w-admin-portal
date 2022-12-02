@@ -87,6 +87,8 @@ export default class Projects extends Vue {
         break;
       default:
     }
+    // got o window top after change
+    window.scrollTo(0,0)
     this.boxes = boxes;
   }
 
