@@ -49,7 +49,14 @@ nav#main-menu {
   --primary-hover: #1ab3e6;
 }
 """
+
+# Customize TOP NAV MENU link
+PORTAL_ORG_NAME = 'Regione Puglia'
+PORTAL_ORG_URL  = 'http://www.regione.puglia.it/'
+PORTAL_FAVICON  = 'https://www.comune.altamura.ba.it/templates/shaper_helixultimate/favicon.ico'
+
 ```
+
 
 ## DEPRECATED SETTINGS
 

@@ -31,6 +31,9 @@
         // window.IS_PA = {{ IS_PA|yesno:"true,false" }}
         // window.PORTAL_SECTIONS = {{ PORTAL_SECTIONS|safe }}
         // window.ADMIN_BTN = {{ ADMIN_BTN }}
+        window.PORTAL_ORG_NAME = '{{ SETTINGS.PORTAL_ORG_NAME }}'
+        window.PORTAL_ORG_URL = '{{ SETTINGS.PORTAL_ORG_URL }}'
+        window.PORTAL_FAVICON = '{{ SETTINGS.PORTAL_ORG_URL }}'
     </script>
     <div id=app></div>
     <script src="{% static 'frontend/js/chunk-vendors.js' %}"></script>
