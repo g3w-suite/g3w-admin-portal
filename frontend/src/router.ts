@@ -14,6 +14,15 @@ import Group from '@/views/Group.vue';
 import MacroGroup from "@/views/MacroGroup.vue";
 
 Vue.use(Router);
+const fetchData = async function(locale: string){
+  await Promise.allSettled([
+    store.dispatch('info/fetchInfo', { locale }),
+    store.dispatch('settings/fetchPictures', { locale }),
+    store.dispatch('group/fetchMacroGroups', { locale }),
+    store.dispatch('group/fetchGroupsWithNoMacroGroup', { locale }),
+    store.dispatch('group/fetchProjects', { locale })
+  ]);
+};
 
 const router = new Router({
   mode: config.router_mode,
@@ -33,13 +42,7 @@ const router = new Router({
         /**
          * @TODO dispatch a "changeLanguage" action or make use of "i18n.locale" within REST API calls
          */
-        await Promise.allSettled([
-          store.dispatch('info/fetchInfo', { locale: lang }),
-          store.dispatch('settings/fetchPictures', { locale: lang }),
-          store.dispatch('group/fetchMacroGroups', { locale: lang }),
-          store.dispatch('group/fetchGroupsWithNoMacroGroup', { locale: lang }),
-          store.dispatch('group/fetchProjects', { locale: lang })
-        ]);
+        await fetchData(lang);
         next();
       },
       children: [
@@ -80,7 +83,7 @@ const router = new Router({
           },
         },
         {
-          path: 'organization/:id?/',
+          path: 'organization/:id?/:group?',
           name: 'organization',
           component: MacroGroup,
           meta: {
@@ -115,10 +118,13 @@ const router = new Router({
   },
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const lang = to.params.lang;
   if (!config.languages.includes(lang)) { return next(`/it${to.path}`); }
-  if (i18n.locale !== lang) i18n.locale = lang;
+  if (i18n.locale !== lang) {
+    await fetchData(lang);
+    i18n.locale = lang;
+  }
   return next();
 });
 

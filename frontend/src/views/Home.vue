@@ -29,9 +29,6 @@ import { mapGetters } from 'vuex';
 })
 export default class Home extends Vue {
   public settings!: Info;
-  created(){
-    console.log('home')
-  }
 }
 </script>
 

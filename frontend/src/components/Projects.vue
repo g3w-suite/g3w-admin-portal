@@ -4,7 +4,8 @@
       <h2>{{ title }}</h2>
       <p v-html="description"></p>
     </hgroup>
-    <div :class="($route.name === 'group' && $route.params.id !== undefined) || $route.name === 'search'  ? '' : 'grid'">
+    <div :class="($route.name === 'group' && $route.params.id !== undefined)
+    || $route.name === 'search' || $route.params.group !== undefined ? '' : 'grid'">
       <Article
         v-for="box in boxes"
         :href="box.LogoLink"
@@ -68,6 +69,8 @@ export default class Projects extends Vue {
   }
 
   public async mounted() {
+    await this.$nextTick();
+    console.log(this.$route.params)
     window.scrollTo(0,0);
   }
 

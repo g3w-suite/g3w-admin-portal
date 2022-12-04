@@ -1,16 +1,19 @@
 <template>
   <fragment>
-    <Projects :boxes="boxes" />
+    <Group v-if="$route.params.group"></Group>
+    <Projects v-else :boxes="boxes" />
   </fragment>
 </template>
 
 <script lang="ts">
+import Group from '@/views/Group.vue';
 import Projects from '@/components/Projects.vue';
+
 import { Component, Vue } from 'vue-property-decorator';
 import {MacroGroup} from "@/types/TMacroGroup";
 
 @Component({
-  components: { Projects },
+  components: {Group, Projects },
   data() {
     return {
       boxes: []
@@ -20,9 +23,9 @@ import {MacroGroup} from "@/types/TMacroGroup";
     '$route.params': {
       immediate: true,
       async handler(params){
-        const {id} = params;
+        const {id, group} = params;
         const macroGroups = this.$store.getters['group/macroGroups'];
-        if (id) {
+        if (!group && id) {
           await (macroGroups[id] as MacroGroup).fetchGroups();
           this.boxes = this.$store.getters['group/groupsInMacroGroup'](id);
           this.$store.dispatch('group/setActiveGroup', { sg: macroGroups[id] });

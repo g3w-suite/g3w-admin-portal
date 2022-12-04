@@ -2,7 +2,7 @@
 
   <!-- GROUP ARTICLE -->
   <article v-if="type !== boxtype.P">
-    <router-link :to="(type === boxtype.MG ? '/organization/' : '/group/' ) + id">
+    <router-link :to="(type === boxtype.MG ? '/organization/' : $route.name === 'organization' ? `/organization/${$route.params.id}/` : '/group/' ) + id">
       <figure>
         <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('messages.maps.group')" />
         <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3><b>{{title ||  $t('messages.maps.group')}}</b></h3></figcaption>

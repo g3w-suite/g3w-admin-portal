@@ -17,7 +17,7 @@
     <ul>
       <li v-for="(crumb, idx) in breadcrumbs ">
         <router-link
-          :to="{ name: crumb.name }"
+          :to="{ name: crumb.name , params: crumb.params}"
           :aria-current="isLastCrumb(breadcrumbs, idx) ? 'page' : undefined"
         >
           {{ crumb.text ? crumb.text : $t('messages.menu.' + crumb.name) }}
@@ -40,7 +40,7 @@ export default class Breadcrumb extends Vue {
 
   get breadcrumbs() {
     // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
-
+    const {id, group} = this.$route.params;
     if (!this.$route) {
       console.warn('[vue-router] dependency is missing');
       return [];
@@ -78,16 +78,20 @@ export default class Breadcrumb extends Vue {
       const name = (matched[i] || route[i]);
       const activeCrumb = (activeGroup && activeGroup.title) || '';
 
-      path  += '/'  + name;
+      path  += '/'  + name ;
 
       title += this.isLastCrumb(route, i)
         ? activeCrumb
         : this.$i18n.t('messages.menu.' + name);
 
       // dynamically generate breadcrumb text for current activeGroup
-      const text = this.isLastCrumb(route, i) ? activeCrumb : '';
-
-      breadcrumbs.push({ name, path, text, });
+      let params: Object = {};
+      if (group) {
+        params.id = this.isPreLastCrumb(route, i) ? id : undefined;
+        params.group = this.isLastCrumb(route, i) ? group : undefined;
+      }
+      const text = group && this.isPreLastCrumb(route, i) ? this.$store.getters['group/macroGroup'](id).title : this.isLastCrumb(route, i) ? activeCrumb : '';
+      breadcrumbs.push({ name:'organization', path, text, params});
 
       title = text || title;
     }
@@ -96,6 +100,10 @@ export default class Breadcrumb extends Vue {
     window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
 
     return breadcrumbs;
+  }
+
+  public isPreLastCrumb(breadcrumbs: any[], i: number) {
+    return i > 0 && i === breadcrumbs.length - 2;
   }
 
   public isLastCrumb(breadcrumbs: any[], i: number) {
