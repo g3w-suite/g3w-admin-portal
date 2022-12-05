@@ -1,7 +1,11 @@
 <template>
-  <fragment>
-    <Projects :boxes="boxes" />
-  </fragment>
+  <section>
+    <hgroup v-if="$route.params.id">
+      <h2>{{ title }}</h2>
+      <p v-html="description"></p>
+    </hgroup>
+    <Projects :items="items" :class="$route.params.id !== undefined ? '' : 'grid'" />
+  </section>
 </template>
 
 <script lang="ts">
@@ -14,7 +18,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 })
 export default class VGroup extends Vue {
 
-  public boxes: Group[] = [];
+  public items: Group[] = [];
 
   @Watch('$route.params', {
     immediate: true,
@@ -23,7 +27,7 @@ export default class VGroup extends Vue {
   public async onRouteParamsChange({ id, group, lang }) {
     // Home > Groups
     if (undefined === id) {
-      this.boxes = Object.values(this.$store.getters['group/groupsWithNoMacroGroup']);
+      this.items = Object.values(this.$store.getters['group/groupsWithNoMacroGroup']);
     }
     // Home > Group > ID
     else {
@@ -36,9 +40,25 @@ export default class VGroup extends Vue {
       const key = group || id;
       const activeGroup: Group = groups[key];
       await activeGroup.fetchProjects();
-      this.boxes = this.$store.getters['group/projectsInGroup'](key);
+      this.items = this.$store.getters['group/projectsInGroup'](key);
       this.$store.dispatch('group/setActiveGroup', { sg: activeGroup });
     }
+  }
+
+  /**
+   * @FIXME
+   */
+   get title(): string {
+    const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
+    return sg ? sg.title : this.settings.groups_title;
+  }
+
+  /**
+   * @FIXME
+   */
+  get description(): string {
+    const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
+    return sg ? sg.description : this.settings.groups_map_description;
   }
 
 }

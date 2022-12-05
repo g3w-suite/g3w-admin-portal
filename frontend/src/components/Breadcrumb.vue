@@ -28,14 +28,13 @@
 
 <script lang="ts">
 import { SuperGroup } from '@/types/TSuperGroup';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
   components: { },
 })
 
 export default class Breadcrumb extends Vue {
-  // @Prop({ type: Array, required: true }) public readonly breadcrumbs!: JSON[];
 
   get breadcrumbs() {
     // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
