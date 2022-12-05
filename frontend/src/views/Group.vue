@@ -6,16 +6,16 @@
 
 <script lang="ts">
 import Projects from '@/components/Projects.vue';
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import store from '@/store';
 import { Group } from '@/types/TGroup';
-import store from "@/store";
+import { Component, Vue, Watch } from 'vue-property-decorator';
 
 @Component({
   components: { Projects },
   data() {
     return {
-      boxes: []
-    }
+      boxes: [],
+    };
   },
   watch: {
     '$route.params': {
@@ -24,11 +24,11 @@ import store from "@/store";
         const {id, group, lang} = params;
         const groups = this.$store.getters['group/groups'];
         if (id) {
-          if (typeof group !== "undefined" && typeof groups[group] === "undefined"){
+          if (typeof group !== 'undefined' && typeof groups[group] === 'undefined') {
             this.$store.dispatch('showLoader');
             await this.$store.dispatch('group/fetchGroupsByMacroGroupId', {
               locale: lang,
-              id
+              id,
             });
             this.$store.dispatch('hideLoader');
           }
@@ -37,10 +37,10 @@ import store from "@/store";
           await (_group as Group).fetchProjects();
           this.boxes = this.$store.getters['group/projectsInGroup'](key);
           this.$store.dispatch('group/setActiveGroup', { sg: _group });
-        } else this.boxes = Object.values(this.$store.getters['group/groupsWithNoMacroGroup']);
-      }
-    }
-  }
+        } else { this.boxes = Object.values(this.$store.getters['group/groupsWithNoMacroGroup']); }
+      },
+    },
+  },
 })
 export default class VGroup extends Vue {
 }

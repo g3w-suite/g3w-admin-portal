@@ -5,23 +5,23 @@ import Router, { Route, RouterMode } from 'vue-router';
 import config from './config';
 import store from './store';
 
+import Projects from '@/components/Projects.vue';
+import Group from '@/views/Group.vue';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
+import MacroGroup from '@/views/MacroGroup.vue';
 import NotFound from '@/views/NotFound.vue';
-import Projects from '@/components/Projects.vue';
 import Search from '@/views/Search.vue';
-import Group from '@/views/Group.vue';
-import MacroGroup from "@/views/MacroGroup.vue";
 
 Vue.use(Router);
-const fetchData = async function(locale: string){
+const fetchData = async function(locale: string) {
   store.dispatch('showLoader');
   await Promise.allSettled([
     store.dispatch('info/fetchInfo', { locale }),
     store.dispatch('settings/fetchPictures', { locale }),
     store.dispatch('group/fetchMacroGroups', { locale }),
     store.dispatch('group/fetchGroupsWithNoMacroGroup', { locale }),
-    store.dispatch('group/fetchProjects', { locale })
+    store.dispatch('group/fetchProjects', { locale }),
   ]);
   store.dispatch('hideLoader');
 };
@@ -39,7 +39,7 @@ const router = new Router({
        * @param from
        * @param next
        */
-      async beforeEnter(to, from, next){
+      async beforeEnter(to, from, next) {
         const lang = to.params.lang;
         /**
          * @TODO dispatch a "changeLanguage" action or make use of "i18n.locale" within REST API calls

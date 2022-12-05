@@ -13,8 +13,8 @@
 </template>
 
 <script lang="ts">
-import { Info } from '@/types/TInfo';
 import Projects from '@/components/Projects.vue';
+import { Info } from '@/types/TInfo';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
