@@ -39,7 +39,8 @@ export default class VGroup extends Vue {
   public async onRouteParamsChange({ id, group, lang }) {
     // Home > Groups
     if (undefined === id) {
-      this.items = Object.values(this.$store.getters['group/groupsWithNoMacroGroup']);
+      // this.items = Object.values(this.$store.getters['group/groupsWithNoMacroGroup']);
+      this.items = this.$store.getters['group/superGroups'];
     }
     // Home > Group > ID
     else {
