@@ -12,15 +12,24 @@
 <script lang="ts">
 import Projects from '@/components/Projects.vue';
 import { MacroGroup } from '@/types/TMacroGroup';
+import { Info } from '@/types/TInfo';
 import Group from '@/views/Group.vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
 
 @Component({
   components: { Group, Projects },
+  computed: {
+    ...mapGetters({
+      info: 'info/info',
+    }),
+  }
 })
 export default class VMacroGroup extends Vue {
 
   public items: MacroGroup[] = [];
+
+  public info!: Info;
 
   @Watch('$route.params', {
     immediate: true,
@@ -45,7 +54,7 @@ export default class VMacroGroup extends Vue {
    */
    get title(): string {
     const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
-    return sg ? sg.title : this.settings.groups_title;
+    return sg ? sg.title : this.info.groups_title;
   }
 
   /**
@@ -53,7 +62,7 @@ export default class VMacroGroup extends Vue {
    */
   get description(): string {
     const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
-    return sg ? sg.description : this.settings.groups_map_description;
+    return sg ? sg.description : this.info.groups_map_description;
   }
 
 }

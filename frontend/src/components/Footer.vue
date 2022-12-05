@@ -22,7 +22,7 @@
                 <font-awesome-icon icon="phone-alt" /> {{info.about_tel}}
               </a>
             </p>
-            
+
             <p>
               <a :href="`mailto: ${info.about_email}`">
                 <font-awesome-icon icon="envelope" /> {{info.about_email}}
@@ -80,6 +80,7 @@
         </div>
       </nav>
     </footer>
+
     <!-- TODO: add a reusable dialog component -->
     <dialog id="credits-modal">
       <article style="max-width: unset;">
