@@ -70,7 +70,6 @@ export default class Projects extends Vue {
 
   public async mounted() {
     await this.$nextTick();
-    console.log(this.$route.params)
     window.scrollTo(0,0);
   }
 

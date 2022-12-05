@@ -15,6 +15,7 @@ import MacroGroup from "@/views/MacroGroup.vue";
 
 Vue.use(Router);
 const fetchData = async function(locale: string){
+  store.dispatch('showLoader');
   await Promise.allSettled([
     store.dispatch('info/fetchInfo', { locale }),
     store.dispatch('settings/fetchPictures', { locale }),
@@ -22,6 +23,7 @@ const fetchData = async function(locale: string){
     store.dispatch('group/fetchGroupsWithNoMacroGroup', { locale }),
     store.dispatch('group/fetchProjects', { locale })
   ]);
+  store.dispatch('hideLoader');
 };
 
 const router = new Router({

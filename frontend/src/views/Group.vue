@@ -8,6 +8,7 @@
 import Projects from '@/components/Projects.vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Group } from '@/types/TGroup';
+import store from "@/store";
 
 @Component({
   components: { Projects },
@@ -24,10 +25,12 @@ import { Group } from '@/types/TGroup';
         const groups = this.$store.getters['group/groups'];
         if (id) {
           if (typeof group !== "undefined" && typeof groups[group] === "undefined"){
+            this.$store.dispatch('showLoader');
             await this.$store.dispatch('group/fetchGroupsByMacroGroupId', {
               locale: lang,
               id
             });
+            this.$store.dispatch('hideLoader');
           }
           const key = group || id;
           const  _group = groups[key];

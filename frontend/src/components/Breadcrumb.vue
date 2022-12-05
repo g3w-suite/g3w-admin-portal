@@ -18,8 +18,7 @@
       <li v-for="(crumb, idx) in breadcrumbs ">
         <router-link
           :to="{ name: crumb.name , params: crumb.params}"
-          :aria-current="isLastCrumb(breadcrumbs, idx) ? 'page' : undefined"
-        >
+          :aria-current="isLastCrumb(breadcrumbs, idx) ? 'page' : undefined">
           {{ crumb.text ? crumb.text : $t('messages.menu.' + crumb.name) }}
         </router-link>
       </li>
