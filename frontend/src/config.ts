@@ -1,8 +1,5 @@
 import { RouterMode } from 'vue-router';
 
-
-console.log(process.env.VUE_APP_ADMIN_URL);
-
 const config  =  {
   favicon:    process.env.VUE_APP_FAVICON || (window as any).PORTAL_FAVICON,
   // stylesheet: process.env.VUE_APP_CSS_URL,
