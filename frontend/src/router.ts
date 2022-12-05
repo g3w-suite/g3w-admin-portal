@@ -15,9 +15,6 @@ import Search from '@/views/Search.vue';
 
 Vue.use(Router);
 
-/**
- * Load all information at start
- */
 const fetchData = async function(locale: string) {
   store.dispatch('showLoader');
   await Promise.allSettled([
@@ -37,10 +34,8 @@ const router = new Router({
     {
       path: '/:lang/',
       component: Main,
+      /** ensure that all mandatory information is loaded on first page load */
       async beforeEnter(to, from, next) {
-        /**
-         * @TODO dispatch a "changeLanguage" action or make use of "i18n.locale" within REST API calls
-         */
         await fetchData(to.params.lang);
         next();
       },
@@ -95,10 +90,8 @@ const router = new Router({
           meta: {
           },
         },
-        /**
-         * @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#caveat
-         */
         {
+          /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#caveat */
           path: ':catchAll(.*)',
           name: '404',
           component: NotFound,
@@ -108,9 +101,7 @@ const router = new Router({
       ],
     },
   ],
-  /**
-   * @link https://v3.router.vuejs.org/guide/advanced/scroll-behavior.html
-   */
+  /** @link https://v3.router.vuejs.org/guide/advanced/scroll-behavior.html */
   scrollBehavior(to, from, savedPosition) {
     if (to.hash) { return { selector: to.hash, behavior: 'smooth', offset: { x: 0, y: 100 } }; }
     // return new Promise((resolve) => setTimeout(() => resolve({ x: 0, y: 0 }), 500));
