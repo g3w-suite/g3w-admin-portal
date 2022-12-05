@@ -18,6 +18,7 @@
     <!-- LOAD MORE BUTTON -->
     <div
       v-if="items.length === maxItemstoShow"
+      id="load-more"
       style="text-align: center; margin: calc(var(--block-spacing-vertical)) auto;">
       <router-link
         role="button"
@@ -50,13 +51,13 @@ export default class Home extends Vue {
 
   public settings!: Info;
 
-  public maxItemstoShow: number = 6;
+  public maxItemstoShow: number = parseInt(process.env.VUE_APP_MAX_HOME_ARTICLES, 10);
 
   // get all super group (macro group and group not in macro group)
   public items: SuperGroup[] = this.$store.getters['group/superGroups'];
 
   public created() {
-    // in case of length more than 6, show only 6 elements
+    // hide elements from home page that execeds the given length
     if (this.items.length > this.maxItemstoShow) {
       this.items = this.items.slice(0, this.maxItemstoShow);
     }
