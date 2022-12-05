@@ -84,7 +84,7 @@ export default class Breadcrumb extends Vue {
         : this.$i18n.t('messages.menu.' + name);
 
       // dynamically generate breadcrumb text for current activeGroup
-      let params: Object = {};
+      const params: Object = {};
       if (group) {
         params.id = this.isPreLastCrumb(route, i) ? id : undefined;
         params.group = this.isLastCrumb(route, i) ? group : undefined;

@@ -26,10 +26,10 @@
 <script lang="ts">
 import Article from '@/components/Article.vue';
 import { EBoxType } from '@/types/EBoxType';
-import { MacroGroup } from '@/types/TMacroGroup';
 import { Group } from '@/types/TGroup';
-import { Project } from '@/types/TProject';
 import { Info } from '@/types/TInfo';
+import { MacroGroup } from '@/types/TMacroGroup';
+import { Project } from '@/types/TProject';
 import { Component, Prop, Vue , Watch} from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
@@ -70,7 +70,7 @@ export default class Projects extends Vue {
 
   public async mounted() {
     await this.$nextTick();
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   }
 
 }

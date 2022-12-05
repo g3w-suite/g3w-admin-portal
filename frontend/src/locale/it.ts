@@ -12,7 +12,7 @@ export const it: any = {
       logout: 'Logout',
       login: 'Entra',
       admin: 'Sezione admin',
-      menu: 'Attiva o disattiva il menu'
+      menu: 'Attiva o disattiva il menu',
     },
 
     menu: {

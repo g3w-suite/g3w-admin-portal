@@ -138,9 +138,9 @@
 
 <script lang="ts">
 import { Info } from '@/types/TInfo';
+import dialogPolyfill from 'dialog-polyfill';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import dialogPolyfill from 'dialog-polyfill';
 
 @Component({
   components: { },
