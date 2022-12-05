@@ -74,7 +74,7 @@ export default class Breadcrumb extends Vue {
 
       if (i === 0) { title = ''; } else { title += titleSeparator; }
 
-      const name = (matched[i] || route[i]);
+      let name = (matched[i] || route[i]);
       const activeCrumb = (activeGroup && activeGroup.title) || '';
 
       path  += '/'  + name ;
@@ -90,7 +90,8 @@ export default class Breadcrumb extends Vue {
         params.group = this.isLastCrumb(route, i) ? group : undefined;
       }
       const text = group && this.isPreLastCrumb(route, i) ? this.$store.getters['group/macroGroup'](id).title : this.isLastCrumb(route, i) ? activeCrumb : '';
-      breadcrumbs.push({ name:'organization', path, text, params});
+      name = group && this.isPreLastCrumb(route, i) ? 'organization' : name;
+      breadcrumbs.push({ name , path, text, params});
 
       title = text || title;
     }
