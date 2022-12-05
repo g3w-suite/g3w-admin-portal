@@ -14,6 +14,10 @@ import NotFound from '@/views/NotFound.vue';
 import Search from '@/views/Search.vue';
 
 Vue.use(Router);
+
+/**
+ * Load all information at start
+ */
 const fetchData = async function(locale: string) {
   store.dispatch('showLoader');
   await Promise.allSettled([
@@ -33,18 +37,11 @@ const router = new Router({
     {
       path: '/:lang/',
       component: Main,
-      /**
-       * Load all information at start
-       * @param to
-       * @param from
-       * @param next
-       */
       async beforeEnter(to, from, next) {
-        const lang = to.params.lang;
         /**
          * @TODO dispatch a "changeLanguage" action or make use of "i18n.locale" within REST API calls
          */
-        await fetchData(lang);
+        await fetchData(to.params.lang);
         next();
       },
       children: [
