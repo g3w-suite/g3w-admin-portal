@@ -17,7 +17,7 @@
     <ul>
       <li v-for="(crumb, idx) in breadcrumbs ">
         <router-link
-          :to="{ name: crumb.name , params: crumb.params}"
+          :to="{ name: crumb.name, params: crumb.params }"
           :aria-current="isLastCrumb(breadcrumbs, idx) ? 'page' : undefined">
           {{ crumb.text ? crumb.text : $t('messages.menu.' + crumb.name) }}
         </router-link>
@@ -38,23 +38,20 @@ export default class Breadcrumb extends Vue {
 
   get breadcrumbs() {
     // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
-    
-    const { id, group } = this.$route.params;
 
     if (!this.$route) {
       console.warn('[vue-router] dependency is missing');
       return [];
     }
 
-    let path = '/' + this.$i18n.locale;
     let title = 'Home';
     const titleSeparator = ' - ';
 
-    const breadcrumbs = [ { name: 'home', path, text: '', params: {} } ];
+    const breadcrumbs = [ { name: 'home', text: '', params: {} } ];
 
     // 404 page
     if ('404' === this.$route.name) {
-      breadcrumbs.push({ name: '404', path: path + '404', text: '404', params: {} });
+      breadcrumbs.push({ name: '404', text: '404', params: {} });
       return breadcrumbs;
     }
 
@@ -66,42 +63,62 @@ export default class Breadcrumb extends Vue {
     route.shift();
     matched.shift();
 
+    // activeGroup contains a reference to current active element (last crumb)
     const activeGroup: SuperGroup = this.$store.getters['group/activeGroup'];
 
     for (let i = 0; i < route.length; i++) {
 
-      // skip empty routes
-      if (route[i] === '') { continue; }
-
-      if (i === 0) { title = ''; } else { title += titleSeparator; }
-
+      // route name
       let name = (matched[i] || route[i]);
+      
+      // route textual link
+      let text = '';
+
+      // route params
+      let params = {};
+
+      // active crumb item (last item of array)
       const activeCrumb = (activeGroup && activeGroup.title) || '';
 
-      path  += '/'  + name ;
+      // skip empty routes
+      if (this.isEmptyRoute(route[i])) { continue; }
 
-      title += this.isLastCrumb(route, i)
-        ? activeCrumb
-        : this.$i18n.t('messages.menu.' + name);
+      // hide root crumb in document title ('home')
+      if (this.isFirstCrumb(route, i)) { title = ''; }
 
-      // dynamically generate breadcrumb text for current activeGroup
-      const params: Object = {};
-      if (group) {
-        params.id = this.isPreLastCrumb(route, i) ? id : undefined;
-        params.group = this.isLastCrumb(route, i) ? group : undefined;
+      // push document title separtor ('-')
+      else { title += titleSeparator; }
+
+      // push document element title (crumb name)
+      if (this.isLastCrumb(route, i)) {
+        title += activeCrumb;
+      } else {
+        title += this.$i18n.t('messages.menu.' + name);
       }
-      const text =
-        group && this.isPreLastCrumb(route, i)
-          ? this.$store.getters['group/macroGroup'](id).title
-          : this.isLastCrumb(route, i)
-            ? activeCrumb
-            : '';
-      name =
-        group && this.isPreLastCrumb(route, i)
-        ? 'organization'
-        : name;
 
-      breadcrumbs.push({ name , path, text, params});
+      /** @HOTFIX for Home > Macgroup > ID */
+      if (this.isLastSecondCrumb(route, i)) {
+        params.id = this.$route.params.id;
+      }
+
+      /** @HOTFIX for Home > Macgroup > ID > Subgroup */
+      if (this.isLastCrumb(route, i)) {
+        params.group = this.$route.params.group;
+      }
+
+      // set active crumb item textual link (last crumb)
+      if (this.isLastCrumb(route, i)) {
+        text = activeCrumb;
+      }
+
+      /** @HOTFIX for Home > Macgroup > ID */
+      /** @HOTFIX for Home > Macgroup > ID > Subgroup */
+      if (this.isLastSecondCrumb(route, i) && this.$route.params.group) {
+        text = this.$store.getters['group/macroGroup'](this.$route.params.id).title;
+        name = 'organization';
+      }
+
+      breadcrumbs.push({ name, text, params });
 
       title = text || title;
     }
@@ -112,12 +129,20 @@ export default class Breadcrumb extends Vue {
     return breadcrumbs;
   }
 
-  public isPreLastCrumb(breadcrumbs: any[], i: number) {
+  public isLastSecondCrumb(breadcrumbs: any[], i: number): boolean {
     return i > 0 && i === breadcrumbs.length - 2;
   }
 
-  public isLastCrumb(breadcrumbs: any[], i: number) {
+  public isLastCrumb(breadcrumbs: any[], i: number): boolean {
     return i > 0 && i === breadcrumbs.length - 1;
+  }
+
+  public isFirstCrumb(breadcrumbs: any[], i: number): boolean {
+    return i === 0;
+  }
+
+  public isEmptyRoute(path: string): boolean {
+    return path === '';
   }
 
 }
