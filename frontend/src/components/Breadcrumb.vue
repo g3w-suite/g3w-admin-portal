@@ -85,13 +85,17 @@ export default class Breadcrumb extends Vue {
 
       // dynamically generate breadcrumb text for current activeGroup
       let params: Object = {};
+
       if (group) {
         params.id = this.isPreLastCrumb(route, i) ? id : undefined;
         params.group = this.isLastCrumb(route, i) ? group : undefined;
       }
       const text = group && this.isPreLastCrumb(route, i) ? this.$store.getters['group/macroGroup'](id).title : this.isLastCrumb(route, i) ? activeCrumb : '';
       name = group && this.isPreLastCrumb(route, i) ? 'organization' : name;
-      breadcrumbs.push({ name , path, text, params});
+
+      if (this.$route.name === 'organization') {
+        if (i !== 0) breadcrumbs.push({ name , path, text, params});
+      } else breadcrumbs.push({ name , path, text, params});
 
       title = text || title;
     }
