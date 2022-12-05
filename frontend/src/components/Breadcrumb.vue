@@ -28,18 +28,19 @@
 
 <script lang="ts">
 import { SuperGroup } from '@/types/TSuperGroup';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
   components: { },
 })
 
 export default class Breadcrumb extends Vue {
-  // @Prop({ type: Array, required: true }) public readonly breadcrumbs!: JSON[];
 
   get breadcrumbs() {
     // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
-    const {id, group} = this.$route.params;
+    
+    const { id, group } = this.$route.params;
+
     if (!this.$route) {
       console.warn('[vue-router] dependency is missing');
       return [];
@@ -49,11 +50,11 @@ export default class Breadcrumb extends Vue {
     let title = 'Home';
     const titleSeparator = ' - ';
 
-    const breadcrumbs = [ { name: 'home', path, text: '' } ];
+    const breadcrumbs = [ { name: 'home', path, text: '', params: {} } ];
 
     // 404 page
     if ('404' === this.$route.name) {
-      breadcrumbs.push({ name: '404', path: path + '404', text: '404' });
+      breadcrumbs.push({ name: '404', path: path + '404', text: '404', params: {} });
       return breadcrumbs;
     }
 
@@ -89,8 +90,17 @@ export default class Breadcrumb extends Vue {
         params.id = this.isPreLastCrumb(route, i) ? id : undefined;
         params.group = this.isLastCrumb(route, i) ? group : undefined;
       }
-      const text = group && this.isPreLastCrumb(route, i) ? this.$store.getters['group/macroGroup'](id).title : this.isLastCrumb(route, i) ? activeCrumb : '';
-      name = group && this.isPreLastCrumb(route, i) ? 'organization' : name;
+      const text =
+        group && this.isPreLastCrumb(route, i)
+          ? this.$store.getters['group/macroGroup'](id).title
+          : this.isLastCrumb(route, i)
+            ? activeCrumb
+            : '';
+      name =
+        group && this.isPreLastCrumb(route, i)
+        ? 'organization'
+        : name;
+
       breadcrumbs.push({ name , path, text, params});
 
       title = text || title;
@@ -109,10 +119,6 @@ export default class Breadcrumb extends Vue {
   public isLastCrumb(breadcrumbs: any[], i: number) {
     return i > 0 && i === breadcrumbs.length - 1;
   }
-
-  // public async beforeRouteUpdate(to: Route, from: Route) {
-  //   this.breadcrumbs =
-  // }
 
 }
 </script>
