@@ -152,6 +152,7 @@ export default class Article extends Vue {
 
   :is(.boxtype_G, .boxtype_MG) figure > * {
     grid-area: box;
+    grid-column-start: 1;
   }
   
   :is(.boxtype_G, .boxtype_MG) figcaption {
