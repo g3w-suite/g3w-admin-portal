@@ -41,6 +41,7 @@ export default class VGroup extends Vue {
     if (undefined === id) {
       // this.items = Object.values(this.$store.getters['group/groupsWithNoMacroGroup']);
       this.items = this.$store.getters['group/superGroups'];
+      this.$store.dispatch('group/setActiveGroup', { sg: null });
     }
     // Home > Group > ID
     else {
