@@ -10,15 +10,15 @@
 -->
 <template>
   <nav
-          v-if="!$store.getters.showLoader && breadcrumbs.length > 1"
-          aria-label="breadcrumb"
-          class="container"
+    v-if="breadcrumbs.length > 1"
+    aria-label="breadcrumb"
+    class="container"
   >
     <ul>
-      <li v-for="(crumb, idx) in breadcrumbs ">
+      <li v-for="(crumb, idx) in breadcrumbs">
         <router-link
-                :to="{ name: crumb.name, params: crumb.params }"
-                :aria-current="isLastCrumb(breadcrumbs, idx) ? 'page' : undefined">
+          :to="{ name: crumb.name, params: crumb.params }"
+          :aria-current="isLastCrumb(breadcrumbs, idx) ? 'page' : undefined">
           {{ crumb.text ? crumb.text : $t('messages.menu.' + crumb.name) }}
         </router-link>
       </li>
@@ -28,39 +28,34 @@
 
 <script lang="ts">
 import { SuperGroup } from '@/types/TSuperGroup';
-import {Component, Vue, Watch} from 'vue-property-decorator';
+import { IBreadcrumbItem } from '@/types/IBreadcrumbItem';
+import { Component, Vue} from 'vue-property-decorator';
 
 @Component({
   components: { },
-  watch: {
-    breadcrumbs(value) {
-      // console.log(this.$store.getters.showLoader, value)
-    },
-  },
 })
 
 export default class Breadcrumb extends Vue {
 
-  public breadcrumbs: any[] = [];
-  public unsubscribe: Function = () => {};
-  public setbreadcrumbs() {
+  get breadcrumbs(): IBreadcrumbItem[] {
+
     // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
     // console.log(this.$route)
+
     if (!this.$route) {
       console.warn('[vue-router] dependency is missing');
       return [];
     }
 
+    // 404 page
+    if (this.isErrorPage()) {
+      return [{ name: 'home' }, { name: '404' }];
+    }
+
     let title = 'Home';
     const titleSeparator = ' - ';
 
-    const breadcrumbs = [ { name: 'home', text: '', params: {} } ];
-
-    // 404 page
-    if ('404' === this.$route.name) {
-      breadcrumbs.push({ name: '404', text: '404', params: {} });
-      return breadcrumbs;
-    }
+    const breadcrumbs: IBreadcrumbItem[] = [ { name: 'home' } ];
 
     const route   = (this.$route.path                        ).split('/');
     const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
@@ -112,7 +107,6 @@ export default class Breadcrumb extends Vue {
 
       // set active crumb item textual link (last crumb)
       if (this.isLastCrumb(route, i)) {
-        // console.log(activeGroup, activeCrumb)
         text = activeCrumb;
       }
 
@@ -125,10 +119,9 @@ export default class Breadcrumb extends Vue {
 
       title = text || title;
 
-
       breadcrumbs.push({ name, text, params });
     }
-    this.breadcrumbs = breadcrumbs;
+
     // dynamically update document title text
     window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
 
@@ -151,16 +144,8 @@ export default class Breadcrumb extends Vue {
     return path === '';
   }
 
-  public created() {
-    this.unsubscribe = this.$store.subscribe((mutation, state) => {
-      if (mutation.type === 'group/setActiveGroup') {
-        this.setbreadcrumbs();
-      }
-    });
-  }
-
-  public beforeDestroy() {
-    this.unsubscribe();
+  public isErrorPage(): boolean {
+    return '404' === this.$route.name
   }
 
 }

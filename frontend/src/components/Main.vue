@@ -26,7 +26,7 @@
       </form> -->
     </header>
 
-    <Breadcrumb id="breadcrumb" />
+    <Breadcrumb id="breadcrumb" v-if="!$store.getters.showLoader" />
 
     <main id="content" class="container">
       <progress v-if="$store.getters.showLoader"></progress>
