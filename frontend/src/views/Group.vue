@@ -24,12 +24,12 @@ import { mapGetters } from 'vuex';
     ...mapGetters({
       info: 'info/info',
     }),
-  }
+  },
 })
 export default class VGroup extends Vue {
 
   public items: Group[] = [];
-  
+
   public info!: Info;
 
   @Watch('$route.params', {
@@ -42,9 +42,7 @@ export default class VGroup extends Vue {
       // this.items = Object.values(this.$store.getters['group/groupsWithNoMacroGroup']);
       this.items = this.$store.getters['group/superGroups'];
       this.$store.dispatch('group/setActiveGroup', { sg: null });
-    }
-    // Home > Group > ID
-    else {
+    } else {
       const groups = this.$store.getters['group/groups'];
       if (undefined !== group && undefined === groups[group]) {
         this.$store.dispatch('showLoader');

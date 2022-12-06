@@ -15,6 +15,7 @@ import {
 import {
   faArrowUpRightFromSquare,
   faBars,
+  faChevronUp,
   faEnvelope,
   faExpandArrowsAlt,
   faGear,
@@ -35,7 +36,6 @@ import {
   faUserSecret,
   faUserShield,
   faXmark,
-  faChevronUp,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Vue from 'vue';

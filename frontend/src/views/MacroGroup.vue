@@ -11,8 +11,8 @@
 
 <script lang="ts">
 import Projects from '@/components/Projects.vue';
-import { MacroGroup } from '@/types/TMacroGroup';
 import { Info } from '@/types/TInfo';
+import { MacroGroup } from '@/types/TMacroGroup';
 import Group from '@/views/Group.vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
@@ -23,7 +23,7 @@ import { mapGetters } from 'vuex';
     ...mapGetters({
       info: 'info/info',
     }),
-  }
+  },
 })
 export default class VMacroGroup extends Vue {
 
@@ -38,11 +38,8 @@ export default class VMacroGroup extends Vue {
     // Home > MacroGroups
     if (group || !id) {
       this.items = Object.values(this.$store.getters['group/macroGroups']);
-      !id && this.$store.dispatch('group/setActiveGroup', { sg: null });
-    }
-    // Home > MacroGroup > ID
-    // Home > MacroGroup > ID > SubGroup
-    else {
+      this.$store.dispatch('group/setActiveGroup', { sg: null });
+    } else {
       const macroGroups = this.$store.getters['group/macroGroups'];
       await (macroGroups[id] as MacroGroup).fetchGroups();
       this.items = this.$store.getters['group/groupsInMacroGroup'](id);
