@@ -61,6 +61,7 @@ export default class Home extends Vue {
     if (this.items.length > this.maxItemstoShow) {
       this.items = this.items.slice(0, this.maxItemstoShow);
     }
+    this.$store.dispatch('group/setActiveGroup', { sg: null });
   }
 
 }

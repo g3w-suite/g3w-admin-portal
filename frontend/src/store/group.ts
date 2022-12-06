@@ -22,7 +22,7 @@ const groupState: IGroupState = {
 
 const getters: GetterTree<IGroupState, IRootState> = {
   macroGroups:            (state): IMacroGroupDict           => state.MacroGroups,
-  macroGroup:             (state): (id: number) => Group     => (id: number) => state.MacroGroups[id],
+  macroGroup:             (state): (id: number) => MacroGroup => (id: number) => state.MacroGroups[id],
   search:                 (state): string                    => state.Search,
   activeGroup:            (state): SuperGroup | null         => state.ActiveGroup,
   superGroups:            (state): SuperGroup[]              => [...Object.values(state.MacroGroups), ...Object.values(state.GroupsWithNoMacroGroup)],
