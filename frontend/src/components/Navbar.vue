@@ -48,13 +48,13 @@
             </summary>
             <ul role="listbox">
               <li>
-                <router-link :to="{ name: 'home', params: { lang: 'it' } }" class="secondary">
+                <router-link :to="{ name: 'home', params: { lang: 'it' } }" hreflang="it" class="secondary">
                   <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
                   <span>{{$t('messages.language.it')}}</span>
                 </router-link>
               </li>
               <li>
-                <router-link :to="{ name: 'home', params: { lang: 'en' } }" class="secondary">
+                <router-link :to="{ name: 'home', params: { lang: 'en' } }" hreflang="en" class="secondary">
                   <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
                   <span>{{$t('messages.language.en')}}</span>
                 </router-link>

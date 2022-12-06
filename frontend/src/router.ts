@@ -77,7 +77,7 @@ const router = new Router({
           },
         },
         {
-          path: 'organization/:id?/:group?',
+          path: 'organization/:id?/:group?/',
           name: 'organization',
           component: MacroGroup,
           meta: {
@@ -103,18 +103,36 @@ const router = new Router({
   ],
   /** @link https://v3.router.vuejs.org/guide/advanced/scroll-behavior.html */
   scrollBehavior(to, from, savedPosition) {
-    if (to.hash) { return { selector: to.hash, behavior: 'smooth', offset: { x: 0, y: 100 } }; }
-    // return new Promise((resolve) => setTimeout(() => resolve({ x: 0, y: 0 }), 500));
+    // smooth scroll to element id
+    if (to.hash) {
+      return { selector: to.hash, behavior: 'smooth', offset: { x: 0, y: 100 } };
+    }
+    // smooth scroll to top after 500ms
+    if (to.name !== 'home') {
+      return new Promise((resolve) => setTimeout(() => resolve({ x: 0, y: 0 }), 500));
+    }
   },
 });
 
 router.beforeEach(async (to, from, next) => {
   const lang = to.params.lang;
+  
+  // fallback to default language (it)
   if (!config.languages.includes(lang)) { return next(`/it${to.path}`); }
+  
+  // listen for language change
   if (i18n.locale !== lang) {
     await fetchData(lang);
     i18n.locale = lang;
   }
+
+  // update html lang attribute
+  document.documentElement.lang = lang;
+
+  // update body css class name
+  if (to.name) document.body.classList.add(to.name);
+  if (from.name && from.name !== to.name) document.body.classList.remove(from.name);
+
   return next();
 });
 
