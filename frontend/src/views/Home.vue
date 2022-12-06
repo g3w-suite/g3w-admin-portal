@@ -54,13 +54,12 @@ export default class Home extends Vue {
   public maxItemstoShow: number = parseInt(process.env.VUE_APP_MAX_HOME_ARTICLES, 10);
 
   // get all super group (macro group and group not in macro group)
-  public items: SuperGroup[] = this.$store.getters['group/superGroups'];
+  public items: SuperGroup[] = [];
 
   public created() {
+    const items = this.$store.getters['group/superGroups'];
     // hide elements from home page that execeds the given length
-    if (this.items.length > this.maxItemstoShow) {
-      this.items = this.items.slice(0, this.maxItemstoShow);
-    }
+    this.items = (items.length > this.maxItemstoShow) ? items.slice(0, this.maxItemstoShow): items;
     this.$store.dispatch('group/setActiveGroup', { sg: null });
   }
 
