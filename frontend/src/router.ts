@@ -77,7 +77,7 @@ const router = new Router({
           },
         },
         {
-          path: 'organization/:id/:group?',
+          path: 'organization/:id?/:group?',
           name: 'organization',
           component: MacroGroup,
           meta: {
