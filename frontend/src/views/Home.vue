@@ -1,5 +1,18 @@
 <template>
   <fragment>
+
+    <portal to="header">
+      <header>
+        <Carousel />
+        <div
+          v-if="settings.home_description"
+          class="container"
+          data-theme="dark"
+          v-html="settings.home_description"
+        ></div>
+      </header>
+    </portal>
+
     <span class="subtitle h5 show-on-mobile">{{settings.sub_title}}</span>
     <h1 class="title show-on-mobile">{{settings.title}}</h1>
     
@@ -33,13 +46,14 @@
 
 <script lang="ts">
 import Projects from '@/components/Projects.vue';
+import Carousel from '@/components/Carousel.vue';
 import { Info } from '@/types/TInfo';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { SuperGroup } from "@/types/TSuperGroup";
 
 @Component({
-  components: { Projects },
+  components: { Projects, Carousel },
   computed: {
     ...mapGetters({
       settings: 'info/info',

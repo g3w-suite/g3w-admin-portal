@@ -4,33 +4,12 @@
     <Navbar />
 
     <!-- <router-view name="header" /> -->
-
-    <header v-if="$route.name === 'home'">
-      <Carousel />
-      
-      <div
-        v-if="info.home_description"
-        class="container"
-        data-theme="dark"
-        v-html="info.home_description"
-      ></div>
-      <!-- <form v-else class="container" @keyup.enter="onSearchSubmit">
-        <input
-          type="search"
-          id="search"
-          name="search"
-          v-model="search"
-          :placeholder="$t('messages.menu.search_placeholder')"
-          :aria-label="$t('messages.menu.search_placeholder')"
-        />
-      </form> -->
-    </header>
+    <portal-target name="header" slim />
 
     <Breadcrumb id="breadcrumb" />
 
     <main id="content" class="container">
       <progress v-if="$store.getters.showLoader"></progress>
-
       <router-view />
     </main>
 

@@ -7,6 +7,7 @@ import '@fontsource/titillium-web/700-italic.css';
 import '@fontsource/titillium-web/700.css';
 import Vue from 'vue';
 import Fragment from 'vue-fragment';
+import PortalVue from 'portal-vue'
 import VueI18n from 'vue-i18n';
 import App from './App.vue';
 import config from './config';
@@ -38,6 +39,7 @@ if (config.favicon) {
 }
 
 Vue.use(Fragment.Plugin);
+Vue.use(PortalVue);
 Vue.use(VueI18n);
 
 Vue.config.productionTip = false;
