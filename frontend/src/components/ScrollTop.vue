@@ -19,18 +19,18 @@ export default class ScrollTopArrow extends Vue {
   }
 
   public onScroll() {
-   this.visible = window.scrollY > 150
+   this.visible = window.scrollY > 150;
   }
 
   public mounted() {
-    window.addEventListener('scroll', this.onScroll)
-  }
-  
-  public beforeDestroy() {
-    window.removeEventListener('scroll', this.onScroll)
+    window.addEventListener('scroll', this.onScroll);
   }
 
-};
+  public beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll);
+  }
+
+}
 </script>
 
 <style lang="scss" scoped>

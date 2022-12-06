@@ -116,10 +116,10 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   const lang = to.params.lang;
-  
+
   // fallback to default language (it)
   if (!config.languages.includes(lang)) { return next(`/it${to.path}`); }
-  
+
   // listen for language change
   if (i18n.locale !== lang) {
     await fetchData(lang);
@@ -130,8 +130,8 @@ router.beforeEach(async (to, from, next) => {
   document.documentElement.lang = lang;
 
   // update body css class name
-  if (to.name) document.body.classList.add(to.name);
-  if (from.name && from.name !== to.name) document.body.classList.remove(from.name);
+  if (to.name) { document.body.classList.add(to.name); }
+  if (from.name && from.name !== to.name) { document.body.classList.remove(from.name); }
 
   return next();
 });

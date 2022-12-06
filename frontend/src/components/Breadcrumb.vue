@@ -27,146 +27,143 @@
 </template>
 
 <script lang="ts">
-  import { SuperGroup } from '@/types/TSuperGroup';
-  import {Component, Vue, Watch} from 'vue-property-decorator';
+import { SuperGroup } from '@/types/TSuperGroup';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 
-  @Component({
-    components: { },
-    watch: {
-      'breadcrumbs'(value){
-        //console.log(this.$store.getters.showLoader, value)
-      }
+@Component({
+  components: { },
+  watch: {
+    breadcrumbs(value) {
+      // console.log(this.$store.getters.showLoader, value)
+    },
+  },
+})
+
+export default class Breadcrumb extends Vue {
+
+  public breadcrumbs: any[] = [];
+  public unsubscribe: Function = () => {};
+  public setbreadcrumbs() {
+    // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
+    // console.log(this.$route)
+    if (!this.$route) {
+      console.warn('[vue-router] dependency is missing');
+      return [];
     }
-  })
 
-  export default class Breadcrumb extends Vue {
+    let title = 'Home';
+    const titleSeparator = ' - ';
 
-    public breadcrumbs: Array<any> = [];
-    public unsubscribe: Function = ()=>{};
-    public setbreadcrumbs() {
-      // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
-      //console.log(this.$route)
-      if (!this.$route) {
-        console.warn('[vue-router] dependency is missing');
-        return [];
-      }
+    const breadcrumbs = [ { name: 'home', text: '', params: {} } ];
 
-      let title = 'Home';
-      const titleSeparator = ' - ';
-
-      const breadcrumbs = [ { name: 'home', text: '', params: {} } ];
-
-      // 404 page
-      if ('404' === this.$route.name) {
-        breadcrumbs.push({ name: '404', text: '404', params: {} });
-        return breadcrumbs;
-      }
-
-      const route   = (this.$route.path                        ).split('/');
-      const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
-
-      // ignore parent ":lang" route (ref: router.ts)
-      route.shift();
-      route.shift();
-      matched.shift();
-
-      // activeGroup contains a reference to current active element (last crumb)
-      const activeGroup: SuperGroup = this.$store.getters['group/activeGroup'];
-
-      for (let i = 0; i < route.length; i++) {
-
-        // route name
-        let name = (matched[i] || route[i]);
-
-        // route textual link
-        let text = '';
-
-        // route params
-        let params = {};
-
-        // active crumb item (last item of array)
-        const activeCrumb = (activeGroup && activeGroup.title) || '';
-
-        // skip empty routes
-        if (this.isEmptyRoute(route[i])) { continue; }
-
-        // hide root crumb in document title ('home')
-        if (this.isFirstCrumb(route, i)) { title = ''; }
-
-        // push document title separtor ('-')
-        else { title += titleSeparator; }
-
-        // push document element title (crumb name)
-        if (this.isLastCrumb(route, i)) {
-          title += activeCrumb;
-        } else {
-          title += this.$i18n.t('messages.menu.' + name);
-        }
-
-        /** @HOTFIX for Home > Macgroup > ID */
-        if (this.isLastSecondCrumb(route, i)) {
-          params.id = this.$route.params.id;
-        }
-
-        /** @HOTFIX for Home > Macgroup > ID > Subgroup */
-        if (this.isLastCrumb(route, i)) {
-          params.group = this.$route.params.group;
-        }
-
-        // set active crumb item textual link (last crumb)
-        if (this.isLastCrumb(route, i)) {
-          //console.log(activeGroup, activeCrumb)
-          text = activeCrumb;
-        }
-
-        /** @HOTFIX for Home > Macgroup > ID */
-        /** @HOTFIX for Home > Macgroup > ID > Subgroup */
-        if (this.isLastSecondCrumb(route, i) && this.$route.params.group) {
-          text = this.$store.getters['group/macroGroup'](this.$route.params.id).title;
-          name = 'organization';
-        }
-
-        title = text || title;
-
-
-        breadcrumbs.push({ name, text, params });
-      }
-      this.breadcrumbs = breadcrumbs;
-      // dynamically update document title text
-      window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
-
+    // 404 page
+    if ('404' === this.$route.name) {
+      breadcrumbs.push({ name: '404', text: '404', params: {} });
       return breadcrumbs;
     }
 
-    public isLastSecondCrumb(breadcrumbs: any[], i: number): boolean {
-      return i > 0 && i === breadcrumbs.length - 2;
-    }
+    const route   = (this.$route.path                        ).split('/');
+    const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
 
-    public isLastCrumb(breadcrumbs: any[], i: number): boolean {
-      return i > 0 && i === breadcrumbs.length - 1;
-    }
+    // ignore parent ":lang" route (ref: router.ts)
+    route.shift();
+    route.shift();
+    matched.shift();
 
-    public isFirstCrumb(breadcrumbs: any[], i: number): boolean {
-      return i === 0;
-    }
+    // activeGroup contains a reference to current active element (last crumb)
+    const activeGroup: SuperGroup = this.$store.getters['group/activeGroup'];
 
-    public isEmptyRoute(path: string): boolean {
-      return path === '';
-    }
+    for (let i = 0; i < route.length; i++) {
 
-    public created() {
-      this.unsubscribe = this.$store.subscribe((mutation, state) =>{
-        if (mutation.type === 'group/setActiveGroup') {
-          this.setbreadcrumbs()
-        }
-      })
-    }
+      // route name
+      let name = (matched[i] || route[i]);
 
-    public beforeDestroy(){
-      this.unsubscribe();
-    }
+      // route textual link
+      let text = '';
 
+      // route params
+      const params = {};
+
+      // active crumb item (last item of array)
+      const activeCrumb = (activeGroup && activeGroup.title) || '';
+
+      // skip empty routes
+      if (this.isEmptyRoute(route[i])) { continue; }
+
+      // hide root crumb in document title ('home')
+      if (this.isFirstCrumb(route, i)) { title = ''; } else { title += titleSeparator; }
+
+      // push document element title (crumb name)
+      if (this.isLastCrumb(route, i)) {
+        title += activeCrumb;
+      } else {
+        title += this.$i18n.t('messages.menu.' + name);
+      }
+
+      /** @HOTFIX for Home > Macgroup > ID */
+      if (this.isLastSecondCrumb(route, i)) {
+        params.id = this.$route.params.id;
+      }
+
+      /** @HOTFIX for Home > Macgroup > ID > Subgroup */
+      if (this.isLastCrumb(route, i)) {
+        params.group = this.$route.params.group;
+      }
+
+      // set active crumb item textual link (last crumb)
+      if (this.isLastCrumb(route, i)) {
+        // console.log(activeGroup, activeCrumb)
+        text = activeCrumb;
+      }
+
+      /** @HOTFIX for Home > Macgroup > ID */
+      /** @HOTFIX for Home > Macgroup > ID > Subgroup */
+      if (this.isLastSecondCrumb(route, i) && this.$route.params.group) {
+        text = this.$store.getters['group/macroGroup'](this.$route.params.id).title;
+        name = 'organization';
+      }
+
+      title = text || title;
+
+
+      breadcrumbs.push({ name, text, params });
+    }
+    this.breadcrumbs = breadcrumbs;
+    // dynamically update document title text
+    window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
+
+    return breadcrumbs;
   }
+
+  public isLastSecondCrumb(breadcrumbs: any[], i: number): boolean {
+    return i > 0 && i === breadcrumbs.length - 2;
+  }
+
+  public isLastCrumb(breadcrumbs: any[], i: number): boolean {
+    return i > 0 && i === breadcrumbs.length - 1;
+  }
+
+  public isFirstCrumb(breadcrumbs: any[], i: number): boolean {
+    return i === 0;
+  }
+
+  public isEmptyRoute(path: string): boolean {
+    return path === '';
+  }
+
+  public created() {
+    this.unsubscribe = this.$store.subscribe((mutation, state) => {
+      if (mutation.type === 'group/setActiveGroup') {
+        this.setbreadcrumbs();
+      }
+    });
+  }
+
+  public beforeDestroy() {
+    this.unsubscribe();
+  }
+
+}
 </script>
 
 <style lang="scss">

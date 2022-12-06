@@ -34,9 +34,9 @@
 <script lang="ts">
 import Projects from '@/components/Projects.vue';
 import { Info } from '@/types/TInfo';
+import { SuperGroup } from '@/types/TSuperGroup';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import { SuperGroup } from "@/types/TSuperGroup";
 
 @Component({
   components: { Projects },
@@ -59,7 +59,7 @@ export default class Home extends Vue {
   public created() {
     const items = this.$store.getters['group/superGroups'];
     // hide elements from home page that execeds the given length
-    this.items = (items.length > this.maxItemstoShow) ? items.slice(0, this.maxItemstoShow): items;
+    this.items = (items.length > this.maxItemstoShow) ? items.slice(0, this.maxItemstoShow) : items;
     this.$store.dispatch('group/setActiveGroup', { sg: null });
   }
 
