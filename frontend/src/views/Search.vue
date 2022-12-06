@@ -46,4 +46,7 @@ export default class Search extends Vue {
 </script>
 
 <style lang="scss" scoped>
+  input[type="search"] {
+    margin-bottom: var(--block-spacing-vertical);
+  }
 </style>

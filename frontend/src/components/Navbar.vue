@@ -220,6 +220,7 @@ export default class Navbar extends Vue {
 
   nav .logo {
     max-height: 4rem;
+    max-width: 10rem;
   }
   nav .h1 {
     display:block;
