@@ -55,6 +55,12 @@ main#content article figure > img {
   aspect-ratio: 16/9;
   object-fit: contain;
 }
+
+/* Typography colors */
+:root[data-theme="light"] {
+  --primary: #af0b22;
+  --primary-hover: #c30c26;
+}
 """
 
 # Customize TOP NAV MENU link
