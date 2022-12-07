@@ -36,24 +36,14 @@ export default class VGroup extends Vue {
     immediate: true,
     deep: true,
   })
-  public async onRouteParamsChange({ id, group, lang }) {
+  public async onRouteParamsChange({ id, group }) {
     // Home > Groups
     if (undefined === id) {
-      // this.items = Object.values(this.$store.getters['group/groupsWithNoMacroGroup']);
       this.items = this.$store.getters['group/superGroups'];
-      this.$store.dispatch('group/setActiveGroup', { sg: null });
-    } else {
-      const groups = this.$store.getters['group/groups'];
-      if (undefined !== group && undefined === groups[group]) {
-        this.$store.dispatch('showLoader');
-        await this.$store.dispatch('group/fetchGroupsByMacroGroupId', { id, locale: lang });
-        this.$store.dispatch('hideLoader');
-      }
-      const key = group || id;
-      const activeGroup: Group = groups[key];
-      await activeGroup.fetchProjects();
-      this.items = this.$store.getters['group/projectsInGroup'](key);
-      this.$store.dispatch('group/setActiveGroup', { sg: activeGroup });
+    }
+    // Home > Group
+    else {
+      this.items = this.$store.getters['group/projectsInGroup'](group || id);
     }
   }
 

@@ -29,7 +29,7 @@
 <script lang="ts">
 import { SuperGroup } from '@/types/TSuperGroup';
 import { IBreadcrumbItem } from '@/types/IBreadcrumbItem';
-import { Component, Vue} from 'vue-property-decorator';
+import { Component, Vue, Watch} from 'vue-property-decorator';
 import { RouteRecord } from 'vue-router';
 
 @Component({
@@ -37,16 +37,16 @@ import { RouteRecord } from 'vue-router';
 })
 
 export default class Breadcrumb extends Vue {
-
-  get breadcrumbs(): IBreadcrumbItem[] {
+  breadcrumbs: IBreadcrumbItem[] = [];
+  
+  @Watch('$route.params', {
+    immediate: true,
+  })
+  public async onRouteParamsChange() {
+    //setTimeout(() => {
 
     // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
     // console.log(this.$route)
-
-    if (!this.$route) {
-      console.warn('[vue-router] dependency is missing');
-      return [];
-    }
 
     // 404 page
     if (this.isErrorPage()) {
@@ -58,7 +58,6 @@ export default class Breadcrumb extends Vue {
 
     const breadcrumbs: IBreadcrumbItem[] = [ { name: 'home' } ];
 
-    
     const route   = (this.$route.path                        ).split('/');
     const matched = (this.getMatchedRoute().meta.crumbs || '').split('/');
 
@@ -127,7 +126,10 @@ export default class Breadcrumb extends Vue {
     // dynamically update document title text
     window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
 
-    return breadcrumbs;
+    // update breadcrumbs array
+    this.breadcrumbs = breadcrumbs;
+
+    //})
   }
 
   public isLastSecondCrumb(breadcrumbs: any[], i: number): boolean {
