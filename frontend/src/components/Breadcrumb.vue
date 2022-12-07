@@ -27,8 +27,8 @@
 </template>
 
 <script lang="ts">
-import { SuperGroup } from '@/types/TSuperGroup';
 import { IBreadcrumbItem } from '@/types/IBreadcrumbItem';
+import { SuperGroup } from '@/types/TSuperGroup';
 import { Component, Vue, Watch} from 'vue-property-decorator';
 import { RouteRecord } from 'vue-router';
 
@@ -37,13 +37,13 @@ import { RouteRecord } from 'vue-router';
 })
 
 export default class Breadcrumb extends Vue {
-  breadcrumbs: IBreadcrumbItem[] = [];
-  
+  public breadcrumbs: IBreadcrumbItem[] = [];
+
   @Watch('$route.params', {
     immediate: true,
   })
   public async onRouteParamsChange() {
-    //setTimeout(() => {
+    // setTimeout(() => {
 
     // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
     // console.log(this.$route)
@@ -129,7 +129,7 @@ export default class Breadcrumb extends Vue {
     // update breadcrumbs array
     this.breadcrumbs = breadcrumbs;
 
-    //})
+    // })
   }
 
   public isLastSecondCrumb(breadcrumbs: any[], i: number): boolean {
@@ -149,7 +149,7 @@ export default class Breadcrumb extends Vue {
   }
 
   public isErrorPage(): boolean {
-    return '404' === this.$route.name
+    return '404' === this.$route.name;
   }
 
   public getMatchedRoute(): RouteRecord {

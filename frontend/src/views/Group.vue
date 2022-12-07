@@ -40,9 +40,7 @@ export default class VGroup extends Vue {
     // Home > Groups
     if (undefined === id) {
       this.items = this.$store.getters['group/superGroups'];
-    }
-    // Home > Group
-    else {
+    } else {
       this.items = this.$store.getters['group/projectsInGroup'](group || id);
     }
   }

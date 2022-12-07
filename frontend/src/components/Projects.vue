@@ -1,24 +1,11 @@
 <template>
   <div>
-    <Article
-      v-for="box in items"
-      :href="box.LogoLink"
-      :id="box.Id"
-      :img_url="box.Logo"
-      :key="'mc_' + box.Key"
-      :title="box.Title"
-      :type="box.InstanceOf"
-      :edit_url="box.edit_url"
-      :map_url="box.map_url"
-      :description="box.description"
-      :class="boxtype[box.InstanceOf] + '-' + box.Id + ' boxtype_' + boxtype[box.InstanceOf]"
-    />
+    <Article v-for="item in items" :item="item" />
   </div>
 </template>
 
 <script lang="ts">
 import Article from '@/components/Article.vue';
-import { EBoxType } from '@/types/EBoxType';
 import { Group } from '@/types/TGroup';
 import { MacroGroup } from '@/types/TMacroGroup';
 import { Project } from '@/types/TProject';
@@ -30,9 +17,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 
 export default class Projects extends Vue {
   @Prop(Array) public readonly items!: Array<MacroGroup | Group | Project>;
-
-  public boxtype        = EBoxType;
-
 }
 </script>
 

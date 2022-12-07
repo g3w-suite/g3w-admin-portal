@@ -19,7 +19,7 @@ Vue.use(Router);
 
 /**
  * @FIXME why do we need this?
- * 
+ *
  * Used to set first time application ready
  */
 let ready: boolean = false;
@@ -45,26 +45,26 @@ const fetchData = async function(locale: string) {
 const setActiveGroup = async function(to: Route) {
   let sg: Group | MacroGroup | null = null;
 
-  switch(to.name) {
+  switch (to.name) {
     case 'group':
       sg = await fetchGroupData(to);
-    break;
+      break;
     case 'organization':
       sg = await fetchMacroGroupData(to);
-    break;
+      break;
   }
 
   store.dispatch('group/setActiveGroup', { sg });
-}
+};
 
 /**
  * Fetch Group data based on route params
- * 
+ *
  * @return a valid 'group/ActiveGroup' element
  */
 const fetchGroupData = async function(to: Route): Promise<Group | null> {
   const {id, group, lang} = to.params;
-  
+
   // Home > Group
   if (undefined !== id) {
     const groups = store.getters['group/groups'];
@@ -82,7 +82,7 @@ const fetchGroupData = async function(to: Route): Promise<Group | null> {
 
 /**
  * Fetch MacroGroup data based on route params
- * 
+ *
  * @return a valid 'group/ActiveGroup' element
  */
 const fetchMacroGroupData = async function(to: Route): Promise<Group | MacroGroup | null> {
@@ -93,9 +93,7 @@ const fetchMacroGroupData = async function(to: Route): Promise<Group | MacroGrou
     const macroGroups = store.getters['group/macroGroups'];
     await (macroGroups[id] as MacroGroup).fetchGroups();
     return macroGroups[id];
-  }
-  // Home > MacroGroup > Group
-  else if (group) {
+  } else if (group) {
     return await fetchGroupData(to);
   }
   return null;
@@ -194,7 +192,7 @@ const router = new Router({
  */
 router.beforeEach(async (to, from, next) => {
   const lang = to.params.lang;
-  
+
   // fallback to default language (it)
   if (!config.languages.includes(lang)) { return next(`/it${to.path}`); }
 

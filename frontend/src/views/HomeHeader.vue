@@ -39,7 +39,7 @@ import { mapGetters } from 'vuex';
 export default class HomeHeader extends Vue {
   public info!: Info;
 
-  @Prop(String) public search!: string;
+  // @Prop(String) public search!: string;
 
   // get search() {
   //   return this.$store.getters['group/search'];

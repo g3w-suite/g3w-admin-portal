@@ -38,9 +38,7 @@ export default class VMacroGroup extends Vue {
     // Home > MacroGroups
     if (!id) {
       this.items = Object.values(this.$store.getters['group/macroGroups']);
-    }
-    // Home > MacroGroup
-    else {
+    } else {
       this.items = this.$store.getters['group/groupsInMacroGroup'](id);
     }
   }

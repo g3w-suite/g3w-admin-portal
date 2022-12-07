@@ -1,8 +1,8 @@
 <template>
 
   <!-- GROUP ARTICLE -->
-  <article v-if="type !== boxtype.P">
-    <router-link :to="(type === boxtype.MG ? '/organization/' : $route.name === 'organization' ? `/organization/${$route.params.id}/` : '/group/' ) + id">
+  <article v-if="type !== boxtype.P" :class="className">
+    <router-link :to="((type === boxtype.MG ? '/organization/' : $route.name === 'organization' ? `/organization/${$route.params.id}/` : '/group/' ) + item.Id)">
       <figure>
         <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('messages.maps.group')" />
         <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3><b>{{title ||  $t('messages.maps.group')}}</b></h3></figcaption>
@@ -11,18 +11,18 @@
    </article>
 
   <!-- PROJECT ARTICLE -->
-  <article v-else  class="grid">
+  <article v-else  class="grid" :class="className">
 
     <div>
       <figure>
         <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
       </figure>
       <p class="grid">
-        <a :href="get_admin_url(map_url)" rel="noopener noreferrer" target="_blank">
+        <a :href="get_admin_url(item.map_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="expand-arrows-alt" size="lg" />
           <span> {{ $t('messages.maps.view') }}</span>
         </a>
-        <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn']" :href="get_admin_url(edit_url)" rel="noopener noreferrer" target="_blank">
+        <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn']" :href="get_admin_url(item.edit_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="pencil-alt" size="lg" />
           <span> {{ $t('messages.maps.edit') }}</span>
         </a>
@@ -41,6 +41,9 @@
 <script lang="ts">
 import config from '@/config';
 import { EBoxType } from '@/types/EBoxType';
+import { Group } from '@/types/TGroup';
+import { MacroGroup } from '@/types/TMacroGroup';
+import { Project } from '@/types/TProject';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
@@ -48,18 +51,31 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 })
 export default class Article extends Vue {
 
-  public boxtype = EBoxType;
-
-  @Prop(String) public readonly title!: string;
-  @Prop(String) public readonly href!: string;
-  @Prop(String) public readonly img_url!: string;
-  @Prop(Number) public readonly type!: number;
-  @Prop(Number) public readonly id!: number;
-  @Prop(String) public readonly edit_url!: string;
-  @Prop(String) public readonly map_url!: string;
-  @Prop(String) public readonly description!: string;
+  @Prop(Object) public readonly item!: Group | MacroGroup | Project;
 
   public avgColor: string = '0,0,0';
+
+  public boxtype = EBoxType;
+
+  get title(): string {
+    return this.item.Title;
+  }
+
+  get description(): string {
+    return this.item.description;
+  }
+
+  get img_url(): string {
+    return this.item.Logo;
+  }
+
+  get className(): string {
+    return EBoxType[this.type] + '-' + this.item.Id + ' item-' + EBoxType[this.type];
+  }
+
+  get type(): EBoxType {
+    return this.item.InstanceOf;
+  }
 
   /**
    * Return absolute URL to G3W-ADMIN server.
@@ -119,25 +135,25 @@ export default class Article extends Vue {
     left: 0;
   }
 
-  .boxtype_P hgroup {
+  .item-P hgroup {
     grid-column: span 2;
   }
 
-  article.boxtype_P {
+  article.item-P {
     margin: var(--block-spacing-vertical) 0;
   }
 
-  article.boxtype_P:first-of-type {
+  article.item-P:first-of-type {
     margin-top: 0;
   }
   /**
    * GROUP ARTICLE
    */
-  article:is(.boxtype_G, .boxtype_MG) {
+  article:is(.item-G, .item-MG) {
     padding: 0;
   }
 
-  :is(.boxtype_G, .boxtype_MG) figure {
+  :is(.item-G, .item-MG) figure {
     width: 100%;
     height: 100%;
     margin: 0;
@@ -150,12 +166,12 @@ export default class Article extends Vue {
     position: relative;
   }
 
-  :is(.boxtype_G, .boxtype_MG) figure > * {
+  :is(.item-G, .item-MG) figure > * {
     grid-area: box;
     grid-column-start: 1;
   }
   
-  :is(.boxtype_G, .boxtype_MG) figcaption {
+  :is(.item-G, .item-MG) figcaption {
     color: #fff;
     place-self: start stretch;
     background: transparent;
@@ -168,12 +184,12 @@ export default class Article extends Vue {
     padding-right: 0.5rem;
   }
 
-  :is(.boxtype_G, .boxtype_MG) figcaption > *:first-letter {
+  :is(.item-G, .item-MG) figcaption > *:first-letter {
     text-transform: uppercase;
   }
 
-  :is(.boxtype_G, .boxtype_MG) figcaption,
-  :is(.boxtype_G, .boxtype_MG) figcaption > * {
+  :is(.item-G, .item-MG) figcaption,
+  :is(.item-G, .item-MG) figcaption > * {
     margin: 0;
     color: #fff;
     font-weight: normal;
