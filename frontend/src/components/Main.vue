@@ -37,5 +37,20 @@ export default class Main extends Vue {
 </script>
 
 <style lang="scss" scoped>
+  body > header {
+    padding: 0;
+  }
+  body > header {
+    display: grid;
+    grid-template-areas: "box";
+  }
 
+  header > *,
+  header::before {
+    grid-area: box;
+  }
+
+  header > .container {
+    place-self: center;
+  }
 </style>

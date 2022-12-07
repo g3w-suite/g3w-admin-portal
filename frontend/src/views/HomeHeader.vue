@@ -57,7 +57,7 @@ export default class HomeHeader extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   body > header {
     padding: 0;
   }
@@ -75,9 +75,9 @@ export default class HomeHeader extends Vue {
     place-self: center;
   }
 
-  input[type="search"] {
-    background-color: #fff;
-  }
+  // input[type="search"] {
+  //   background-color: #fff;
+  // }
 
   header > div.container {
     background-color: rgb(0,0,0,.75);
