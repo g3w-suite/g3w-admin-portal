@@ -30,6 +30,7 @@
 import { SuperGroup } from '@/types/TSuperGroup';
 import { IBreadcrumbItem } from '@/types/IBreadcrumbItem';
 import { Component, Vue} from 'vue-property-decorator';
+import { RouteRecord } from 'vue-router';
 
 @Component({
   components: { },
@@ -57,8 +58,9 @@ export default class Breadcrumb extends Vue {
 
     const breadcrumbs: IBreadcrumbItem[] = [ { name: 'home' } ];
 
+    
     const route   = (this.$route.path                        ).split('/');
-    const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
+    const matched = (this.getMatchedRoute().meta.crumbs || '').split('/');
 
     // ignore parent ":lang" route (ref: router.ts)
     route.shift();
@@ -146,6 +148,10 @@ export default class Breadcrumb extends Vue {
 
   public isErrorPage(): boolean {
     return '404' === this.$route.name
+  }
+
+  public getMatchedRoute(): RouteRecord {
+    return this.$route.matched[this.$route.matched.length - 1];
   }
 
 }
