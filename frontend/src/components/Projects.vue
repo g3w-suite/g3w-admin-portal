@@ -33,11 +33,6 @@ export default class Projects extends Vue {
 
   public boxtype        = EBoxType;
 
-  // public async mounted() {
-  //   await this.$nextTick();
-  //   window.scrollTo(0, 0);
-  // }
-
 }
 </script>
 
