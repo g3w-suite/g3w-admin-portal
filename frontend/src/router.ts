@@ -8,6 +8,7 @@ import store from './store';
 import Projects from '@/components/Projects.vue';
 import Group from '@/views/Group.vue';
 import Home from '@/views/Home.vue';
+import HomeHeader from '@/views/HomeHeader.vue';
 import Login from '@/views/Login.vue';
 import MacroGroup from '@/views/MacroGroup.vue';
 import NotFound from '@/views/NotFound.vue';
@@ -44,7 +45,10 @@ const router = new Router({
           path: '/',
           name: 'home',
           alias: '',
-          component: Home,
+          components: {
+            default: Home,
+            header: HomeHeader,
+          },
           meta: {
           },
         },
