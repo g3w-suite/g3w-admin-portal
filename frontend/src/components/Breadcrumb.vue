@@ -29,103 +29,107 @@
 <script lang="ts">
 import { SuperGroup } from '@/types/TSuperGroup';
 import { IBreadcrumbItem } from '@/types/IBreadcrumbItem';
-import { Component, Vue} from 'vue-property-decorator';
+import {Component, Vue, Watch} from 'vue-property-decorator';
 
 @Component({
   components: { },
 })
 
 export default class Breadcrumb extends Vue {
+  breadcrumbs: IBreadcrumbItem[] = [];
+  @Watch('$route.params', {
+    immediate: true,
+  })
+  public async setbreadcrumbs() {
+    setTimeout(()=>{
+      // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
+      // console.log(this.$route)
 
-  get breadcrumbs(): IBreadcrumbItem[] {
-
-    // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
-    // console.log(this.$route)
-
-    if (!this.$route) {
-      console.warn('[vue-router] dependency is missing');
-      return [];
-    }
-
-    // 404 page
-    if (this.isErrorPage()) {
-      return [{ name: 'home' }, { name: '404' }];
-    }
-
-    let title = 'Home';
-    const titleSeparator = ' - ';
-
-    const breadcrumbs: IBreadcrumbItem[] = [ { name: 'home' } ];
-
-    const route   = (this.$route.path                        ).split('/');
-    const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
-
-    // ignore parent ":lang" route (ref: router.ts)
-    route.shift();
-    route.shift();
-    matched.shift();
-
-    // activeGroup contains a reference to current active element (last crumb)
-    const activeGroup: SuperGroup = this.$store.getters['group/activeGroup'];
-
-    for (let i = 0; i < route.length; i++) {
-
-      // route name
-      let name = (matched[i] || route[i]);
-
-      // route textual link
-      let text = '';
-
-      // route params
-      const params = {};
-
-      // active crumb item (last item of array)
-      const activeCrumb = (activeGroup && activeGroup.title) || '';
-
-      // skip empty routes
-      if (this.isEmptyRoute(route[i])) { continue; }
-
-      // hide root crumb in document title ('home')
-      if (this.isFirstCrumb(route, i)) { title = ''; } else { title += titleSeparator; }
-
-      // push document element title (crumb name)
-      if (this.isLastCrumb(route, i)) {
-        title += activeCrumb;
-      } else {
-        title += this.$i18n.t('messages.menu.' + name);
+      if (!this.$route) {
+        console.warn('[vue-router] dependency is missing');
+        return [];
       }
 
-      /** @HOTFIX for Home > Macgroup > ID */
-      if (this.isLastSecondCrumb(route, i)) {
-        params.id = this.$route.params.id;
+      // 404 page
+      if (this.isErrorPage()) {
+        return [{ name: 'home' }, { name: '404' }];
       }
 
-      /** @HOTFIX for Home > Macgroup > ID > Subgroup */
-      if (this.isLastCrumb(route, i)) {
-        params.group = this.$route.params.group;
+      let title = 'Home';
+      const titleSeparator = ' - ';
+
+      const breadcrumbs: IBreadcrumbItem[] = [ { name: 'home' } ];
+
+      const route   = (this.$route.path                        ).split('/');
+      const matched = (this.$route.matched[1].meta.crumbs || '').split('/');
+
+      // ignore parent ":lang" route (ref: router.ts)
+      route.shift();
+      route.shift();
+      matched.shift();
+
+      // activeGroup contains a reference to current active element (last crumb)
+      const activeGroup: SuperGroup = this.$store.getters['group/activeGroup'];
+
+      for (let i = 0; i < route.length; i++) {
+
+        // route name
+        let name = (matched[i] || route[i]);
+
+        // route textual link
+        let text = '';
+
+        // route params
+        const params = {};
+
+        // active crumb item (last item of array)
+        const activeCrumb = (activeGroup && activeGroup.title) || '';
+
+        // skip empty routes
+        if (this.isEmptyRoute(route[i])) { continue; }
+
+        // hide root crumb in document title ('home')
+        if (this.isFirstCrumb(route, i)) { title = ''; } else { title += titleSeparator; }
+
+        // push document element title (crumb name)
+        if (this.isLastCrumb(route, i)) {
+          title += activeCrumb;
+        } else {
+          title += this.$i18n.t('messages.menu.' + name);
+        }
+
+        /** @HOTFIX for Home > Macgroup > ID */
+        if (this.isLastSecondCrumb(route, i)) {
+          params.id = this.$route.params.id;
+        }
+
+        /** @HOTFIX for Home > Macgroup > ID > Subgroup */
+        if (this.isLastCrumb(route, i)) {
+          params.group = this.$route.params.group;
+        }
+
+        // set active crumb item textual link (last crumb)
+        if (this.isLastCrumb(route, i)) {
+          text = activeCrumb;
+        }
+
+        /** @HOTFIX for Home > Macgroup > ID */
+        /** @HOTFIX for Home > Macgroup > ID > Subgroup */
+        if (this.isLastSecondCrumb(route, i) && this.$route.params.group) {
+          text = this.$store.getters['group/macroGroup'](this.$route.params.id).title;
+          name = 'organization';
+        }
+
+        title = text || title;
+
+        breadcrumbs.push({ name, text, params });
       }
 
-      // set active crumb item textual link (last crumb)
-      if (this.isLastCrumb(route, i)) {
-        text = activeCrumb;
-      }
+      // dynamically update document title text
+      window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
 
-      /** @HOTFIX for Home > Macgroup > ID */
-      /** @HOTFIX for Home > Macgroup > ID > Subgroup */
-      if (this.isLastSecondCrumb(route, i) && this.$route.params.group) {
-        text = this.$store.getters['group/macroGroup'](this.$route.params.id).title;
-        name = 'organization';
-      }
-
-      title = text || title;
-
-      breadcrumbs.push({ name, text, params });
-    }
-
-    // dynamically update document title text
-    window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
-
-    return breadcrumbs;
+      this.breadcrumbs = breadcrumbs;
+    })
   }
 
   public isLastSecondCrumb(breadcrumbs: any[], i: number): boolean {

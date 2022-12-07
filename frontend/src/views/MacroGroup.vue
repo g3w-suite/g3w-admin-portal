@@ -34,17 +34,10 @@ export default class VMacroGroup extends Vue {
   @Watch('$route.params', {
     immediate: true,
   })
-  public async onRouteParamsChange({ id, group }) {
+  public async onRouteParamsChange({ id }) {
     // Home > MacroGroups
-    if (group || !id) {
-      this.items = Object.values(this.$store.getters['group/macroGroups']);
-      !id && this.$store.dispatch('group/setActiveGroup', { sg: null });
-    } else {
-      const macroGroups = this.$store.getters['group/macroGroups'];
-      await (macroGroups[id] as MacroGroup).fetchGroups();
-      this.items = this.$store.getters['group/groupsInMacroGroup'](id);
-      this.$store.dispatch('group/setActiveGroup', { sg: macroGroups[id] });
-    }
+    if (!id) this.items = Object.values(this.$store.getters['group/macroGroups']);
+    else this.items = this.$store.getters['group/groupsInMacroGroup'](id);
   }
 
   /**
