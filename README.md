@@ -50,10 +50,16 @@ nav#main-menu {
   --primary-hover: #1ab3e6;
 }
 
-/* 16:9 images */
+/* Card item: change default aspect ratio for images (16:9) */
 main#content article figure > img {
   aspect-ratio: 16/9;
   object-fit: contain;
+}
+
+/* Card item: move figcaption before image (heading) */
+main#content article figure > figcaption {
+  grid-row-start: 1;
+  background-color: var(--primary);
 }
 
 /* Typography colors */
@@ -71,7 +77,7 @@ PORTAL_FAVICON  = 'https://www.comune.altamura.ba.it/templates/shaper_helixultim
 ```
 
 
-## DEPRECATED SETTINGS
+## DEPRECATED SETTINGS (< v0.1.0)
 
 ```python
 # Enable/disable menu sections
