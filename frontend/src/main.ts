@@ -1,144 +1,58 @@
+import '@/icons';
+import { en } from '@/locale/en';
+import { it } from '@/locale/it';
+import '@fontsource/titillium-web/400-italic.css';
+import '@fontsource/titillium-web/400.css';
+import '@fontsource/titillium-web/700-italic.css';
+import '@fontsource/titillium-web/700.css';
 import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
-import routerItalia from './routerItalia';
-import store from './store';
+import Fragment from 'vue-fragment';
 import VueI18n from 'vue-i18n';
-import BootstrapVue from 'bootstrap-vue';
-import {it} from '@/lang/it';
-import {en} from '@/lang/en';
+import App from './App.vue';
+import config from './config';
+import router from './router';
+import store from './store';
 
-//SUPPORT LANGUAGES TRANSLATIONS I18N
-const DEFAULT_SUPPORTED_LANGUAGES = ['it', 'en'];
-import {library} from '@fortawesome/fontawesome-svg-core';
-import {
-    faGooglePlusSquare,
-    faFacebookSquare,
-    faTwitterSquare,
-    faInstagram,
-    faLinkedin,
-    faYoutube,
-    faFlickr,
-    faTripadvisor,
-} from '@fortawesome/free-brands-svg-icons';
+// if (config.stylesheet) {
+//   const css = document.createElement('link');
+//   css.setAttribute('rel', 'stylesheet');
+//   css.setAttribute('href', config.stylesheet);
+//   document.body.appendChild(css);
+// }
 
-import {
-    faUserSecret,
-    faKey,
-    faMapMarkerAlt,
-    faInbox,
-    faNewspaper,
-    faInfo,
-    faUser,
-    faUserLock,
-    faLanguage,
-    faPhoneAlt,
-    faEnvelope,
-    faExpandArrowsAlt,
-    faTimes,
-    faSignOutAlt,
-    faPencilAlt,
-    faUserShield,
-    faSearch,
-    faHome,
-} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
-import {EnvironmentHelper} from '@/EnvironmentHelper';
+// if (config.color) {
+//   document.documentElement.setAttribute('data-color', config.color);
+//   document.documentElement.style.setProperty('--custom-color', config.color);
+//   document.documentElement.style.setProperty('--header-color', config.color);
+//   document.documentElement.style.setProperty('--header-color-alt', process.env.VUE_APP_CSS_COLOR_ALT || config.color);
+// }
 
-library.add(
-    faUserShield,
-    faUserSecret,
-    faKey,
-    faMapMarkerAlt,
-    faInbox,
-    faNewspaper,
-    faInfo,
-    faUserLock,
-    faLanguage,
-    faPhoneAlt,
-    faEnvelope,
-    faUser,
-    faFacebookSquare,
-    faGooglePlusSquare,
-    faYoutube,
-    faFlickr,
-    faTripadvisor,
-    faTwitterSquare,
-    faInstagram,
-    faLinkedin,
-    faExpandArrowsAlt,
-    faTimes,
-    faSignOutAlt,
-    faPencilAlt,
-    faSearch,
-    faHome,
-);
+if (config.theme) {
+  document.documentElement.setAttribute('data-theme', config.theme);
+}
 
-Vue.use(BootstrapVue);
+if (config.favicon) {
+  const icon = document.querySelector('link[rel~=\'icon\']') || document.createElement('link');
+  icon.setAttribute('rel', 'icon');
+  icon.setAttribute('href', config.favicon);
+}
+
+Vue.use(Fragment.Plugin);
 Vue.use(VueI18n);
-Vue.component('font-awesome-icon', FontAwesomeIcon);
-
-export const i18n = new VueI18n({
-    locale: 'it',
-    fallbackLocale: 'it',
-    messages: {
-        it,
-        en,
-    },
-});
 
 Vue.config.productionTip = false;
 
-let IS_PA;
-let LANGUAGES = ['it']; // default and supported languages
-if (window.LANGUAGES && Array.isArray(window.LANGUAGES)){
-    LANGUAGES = window.LANGUAGES.filter(lang => DEFAULT_SUPPORTED_LANGUAGES.indexOf(lang) !== -1);
-    if (LANGUAGES.length === 0) LANGUAGES = ['it'];
-}
-
-export const APP_LANGUAGES = LANGUAGES;
-
-if (EnvironmentHelper.isProduction) {
-    IS_PA = (window as any).IS_PA;
-} else {
-    IS_PA = localStorage.getItem('isPA') === 'true';
-    (window as any).ADMIN_BTN = true;
-    (window as any).PORTAL_SECTIONS = [
-        'maps',
-        'info',
-        'news',
-        'archives',
-    ];
-}
+export const i18n = new VueI18n({ locale: 'it', fallbackLocale: 'it', messages: { it, en } });
 
 new Vue({
-    router: (() => {
-        if (IS_PA) {
-            return routerItalia;
-        } else {
-            return router;
-        }
-    })(),
-    store,
-    i18n,
-    render: (h) => h(App),
-    created: () => {
-        store.dispatch('info/fetchInfo', {locale: i18n.locale});
-        store.dispatch('settings/portalSections', {sections: (window as any).PORTAL_SECTIONS});
-        store.dispatch('settings/showAdminButton', {show: (window as any).ADMIN_BTN});
-        store.dispatch('settings/fetchPictures', {locale: i18n.locale});
-    },
+  router,
+  store,
+  i18n,
+  render: (h) => h(App),
+  created: () => {
+    store.dispatch('info/fetchInfo', { locale: i18n.locale });
+    store.dispatch('settings/portalSections', { sections: config.portal_sections });
+    store.dispatch('settings/showAdminButton', { show: config.admin_btn });
+    store.dispatch('settings/fetchPictures', { locale: i18n.locale });
+  },
 }).$mount('#app');
-
-if (IS_PA) {
-
-    const btIta = document.createElement('link');
-
-    btIta.setAttribute('rel', 'stylesheet');
-    btIta.setAttribute('type', 'text/css');
-    btIta.setAttribute('href', '/static/frontend/bootstrap-italia/css/bootstrap-italia.min.css');
-
-    document.body.appendChild(btIta);
-
-    document.body.classList.add('pa');
-}

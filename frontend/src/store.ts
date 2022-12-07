@@ -1,21 +1,16 @@
-import {StoreOptions} from 'vuex';
+import group from '@/store/group';
+import info from '@/store/info';
+import me from '@/store/me';
+import menu from '@/store/menu';
+import modal from '@/store/modal';
+import settings from '@/store/settings';
+import { IRootState } from '@/types/IRootState';
 import Vue from 'vue';
-import Vuex from 'vuex';
-import info from '@/store/modules/info';
-import group from '@/store/modules/group';
-import me from '@/store/modules/me';
-import modal from '@/store/modules/modal';
-import menu from '@/store/modules/menu';
-import settings from '@/store/modules/settings';
+import Vuex, { StoreOptions } from 'vuex';
 
 Vue.use(Vuex);
 
-export interface RootState {
-  showLoader: boolean;
-  errors: string[];
-}
-
-const store: StoreOptions<RootState> = {
+const store: StoreOptions<IRootState> = {
   state: {
     showLoader: false,
     errors: [],

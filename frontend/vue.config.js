@@ -1,9 +1,10 @@
 module.exports = {
   publicPath: '/',
-  // assetsDir: 'static/frontend/',
   outputDir: '../static/frontend/',
   filenameHashing: false,
+  // runtimeCompiler: true,
   devServer: {
-    proxy:  'http://192.168.1.3:8001',
+    proxy:  'http://'+ process.env.PROXY_SERVER +':' + process.env.PROXY_PORT,
+    port: 8080
   }
 }

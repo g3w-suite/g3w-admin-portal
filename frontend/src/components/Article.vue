@@ -1,0 +1,199 @@
+<template>
+
+  <!-- GROUP ARTICLE -->
+  <article v-if="type !== boxtype.P" :class="className">
+    <router-link :to="((type === boxtype.MG ? '/organization/' : $route.name === 'organization' ? `/organization/${$route.params.id}/` : '/group/' ) + item.Id)">
+      <figure>
+        <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('messages.maps.group')" />
+        <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3><b>{{title ||  $t('messages.maps.group')}}</b></h3></figcaption>
+      </figure>
+    </router-link>
+   </article>
+
+  <!-- PROJECT ARTICLE -->
+  <article v-else  class="grid" :class="className">
+
+    <div>
+      <figure>
+        <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
+      </figure>
+      <p class="grid">
+        <a :href="get_admin_url(item.map_url)" rel="noopener noreferrer" target="_blank">
+          <font-awesome-icon icon="expand-arrows-alt" size="lg" />
+          <span> {{ $t('messages.maps.view') }}</span>
+        </a>
+        <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn']" :href="get_admin_url(item.edit_url)" rel="noopener noreferrer" target="_blank">
+          <font-awesome-icon icon="pencil-alt" size="lg" />
+          <span> {{ $t('messages.maps.edit') }}</span>
+        </a>
+      </p>
+    </div>
+
+    <hgroup>
+      <h3>{{title}}</h3>
+      <div v-html="description"></div>
+    </hgroup>
+
+  </article>
+
+</template>
+
+<script lang="ts">
+import config from '@/config';
+import { EBoxType } from '@/types/EBoxType';
+import { Group } from '@/types/TGroup';
+import { MacroGroup } from '@/types/TMacroGroup';
+import { Project } from '@/types/TProject';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+@Component({
+  components: {},
+})
+export default class Article extends Vue {
+
+  @Prop(Object) public readonly item!: Group | MacroGroup | Project;
+
+  public avgColor: string = '0,0,0';
+
+  public boxtype = EBoxType;
+
+  get title(): string {
+    return this.item.Title;
+  }
+
+  get description(): string {
+    return this.item.description;
+  }
+
+  get img_url(): string {
+    return this.item.Logo;
+  }
+
+  get className(): string {
+    return EBoxType[this.type] + '-' + this.item.Id + ' item-' + EBoxType[this.type];
+  }
+
+  get type(): EBoxType {
+    return this.item.InstanceOf;
+  }
+
+  /**
+   * Return absolute URL to G3W-ADMIN server.
+   */
+  public get_admin_url(folder: string): string {
+    return config.admin_base_url + folder;
+  }
+
+  /**
+   * Compute the avergare color of a image
+   */
+  public get_average_color(src: string | any = this.img_url): string {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    src = (src.target && src.target.src) || src;
+    img.setAttribute('crossOrigin', '');
+    img.src = src;
+    if (ctx) {
+      ctx.imageSmoothingEnabled = true;
+      // rescale the image to 1x1
+      ctx.drawImage(img, 0, 0, 1, 1);
+      // get resulting pixel color
+      this.avgColor = ctx.getImageData(0, 0, 1, 1).data.slice(0, 3).toString();
+    }
+    // console.log(this.avgColor);
+    return this.avgColor;
+  }
+
+}
+</script>
+
+<style lang="scss" scoped>
+  /**
+   * PROJECT ARTICLE
+   */
+  article {
+    padding: var(--block-spacing-horizontal);
+  }
+
+  article figure {
+    position: relative;
+  }
+
+  article figure > img {
+    aspect-ratio: 1;
+    min-height: 200px;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+
+  figure .fa-expand-arrows-alt {
+    position: absolute;
+    color: #fff;
+    margin: 1rem;
+    left: 0;
+  }
+
+  .item-P hgroup {
+    grid-column: span 2;
+  }
+
+  article.item-P {
+    margin: var(--block-spacing-vertical) 0;
+  }
+
+  article.item-P:first-of-type {
+    margin-top: 0;
+  }
+  /**
+   * GROUP ARTICLE
+   */
+  article:is(.item-G, .item-MG) {
+    padding: 0;
+  }
+
+  :is(.item-G, .item-MG) figure {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    grid-area: box;
+    place-items: center;
+    place-content: center stretch;
+    place-self: center stretch;
+    display: grid;
+    position: relative;
+  }
+
+  :is(.item-G, .item-MG) figure > * {
+    grid-area: box;
+    grid-column-start: 1;
+  }
+  
+  :is(.item-G, .item-MG) figcaption {
+    color: #fff;
+    place-self: start stretch;
+    background: transparent;
+    margin: 1em 2em;
+    pointer-events: none;
+    z-index: 1;
+    text-align: center;
+    background: rgb(var(--figcaption-background-color), 0.25);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  :is(.item-G, .item-MG) figcaption > *:first-letter {
+    text-transform: uppercase;
+  }
+
+  :is(.item-G, .item-MG) figcaption,
+  :is(.item-G, .item-MG) figcaption > * {
+    margin: 0;
+    color: #fff;
+    font-weight: normal;
+    font-size: 1.1rem;
+    text-align: left;
+  }
+</style>
