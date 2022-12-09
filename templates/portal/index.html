@@ -30,7 +30,8 @@
         window.LANGUAGES = {{ LANGUAGES | safe }}
         window.PORTAL_ORG_NAME = '{{ SETTINGS.PORTAL_ORG_NAME }}'
         window.PORTAL_ORG_URL = '{{ SETTINGS.PORTAL_ORG_URL }}'
-        window.PORTAL_FAVICON = '{{ SETTINGS.PORTAL_ORG_URL }}'
+        window.PORTAL_FAVICON = '{{ SETTINGS.PORTAL_FAVICON }}'
+        window.PORTAL_NAVBAR_TOP = {{ SETTINGS.PORTAL_NAVBAR_TOP | yesno:"true,false" }}
     </script>
     <div id=app></div>
     <script src="{% static 'frontend/js/chunk-vendors.js' %}"></script>

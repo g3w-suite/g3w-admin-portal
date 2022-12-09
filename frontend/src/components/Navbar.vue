@@ -2,7 +2,7 @@
   <fragment>
 
     <!-- TOP MENU -->
-    <nav id="top-menu" class="container-fluid">
+    <nav id="top-menu" class="container-fluid top-menu" v-if="hasNavBarTop">
 
       <!-- ORGANIZATION NAME -->
       <ul>
@@ -68,7 +68,7 @@
     </nav>
 
     <!-- MAIN MENU -->
-    <nav id="main-menu" class="container-fluid">
+    <nav id="main-menu" class="container-fluid main-menu">
 
       <ul>
 
@@ -88,13 +88,65 @@
       </ul>
 
       <ul>
+
+        <!-- SEARCH LINK -->
         <li>
           <router-link :to="{ name: 'search' }" :title="$t('messages.menu.search_placeholder')" class="contrast outline">
             <font-awesome-icon icon="search" size="lg" />
-            {{ $t('messages.menu.catalog') }}
+            {{ $t('messages.menu.search') }}
           </router-link>
         </li>
-        <li>
+
+        <!-- ADMIN LINK -->
+        <li v-if="!hasNavBarTop && isLoggedIn">
+          <router-link :to="{ name: 'admin' }" :title="$t('messages.tooltip.admin')" class="secondary">
+            <font-awesome-icon icon="gear" size="lg" />
+            <span class="hide-on-mobile"> {{$t('messages.menu.admin')}}</span>
+          </router-link>
+        </li>
+
+        <!-- LOGOUT LINK -->
+        <li v-if="!hasNavBarTop && isLoggedIn">
+          <a href="#" @click="logout" :title="$t('messages.tooltip.logout')" class="secondary">
+            <font-awesome-icon icon="sign-out-alt" size="lg" />
+            <span class="hide-on-mobile"> {{$t('messages.menu.logout')}}</span>
+          </a>
+        </li>
+
+        <!-- LOGIN LINK -->
+        <li v-else-if="!hasNavBarTop">
+          <router-link :to="{ name: 'login' }" :title="$t('messages.tooltip.login')" class="secondary">
+            <font-awesome-icon icon="user" size="lg" />
+            <span class="hide-on-mobile"> {{$t('messages.menu.login')}}</span>
+          </router-link>
+        </li>
+
+        <!-- LANGUAGE SELECTOR -->
+        <li v-if="!hasNavBarTop">
+          <details role="list" dir="ltr" :title="$t('messages.tooltip.choose_language')">
+            <summary aria-haspopup="listbox" role="link" class="secondary">
+              <img :alt="$t('messages.tooltip.choose_language')" :title="$t('messages.language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
+              <span class="hide-on-mobile">{{$t('messages.language.' + $i18n.locale)}}</span>
+            </summary>
+            <ul role="listbox">
+              <li>
+                <router-link :to="{ name: 'home', params: { lang: 'it' } }" hreflang="it" class="secondary">
+                  <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
+                  <span>{{$t('messages.language.it')}}</span>
+                </router-link>
+              </li>
+              <li>
+                <router-link :to="{ name: 'home', params: { lang: 'en' } }" hreflang="en" class="secondary">
+                  <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
+                  <span>{{$t('messages.language.en')}}</span>
+                </router-link>
+              </li>
+            </ul>
+          </details>
+        </li>
+
+        <!-- MENU LINK -->
+        <li v-if="hasNavBarTop">
           <button @click="toggleSecondaryMenu" :title="$t('messages.tooltip.menu')" class="contrast outline">
             <font-awesome-icon :icon="secondaryMenuVisible ? 'bars' : 'xmark'" size="lg" />
             {{ $t('messages.menu.toggle') }}
@@ -166,6 +218,11 @@ export default class Navbar extends Vue {
     return this.$store.getters['me/isLoggedIn'];
   }
 
+  get hasNavBarTop(): boolean {
+    console.log(false !== (window as any).PORTAL_NAVBAR_TOP, (window as any).PORTAL_NAVBAR_TOP);
+    return false !== (window as any).PORTAL_NAVBAR_TOP;
+  }
+
   public logout() {
     this.$store.dispatch('me/logout', { locale: this.$i18n.locale });
     this.$store.dispatch('group/reset');
@@ -186,13 +243,13 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="scss" scoped>
-  body > nav:nth-of-type(1) {
+  body > nav.top-menu {
     // justify-content: end;
     // background-color: var(--contrast-focus);
     --nav-element-spacing-vertical: var(--nav-element-spacing-horizontal);
   }
 
-  // body > nav:nth-of-type(2) li {
+  // body > nav.main-menu li {
   //   padding: calc( var(--nav-element-spacing-vertical) / 2) var(--nav-element-spacing-horizontal);
   // }
 
@@ -201,12 +258,12 @@ export default class Navbar extends Vue {
     background-color: var(--background-color);
   }
 
-  body > nav:nth-of-type(2) > ul:last-of-type {
+  body > nav.main-menu > ul:last-of-type {
     border-top: var(--nav-border-color, rgba(115, 130, 140, 0.2)) 1px solid;
     justify-content: space-around;
   }
 
-  body > nav:nth-of-type(2) {
+  body > nav.main-menu {
     position: sticky;
     top: 0;
     // background: var(--background-color);
@@ -214,7 +271,7 @@ export default class Navbar extends Vue {
     flex-wrap: wrap;
   }
 
-  body > nav:nth-of-type(2) > ul:last-of-type {
+  body > nav.main-menu > ul:last-of-type {
     flex-basis: 100%;
   }
 

@@ -69,10 +69,15 @@ main#content article figure > figcaption {
 }
 """
 
+# Toggle TOP NAV MENU visibility
+PORTAL_NAVBAR_TOP = False
+
 # Customize TOP NAV MENU link
-PORTAL_ORG_NAME = 'Regione Puglia'
-PORTAL_ORG_URL  = 'http://www.regione.puglia.it/'
-PORTAL_FAVICON  = 'https://www.comune.altamura.ba.it/templates/shaper_helixultimate/favicon.ico'
+PORTAL_ORG_NAME   = 'Download'
+PORTAL_ORG_URL    = 'https://github.com/g3w-suite'
+
+# Custom favicon url
+PORTAL_FAVICON  = '/static/img/favicon.ico'
 
 ```
 
