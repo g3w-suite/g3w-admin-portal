@@ -13,23 +13,23 @@
           <address>
             <h3>{{$t('messages.footer.contacts')}}</h3>
 
-            <p>
+            <p v-if="info.about_name">
               <font-awesome-icon icon="user" /> {{info.about_name}}
             </p>
 
-            <p>
+            <p v-if="info.about_tel">
               <a :href="`tel:${info.about_tel}`">
                 <font-awesome-icon icon="phone-alt" /> {{info.about_tel}}
               </a>
             </p>
 
-            <p>
+            <p v-if="info.about_email">
               <a :href="`mailto: ${info.about_email}`">
                 <font-awesome-icon icon="envelope" /> {{info.about_email}}
               </a>
             </p>
 
-            <p>
+            <p v-if="info.about_address">
               <a :href="'https://maps.google.com/?q=' + info.about_address" target="_blank" rel="noopener noreferrer">
                 <font-awesome-icon icon="map-marker-alt" /> {{info.about_address}}
               </a>

@@ -41,16 +41,20 @@ class PictureForm(G3WFormMixin, FileFormMixin, ModelForm):
                                     Div(
                                         Div(
                                             Div(
-                                                HTML("<h3 class='box-title'><i class='fa fa-file'></i> {}</h3>".format(
-                                                    _('Picture data'))),
-                                                css_class='box-header with-border'
-                                            ),
+                                                HTML(
+                                                    "<h3 class='box-title'><i class='fa fa-file'></i> {}</h3>"
+                                                    .format(
+                                                        _('Picture data'))),
+                                                        css_class='box-header with-border'
+                                                    ),
                                             Div(
                                                 'image',
-                                                HTML("""<img
+                                                HTML(
+                                                    """<img
                                                     {% if not form.image.value %}style="display:none;"{% endif %}
                                                     class="img-responsive img-thumbnail"
-                                                    src="{{ MEDIA_URL }}{{ form.image.value }}">""", ),
+                                                    src="{{ MEDIA_URL }}{{ form.image.value }}">""",
+                                                ),
                                                 'form_id',
                                                 'upload_url',
                                                 'delete_url',
@@ -63,8 +67,12 @@ class PictureForm(G3WFormMixin, FileFormMixin, ModelForm):
                                     Div(
                                         Div(
                                             Div(
-                                                HTML("<h3 class='box-title'><i class='fa fa-file'></i> {}</h3>".format(
-                                                    _('Author and style data'))),
+                                                HTML(
+                                                    "<h3 class='box-title'><i class='fa fa-file'></i> {}</h3>"
+                                                    .format(
+                                                        _('Author and style data')
+                                                    )
+                                                ),
                                                 css_class='box-header with-border'
                                             ),
                                             Div(

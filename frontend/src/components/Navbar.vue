@@ -219,7 +219,6 @@ export default class Navbar extends Vue {
   }
 
   get hasNavBarTop(): boolean {
-    console.log(false !== (window as any).PORTAL_NAVBAR_TOP, (window as any).PORTAL_NAVBAR_TOP);
     return false !== (window as any).PORTAL_NAVBAR_TOP;
   }
 
