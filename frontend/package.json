@@ -6,7 +6,10 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
-    "serve": "npm run dev"
+    "serve": "npm run dev",
+    "preversion": "npm run lint",
+    "version": "npm run build && git add -A",
+    "postversion": "git push && git push --tags"
   },
   "resolutions": {
     "portfinder": "1.0.21"
