@@ -11,7 +11,7 @@
     
     <!-- FEATURED GROUPS -->
     <Projects
-      :items="items"
+      :items="featuredGroups"
       class="grid"
     />
     
@@ -56,11 +56,14 @@ export default class Home extends Vue {
   // get all super group (macro group and group not in macro group)
   public items: SuperGroup[] = [];
 
-  public created() {
+  get featuredGroups(): SuperGroup[] {
     const items = this.$store.getters['group/superGroups'];
     // hide elements from home page that execeds the given length
-    this.items = (items.length > this.maxItemstoShow) ? items.slice(0, this.maxItemstoShow) : items;
+    this.items = (items.length > this.maxItemstoShow)
+      ? items.slice(0, this.maxItemstoShow)
+      : items;
     this.$store.dispatch('group/setActiveGroup', { sg: null });
+    return items;
   }
 
 }

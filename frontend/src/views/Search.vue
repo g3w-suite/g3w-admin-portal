@@ -40,7 +40,7 @@ export default class Search extends Vue {
   }
 
   set search(val: string) {
-    this.$store.dispatch('group/search', {s: val});
+    this.$store.dispatch('group/search', { s: val });
   }
 }
 </script>

@@ -4,16 +4,8 @@ import Vue from 'vue';
 import Router, { Route, RouterMode } from 'vue-router';
 import config from './config';
 import store from './store';
-
-import Projects from '@/components/Projects.vue';
-import Group from '@/views/Group.vue';
-import Home from '@/views/Home.vue';
-import HomeHeader from '@/views/HomeHeader.vue';
-import Login from '@/views/Login.vue';
-import MacroGroup from '@/views/MacroGroup.vue';
-import NotFound from '@/views/NotFound.vue';
-import Search from '@/views/Search.vue';
-import { SuperGroup } from './types/TSuperGroup';
+import { MacroGroup } from './types/TMacroGroup';
+import { Group } from './types/TGroup';
 
 Vue.use(Router);
 
@@ -100,6 +92,18 @@ const fetchMacroGroupData = async function(to: Route): Promise<Group | MacroGrou
 };
 
 /**
+ * Refresh data on user Login / Logout
+ */
+store.subscribe((mutation, state) => {
+  if (mutation.type === 'me/setUser') {
+    store
+      .dispatch('group/reset')
+      .then(() => fetchData(i18n.locale))
+      .then(() => setActiveGroup(router.currentRoute));
+  }
+});
+
+/**
  * Vue Router
  */
 const router = new Router({
@@ -115,8 +119,8 @@ const router = new Router({
           name: 'home',
           alias: '',
           components: {
-            default: Home,
-            header: HomeHeader,
+            default: () => import(/* webpackChunkName: "portal-core" */ '@/views/Home.vue'),
+            header: () => import(/* webpackChunkName: "portal-core" */ '@/views/HomeHeader.vue'),
           },
           meta: {
           },
@@ -124,7 +128,7 @@ const router = new Router({
         {
           path: 'login/',
           name: 'login',
-          component: Login,
+          component: () => import(/* webpackChunkName: "portal-user" */ '@/views/Login.vue'),
           meta: {
           },
         },
@@ -138,28 +142,28 @@ const router = new Router({
         {
           path: 'search/',
           name: 'search',
-          component: Search,
+          component: () => import(/* webpackChunkName: "portal-catalog" */ '@/views/Search.vue'),
           meta: {
           },
         },
         {
           path: 'group/:id?/',
           name: 'group',
-          component: Group,
+          component: () => import(/* webpackChunkName: "portal-catalog" */ '@/views/Group.vue'),
           meta: {
           },
         },
         {
           path: 'organization/:id?/:group?/',
           name: 'organization',
-          component: MacroGroup,
+          component: () => import(/* webpackChunkName: "portal-catalog" */ '@/views/MacroGroup.vue'),
           meta: {
           },
         },
         {
           path: 'map/:id?/',
           name: 'map',
-          component: Projects,
+          component: () => import(/* webpackChunkName: "portal-catalog" */ '@/components/Projects.vue'),
           meta: {
           },
         },
@@ -167,7 +171,7 @@ const router = new Router({
           /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#caveat */
           path: ':catchAll(.*)',
           name: '404',
-          component: NotFound,
+          component: () => import(/* webpackChunkName: "portal-core" */ '@/views/NotFound.vue'),
           meta: {
           },
         },
@@ -199,13 +203,12 @@ router.beforeEach(async (to, from, next) => {
   // listen for language change
   if (!ready || i18n.locale !== lang) {
     await fetchData(lang);
-    i18n.locale = lang;
   }
 
   ready = true; // false = first time
 
   // update html lang attribute
-  document.documentElement.lang = lang;
+  document.documentElement.lang = i18n.locale = lang;
 
   // update body css class name
   if (to.name) { document.body.classList.add(to.name); }

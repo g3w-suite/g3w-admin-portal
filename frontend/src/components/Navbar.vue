@@ -180,7 +180,7 @@
 <script lang="ts">
 import config from '@/config';
 import { Info } from '@/types/TInfo';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
 @Component({
@@ -224,11 +224,6 @@ export default class Navbar extends Vue {
 
   public logout() {
     this.$store.dispatch('me/logout', { locale: this.$i18n.locale });
-    this.$store.dispatch('group/reset');
-    if (this.$route.name !== 'home') {
-      this.$router.push({ name: 'home' });
-    }
-    this.$store.dispatch('menu/setVisibility', { v: false });
   }
 
   public mounted() {

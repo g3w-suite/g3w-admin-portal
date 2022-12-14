@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/',
+  publicPath: (process.env.NODE_ENV === 'production' ? '/static/frontend/' : '/'),
   outputDir: '../static/frontend/',
   filenameHashing: false,
   // runtimeCompiler: true,

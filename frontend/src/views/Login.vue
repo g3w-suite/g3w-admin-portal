@@ -48,7 +48,9 @@
 
     </div>
 
-    <div v-if="settings.login_description" v-html="settings.login_description"></div>
+    <div v-if="settings.login_description">
+      <div v-html="settings.login_description"></div>
+    </div>
   </article>
 </template>
 
@@ -93,7 +95,7 @@ export default class Login extends Vue {
       this.$store
         .dispatch('me/login', { username: this.username, password: this.password, locale: this.$i18n.locale })
         .then(() => this.$store.dispatch('me/fetchWhoAmI', { locale: this.$i18n.locale }))
-        .then(() => this.$router.push({name: 'home'}))
+        .then(() => this.$router.push({ name: 'home' }))
         .catch((e) => {
           this.extra_message = e;
           this.loginError = true;

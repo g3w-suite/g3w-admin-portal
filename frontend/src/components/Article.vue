@@ -2,7 +2,7 @@
 
   <!-- GROUP ARTICLE -->
   <article v-if="type !== boxtype.P" :class="className">
-    <router-link :to="((type === boxtype.MG ? '/organization/' : $route.name === 'organization' ? `/organization/${$route.params.id}/` : '/group/' ) + item.Id)">
+    <router-link :to="get_group_url()">
       <figure>
         <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('messages.maps.group')" />
         <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3><b>{{title ||  $t('messages.maps.group')}}</b></h3></figcaption>
@@ -75,6 +75,22 @@ export default class Article extends Vue {
 
   get type(): EBoxType {
     return this.item.InstanceOf;
+  }
+
+  public get_group_url() : string {
+    // Macrogroups > Macrogroup
+    if (this.type === this.boxtype.MG) {
+      return `/${this.$i18n.locale}/organization/${this.item.Id}`;
+    }
+    // Macrogroups > Macrogroup > Group
+    if (this.type === this.boxtype.G && this.$route.name === 'organization') {
+      return `/${this.$i18n.locale}/organization/${this.$route.params.id}/${this.item.Id}`;
+    }
+    // Groups > Group
+    if (this.type === this.boxtype.G) {
+      return `/${this.$i18n.locale}/group/${this.item.Id}`;
+    }
+    return '';
   }
 
   /**
