@@ -1,4 +1,4 @@
-import { httpClient, IHttpClient } from '@/api/HttpClient';
+import { httpClient as HTTPCLIENT, IHttpClient } from '@/api/HttpClient';
 import { IGroup } from '@/types/IGroup';
 import { IGroupManager } from '@/types/IGroupManager';
 import { IMacroGroup } from '@/types/IMacroGroup';
@@ -51,4 +51,4 @@ export class GroupManager implements IGroupManager {
   }
 }
 
-export const groupManager: GroupManager = new GroupManager(httpClient);
+export const groupManager: GroupManager = new GroupManager(HTTPCLIENT);

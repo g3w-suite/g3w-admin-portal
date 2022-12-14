@@ -24,7 +24,10 @@ import store from './store';
 //   document.documentElement.setAttribute('data-color', config.color);
 //   document.documentElement.style.setProperty('--custom-color', config.color);
 //   document.documentElement.style.setProperty('--header-color', config.color);
-//   document.documentElement.style.setProperty('--header-color-alt', process.env.VUE_APP_CSS_COLOR_ALT || config.color);
+//   document.documentElement.style.setProperty(
+//     '--header-color-alt',
+//     process.env.VUE_APP_CSS_COLOR_ALT || config.color
+//   );
 // }
 
 if (config.theme) {

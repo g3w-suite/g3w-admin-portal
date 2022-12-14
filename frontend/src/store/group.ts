@@ -25,12 +25,15 @@ const getters: GetterTree<IGroupState, IRootState> = {
   macroGroup:             (state): (id: number) => MacroGroup => (id: number) => state.MacroGroups[id],
   search:                 (state): string                    => state.Search,
   activeGroup:            (state): SuperGroup | null         => state.ActiveGroup,
-  superGroups:            (state): SuperGroup[]              => [...Object.values(state.MacroGroups), ...Object.values(state.GroupsWithNoMacroGroup)],
   groupsWithNoMacroGroup: (state): IGroupDict                => state.GroupsWithNoMacroGroup,
   groupsInMacroGroup:     (state): (id: number) => Group[]   => (id: number) => state.GroupsInMacroGroups[id],
   groups:                 (state): IGroupDict                => state.Groups,
   projectsInGroup:        (state): (id: number) => Project[] => (id: number) => state.ProjectsInGroups[id],
   projects:               (state): Project[]                 => state.Projects,
+  superGroups:            (state): SuperGroup[]              => [
+    ...Object.values(state.MacroGroups),
+    ...Object.values(state.GroupsWithNoMacroGroup),
+  ],
   filteredProjects:       (state): Project[]                 => {
     const s = state.Search.toLowerCase();
     return state.Projects.filter(

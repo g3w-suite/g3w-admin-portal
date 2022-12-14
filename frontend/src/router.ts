@@ -4,8 +4,8 @@ import Vue from 'vue';
 import Router, { Route, RouterMode } from 'vue-router';
 import config from './config';
 import store from './store';
-import { MacroGroup } from './types/TMacroGroup';
 import { Group } from './types/TGroup';
+import { MacroGroup } from './types/TMacroGroup';
 
 Vue.use(Router);
 
@@ -19,8 +19,9 @@ let ready: boolean = false;
 /**
  * Fetch some general application data
  */
-const fetchData = async function(locale: string) {
+const fetchData = async (locale: string) => {
   store.dispatch('showLoader');
+  // @ts-ignore
   await Promise.allSettled([
     store.dispatch('info/fetchInfo', { locale }),
     store.dispatch('settings/fetchPictures', { locale }),
@@ -34,7 +35,7 @@ const fetchData = async function(locale: string) {
 /**
  * Make sure that 'group/ActiveGroup' is getter is always set afetr each route change
  */
-const setActiveGroup = async function(to: Route) {
+const setActiveGroup = async (to: Route) => {
   let sg: Group | MacroGroup | null = null;
 
   switch (to.name) {
@@ -54,7 +55,7 @@ const setActiveGroup = async function(to: Route) {
  *
  * @return a valid 'group/ActiveGroup' element
  */
-const fetchGroupData = async function(to: Route): Promise<Group | null> {
+const fetchGroupData = async (to: Route): Promise<Group | null> => {
   const {id, group, lang} = to.params;
 
   // Home > Group
@@ -77,7 +78,7 @@ const fetchGroupData = async function(to: Route): Promise<Group | null> {
  *
  * @return a valid 'group/ActiveGroup' element
  */
-const fetchMacroGroupData = async function(to: Route): Promise<Group | MacroGroup | null> {
+const fetchMacroGroupData = async (to: Route): Promise<Group | MacroGroup | null> => {
   const { id, group } = to.params;
 
   // Home > MacroGroup

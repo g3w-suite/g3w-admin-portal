@@ -51,7 +51,7 @@ export class Info {
     this.groups_title           = data && data.groups_title || '';
     this.groups_map_description = data && data.groups_map_description || '';
     this.login_description      = data && data.login_description || '';
-    this.login_title            = data && data.login_title;
+    this.login_title            = data && data.login_title || '';
     this.suite_logo             = data && data.suite_logo || '';
     this.url_suite_logo         = data && data.url_suite_logo || '';
     this.credits                = data && data.credits || '';

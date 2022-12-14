@@ -1,6 +1,7 @@
 export interface IGroup {
   id: number;
   name: string;
+  description: string;
   title: string;
   srid: number;
   header_logo_link: string | null;

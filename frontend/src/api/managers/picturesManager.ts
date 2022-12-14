@@ -1,4 +1,4 @@
-import { httpClient, IHttpClient } from '@/api/HttpClient';
+import { httpClient as HTTPCLIENT, IHttpClient } from '@/api/HttpClient';
 import { IPictures } from '@/types/IPictures';
 import { IPicturesManager } from '@/types/IPicturesManager';
 
@@ -11,4 +11,4 @@ export class PicturesManager implements IPicturesManager {
   }
 }
 
-export const picturesManager: PicturesManager = new PicturesManager(httpClient);
+export const picturesManager: PicturesManager = new PicturesManager(HTTPCLIENT);

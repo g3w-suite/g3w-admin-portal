@@ -15,6 +15,7 @@
 import Projects from '@/components/Projects.vue';
 import { Group } from '@/types/TGroup';
 import { Info } from '@/types/TInfo';
+import { MacroGroup } from '@/types/TMacroGroup';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
@@ -36,13 +37,11 @@ export default class VGroup extends Vue {
     immediate: true,
     deep: true,
   })
-  public async onRouteParamsChange({ id, group }) {
+  public async onRouteParamsChange({ id, group }: { id?: number, group?: number }) {
     // Home > Groups
     if (undefined === id) {
       this.items = this.$store.getters['group/superGroups'];
-    }
-    // Home > Groups > Group
-    else {
+    } else {
       this.items = this.$store.getters['group/projectsInGroup'](group || id);
     }
   }

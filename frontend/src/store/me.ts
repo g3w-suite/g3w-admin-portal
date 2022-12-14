@@ -20,7 +20,7 @@ const actions: ActionTree<IUserState, IRootState> = {
   fetchWhoAmI: ({commit}, {locale}): Promise<void> =>
     loginManager
       .who_am_i(locale)
-      .then((u) =>  { u.is_authenticated && commit('setUser', new User(u)); })
+      .then((u) =>  { if (u.is_authenticated) { commit('setUser', new User(u)); } })
       .catch((e) => { commit('setUser', null); }),
 
   logout: ({commit}, {locale}): Promise<void> =>

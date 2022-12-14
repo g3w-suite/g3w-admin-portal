@@ -78,7 +78,7 @@ export default class Breadcrumb extends Vue {
       let text = '';
 
       // route params
-      const params = {};
+      const params: { [key: string]: string } = {};
 
       // active crumb item (last item of array)
       const activeCrumb = (activeGroup && activeGroup.title) || '';

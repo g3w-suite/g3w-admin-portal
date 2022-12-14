@@ -1,4 +1,4 @@
-import { httpClient, IHttpClient } from '@/api/HttpClient';
+import { httpClient as HTTPCLIENT, IHttpClient } from '@/api/HttpClient';
 import { ILoginManager } from '@/types/ILoginManager';
 import { ILoginResponse } from '@/types/ILoginResponse';
 import { ILogoutResponse } from '@/types/ILogoutResponse';
@@ -36,4 +36,4 @@ export class LoginManager implements ILoginManager {
 
 }
 
-export const loginManager: LoginManager = new LoginManager(httpClient);
+export const loginManager: LoginManager = new LoginManager(HTTPCLIENT);

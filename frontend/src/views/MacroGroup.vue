@@ -34,13 +34,11 @@ export default class VMacroGroup extends Vue {
   @Watch('$route.params', {
     immediate: true,
   })
-  public async onRouteParamsChange({ id }) {
+  public async onRouteParamsChange({ id }: { id?: number } ) {
     // Home > MacroGroups
     if (!id) {
       this.items = Object.values(this.$store.getters['group/macroGroups']);
-    }
-    // Home > MacroGroups > MacroGroup
-    else {
+    } else {
       this.items = this.$store.getters['group/groupsInMacroGroup'](id);
     }
   }

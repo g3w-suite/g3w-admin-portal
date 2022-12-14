@@ -1,4 +1,4 @@
-import { httpClient, IHttpClient } from '@/api/HttpClient';
+import { httpClient as HTTPCLIENT, IHttpClient } from '@/api/HttpClient';
 import { IInfo } from '@/types/IInfo';
 import { IInfoManager } from '@/types/IInfoManager';
 import { Info } from '@/types/TInfo';
@@ -16,4 +16,4 @@ export class InfoManager implements IInfoManager {
 
 }
 
-export const infoManager: InfoManager = new InfoManager(httpClient);
+export const infoManager: InfoManager = new InfoManager(HTTPCLIENT);

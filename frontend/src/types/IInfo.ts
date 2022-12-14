@@ -12,6 +12,7 @@ export interface IInfo {
   groups_title: string;
   groups_map_description: string;
   login_description: string;
+  login_title: string;
   suite_logo: string;
   url_suite_logo: string;
   credits: string;

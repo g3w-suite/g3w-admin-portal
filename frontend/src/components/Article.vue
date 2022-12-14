@@ -77,7 +77,7 @@ export default class Article extends Vue {
     return this.item.InstanceOf;
   }
 
-  public get_group_url() : string {
+  public get_group_url(): string {
     // Macrogroups > Macrogroup
     if (this.type === this.boxtype.MG) {
       return `/${this.$i18n.locale}/organization/${this.item.Id}`;
