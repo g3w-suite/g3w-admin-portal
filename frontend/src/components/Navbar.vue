@@ -223,7 +223,7 @@ export default class Navbar extends Vue {
   }
 
   public logout() {
-    // custom logout page
+    // redirect to custom logout page
     const { logout_url, login_url } = this.$store.getters['info/info'];
     if ('login' !== login_url) {
       location.href = logout_url;

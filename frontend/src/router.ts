@@ -133,7 +133,7 @@ const router = new Router({
           meta: {
           },
           beforeEnter(to, from, next) {
-            // custom login page
+            // redirect to custom login page
             const { login_url } = store.getters['info/info'];
             if ('login' !== login_url) {
               location.href = login_url;
