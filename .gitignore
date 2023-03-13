@@ -1,7 +1,32 @@
-/frontend/node_modules/
-.idea
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Python setuptools
+*.egg
+*.egg-info/
+*.eggs
+
+# Python virtualenv
+.venv/
+venv/
+
+# PyPi related files
+.coverage
+dist/
+build/
+
+_version.py
+
+/portal/frontend/node_modules/
+.idea
+
+Makefile.semver.mk
+Makefile.venv.mk

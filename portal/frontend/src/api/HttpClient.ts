@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import config from '@/config';
 
 export interface IHttpClient {
   get: <T>(url: string, config?: AxiosRequestConfig)             => Promise<T>;
@@ -11,8 +12,8 @@ class HttpClient implements IHttpClient {
 
   constructor() {
     this.http = axios.create({
-      baseURL: (window as any).API_BASE_URL || '/',
-      withCredentials: false,
+      baseURL: config.api_base_url,
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
       },

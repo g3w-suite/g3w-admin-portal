@@ -4,7 +4,7 @@ module.exports = {
   filenameHashing: false,
   // runtimeCompiler: true,
   devServer: {
-    proxy:  'http://'+ process.env.PROXY_SERVER +':' + process.env.PROXY_PORT,
+    // proxy:  'http://'+ process.env.PROXY_SERVER +':' + process.env.PROXY_PORT,
     port: 8080
   }
 }
