@@ -132,6 +132,16 @@ const router = new Router({
           component: () => import(/* webpackChunkName: "portal-user" */ '@/views/Login.vue'),
           meta: {
           },
+          beforeEnter(to, from, next) {
+            // redirect to custom login page
+            const { login_url } = store.getters['info/info'];
+            if ('login' !== login_url) {
+              location.href = login_url;
+              return false;
+            }
+            // default login
+            next();
+          },
         },
         {
           path: 'admin/',

@@ -15,6 +15,8 @@ export class Info {
   public readonly groups_map_description: string;
   public readonly login_description: string;
   public readonly login_title: string;
+  public readonly login_url: string;
+  public readonly logout_url: string;
   public readonly suite_logo: string;
   public readonly url_suite_logo: string;
   public readonly credits: string;
@@ -52,6 +54,8 @@ export class Info {
     this.groups_map_description = data && data.groups_map_description || '';
     this.login_description      = data && data.login_description || '';
     this.login_title            = data && data.login_title || '';
+    this.login_url              = data && data.login_url || '';
+    this.logout_url             = data && data.logout_url || '';
     this.suite_logo             = data && data.suite_logo || '';
     this.url_suite_logo         = data && data.url_suite_logo || '';
     this.credits                = data && data.credits || '';
