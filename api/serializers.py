@@ -173,8 +173,10 @@ class GenericSuiteDataSerializer(GetUnlanguageFieldsMixin, serializers.ModelSeri
             ret['reset_password_url'] = reverse('password_reset')
 
         # add login_url and logout_url to view
-        ret['login_url'] = settings.LOGIN_URL
-        ret['logout_url'] = reverse('logout')
+        login_url = getattr(settings, 'LOGIN_URL')
+        if login_url:
+            ret['login_url'] = settings.LOGIN_URL
+            ret['logout_url'] = reverse('logout')
 
         return ret
 
