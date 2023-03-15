@@ -4,7 +4,7 @@ G3W-ADMIN fronted portal for G3W-SUITE.
 
 ## Installation
 
-**NB** whatever your final purpose is (deploying or contributing), make sure to download this repository outside of the applications folder [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.5.x/g3w-admin) (that's why we are using the python package [flat-layout](https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#flat-layout)). If in doubt the `/shared-volume/g3w-admin-portal` folder is a great place to start:
+**NB** whatever your final purpose is (deploying or contributing), make sure to download this repository outside of the [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.5.x/g3w-admin) applications folder (that's why here we are using the python [flat-layout](https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#flat-layout) packaging structure). If in doubt the `/shared-volume/g3w-admin-portal` folder is a great place to start:
 
 ```sh
 # Install module from bitbucket (v1.0.0)
@@ -121,8 +121,8 @@ Update your CORS settings accordingly within local_settings.py file:
 ## CORS Headers
 # ------------------------------------------------------
 # https://pypi.org/project/django-cors-headers/
-# https://docs.djangoproject.com/en/2.2/topics/settings/
-# https://docs.djangoproject.com/en/3.1/topics/settings/
+# https://docs.djangoproject.com/en/2.2/ref/settings/
+# https://docs.djangoproject.com/en/3.1/ref/settings/
 
 CORS_ALLOW_ALL_ORIGINS  = False                  # NB: True = DEBUGGING ONLY!
 CORS_ALLOWED_ORIGINS    = [                      # NB: DIFFERENT PORT == DIFFERENT SERVER
