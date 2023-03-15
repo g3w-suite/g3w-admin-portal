@@ -138,8 +138,10 @@ CORS_ALLOWED_ORIGINS    = [                      # NB: DIFFERENT PORT == DIFFERE
 CORS_ALLOW_CREDENTIALS  = True                   # enable CORS Authentication
 CORS_ORIGIN_WHITELIST   = CORS_ALLOWED_ORIGINS
 CSRF_TRUSTED_ORIGINS    = CORS_ALLOWED_ORIGINS
-CSRF_COOKIE_SAMESITE    = None                   # CHANGE ME: 'None' in Django >= v3.1
+CSRF_COOKIE_DOMAIN      = 'localhost'            # CHANGE ME: '.yourdomain.com' in PRODUCTION!
+CSRF_COOKIE_SAMESITE    = None                   # TODO: uninstall "django-samesite-none" in Django >= v3.1
 CSRF_COOKIE_SECURE      = False                  # CHANGE ME: True in PRODUCTION!
+SESSION_COOKIE_DOMAIN   = CSRF_COOKIE_DOMAIN
 SESSION_COOKIE_SAMESITE = CSRF_COOKIE_SAMESITE
 SESSION_COOKIE_SECURE   = CSRF_COOKIE_SECURE
 ```

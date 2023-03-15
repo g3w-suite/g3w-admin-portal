@@ -1,1 +1,2 @@
+django-samesite-none==0.0.3
 django-cors-headers==3.11.0
