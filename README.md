@@ -4,16 +4,34 @@ G3W-ADMIN fronted portal for G3W-SUITE.
 
 ## Installation
 
-Add module to g3w-admin directory
+**NB** whatever your final purpose is (deploying or contributing), make sure to download this repository outside of the applications folder [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.5.x/g3w-admin) (that's why we are using the python package [flat-layout](https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#flat-layout)). If in doubt the `/shared-volume/g3w-admin-portal` folder is a great place to start:
 
-```bash
-git clone https://wlorenzetti@bitbucket.org/gis3w/g3w-admin-portal.git
-mv g3w-admin-portal /<path_to_g3wsuite>/g3w-admin/portal
+```sh
+# Install module from bitbucket (v1.0.0)
+pip3 install git+https://bitbucket.org/gis3w/g3w-admin-portal.git@v1.0.0
+
+# Install module from bitbucket (master branch)
+# pip3 install git+https://bitbucket.org/gis3w/g3w-admin-portal.git@master
+
+# Install module from bitbucket (as wlorenzetti user)
+# pip3 install git+https://wlorenzetti@bitbucket.org/gis3w/g3w-admin-portal.git
+
+# Install module from bitbucket (with a private token)
+# export BITBUCKET_TOKEN=<bitbucket_username>:<private_access_token>
+# pip3 install git+https://$BITBUCKET_TOKEN@bitbucket.org/gis3w/g3w-admin-portal.git
+
+# Install module from local folder (git development)
+# pip3 install -e /shared-volume/g3w-admin-portal
+
+# Install module from PyPi (not yet available)
+# pip3 install g3w-admin-portal
 ```
 
-Add 'frontend' module to G3W_LOCAL_MORE_APPS config value inside local_settings.py:
+Enable `'portal'` module adding it to `G3W_LOCAL_MORE_APPS` list:
 
-```python
+```py
+# local_settings.py
+
 G3WADMIN_LOCAL_MORE_APPS = [
     ...
     'portal'
@@ -21,7 +39,21 @@ G3WADMIN_LOCAL_MORE_APPS = [
 ]
 ```
 
-To activate 'frontend' module and to set the frontend app for G3W-SUITE set in to local_settings.py:
+Refer to [g3w-suite-docker](https://github.com/g3w-suite/g3w-suite-docker) repository for more info about running this on a docker instance.
+
+**NB** On Ubuntu Jammy you could get an `UNKNOWN` package install instead of `g3w-admin-portal`, you can retry installing it as follows to fix it:
+
+```sh
+# Fix: https://github.com/pypa/setuptools/issues/3269#issuecomment-1254507377
+export DEB_PYTHON_INSTALL_LAYOUT=deb_system
+
+# And then install again the module
+pip3 install ...
+```
+
+# Configuration
+
+Here are some reccomended local_settings.py (same site installation, alongside a [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.5.x/g3w-admin) instance):
 
 ```python
 ...
@@ -81,6 +113,44 @@ PORTAL_FAVICON  = '/static/img/favicon.ico'
 
 ```
 
+### Cross domain authentication
+
+Update your CORS settings accordingly within local_settings.py file:
+
+```py
+## CORS Headers
+# ------------------------------------------------------
+# https://pypi.org/project/django-cors-headers/
+# https://docs.djangoproject.com/en/2.2/topics/settings/
+# https://docs.djangoproject.com/en/3.1/topics/settings/
+
+CORS_ALLOW_ALL_ORIGINS  = False                  # NB: True = DEBUGGING ONLY!
+CORS_ALLOWED_ORIGINS    = [                      # NB: DIFFERENT PORT == DIFFERENT SERVER
+    'http://localhost:8080',
+    'http://127.0.0.1:8080',
+    'http://localhost:8081',
+    'http://127.0.0.1:8081',
+    'http://localhost:80',
+    'http://127.0.0.1:80',
+    'http://localhost',
+    'http://127.0.0.1',
+]
+CORS_ALLOW_CREDENTIALS  = True                   # enable CORS Authentication
+CORS_ORIGIN_WHITELIST   = CORS_ALLOWED_ORIGINS
+CSRF_TRUSTED_ORIGINS    = CORS_ALLOWED_ORIGINS
+CSRF_COOKIE_SAMESITE    = None                   # CHANGE ME: 'None' in Django >= v3.1
+CSRF_COOKIE_SECURE      = False                  # CHANGE ME: True in PRODUCTION!
+SESSION_COOKIE_SAMESITE = CSRF_COOKIE_SAMESITE
+SESSION_COOKIE_SECURE   = CSRF_COOKIE_SECURE
+```
+
+## Demo content
+
+To load default portal pictures:
+
+```
+./manage.py loaddata_picture
+```
 
 ## DEPRECATED SETTINGS (< v0.1.0)
 
@@ -103,8 +173,12 @@ PORTAL_FAVICON  = '/static/img/favicon.ico'
 # PORTAL_COLOR = 'yellow' #(violet, default) 
 ```
 
-To load default portal picture
+---
 
-```
-./manage.py loaddata_picture
-```
+**Compatibile with:**
+[![g3w-admin version](https://img.shields.io/badge/g3w--admin-3.5-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-admin/tree/v.3.5.x)
+[![g3w-suite-docker version](https://img.shields.io/badge/g3w--suite--docker-3.5-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-suite-docker/tree/v3.5.x)
+
+---
+
+**License:** MPL-2
