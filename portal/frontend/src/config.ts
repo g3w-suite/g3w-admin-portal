@@ -14,7 +14,7 @@ const config  =  {
   admin_base_url: process.env.VUE_APP_ADMIN_BASE_URL,
   /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations */
   router_mode: (process.env.VUE_APP_HISTORY_MODE as RouterMode),
-  api_base_url: (window as any).API_BASE_URL || process.env.VUE_APP_API_BASE_URL || '/'
+  api_base_url: (window as any).API_BASE_URL || process.env.VUE_APP_API_BASE_URL || '/',
 };
 
 export default config;
