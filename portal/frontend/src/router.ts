@@ -33,7 +33,7 @@ const fetchData = async (locale: string) => {
 };
 
 /**
- * Make sure that 'group/ActiveGroup' is getter is always set afetr each route change
+ * Make sure that 'group/ActiveGroup' getter is always set after each route change
  */
 const setActiveGroup = async (to: Route) => {
   let sg: Group | MacroGroup | null = null;
