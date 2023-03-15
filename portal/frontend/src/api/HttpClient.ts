@@ -1,5 +1,5 @@
+import appConfig from '@/config';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import config from '@/config';
 
 export interface IHttpClient {
   get: <T>(url: string, config?: AxiosRequestConfig)             => Promise<T>;
@@ -12,7 +12,7 @@ class HttpClient implements IHttpClient {
 
   constructor() {
     this.http = axios.create({
-      baseURL: config.api_base_url,
+      baseURL: appConfig.api_base_url,
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
