@@ -18,11 +18,11 @@
         <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
       </figure>
       <p class="grid">
-        <a :href="get_admin_url(item.map_url)" rel="noopener noreferrer" target="_blank">
+        <a :href="get_admin_url(map_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="expand-arrows-alt" size="lg" />
           <span> {{ $t('messages.maps.view') }}</span>
         </a>
-        <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn']" :href="get_admin_url(item.edit_url)" rel="noopener noreferrer" target="_blank">
+        <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn'] && edit_url" :href="get_admin_url(edit_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="pencil-alt" size="lg" />
           <span> {{ $t('messages.maps.edit') }}</span>
         </a>
@@ -65,8 +65,16 @@ export default class Article extends Vue {
     return this.item.description;
   }
 
+  get edit_url(): string {
+    return (this.item as Project).edit_url;
+  }
+
   get img_url(): string {
     return this.item.Logo;
+  }
+
+  get map_url(): string {
+    return (this.item as Project).map_url;
   }
 
   get className(): string {
