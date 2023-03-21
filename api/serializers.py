@@ -128,6 +128,7 @@ class MacroGroupSerializer(serializers.ModelSerializer):
         model = MacroGroup
         fields = (
             'id',
+            'name',
             'title',
             'description',
             'logo_img',
