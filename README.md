@@ -115,7 +115,9 @@ PORTAL_FAVICON  = '/static/img/favicon.ico'
 
 ### Cross domain authentication
 
-Update your CORS settings accordingly within local_settings.py file:
+Install [g3w-admin-authjwt](https://github.com/g3w-suite/g3w-admin-authjwt) module on your remote server.
+
+And then update your CORS settings accordingly within local_settings.py file:
 
 ```py
 ## CORS Headers
@@ -135,15 +137,32 @@ CORS_ALLOWED_ORIGINS    = [                      # NB: DIFFERENT PORT == DIFFERE
     'http://localhost',
     'http://127.0.0.1',
 ]
-CORS_ALLOW_CREDENTIALS  = True                   # enable CORS Authentication
-CORS_ORIGIN_WHITELIST   = CORS_ALLOWED_ORIGINS
-CSRF_TRUSTED_ORIGINS    = CORS_ALLOWED_ORIGINS
-CSRF_COOKIE_DOMAIN      = 'localhost'            # CHANGE ME: '.yourdomain.com' in PRODUCTION!
-CSRF_COOKIE_SAMESITE    = None                   # TODO: uninstall "django-samesite-none" in Django >= v3.1
-CSRF_COOKIE_SECURE      = False                  # CHANGE ME: True in PRODUCTION!
-SESSION_COOKIE_DOMAIN   = CSRF_COOKIE_DOMAIN
-SESSION_COOKIE_SAMESITE = CSRF_COOKIE_SAMESITE
-SESSION_COOKIE_SECURE   = CSRF_COOKIE_SECURE
+
+## Additional CORS settings (JWT only = reccomendend when using a third-party domain for authentication)
+# ------------------------------------------------------
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/blacklist_app.html
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/stateless_user_authentication.html
+
+# from datetime import timedelta
+# JWT_AUTH = {
+#    'JWT_ALLOW_REFRESH': True,
+#    'JWT_EXPIRATION_DELTA': timedelta(hours=1),        
+#    'JWT_REFRESH_EXPIRATION_DELTA': timedelta(days=7), 
+#    # 'AUTH_HEADER_TYPES': ('Bearer', 'JWT', )
+# }
+
+## Additional CORS settings (cookie only = reccomendend when using sub-domain authentication)
+# ------------------------------------------------------
+
+# CORS_ALLOW_CREDENTIALS  = True                   # enable CORS Authentication
+# CORS_ORIGIN_WHITELIST   = CORS_ALLOWED_ORIGINS
+# CSRF_TRUSTED_ORIGINS    = CORS_ALLOWED_ORIGINS
+# CSRF_COOKIE_DOMAIN      = 'localhost'            # CHANGE ME: '.yourdomain.com' in PRODUCTION!
+# CSRF_COOKIE_SAMESITE    = None                   # TODO: uninstall "django-samesite-none" in Django >= v3.1
+# CSRF_COOKIE_SECURE      = False                  # CHANGE ME: True in PRODUCTION!
+# SESSION_COOKIE_DOMAIN   = CSRF_COOKIE_DOMAIN
+# SESSION_COOKIE_SAMESITE = CSRF_COOKIE_SAMESITE
+# SESSION_COOKIE_SECURE   = CSRF_COOKIE_SECURE
 ```
 
 ## Demo content

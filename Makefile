@@ -1,3 +1,5 @@
+PROJECT_NAME = G3W-ADMIN-AUTHJWT
+
 INCLUDE_MAKEFILES_RELEASE = v0.1.3
 INCLUDE_MAKEFILES =         Makefile.semver.mk Makefile.venv.mk
 
