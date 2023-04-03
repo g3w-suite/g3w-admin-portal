@@ -45,7 +45,7 @@ const actions: ActionTree<IUserState, IRootState> = {
 
         // const ping = () => {
         //   return axiosJWT.get(
-        //     store.state.endpoints.heartbeat,
+        //     'http://localhost:8000/authjwt/api/ping/'
         //     { params: { id: 'PONG' } }
         //     )
         //     .then((response) => Promise.resolve(response.data))
@@ -85,7 +85,9 @@ const actions: ActionTree<IUserState, IRootState> = {
 };
 
 const mutations: MutationTree<IUserState> = {
-  setUser: (state, i): void => { state.me = i; },
+  setUser: (state, i): void => {
+    state.me = i; // TODO find out if doing like so could be more reccomended: `Vue.set(state, 'me', i);`
+  },
 };
 
 export default {

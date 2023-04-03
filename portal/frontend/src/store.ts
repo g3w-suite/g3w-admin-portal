@@ -17,17 +17,8 @@ const store: StoreOptions<IRootState> = {
   state: {
     showLoader: false,
     errors: [],
-    authUser: [],
-    isAuthenticated: false,
     access_token: localStorage.getItem('access_token'),
     refresh_token: localStorage.getItem('refresh_token'),
-    endpoints: {
-      // TODO: remove hardcoded dev entrypoints
-      obtainJWT:  'http://localhost:8000/authjwt/api/token/',
-      refreshJWT: 'http://localhost:8000/authjwt/api/token/refresh/',
-      heartbeat:  'http://localhost:8000/authjwt/api/ping/',
-      // baseUrl: 'http://127.0.1:8000/api/v1/',
-    },
     crossOrigin: !sameOrigin((window as any).location, config.api_base_url), // TODO: || config.useAuthTokens,
   },
   modules: {
@@ -58,10 +49,6 @@ const store: StoreOptions<IRootState> = {
     },
     removeErrors({commit}) {
       commit('removeErrors');
-    },
-    setAuthUser(state, { authUser, isAuthenticated }) {
-      Vue.set(state, 'authUser', authUser);
-      Vue.set(state, 'isAuthenticated', isAuthenticated);
     },
     setTokens({ commit }, newToken) {
       commit('setLocalStorage', { name: 'access_token', value: newToken.access });
