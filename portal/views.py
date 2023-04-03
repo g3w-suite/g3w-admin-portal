@@ -58,8 +58,11 @@ class PortalView(TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
+
             # TODO optional setting for API_BASE_URL (cross domain API) 
             'API_BASE_URL': self.request.build_absolute_uri('/'),
+
+            'LANGUAGES': [l[0] for l in settings.LANGUAGES],
 
             # DEPRECATED since v1.0.0
             'IS_PA': getattr(settings, 'PORTAL_IS_PA', False),
@@ -72,9 +75,7 @@ class PortalView(TemplateView):
             
             # DEPRECATED since v1.0.0
             'PORTAL_COLOR': getattr(settings, 'PORTAL_COLOR', 'violet'),
-            
-            # DEPRECATED since v1.0.0
-            'LANGUAGES': [l[0] for l in settings.LANGUAGES]
+
         }
 
 
