@@ -151,7 +151,7 @@ CORS_ALLOWED_ORIGINS    = [                      # NB: DIFFERENT PORT == DIFFERE
 #    # 'AUTH_HEADER_TYPES': ('Bearer', 'JWT', )
 # }
 
-## Additional CORS settings (cookie only = reccomendend when using sub-domain authentication)
+## Additional CORS settings (cookie only = reccomendend when using a sub-domain for authentication)
 # ------------------------------------------------------
 
 # CORS_ALLOW_CREDENTIALS  = True                   # enable CORS Authentication

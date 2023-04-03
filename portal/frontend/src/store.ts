@@ -28,7 +28,7 @@ const store: StoreOptions<IRootState> = {
       heartbeat:  'http://localhost:8000/authjwt/api/ping/',
       // baseUrl: 'http://127.0.1:8000/api/v1/',
     },
-    crossOrigin: !sameOrigin((window as any).location, config.api_base_url) || config.useAuthTokens,
+    crossOrigin: !sameOrigin((window as any).location, config.api_base_url), // TODO: || config.useAuthTokens,
   },
   modules: {
     info,
@@ -97,7 +97,7 @@ const store: StoreOptions<IRootState> = {
     setLoader(state, show) {
       state.showLoader = show;
     },
-    setLocalStorage(state, { name, value = null }) {
+    setLocalStorage(state, { name, value = null }: { name: 'access_token'| 'refresh_token', value: string | null }) {
       // TODO: for security purposes, take localStorage out of the project
       if (value) {
         localStorage.setItem(name, value);
