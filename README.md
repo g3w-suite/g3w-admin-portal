@@ -120,6 +120,12 @@ Install [g3w-admin-authjwt](https://github.com/g3w-suite/g3w-admin-authjwt) modu
 And then update your CORS settings accordingly within local_settings.py file:
 
 ```py
+## Static URLs
+# ------------------------------------------------------
+
+STATIC_URL  = 'http://localhost:8000/static/' # CHANGE ME: 'http://yourdomain.com/static' in PRODUCTION!
+STATIC_ROOT = '/shared-volume/static/'
+
 ## CORS Headers
 # ------------------------------------------------------
 # https://pypi.org/project/django-cors-headers/

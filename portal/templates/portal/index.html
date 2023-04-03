@@ -6,8 +6,10 @@
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
     <meta name=viewport content="width=device-width,initial-scale=1">
+    {# Fix relative URLs (eg. relative links and images within text) when we are working with an external API server  #}
+    <base href="{{ API_BASE_URL }}" />
     <title>{{ admin_page_title }}</title>
-    <link rel=icon href=/favicon.ico>
+    <link rel=icon href="{% static '/img/favicon.ico' %}">
     <link rel=preload as=style  href="{% static 'frontend/css/app.css' %}">
     <link rel=preload as=style  href="{% static 'frontend/css/chunk-vendors.css' %}">
     <link rel=preload as=script href="{% static 'frontend/js/app.js' %}">
