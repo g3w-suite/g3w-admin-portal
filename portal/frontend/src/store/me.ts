@@ -55,12 +55,14 @@ const actions: ActionTree<IUserState, IRootState> = {
       if (!refreshTokenPromise) {
         refreshTokenPromise = new Promise((resolve, reject) => {
           loginManager(rootState)
-            .refresh(rootState.refresh_token) // TODO: update `ILoginManager` interface ?
-            .then((data) => {
+            // TODO: update `ILoginManager` interface ?
+            // @ts-ignore
+            .refresh(rootState.refresh_token)
+            .then((data: { access: string }) => {
               dispatch('setTokens', { access: data.access, refresh: rootState.refresh_token }, { root: true });
               resolve(data.access);
             })
-            .catch((err) => reject(err))
+            .catch((err: unknown) => reject(err))
             .finally(() => { refreshTokenPromise = null; });
         });
       }
