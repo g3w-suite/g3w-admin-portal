@@ -12,7 +12,6 @@ export class JWTManager implements ILoginManager {
    * Fetch user status (logged in/out)
    */
   public who_am_i(locale: string = 'en'): Promise<IWhoAmI> {
-    // return this.httpClient.get<IWhoAmI>('authjwt/api/ping/', { params: { id: 'PONG' } });
     return this.httpClient.get<IWhoAmI>(locale + '/portal/api/whoami/');
   }
 
@@ -40,7 +39,7 @@ export class JWTManager implements ILoginManager {
   /**
    * Heartbeat request (PING -> PONG)
    */
-  public ping(token: string) {
+  public ping() {
     return this.httpClient.get<unknown>('/authjwt/api/ping/', { params: { id: 'PONG' } });
   }
 

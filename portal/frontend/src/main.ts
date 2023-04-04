@@ -8,10 +8,10 @@ import '@fontsource/titillium-web/700.css';
 import Vue from 'vue';
 import Fragment from 'vue-fragment';
 import VueI18n from 'vue-i18n';
-import App from './App.vue';
-import config from './config';
-import router from './router';
-import store from './store';
+import App from '@/App.vue';
+import config from '@/config';
+import router from '@/router';
+import store from '@/store';
 
 // if (config.stylesheet) {
 //   const css = document.createElement('link');

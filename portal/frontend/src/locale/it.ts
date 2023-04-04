@@ -1,9 +1,11 @@
 // @todo
 export const it: any = {
   messages: {
+
     home: {
       show_all_button: 'Mostra tutti',
     },
+
     footer: {
       contacts: 'Contatti',
     },

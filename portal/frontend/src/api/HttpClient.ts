@@ -42,14 +42,16 @@ class HttpClient implements IHttpClient {
     this.http.interceptors.response.use(
       (response) => response,
       (error: AxiosError) => {
-        // TODO: write some tests (ie. prevent infinite loop on expired refresh token)
-        // For example?
-        //  this.http.interceptors.response.eject();
-
-        if (error.response && [401, 403].includes(error.response.status)) {
-          return store
-                .dispatch('me/refresh')
-                .then(() => this.http.request(error.config));
+        // CORS JWT sessions (expired access_token)
+        if (store.state.crossOrigin && store.state.refresh_token) {
+          // TODO: write some tests (ie. prevent infinite loop on expired refresh token)
+          // For example?
+          //  this.http.interceptors.response.eject();
+          if (error.response && [401, 403].includes(error.response.status)) {
+            return store
+                  .dispatch('me/refresh')
+                  .then(() => this.http.request(error.config));
+          }
         }
         return Promise.reject(error);
     });

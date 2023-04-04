@@ -77,7 +77,7 @@ export default class Login extends Vue {
   public passwordError: boolean = false;
   public usernameError: boolean = false;
   public loginError: boolean = false;
-  private extra_message: string = '';
+  private error_message: string = '';
 
   public login() {
     if (!this.username) {
@@ -97,7 +97,7 @@ export default class Login extends Vue {
         .then(() => this.$store.dispatch('me/fetchWhoAmI', { locale: this.$i18n.locale }))
         .then(() => this.$router.push({ name: 'home' }))
         .catch((e) => {
-          this.extra_message = e;
+          this.error_message = e;
           this.loginError = true;
         });
     }

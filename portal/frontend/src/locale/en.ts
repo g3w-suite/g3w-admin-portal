@@ -1,8 +1,10 @@
 export const en: any = {
   messages: {
+
     home: {
       show_all_button: 'Show all',
     },
+
     footer: {
       contacts: 'Contacts',
     },
@@ -53,5 +55,6 @@ export const en: any = {
       edit: 'Edit',
       sview: 'View',
     },
+
   },
 };

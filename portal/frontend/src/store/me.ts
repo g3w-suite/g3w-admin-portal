@@ -3,6 +3,7 @@ import { IRootState } from '@/types/IRootState';
 import { IUserState } from '@/types/IUserState';
 import User from '@/types/TUser';
 import { loginManager } from '@/utils';
+import { jwtManager } from '@/api/managers/jwtManager';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
 // TODO: should we make this variable a `userState` property?
@@ -54,9 +55,9 @@ const actions: ActionTree<IUserState, IRootState> = {
       // prevent sending multiple token requests
       if (!refreshTokenPromise) {
         refreshTokenPromise = new Promise((resolve, reject) => {
-          loginManager(rootState)
-            // TODO: update `ILoginManager` interface ?
-            // @ts-ignore
+          // TODO: update `ILoginManager` interface ?
+          // loginManager(rootState)
+          jwtManager
             .refresh(rootState.refresh_token)
             .then((data: { access: string }) => {
               dispatch('setTokens', { access: data.access, refresh: rootState.refresh_token }, { root: true });

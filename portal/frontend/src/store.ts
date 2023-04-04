@@ -20,8 +20,8 @@ const store: StoreOptions<IRootState> = {
   state: {
     showLoader: false,
     errors: [],
-    access_token: refresh_token || localStorage.getItem('access_token'),
-    refresh_token: refresh_token || localStorage.getItem('refresh_token'),
+    access_token: refresh_token || localStorage.getItem('access_token') || '',
+    refresh_token: refresh_token || localStorage.getItem('refresh_token') || '',
     crossOrigin: useAuthTokens || !sameOrigin((window as any).location, config.api_base_url),
   },
   modules: {
@@ -73,7 +73,7 @@ const store: StoreOptions<IRootState> = {
       } else {
         localStorage.removeItem(name);
       }
-      state[name] = value;
+      Vue.set(state, name, value);
     },
     addError(state, error: string) {
       state.errors.push(error);
