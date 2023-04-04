@@ -1,10 +1,12 @@
 import { ELoginStatus } from '@/types/ELoginStatus';
-import { ILogoutResponse } from '@/types/ILogoutResponse';
 import { IRootState } from '@/types/IRootState';
 import { IUserState } from '@/types/IUserState';
 import User from '@/types/TUser';
 import { loginManager } from '@/utils';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
+
+// TODO: should we make this variable a `userState` property?
+let refreshTokenPromise: Promise<any> | null;
 
 const userState: IUserState = {
   me: null,
@@ -40,48 +42,31 @@ const actions: ActionTree<IUserState, IRootState> = {
         if (rootState.crossOrigin) {
           dispatch('setTokens', { ...data }, { root: true });
         }
-
-        // get and set auth user
-
-        // const ping = () => {
-        //   return axiosJWT.get(
-        //     'http://localhost:8000/authjwt/api/ping/'
-        //     { params: { id: 'PONG' } }
-        //     )
-        //     .then((response) => Promise.resolve(response.data))
-        //     .catch((error) => Promise.reject(error));
-        // };
-
-        // ping().then((id) => console.log(id));
-
-        // Even though the authentication returned a user object that can be decoded,
-        // we fetch it again. This way we aren't super dependant on JWT and can plug
-        // in something else.
-        // axiosInstance({
-        //   url: "/user/",
-        //   method: "get",
-        //   params: {},
-        // }).then((response) => {
-        //   this.$store.commit("setAuthUser", {
-        //     authUser: response.data,
-        //     isAuthenticated: true,
-        //   });
-        //   this.$router.push({name: "Home"});
-        // });
-
         if (data && (data.status === ELoginStatus.OK || rootState.crossOrigin)) {
           dispatch('fetchWhoAmI', {locale});
         } else {
           commit('setUser', null);
           throw data.error_form;
         }
-      })
-      .catch((error) => {
-        console.log(error);
-        console.debug(error);
-        console.dir(error);
-      })
-      ,
+      }),
+
+    refresh({dispatch, rootState}) {
+      // prevent sending multiple token requests
+      if (!refreshTokenPromise) {
+        refreshTokenPromise = new Promise((resolve, reject) => {
+          loginManager(rootState)
+            .refresh(rootState.refresh_token) // TODO: update `ILoginManager` interface ?
+            .then((data) => {
+              dispatch('setTokens', { access: data.access, refresh: rootState.refresh_token }, { root: true });
+              resolve(data.access);
+            })
+            .catch((err) => reject(err))
+            .finally(() => { refreshTokenPromise = null; });
+        });
+      }
+      return refreshTokenPromise;
+    },
+
 };
 
 const mutations: MutationTree<IUserState> = {

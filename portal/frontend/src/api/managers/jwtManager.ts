@@ -30,8 +30,18 @@ export class JWTManager implements ILoginManager {
     return this.httpClient.post<ILogoutResponse>('/authjwt/api/token/blacklist/', { refresh: token });
   }
 
-  public refresh(locale: string = 'en', token: string) {
-    return this.httpClient.post<ILogoutResponse>('/authjwt/api/token/refresh/', { refresh: token });
+  /**
+   * Refresh an expired "access" token
+   */
+  public refresh(token: string) {
+    return this.httpClient.post<unknown>('/authjwt/api/token/refresh/', { refresh: token });
+  }
+
+  /**
+   * Heartbeat request (PING -> PONG)
+   */
+  public ping(token: string) {
+    return this.httpClient.get<unknown>('/authjwt/api/ping/', { params: { id: 'PONG' } });
   }
 
 }

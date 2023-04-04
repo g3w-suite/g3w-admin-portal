@@ -7,19 +7,22 @@ import modal from '@/store/modal';
 import settings from '@/store/settings';
 import { IRootState } from '@/types/IRootState';
 import { sameOrigin } from '@/utils';
-import axios from 'axios';
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 
 Vue.use(Vuex);
 
+// TODO: write some tests ...
+const refresh_token = false; // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY4MDY4MTYyNSwiaWF0IjoxNjgwNTk1MjI1LCJqdGkiOiJlZTBlMzUwNTdlNzM0YWU3YjBkODViZjFmZjNhM2RhMSIsInVzZXJfaWQiOjJ9.pDWo9Ei5f1ZMpjGmG2Um2V_xiCTaCMxzqkbNzVeFOvE" ;
+const useAuthTokens = true; // TODO: || config.useAuthTokens,
+
 const store: StoreOptions<IRootState> = {
   state: {
     showLoader: false,
     errors: [],
-    access_token: localStorage.getItem('access_token'),
-    refresh_token: localStorage.getItem('refresh_token'),
-    crossOrigin: true, //!sameOrigin((window as any).location, config.api_base_url), // TODO: || config.useAuthTokens,
+    access_token: refresh_token || localStorage.getItem('access_token'),
+    refresh_token: refresh_token || localStorage.getItem('refresh_token'),
+    crossOrigin: useAuthTokens || !sameOrigin((window as any).location, config.api_base_url),
   },
   modules: {
     info,
@@ -53,27 +56,6 @@ const store: StoreOptions<IRootState> = {
     setTokens({ commit }, newToken) {
       commit('setLocalStorage', { name: 'access_token', value: newToken.access });
       commit('setLocalStorage', { name: 'refresh_token', value: newToken.refresh });
-    },
-    // run the below action to get a new access token on expiration
-    refreshTokens({commit, state}) {
-      return new Promise((resolve, reject) => {
-        axios
-        .create({
-          baseURL: config.api_base_url,
-          headers: { 'Content-Type': 'application/json' },
-        })
-        // send the stored refresh token to the backend API
-        .post('/authjwt/api/token/refresh/', { refresh: state.refresh_token })
-          .then((response) => { // if API sends back new access and refresh token update the store
-            console.log('New access successfully generated');
-            commit('setTokens', { ...response.data });
-            resolve(response.data.access);
-          })
-          .catch((err) => {
-            console.log('error in refreshToken Task');
-            reject(err); // error generating new access and refresh token because refresh token has expired
-          });
-      });
     },
     removeTokens({ commit }) {
       commit('setLocalStorage', { name: 'access_token' });

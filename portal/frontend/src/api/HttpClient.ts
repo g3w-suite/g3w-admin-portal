@@ -1,11 +1,10 @@
-import config from '@/config';
 import appConfig from '@/config';
 import store from '@/store';
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export interface IHttpClient {
-  get: <T>(url: string, config?: AxiosRequestConfig)             => Promise<T>;
-  post: <T>(url: string, data?: any, config?: AxiosRequestConfig) => Promise<T>;
+  get: <T>(url: string, config?: AxiosRequestConfig)               => Promise<T>;
+  post: <T>(url: string, data?: any, config?: AxiosRequestConfig)  => Promise<T>;
   patch: <T>(url: string, data?: any, config?: AxiosRequestConfig) => Promise<T>;
 }
 
@@ -42,48 +41,31 @@ class HttpClient implements IHttpClient {
 
     this.http.interceptors.response.use(
       (response) => response,
-      (error) => {
-      // if error response status is 401, it means the request was invalid due to expired access token
-      if (error.response && 401 === error.response.status) {
-        store.dispatch('refreshTokens') // attempt to obtain new access token by running 'refreshToken' action
-          .then((access) => {
-            // if successful re-send the request to get the data from server
-            axios.request({
-              baseURL: appConfig.api_base_url,
-              method: 'get',
-              headers: { Authorization: `${config.auth_header} ${access}` }, // the new access token is attached to the authorization header
-              url: '/mods/',
-            }).then((response) => {
-              // if successfully received the data store it in store.state.APIData so that 'Downloads' component can grab the
-              // data from it and display to the client.
-              console.log('Success getting the Mods', response.data);
-              // store.state.APIData = response.data
-            }).catch((err) => {
-              console.log('Got the new access token but error while trying to fetch data from the API using it');
-              return Promise.reject(err);
-            });
-          })
-          .catch((err) => {
-            return Promise.reject(err);
-          });
-      }
+      (error: AxiosError) => {
+        // TODO: write some tests (ie. prevent infinite loop on expired refresh token)
+        // For example?
+        //  this.http.interceptors.response.eject();
+
+        if (error.response && [401, 403].includes(error.response.status)) {
+          return store
+                .dispatch('me/refresh')
+                .then(() => this.http.request(error.config));
+        }
+        return Promise.reject(error);
     });
 
   }
 
   public async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse = await this.http.get(url, config);
-    return response.data;
+    return (await this.http.get(url, config) as AxiosResponse).data;
   }
 
   public async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse = await this.http.post(url, data, config);
-    return response.data;
+    return (await this.http.post(url, data, config) as AxiosResponse).data;
   }
 
   public async patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    const response: AxiosResponse = await this.http.patch(url, data, config);
-    return response.data;
+    return (await this.http.patch(url, data, config) as AxiosResponse).data;
   }
 }
 
