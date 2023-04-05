@@ -45,7 +45,7 @@ class HttpClient implements IHttpClient {
         // CORS JWT sessions (expired access_token)
         if (store.state.crossOrigin && store.state.refresh_token) {
           if (error.response && [401, 403].includes(error.response.status)) {
-          // prevent infinite loops for response interceptor
+          // prevent infinite loops for any subsequent failed intercepted response 
           this.http.interceptors.response.eject(ejectResponse);
           return store
                   .dispatch('me/refresh')

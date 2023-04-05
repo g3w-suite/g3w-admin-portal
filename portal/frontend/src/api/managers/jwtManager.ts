@@ -33,7 +33,7 @@ export class JWTManager implements ILoginManager {
    * Refresh an expired "access" token
    */
   public refresh(token: string) {
-    return this.httpClient.post<unknown>('/authjwt/api/token/refresh/', { refresh: token });
+    return this.httpClient.post<{ access: string }>('/authjwt/api/token/refresh/', { refresh: token });
   }
 
   /**
