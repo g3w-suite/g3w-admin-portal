@@ -1,9 +1,9 @@
+import { jwtManager } from '@/api/managers/jwtManager';
 import { ELoginStatus } from '@/types/ELoginStatus';
 import { IRootState } from '@/types/IRootState';
 import { IUserState } from '@/types/IUserState';
 import User from '@/types/TUser';
 import { loginManager } from '@/utils';
-import { jwtManager } from '@/api/managers/jwtManager';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
 // TODO: should we make this variable a `userState` property?
@@ -63,7 +63,12 @@ const actions: ActionTree<IUserState, IRootState> = {
               dispatch('setTokens', { access: data.access, refresh: rootState.refresh_token }, { root: true });
               resolve(data.access);
             })
-            .catch((err: unknown) => reject(err))
+            .catch((err: unknown) => {
+              dispatch('removeTokens', undefined, { root: true });
+              // TODO: logout without reload application on expired or invalid refresh token
+              window.location.reload();
+              reject(err);
+            })
             .finally(() => { refreshTokenPromise = null; });
         });
       }

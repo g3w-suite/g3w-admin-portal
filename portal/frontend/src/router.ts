@@ -1,10 +1,10 @@
 import Main from '@/components/Main.vue';
-import { i18n } from '@/main';
-import Vue from 'vue';
-import Router from 'vue-router';
 import config from '@/config';
+import { i18n } from '@/main';
 import store from '@/store';
 import { fetchData, setActiveGroup } from '@/utils';
+import Vue from 'vue';
+import Router from 'vue-router';
 
 Vue.use(Router);
 
