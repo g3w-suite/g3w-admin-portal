@@ -4,4 +4,5 @@ export interface IRootState {
   crossOrigin: boolean;
   access_token: string;
   refresh_token: string;
+  useCookies: boolean;
 }

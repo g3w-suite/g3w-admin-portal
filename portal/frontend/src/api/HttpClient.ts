@@ -30,8 +30,8 @@ class HttpClient implements IHttpClient {
           config.withCredentials = true;
         }
         // CORS JWT sessions
-        if (store.state.crossOrigin && store.state.access_token) {
-          config.headers.Authorization = `${appConfig.auth_header} ${store.state.access_token}`;
+        if (!store.state.useCookies && store.state.access_token) {
+          config.headers.Authorization = `${appConfig.auth_mode} ${store.state.access_token}`;
           config.timeout = 5000;
         }
         return config;
@@ -43,9 +43,9 @@ class HttpClient implements IHttpClient {
       (response) => response,
       (error: AxiosError) => {
         // CORS JWT sessions (expired access_token)
-        if (store.state.crossOrigin && store.state.refresh_token) {
+        if (!store.state.useCookies && store.state.refresh_token) {
           if (error.response && [401, 403].includes(error.response.status)) {
-          // prevent infinite loops for any subsequent failed intercepted response 
+          // prevent infinite loops for any subsequent failed intercepted response
           this.http.interceptors.response.eject(ejectResponse);
           return store
                   .dispatch('me/refresh')

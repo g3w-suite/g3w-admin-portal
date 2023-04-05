@@ -28,6 +28,10 @@
 <body>
     <noscript><strong>You must enable JavaScript to continue.</strong></noscript>
     <script>
+        {# TODO: add a new custom django setting or a dedicated rest API endpoint #}
+        {# AUTH_MODE = 'cookie' | 'Bearer' | 'JWT' #}
+        window.AUTH_MODE = 'Bearer'
+        
         window.API_BASE_URL = '{{ API_BASE_URL }}'
         window.LANGUAGES = {{ LANGUAGES | safe }}
         window.PORTAL_ORG_NAME = '{{ SETTINGS.PORTAL_ORG_NAME }}'

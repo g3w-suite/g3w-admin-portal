@@ -18,7 +18,7 @@ export function sameOrigin(a: string, b: string): boolean {
  * Factory login manager (Cookie sessions vs JWT Auth).
  */
 export function loginManager(state: IRootState): ILoginManager {
-    return state.crossOrigin ? jwtManager : sessionManager;
+    return state.useCookies ? sessionManager : jwtManager;
 }
 
 /**

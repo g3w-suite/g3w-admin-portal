@@ -14,7 +14,6 @@ Vue.use(Vuex);
 
 // TODO: write some tests ...
 const refresh_token = false; // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY4MDY4MTYyNSwiaWF0IjoxNjgwNTk1MjI1LCJqdGkiOiJlZTBlMzUwNTdlNzM0YWU3YjBkODViZjFmZjNhM2RhMSIsInVzZXJfaWQiOjJ9.pDWo9Ei5f1ZMpjGmG2Um2V_xiCTaCMxzqkbNzVeFOvE" ;
-const useAuthTokens = true; // TODO: || config.useAuthTokens,
 
 const store: StoreOptions<IRootState> = {
   state: {
@@ -22,7 +21,8 @@ const store: StoreOptions<IRootState> = {
     errors: [],
     access_token: refresh_token || localStorage.getItem('access_token') || '',
     refresh_token: refresh_token || localStorage.getItem('refresh_token') || '',
-    crossOrigin: useAuthTokens || !sameOrigin((window as any).location, config.api_base_url),
+    crossOrigin: !sameOrigin((window as any).location, config.api_base_url),
+    useCookies: !['Bearer', 'JWT'].includes(config.auth_mode),
   },
   modules: {
     info,

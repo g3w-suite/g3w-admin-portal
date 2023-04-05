@@ -1,4 +1,5 @@
 import { jwtManager } from '@/api/managers/jwtManager';
+import config from '@/config';
 import { ELoginStatus } from '@/types/ELoginStatus';
 import { IRootState } from '@/types/IRootState';
 import { IUserState } from '@/types/IUserState';
@@ -30,7 +31,7 @@ const actions: ActionTree<IUserState, IRootState> = {
     loginManager(rootState)
       .logout(locale, rootState.refresh_token)
       .then((u) => {
-        if (rootState.crossOrigin) {
+        if (!rootState.useCookies) {
           dispatch('removeTokens', undefined, { root: true });
         }
         commit('setUser', null);
@@ -40,10 +41,10 @@ const actions: ActionTree<IUserState, IRootState> = {
     loginManager(rootState)
       .login(locale, username, password)
       .then((data) => {
-        if (rootState.crossOrigin) {
+        if (!rootState.useCookies) {
           dispatch('setTokens', { ...data }, { root: true });
         }
-        if (data && (data.status === ELoginStatus.OK || rootState.crossOrigin)) {
+        if (data && (data.status === ELoginStatus.OK || !rootState.useCookies)) {
           dispatch('fetchWhoAmI', {locale});
         } else {
           commit('setUser', null);
