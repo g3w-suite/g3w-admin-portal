@@ -120,6 +120,15 @@ Install [g3w-admin-authjwt](https://github.com/g3w-suite/g3w-admin-authjwt) modu
 And then update your CORS settings accordingly within local_settings.py file:
 
 ```py
+## Django Rest Framework (restore default settings)
+# ------------------------------------------------------
+from django.conf import settings
+
+settings.REST_FRAMEWORK.setdefault('DEFAULT_AUTHENTICATION_CLASSES', []).extend([
+    'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.BasicAuthentication'
+])
+
 ## Static URLs
 # ------------------------------------------------------
 
