@@ -17,9 +17,11 @@ const config  =  {
   /**
    * NB You should set your Authorization to 'JWT', not Bearer!!!
    *
+   * @type { 'cookie' | 'Bearer' | 'JWT' }
+   * 
    * @see https://django-rest-framework-simplejwt.readthedocs.io/en/stable/settings.html#auth-header-types
    */
-  auth_mode: (window as any).AUTH_MODE || process.env.VUE_APP_AUTH_MODE || 'cookie', // 'cookie' | 'Bearer' | 'JWT'
+  auth_mode: (window as any).AUTH_MODE || process.env.VUE_APP_AUTH_MODE || 'cookie',
 
   /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations */
   router_mode: (process.env.VUE_APP_HISTORY_MODE as RouterMode),
