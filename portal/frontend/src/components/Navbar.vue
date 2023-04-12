@@ -183,6 +183,10 @@ import { Info } from '@/types/TInfo';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
+import flag_en_src from '@/assets/img/flags/en_GB.png';
+import flag_it_src from '@/assets/img/flags/it_IT.png';
+import g3w_logo_src from '@/assets/img/logo_g3wsuite-bw.png';
+
 @Component({
   components: { },
   computed: {
@@ -200,9 +204,9 @@ export default class Navbar extends Vue {
   public showAdmin!: boolean;
   public info!: Info;
 
-  public g3w_logo: string = require('@/assets/img/logo_g3wsuite-bw.png');
-  public flag_it: string  = require('@/assets/img/flags/it_IT.png');
-  public flag_en: string  = require('@/assets/img/flags/en_GB.png');
+  public g3w_logo: string = g3w_logo_src; // require('@/assets/img/logo_g3wsuite-bw.png');
+  public flag_it: string  =  flag_it_src; // require('@/assets/img/flags/it_IT.png');
+  public flag_en: string  =  flag_en_src; // require('@/assets/img/flags/en_GB.png');
 
   public secondaryMenuVisible: boolean | null = true;
 

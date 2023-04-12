@@ -95,7 +95,7 @@
           <p>
             <a target="_blank" href="https://g3wsuite.it/" title="Applicativo realizzato con il framework OS">
               <img
-                src="/static/client/images/g3wsuite_logo.png"
+                src="@/assets/img/logo_g3wsuite.png"
                 alt="G3W SUITE"
                 class="g3w-suite-logo"
                 style="max-height: 50px;"
@@ -128,7 +128,7 @@
           <p>
             Framework sviluppato da
             <a href="http://www.gis3w.it" target="_blank" title="Gis3w s.n.c">
-              <img src="/static/client/images/logo_gis3w_156_85.png" alt="Gis3w s.n.c" width="60">
+              <img src="@/assets/img/logo_gis3w_156_85.png" alt="Gis3w s.n.c" width="60">
             </a>
           </p>
         </footer>

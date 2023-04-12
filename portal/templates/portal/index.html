@@ -1,21 +1,20 @@
 {% load static %}
+{% load vite %}
 
 <!DOCTYPE html>
-<html lang=en>
+<html lang="en">
 <head>
-    <meta charset=utf-8>
-    <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <meta name=viewport content="width=device-width,initial-scale=1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     {# Fix relative URLs (eg. relative links and images within text) when we are working with an external API server  #}
     <base href="{{ API_BASE_URL }}" />
     <title>{{ admin_page_title }}</title>
-    <link rel=icon href="{% static '/img/favicon.ico' %}">
-    <link rel=preload as=style  href="{% static 'frontend/css/app.css' %}">
-    <link rel=preload as=style  href="{% static 'frontend/css/chunk-vendors.css' %}">
-    <link rel=preload as=script href="{% static 'frontend/js/app.js' %}">
-    <link rel=preload as=script href="{% static 'frontend/js/chunk-vendors.js' %}">
-    <link rel=stylesheet href="{% static 'frontend/css/chunk-vendors.css' %}">
-    <link rel=stylesheet href="{% static 'frontend/css/app.css' %}">
+    <link rel="icon" href="{% static '/img/favicon.ico' %}">
+    <script type="module" crossorigin src="{% static 'frontend/index.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
+    {# {% vite_styles 'src/main.css' %} #}
+    {# {% vite_scripts 'src/main.ts' %} #}
     {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
         {% for css in SETTINGS.G3WSUITE_CUSTOM_CSS %}
             <link rel="stylesheet" href="{{ css }}" />
@@ -39,9 +38,7 @@
         window.PORTAL_FAVICON = '{{ SETTINGS.PORTAL_FAVICON }}'
         window.PORTAL_NAVBAR_TOP = {{ SETTINGS.PORTAL_NAVBAR_TOP | yesno:"true,false" }}
     </script>
-    <div id=app></div>
-    <script src="{% static 'frontend/js/chunk-vendors.js' %}"></script>
-    <script src="{% static 'frontend/js/app.js' %}"></script>
+    <div id="app"></div>
     {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
         {% for js in SETTINGS.G3WSUITE_CUSTOM_JS %}
             <script src="{{ js }}"></script>

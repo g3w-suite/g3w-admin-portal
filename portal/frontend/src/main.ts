@@ -1,3 +1,6 @@
+// import '@/main.css';
+import 'vite/modulepreload-polyfill'
+
 import App from '@/App.vue';
 import config from '@/config';
 import '@/icons';
@@ -29,6 +32,9 @@ import VueI18n from 'vue-i18n';
 //     process.env.VUE_APP_CSS_COLOR_ALT || config.color
 //   );
 // }
+
+console.log(window);
+console.log(document.querySelector('#app'));
 
 if (config.theme) {
   document.documentElement.setAttribute('data-theme', config.theme);

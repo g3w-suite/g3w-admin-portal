@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Article v-for="item in items" :item="item" />
+    <Article v-for="item in items" :item="item" :key="item._vue_uid" />
   </div>
 </template>
 

@@ -122,7 +122,7 @@ export default class Login extends Vue {
     content: '';
     position:absolute;
     inset: 0;
-    background-image: url('~@/assets/img/sfondo.jpg');
+    background-image: url('@/assets/img/sfondo.jpg');
     background-position: center;
     background-size: cover;
     pointer-events: none;
