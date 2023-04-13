@@ -25,7 +25,7 @@
 
         <!-- LOGOUT LINK -->
         <li v-if="isLoggedIn">
-          <a href="#" @click="logout" :title="$t('messages.tooltip.logout')" class="secondary">
+          <a href="#" @click.prevent="logout" :title="$t('messages.tooltip.logout')" class="secondary">
             <font-awesome-icon icon="sign-out-alt" size="lg" />
             <span class="hide-on-mobile"> {{$t('messages.menu.logout')}}</span>
           </a>
@@ -107,7 +107,7 @@
 
         <!-- LOGOUT LINK -->
         <li v-if="!hasNavBarTop && isLoggedIn">
-          <a href="#" @click="logout" :title="$t('messages.tooltip.logout')" class="secondary">
+          <a href="#" @click.prevent="logout" :title="$t('messages.tooltip.logout')" class="secondary">
             <font-awesome-icon icon="sign-out-alt" size="lg" />
             <span class="hide-on-mobile"> {{$t('messages.menu.logout')}}</span>
           </a>
