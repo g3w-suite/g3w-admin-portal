@@ -49,23 +49,23 @@ class AuthByDRFTokenMiddleware(object):
         # try to found into url
         if token_key in request.GET:
             token = request.GET[token_key]
-            logger.debug('[PORTAL] G3W AUTHTOKEN QUERY URL: {}'.format(token))
+            logger.debug('[PORTAL] G3W Auth Token query url: {}'.format(token))
         else:
             return None
 
-        logger.debug('[PORTAL] G3W AUTHTOKEN FOUND INTO HEADERS')
+        logger.debug('[PORTAL] G3W Auth Token found into headers')
 
         # If they specified an invalid token, let them know.
         if not token:
             return http.HttpResponseBadRequest("Improperly formatted token")
 
-        logger.debug('[PORTAL] G3W AUTHTOKEN TRY TO AUTHENTICATE')
+        logger.debug('[PORTAL] Try to authenticate user with G3W Auth Token')
 
         user = None
         try:
             user = Token.objects.get(key=token).user
         except Token.DoesNotExist:
-            logger.debug('[PORTAL] G3W AUTHTOKEN TOKEN DOESN\'T EXISTS: {}'.format(token))
+            logger.debug('[PORTAL] G3W Auth Token doesn\'t exists: {}'.format(token))
             return None
 
         # try to render persistent
