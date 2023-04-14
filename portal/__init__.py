@@ -13,11 +13,8 @@ if 'rest_framework.authtoken' in settings.INSTALLED_APPS and \
    'authjwt' in settings.INSTALLED_APPS :
     settings.MIDDLEWARE += ['portal.middleware.AuthByDRFTokenMiddleware']
 
-# Activate `corsheaders` package through:
-# - THIRD_PARTY_APPS if we are running a G3W-ADMIN instance
-# - INSTALLED_APPS if we are running a plain DJANGO instance
+# Activate `corsheaders` package
 if hasattr(settings, 'THIRD_PARTY_APPS'):
-    settings.THIRD_PARTY_APPS += ['corsheaders'] 
+    settings.THIRD_PARTY_APPS += ['corsheaders'] # when running a G3W-ADMIN instance 
 else:
-    settings.INSTALLED_APPS   += ['corsheaders']
-    
+    settings.INSTALLED_APPS   += ['corsheaders'] # when running a plain DJANGO instance
