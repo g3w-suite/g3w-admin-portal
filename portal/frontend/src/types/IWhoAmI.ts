@@ -8,4 +8,5 @@ export interface IWhoAmI {
   username?: string;
   data?: IWhoAmIData;
   email?: string;
+  drf_token?: string;
 }
