@@ -2,7 +2,7 @@ import Main from '@/components/Main.vue';
 import config from '@/config';
 import { i18n } from '@/main';
 import store from '@/store';
-import { fetchData, setActiveGroup } from '@/utils';
+import { fetchData, get_admin_url, setActiveGroup } from '@/utils';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -14,7 +14,6 @@ Vue.use(Router);
  * Used to set first time application ready
  */
 let ready: boolean = false;
-
 
 /**
  * Refresh data on user Login / Logout
@@ -71,7 +70,7 @@ const router = new Router({
           path: 'admin/',
           name: 'admin',
           beforeEnter() {
-            location.href = store.getters['me/isLoggedIn'] ? config.admin_url : '/';
+            location.href = get_admin_url(config.admin_root);
           },
         },
         {

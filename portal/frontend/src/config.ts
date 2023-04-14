@@ -8,11 +8,9 @@ const config  =  {
 
   languages:  process.env.VUE_APP_LANGUAGES.split(', '),
 
-  admin_url: process.env.VUE_APP_ADMIN_URL,
+  admin_root: process.env.VUE_APP_ADMIN_ROOT,
 
-  admin_base_url: process.env.VUE_APP_ADMIN_BASE_URL,
-
-  api_base_url: (window as any).API_BASE_URL || process.env.VUE_APP_API_BASE_URL || '/',
+  api_base_url: (window as any).API_BASE_URL || process.env.VUE_APP_API_BASE_URL,
 
   /**
    * NB You should set your Authorization to 'JWT', not Bearer!!!
@@ -21,7 +19,7 @@ const config  =  {
    * 
    * @see https://django-rest-framework-simplejwt.readthedocs.io/en/stable/settings.html#auth-header-types
    */
-  auth_mode: (window as any).AUTH_MODE || process.env.VUE_APP_AUTH_MODE || 'cookie',
+  auth_mode: (window as any).AUTH_MODE || process.env.VUE_APP_AUTH_MODE,
 
   /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations */
   router_mode: (process.env.VUE_APP_HISTORY_MODE as RouterMode),

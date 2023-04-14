@@ -11,6 +11,7 @@ __copyright__ = 'Copyright 2019, GIS3W'
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 from .serializers import *
 from .filters import *
 
@@ -84,15 +85,19 @@ class WhoamiApiView(APIView):
         user = self.request.user
 
         if user.is_authenticated:
+            token, created = Token.objects.get_or_create(user=user)
             ret = {
                 'is_authenticated': True,
                 'username': user.username,
                 'email': user.email,
+                'drf_token': token.key,
                 'data': {
                     'first_name': user.first_name,
                     'last_name': user.last_name
                 }
             }
+
+
         else:
             ret = {
                 'is_authenticated': False,

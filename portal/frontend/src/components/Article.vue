@@ -22,7 +22,7 @@
           <font-awesome-icon icon="expand-arrows-alt" size="lg" />
           <span> {{ $t('messages.maps.view') }}</span>
         </a>
-        <a v-if="type === boxtype.P && $store.getters['me/isLoggedIn'] && edit_url" :href="get_admin_url(edit_url)" rel="noopener noreferrer" target="_blank">
+        <a v-if="has_edit_url()" :href="get_admin_url(edit_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="pencil-alt" size="lg" />
           <span> {{ $t('messages.maps.edit') }}</span>
         </a>
@@ -39,11 +39,11 @@
 </template>
 
 <script lang="ts">
-import config from '@/config';
 import { EBoxType } from '@/types/EBoxType';
 import { Group } from '@/types/TGroup';
 import { MacroGroup } from '@/types/TMacroGroup';
 import { Project } from '@/types/TProject';
+import { get_admin_url } from '@/utils';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 @Component({
@@ -85,6 +85,13 @@ export default class Article extends Vue {
     return this.item.InstanceOf;
   }
 
+  /**
+   * Check if current project could be edited by the user (admin backend)
+   */
+  public has_edit_url(): boolean {
+    return !!(this.type === this.boxtype.P && this.$store.getters['me/isLoggedIn'] && this.edit_url);
+  }
+
   public get_group_url(): string {
     // Macrogroups > Macrogroup
     if (this.type === this.boxtype.MG) {
@@ -105,7 +112,7 @@ export default class Article extends Vue {
    * Return absolute URL to G3W-ADMIN server.
    */
   public get_admin_url(folder: string): string {
-    return config.admin_base_url + folder;
+    return get_admin_url(folder);
   }
 
   /**
