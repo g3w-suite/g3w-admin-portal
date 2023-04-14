@@ -21,10 +21,10 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    // createVuePlugin({ jsx: true }),
-    // djangoVite(['frondend/main.js',]),
     viteCommonjs(),
     envCompatible(),
+    // createVuePlugin({ jsx: true }),
+    // djangoVite(['frondend/main.js',]),
     // createHtmlPlugin({
     //   inject: {
     //     data: {
