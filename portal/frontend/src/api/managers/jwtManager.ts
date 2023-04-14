@@ -40,7 +40,7 @@ export class JWTManager implements ILoginManager {
    * Heartbeat request (PING -> PONG)
    */
   public ping() {
-    return this.httpClient.get<unknown>('/authjwt/api/ping/', { params: { id: 'PONG' } });
+    return this.httpClient.get<{ id: 'PONG' }>('/authjwt/api/ping/', { params: { id: 'PONG' } });
   }
 
 }
