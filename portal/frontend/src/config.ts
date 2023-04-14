@@ -16,7 +16,7 @@ const config  =  {
    * NB You should set your Authorization to 'JWT', not Bearer!!!
    *
    * @type { 'cookie' | 'Bearer' | 'JWT' }
-   * 
+   *
    * @see https://django-rest-framework-simplejwt.readthedocs.io/en/stable/settings.html#auth-header-types
    */
   auth_mode: (window as any).AUTH_MODE || process.env.VUE_APP_AUTH_MODE,

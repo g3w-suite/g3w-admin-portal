@@ -5,7 +5,7 @@ export class SuperGroup {
   public title: string;
 
   /**
-   * Random key to be used within v-for loops 
+   * Random key to be used within v-for loops
    */
   public _vue_uid: string = Date.now().toString(36) + Math.random().toString(36).substr(2);
 

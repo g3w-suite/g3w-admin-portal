@@ -1,5 +1,8 @@
-// import '@/main.css';
-import 'vite/modulepreload-polyfill'
+import '@fontsource/titillium-web/400-italic.css';
+import '@fontsource/titillium-web/400.css';
+import '@fontsource/titillium-web/700-italic.css';
+import '@fontsource/titillium-web/700.css';
+import 'vite/modulepreload-polyfill';
 
 import App from '@/App.vue';
 import config from '@/config';
@@ -8,10 +11,6 @@ import { en } from '@/locale/en';
 import { it } from '@/locale/it';
 import router from '@/router';
 import store from '@/store';
-import '@fontsource/titillium-web/400-italic.css';
-import '@fontsource/titillium-web/400.css';
-import '@fontsource/titillium-web/700-italic.css';
-import '@fontsource/titillium-web/700.css';
 import Vue from 'vue';
 import Fragment from 'vue-fragment';
 import VueI18n from 'vue-i18n';
@@ -32,9 +31,6 @@ import VueI18n from 'vue-i18n';
 //     process.env.VUE_APP_CSS_COLOR_ALT || config.color
 //   );
 // }
-
-console.log(window);
-console.log(document.querySelector('#app'));
 
 if (config.theme) {
   document.documentElement.setAttribute('data-theme', config.theme);

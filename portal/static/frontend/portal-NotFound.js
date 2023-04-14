@@ -1,0 +1,2 @@
+import{C as a,V as u,n as f}from"./index.js";var p=Object.defineProperty,c=Object.getOwnPropertyDescriptor,v=(s,e,_,o)=>{for(var n=o>1?void 0:o?c(e,_):e,t=s.length-1,r;t>=0;t--)(r=s[t])&&(n=(o?r(e,_,n):r(n))||n);return o&&n&&p(e,_,n),n};let l=class extends u{};l=v([a({components:{}})],l);var d=function(){var e=this,_=e._self._c;return e._self._setupProxy,_("fragment",[_("h1",[e._v(e._s(e.$t("messages.menu.404")))])])},m=[],i=f(l,d,m,!1,null,"982d34f3",null,null);const P=i.exports;export{P as default};
+//# sourceMappingURL=portal-NotFound.js.map
