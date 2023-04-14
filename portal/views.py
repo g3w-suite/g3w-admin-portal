@@ -62,9 +62,6 @@ class PortalView(TemplateView):
             # TODO optional setting for API_BASE_URL (cross domain API) 
             'API_BASE_URL': self.request.build_absolute_uri('/'),
 
-            # TODO optional setting for ADMIN_BASE_URL (cross domain ADMIN) 
-            'ADMIN_BASE_URL': self.request.build_absolute_uri('/admin'),
-
             'LANGUAGES': [l[0] for l in settings.LANGUAGES],
 
             # DEPRECATED since v1.0.0

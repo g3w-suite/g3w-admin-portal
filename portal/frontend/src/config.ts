@@ -8,7 +8,7 @@ const config  =  {
 
   languages:  process.env.VUE_APP_LANGUAGES.split(', '),
 
-  admin_base_url: (window as any).ADMIN_BASE_URL || process.env.VUE_APP_ADMIN_BASE_URL,
+  admin_root: process.env.VUE_APP_ADMIN_ROOT,
 
   api_base_url: (window as any).API_BASE_URL || process.env.VUE_APP_API_BASE_URL,
 

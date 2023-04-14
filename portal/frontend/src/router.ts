@@ -70,7 +70,7 @@ const router = new Router({
           path: 'admin/',
           name: 'admin',
           beforeEnter() {
-            location.href = get_admin_url('/');
+            location.href = get_admin_url(config.admin_root);
           },
         },
         {

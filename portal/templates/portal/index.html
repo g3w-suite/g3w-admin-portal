@@ -31,7 +31,6 @@
         {# TODO: add a new custom django setting or a dedicated rest API endpoint #}
         window.AUTH_MODE         = 'Bearer' {# 'cookie' | 'Bearer' | 'JWT' #}
 
-        window.ADMIN_BASE_URL    = '{{ ADMIN_BASE_URL }}'
         window.API_BASE_URL      = '{{ API_BASE_URL }}'
         window.LANGUAGES         = {{ LANGUAGES | safe }}
         window.PORTAL_ORG_NAME   = '{{ SETTINGS.PORTAL_ORG_NAME }}'
