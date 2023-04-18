@@ -3,7 +3,7 @@
 
     <Navbar />
 
-    <header id="header" v-if="$route.matched[$route.matched.length - 1].components.header">
+    <header id="header" v-if="has_header">
       <router-view name="header" />
     </header>
 
@@ -32,6 +32,10 @@ import { Component, Vue } from 'vue-property-decorator';
 })
 
 export default class Main extends Vue {
+
+  get has_header(): boolean {
+    return !!this.$route.matched[this.$route.matched.length - 1].components.header;
+  }
 
 }
 </script>
