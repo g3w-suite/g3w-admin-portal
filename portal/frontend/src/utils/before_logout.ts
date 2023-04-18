@@ -1,4 +1,4 @@
-import { i18n as locale} from '@/main';
+import { i18n } from '@/main';
 import store from '@/store';
 import { Route } from 'vue-router';
 
@@ -10,6 +10,6 @@ export default function before_logout(to?: Route, from?: Route, next = (() => {}
     return false;
   }
   // default logout
-  store.dispatch('me/logout', { locale });
+  store.dispatch('me/logout', { locale: i18n.locale });
   next();
 }
