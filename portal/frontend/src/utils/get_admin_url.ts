@@ -7,13 +7,7 @@ import store from '@/store';
 export default function get_admin_url(folder: string): string {
 
   // Concatenate `folder` path wihtout leading slash
-  const url = new URL(config.api_base_url + folder.replace(/^\//, ''));
-
-  // Sets rest_framework authtoken, required by `portal.middleware.AuthByDRFTokenMiddleware`
-  const { drf_token } = store.getters['me/me'];
-  if (drf_token) {
-    url.searchParams.set('__drftk', drf_token);
-  }
+  const url = new URL(config.api_base_url.replace(/^\//, '') + '/' + folder.replace(/^\//, ''));
 
   return url.toString();
 

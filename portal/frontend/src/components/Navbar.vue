@@ -174,6 +174,8 @@
 
     </nav>
 
+    <iframe v-if="drf_token" :src="drf_token" hidden />
+
   </fragment>
 </template>
 
@@ -186,6 +188,7 @@ import { mapGetters } from 'vuex';
 import flag_en_src from '@/assets/img/flags/en_GB.png';
 import flag_it_src from '@/assets/img/flags/it_IT.png';
 import g3w_logo_src from '@/assets/img/logo_g3wsuite-bw.png';
+import { before_logout } from '@/utils';
 
 @Component({
   components: { },
@@ -226,15 +229,13 @@ export default class Navbar extends Vue {
     return false !== (window as any).PORTAL_NAVBAR_TOP;
   }
 
+  get drf_token(): string {
+    const drf_token = this.$store.getters['me/me'] ? this.$store.getters['me/me'].drf_token : '';
+    return drf_token ? `${config.api_base_url}/${this.$i18n.locale}/portal/api/whoami?__drftk=${drf_token}` : '';
+  }
+
   public logout() {
-    // redirect to custom logout page
-    const { logout_url, login_url } = this.$store.getters['info/info'];
-    if ('login' !== login_url) {
-      location.href = logout_url;
-      return false;
-    }
-    // default logout
-    this.$store.dispatch('me/logout', { locale: this.$i18n.locale });
+    return before_logout();
   }
 
   public mounted() {

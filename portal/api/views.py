@@ -1,19 +1,30 @@
 # coding=utf-8
-"""Protal API viewes
+"""Portal API views
 .. note:: This program is free software; you can redistribute it and/or modify
      it under the terms of the Mozilla Public License 2.0.
 """
 
-__author__ = 'lorenzetti@gis3w.it'
-__date__ = '2019-09-04'
+__author__    = 'lorenzetti@gis3w.it'
+__date__      = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
+__license__   = 'MPL 2.0'
+
+from django.utils.decorators import method_decorator
+from django.views.decorators.clickjacking import xframe_options_exempt
+from django.contrib import auth
+from django.conf import settings
 
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+
+import logging
+
 from .serializers import *
 from .filters import *
+
+logger = logging.getLogger('g3wadmin.debug')
 
 
 class PortalApiViewMixin(object):
@@ -74,7 +85,7 @@ class InfoDataApiView(generics.RetrieveAPIView):
     def get_object(self):
         return self.get_queryset()[0]
 
-
+@method_decorator(xframe_options_exempt, name='dispatch')
 class WhoamiApiView(APIView):
     """
     API for current user logged
@@ -82,7 +93,7 @@ class WhoamiApiView(APIView):
 
     def get(self, request):
 
-        user = self.request.user
+        user = self.get_authenticated_user(request)
 
         if user.is_authenticated:
             token, created = Token.objects.get_or_create(user=user)
@@ -97,12 +108,39 @@ class WhoamiApiView(APIView):
                 }
             }
 
-
         else:
             ret = {
                 'is_authenticated': False,
             }
+
         return Response(ret)
+    
+    def get_authenticated_user(self, request):
+        """
+        Try to authenticate user against a token found in HTTP Authorization header
+        Default: G3W_AUTHTOKEN_KEY = '__drftk'.
+        """
+
+        # get token key
+        token_key  = getattr(settings, 'G3W_AUTHTOKEN_KEY', '__drftk')
+        token_user = None
+
+        # try to found into url
+        if (token_key in request.GET):
+            token = request.GET[token_key]
+            logger.debug('[PORTAL] G3W Auth Token found into headers: {}'.format(token))
+            token_user = Token.objects.get(key=token).user
+            logger.debug('[PORTAL] Try to authenticate user with G3W Auth Token')
+            auth.login(
+                request,
+                token_user,
+                backend='django.contrib.auth.backends.ModelBackend'
+            )
+        
+        if token_user:
+            request.user = token_user
+
+        return request.user
 
 
 class PicuresApiView(PortalApiViewMixin, generics.ListAPIView):

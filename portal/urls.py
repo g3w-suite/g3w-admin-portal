@@ -141,5 +141,5 @@ urlpatterns = [
         'portal/api/pictures/',
         PicuresApiView.as_view(),
         name='portal-picture-api-list'
-    )
+    ),
 ]

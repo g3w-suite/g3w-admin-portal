@@ -8,11 +8,6 @@ settings.MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware'
 ] + settings.MIDDLEWARE
 
-# Conditionally enable `AuthByDRFTokenMiddleware`
-if 'rest_framework.authtoken' in settings.INSTALLED_APPS and \
-   'authjwt' in settings.INSTALLED_APPS :
-    settings.MIDDLEWARE += ['portal.middleware.AuthByDRFTokenMiddleware']
-
 # Activate `corsheaders` package
 if hasattr(settings, 'THIRD_PARTY_APPS'):
     settings.THIRD_PARTY_APPS += ['corsheaders'] # when running a G3W-ADMIN instance 

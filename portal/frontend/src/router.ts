@@ -2,7 +2,7 @@ import Main from '@/components/Main.vue';
 import config from '@/config';
 import { i18n } from '@/main';
 import store from '@/store';
-import { fetchData, get_admin_url, setActiveGroup } from '@/utils';
+import { fetchData, get_admin_url, before_login, before_logout, setActiveGroup } from '@/utils';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -43,8 +43,8 @@ const router = new Router({
           name: 'home',
           alias: '',
           components: {
-            default: () => import(/* webpackChunkName: "portal-core" */ '@/views/Home.vue'),
-            header: () => import(/* webpackChunkName: "portal-core" */ '@/views/HomeHeader.vue'),
+            default: () => import('@/views/Home.vue'),
+            header: () => import('@/views/HomeHeader.vue'),
           },
           meta: {
           },
@@ -52,19 +52,18 @@ const router = new Router({
         {
           path: 'login/',
           name: 'login',
-          component: () => import(/* webpackChunkName: "portal-user" */ '@/views/Login.vue'),
+          component: () => import('@/views/Login.vue'),
           meta: {
           },
-          beforeEnter(to, from, next) {
-            // redirect to custom login page
-            const { login_url } = store.getters['info/info'];
-            if ('login' !== login_url) {
-              location.href = login_url;
-              return false;
-            }
-            // default login
-            next();
+          beforeEnter: before_login,
+        },
+        {
+          path: 'logout/',
+          name: 'logout',
+          meta: {
           },
+          component: () => import('@/views/Login.vue'),
+          beforeEnter: before_logout,
         },
         {
           path: 'admin/',
@@ -76,28 +75,28 @@ const router = new Router({
         {
           path: 'search/',
           name: 'search',
-          component: () => import(/* webpackChunkName: "portal-catalog" */ '@/views/Search.vue'),
+          component: () => import('@/views/Search.vue'),
           meta: {
           },
         },
         {
           path: 'group/:id?/',
           name: 'group',
-          component: () => import(/* webpackChunkName: "portal-catalog" */ '@/views/Group.vue'),
+          component: () => import('@/views/Group.vue'),
           meta: {
           },
         },
         {
           path: 'organization/:id?/:group?/',
           name: 'organization',
-          component: () => import(/* webpackChunkName: "portal-catalog" */ '@/views/MacroGroup.vue'),
+          component: () => import('@/views/MacroGroup.vue'),
           meta: {
           },
         },
         {
           path: 'map/:id?/',
           name: 'map',
-          component: () => import(/* webpackChunkName: "portal-catalog" */ '@/components/Projects.vue'),
+          component: () => import('@/components/Projects.vue'),
           meta: {
           },
         },
@@ -105,7 +104,7 @@ const router = new Router({
           /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#caveat */
           path: ':catchAll(.*)',
           name: '404',
-          component: () => import(/* webpackChunkName: "portal-core" */ '@/views/NotFound.vue'),
+          component: () => import('@/views/NotFound.vue'),
           meta: {
           },
         },
