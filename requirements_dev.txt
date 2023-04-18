@@ -1,0 +1,3 @@
+## TODO: editable VCS install ?
+
+# --src /shared-volume/ -e git+https://github.com/g3w-suite/g3w-admin-authjwt.git@master#egg=g3w-admin-authjwt

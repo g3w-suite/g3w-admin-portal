@@ -1,2 +1,4 @@
 django-samesite-none==0.0.3
 django-cors-headers==3.11.0
+
+g3w-admin-authjwt @ git+https://github.com/g3w-suite/g3w-admin-authjwt.git@v0.0.1
