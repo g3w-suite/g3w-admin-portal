@@ -174,7 +174,7 @@
 
     </nav>
 
-    <iframe v-if="drf_token" :src="drf_token" hidden />
+    <iframe v-if="drf_token" :src="drf_token" hidden></iframe>
 
   </fragment>
 </template>
