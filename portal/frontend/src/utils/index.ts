@@ -1,3 +1,4 @@
+export { default as before_admin } from './before_admin';
 export { default as before_login } from './before_login';
 export { default as before_logout } from './before_logout';
 export { default as fetchData } from './fetchData';

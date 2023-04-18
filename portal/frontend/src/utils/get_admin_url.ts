@@ -1,5 +1,4 @@
 import config from '@/config';
-import store from '@/store';
 
 /**
  * Return absolute URL to G3W-ADMIN server.

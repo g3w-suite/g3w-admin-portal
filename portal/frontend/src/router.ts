@@ -2,7 +2,7 @@ import Main from '@/components/Main.vue';
 import config from '@/config';
 import { i18n } from '@/main';
 import store from '@/store';
-import { fetchData, get_admin_url, before_login, before_logout, setActiveGroup } from '@/utils';
+import { fetchData, before_admin, before_login, before_logout, setActiveGroup } from '@/utils';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -68,9 +68,7 @@ const router = new Router({
         {
           path: 'admin/',
           name: 'admin',
-          beforeEnter() {
-            location.href = get_admin_url(config.admin_root);
-          },
+          beforeEnter: before_admin,
         },
         {
           path: 'search/',
