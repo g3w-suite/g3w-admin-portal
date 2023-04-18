@@ -1,3 +1,4 @@
+import router from '@/router';
 import store from '@/store';
 import { Group } from '@/types/TGroup';
 import { MacroGroup } from '@/types/TMacroGroup';
@@ -8,7 +9,7 @@ import { Route } from 'vue-router';
  * Make sure that 'group/ActiveGroup' getter is always set after each route change
  */
 export default async function setActiveGroup(to: Route) {
-  let sg: Group | MacroGroup | null = null;
+  let sg: Group | MacroGroup | null | false = null;
 
   switch (to.name) {
     case 'group':
@@ -18,6 +19,11 @@ export default async function setActiveGroup(to: Route) {
       sg = await fetchMacroGroupData(to);
       break;
   }
-
-  store.dispatch('group/setActiveGroup', { sg });
+  // Redirect users to 404 page when they to visit an inexistent
+  // group URL (also applies to unauthenticated user sessions)
+  if (false === sg) {
+    router.push({name: '404', params: router.currentRoute.params });
+  } else {
+    store.dispatch('group/setActiveGroup', { sg });
+  }
 }

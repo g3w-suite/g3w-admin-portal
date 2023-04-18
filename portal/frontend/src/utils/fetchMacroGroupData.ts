@@ -9,14 +9,18 @@ import { Route } from 'vue-router';
  *
  * @return a valid 'group/ActiveGroup' element
  */
-export async function fetchMacroGroupData(to: Route): Promise<Group | MacroGroup | null> {
+export default async function fetchMacroGroupData(to: Route): Promise<Group | MacroGroup | null | false> {
   const { id, group } = to.params;
 
   // Home > MacroGroup
   if (!group && id) {
     const macroGroups = store.getters['group/macroGroups'];
-    await (macroGroups[id] as MacroGroup).fetchGroups();
-    return macroGroups[id];
+    const macrogroup  = macroGroups[id];
+    if (!macrogroup) { // inexistent group ID or unauthenticated user
+      return false;
+    }
+    await (macrogroup as MacroGroup).fetchGroups();
+    return macrogroup;
   } else if (group) {
     return await fetchGroupData(to);
   }

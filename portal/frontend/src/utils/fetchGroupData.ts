@@ -7,7 +7,7 @@ import { Route } from 'vue-router';
  *
  * @return a valid 'group/ActiveGroup' element
  */
-export default async function fetchGroupData(to: Route): Promise<Group | null> {
+export default async function fetchGroupData(to: Route): Promise<Group | null | false> {
   const { id, group, lang } = to.params;
 
   // Home > Group
@@ -19,6 +19,9 @@ export default async function fetchGroupData(to: Route): Promise<Group | null> {
       store.dispatch('hideLoader');
     }
     const activeGroup: Group = groups[group || id];
+    if (!activeGroup) {
+      return false; // inexistent group ID or unauthenticated user
+    }
     await activeGroup.fetchProjects();
     return activeGroup;
   }
