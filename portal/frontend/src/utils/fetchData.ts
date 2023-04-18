@@ -5,7 +5,6 @@ import store from '@/store';
  */
 export default async function fetchData(locale: string) {
   store.dispatch('showLoader');
-  // @ts-ignore
   await Promise.allSettled([
     store.dispatch('info/fetchInfo', { locale }),
     store.dispatch('settings/fetchPictures', { locale }),

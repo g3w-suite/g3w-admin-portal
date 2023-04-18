@@ -2,7 +2,7 @@ import Main from '@/components/Main.vue';
 import config from '@/config';
 import { i18n } from '@/main';
 import store from '@/store';
-import { fetchData, before_admin, before_login, before_logout, setActiveGroup } from '@/utils';
+import { before_admin, before_login, before_logout, fetchData, setActiveGroup } from '@/utils';
 import Vue from 'vue';
 import Router from 'vue-router';
 
