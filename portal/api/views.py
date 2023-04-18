@@ -117,8 +117,13 @@ class WhoamiApiView(APIView):
     
     def get_authenticated_user(self, request):
         """
-        Try to authenticate user against a token found in HTTP Authorization header
-        Default: G3W_AUTHTOKEN_KEY = '__drftk'.
+        Try to authenticate user against a token found within a GET request
+        
+        Example usage:
+            <iframe hidden src="http://remotehost:8000/it/portal/api/whoami/?__drftk=<drf_token>"></iframe>
+        
+        Default key:
+            G3W_AUTHTOKEN_KEY = '__drftk'.
         """
 
         # get token key
@@ -128,9 +133,8 @@ class WhoamiApiView(APIView):
         # try to found into url
         if (token_key in request.GET):
             token = request.GET[token_key]
-            logger.debug('[PORTAL] G3W Auth Token found into headers: {}'.format(token))
             token_user = Token.objects.get(key=token).user
-            logger.debug('[PORTAL] Try to authenticate user with G3W Auth Token')
+            logger.debug('[PORTAL] G3W Auth Token found, try to authenticate "{}" user'.format(token_user))
             auth.login(
                 request,
                 token_user,
