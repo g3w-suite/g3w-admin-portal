@@ -9,8 +9,6 @@ __date__      = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
 __license__   = 'MPL 2.0'
 
-from django.utils.decorators import method_decorator
-from django.views.decorators.clickjacking import xframe_options_exempt
 from django.contrib import auth
 from django.conf import settings
 
@@ -85,7 +83,6 @@ class InfoDataApiView(generics.RetrieveAPIView):
     def get_object(self):
         return self.get_queryset()[0]
 
-@method_decorator(xframe_options_exempt, name='dispatch')
 class WhoamiApiView(APIView):
     """
     API for current user logged
@@ -113,24 +110,23 @@ class WhoamiApiView(APIView):
                 'is_authenticated': False,
             }
 
-        return Response(ret)
+        return Response(
+            ret,
+            headers = self.get_response_headers(request)
+        )
     
-    def get_authenticated_user(self, request):
+    def get_authenticated_user(self, request, token_key  = '__drftk'):
         """
         Try to authenticate user against a token found within a GET request
         
-        Example usage:
-            <iframe hidden src="http://remotehost:8000/it/portal/api/whoami/?__drftk=<drf_token>"></iframe>
-        
-        Default key:
-            G3W_AUTHTOKEN_KEY = '__drftk'.
+        Example request:
+        ```html
+            <iframe hidden src="http://remotehost:8080/en/portal/api/whoami/?__drftk=<drf_token>"></iframe>
+        ```
         """
-
-        # get token key
-        token_key  = getattr(settings, 'G3W_AUTHTOKEN_KEY', '__drftk')
         token_user = None
 
-        # try to found into url
+        # try to found token key into url
         if (token_key in request.GET):
             token = request.GET[token_key]
             token_user = Token.objects.get(key=token).user
@@ -146,6 +142,40 @@ class WhoamiApiView(APIView):
 
         return request.user
 
+    def get_response_headers(self, request, token_key  = '__drftk'):
+        """
+        Set appropriate `"Content-Security-Policy"` header when a token is found within a GET request 
+
+        Example request:
+        ```html
+            <iframe hidden src="http://remotehost:8080/en/portal/api/whoami/?__drftk=<drf_token>"></iframe>
+        ```
+    
+        Expected response:
+        ```
+            'Content-Security-Policy': "frame-ancestors 'self' http://remotehost:8080"
+        ```
+
+        Sample config:
+        ```
+            CSP_FRAME_SRC        = [ 'http://remotehost:8080' ] # OPTIONAL: fallbacks to CORS_ALLOWED_ORIGINS
+            CORS_ALLOWED_ORIGINS = [ 'http://remotehost:8080' ] 
+        ```
+        """
+
+        ## TODO check this settings again in future django releases ("django-csp" will be included in "django-core")
+        # --------------------------------------------
+        # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy#frame-src
+        # https://django-csp.readthedocs.io/en/3.5/configuration.html
+        # https://github.com/mozilla/django-csp/issues/186
+        csp_frame_src = getattr(settings, 'CSP_FRAME_SRC', getattr(settings, 'CORS_ALLOWED_ORIGINS', [])) 
+
+        # try to found token key into url
+        if (token_key in request.GET):
+            return {
+                'Content-Security-Policy': "frame-ancestors 'self' " + " ".join(csp_frame_src)
+            }
+        return None 
 
 class PicuresApiView(PortalApiViewMixin, generics.ListAPIView):
     """
