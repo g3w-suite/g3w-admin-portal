@@ -10,6 +10,10 @@
     "preversion": "npm run lint",
     "version": "npm run build && git add -A",
     "postversion": "git push && git push --tags",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:gen": "playwright test codegen",
+    "test:report": "playwright show-report",
     "serve:vue": "vue-cli-service serve",
     "build:vue": "vue-cli-service build --mode production",
     "preview": "vite preview"
@@ -35,6 +39,7 @@
   },
   "devDependencies": {
     "@originjs/vite-plugin-commonjs": "^1.0.3",
+    "@playwright/test": "^1.32.3",
     "@vitejs/plugin-vue2": "^2.2.0",
     "@vue/cli-plugin-babel": "^3.12.1",
     "@vue/cli-plugin-typescript": "^3.12.1",
