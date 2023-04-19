@@ -3,6 +3,13 @@ import path from 'path';
 import vue from '@vitejs/plugin-vue2'
 import envCompatible from 'vite-plugin-env-compatible';
 import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
+import * as dotenv from 'dotenv';
+
+/**
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
+ */
+dotenv.config()
 
 // import { createVuePlugin } from 'vite-plugin-vue2'; // REPLACED BY: @vitejs/plugin-vue2
 // import { createHtmlPlugin } from 'vite-plugin-html';
@@ -33,11 +40,11 @@ export default defineConfig({
     //   }
     // })
   ],
-  base: (process.env === 'production' ? '/static/frontend/' : './'),
+  base: (process.env.NODE_ENV === 'production' ? '/static/frontend/' : './'),
   server: {
     strictPort: false,
-    port: 8080,
-    origin: 'http://localhost:8080',
+    port: (new URL(process.env.VITE_SERVER)).port,
+    origin: process.env.VITE_SERVER,
   },
   build: {
     emptyOutDir: true,

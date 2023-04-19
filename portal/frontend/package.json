@@ -44,6 +44,7 @@
     "@vue/cli-plugin-babel": "^3.12.1",
     "@vue/cli-plugin-typescript": "^3.12.1",
     "@vue/cli-service": "^3.12.1",
+    "dotenv": "^16.0.3",
     "postcss": "^8.4.5",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
