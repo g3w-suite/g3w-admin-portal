@@ -182,13 +182,13 @@
 <script lang="ts">
 import config from '@/config';
 import { Info } from '@/types/TInfo';
+import { before_logout, get_admin_url } from '@/utils';
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
 import flag_en_src from '@/assets/img/flags/en_GB.png';
 import flag_it_src from '@/assets/img/flags/it_IT.png';
 import g3w_logo_src from '@/assets/img/logo_g3wsuite-bw.png';
-import { before_logout } from '@/utils';
 
 @Component({
   components: { },
@@ -231,7 +231,7 @@ export default class Navbar extends Vue {
 
   get drf_token(): string {
     const drf_token = this.$store.getters['me/me'] ? this.$store.getters['me/me'].drf_token : '';
-    return drf_token ? `${config.api_base_url}/${this.$i18n.locale}/portal/api/whoami/?__drftk=${drf_token}` : '';
+    return drf_token ? get_admin_url(`/${this.$i18n.locale}/portal/api/whoami/?__drftk=${drf_token}`) : '';
   }
 
   public logout() {

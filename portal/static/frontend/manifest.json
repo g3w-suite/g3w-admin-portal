@@ -28,6 +28,7 @@
       "src/views/Home.vue",
       "src/views/HomeHeader.vue",
       "src/views/Login.vue",
+      "src/views/Login.vue",
       "src/views/Search.vue",
       "src/views/Group.vue",
       "src/views/MacroGroup.vue",
