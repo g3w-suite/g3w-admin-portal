@@ -1,8 +1,9 @@
+import 'vite/modulepreload-polyfill';
+
 import '@fontsource/titillium-web/400-italic.css';
 import '@fontsource/titillium-web/400.css';
 import '@fontsource/titillium-web/700-italic.css';
 import '@fontsource/titillium-web/700.css';
-import 'vite/modulepreload-polyfill';
 
 import App from '@/App.vue';
 import config from '@/config';
