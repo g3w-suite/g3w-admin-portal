@@ -145,12 +145,6 @@ CORS_ALLOW_ALL_ORIGINS  = False                  # NB: True = DEBUGGING ONLY!
 CORS_ALLOWED_ORIGINS    = [                      # NB: DIFFERENT PORT == DIFFERENT SERVER
     'http://localhost:8080',
     'http://127.0.0.1:8080',
-    'http://localhost:8081',
-    'http://127.0.0.1:8081',
-    'http://localhost:80',
-    'http://127.0.0.1:80',
-    'http://localhost',
-    'http://127.0.0.1',
 ]
 
 ## Additional CORS settings (JWT only = reccomendend when using a third-party domain for authentication)
