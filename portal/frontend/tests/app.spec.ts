@@ -10,7 +10,7 @@ test('has title', async ({ page }) => {
 test('login link', async ({ page }) => {
   await page.goto('/');
 
-  // Click the get started link.
+  // Click the login link.
   await page.getByRole('link', { name: 'Login' }).click();
 
   // Expects the URL to contain login.

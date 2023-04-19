@@ -12,7 +12,7 @@
     "postversion": "git push && git push --tags",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:gen": "playwright test codegen",
+    "test:gen": "playwright codegen",
     "test:report": "playwright show-report",
     "serve:vue": "vue-cli-service serve",
     "build:vue": "vue-cli-service build --mode production",
