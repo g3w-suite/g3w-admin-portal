@@ -3,6 +3,6 @@
 .env.development.local
 .env.production.local
 node_modules/
-/test-results/
-/playwright-report/
+e2e/results/
+e2e/reports/
 /playwright/.cache/
