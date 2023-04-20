@@ -17,6 +17,7 @@ const HTTP_SERVER = process.env.VITE_SERVER;
  */
 export default defineConfig({
   testDir: './e2e',
+  testIgnore: '**/e2e/examples/**',
   outputDir: './e2e/results',
   /* Run tests in files in parallel */
   fullyParallel: true,
