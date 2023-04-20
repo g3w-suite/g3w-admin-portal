@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import path from 'path';
 import vue from '@vitejs/plugin-vue2'
 import envCompatible from 'vite-plugin-env-compatible';
-import { viteCommonjs } from '@originjs/vite-plugin-commonjs';
+import commonjs from 'vite-plugin-commonjs';
 import * as dotenv from 'dotenv';
 
 /**
@@ -28,7 +28,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
-    viteCommonjs(),
+    commonjs(),
     envCompatible(),
     // createVuePlugin({ jsx: true }),
     // djangoVite(['frondend/main.js',]),
