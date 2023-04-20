@@ -118,7 +118,14 @@
     "isDynamicEntry": true,
     "src": "src/components/Projects.vue"
   },
+  "src/views/Group.css": {
+    "file": "assets/Home.css",
+    "src": "src/views/NotFound.css"
+  },
   "src/views/Group.vue": {
+    "css": [
+      "assets/Home.css"
+    ],
     "file": "portal-Group.js",
     "imports": [
       "src/components/Projects.vue",
@@ -127,7 +134,14 @@
     "isDynamicEntry": true,
     "src": "src/views/Group.vue"
   },
+  "src/views/Home.css": {
+    "file": "assets/Home.css",
+    "src": "src/views/NotFound.css"
+  },
   "src/views/Home.vue": {
+    "css": [
+      "assets/Home.css"
+    ],
     "file": "portal-Home.js",
     "imports": [
       "src/components/Projects.vue",
@@ -169,7 +183,14 @@
     "isDynamicEntry": true,
     "src": "src/views/Login.vue"
   },
+  "src/views/MacroGroup.css": {
+    "file": "assets/Home.css",
+    "src": "src/views/NotFound.css"
+  },
   "src/views/MacroGroup.vue": {
+    "css": [
+      "assets/Home.css"
+    ],
     "file": "portal-MacroGroup.js",
     "imports": [
       "src/components/Projects.vue",
@@ -179,7 +200,14 @@
     "isDynamicEntry": true,
     "src": "src/views/MacroGroup.vue"
   },
+  "src/views/NotFound.css": {
+    "file": "assets/Home.css",
+    "src": "src/views/NotFound.css"
+  },
   "src/views/NotFound.vue": {
+    "css": [
+      "assets/Home.css"
+    ],
     "file": "portal-NotFound.js",
     "imports": [
       "index.html"
