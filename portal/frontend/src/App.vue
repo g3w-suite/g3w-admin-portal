@@ -4,18 +4,10 @@
   </fragment>
 </template>
 
-<script lang="ts">
-  import "../node_modules/dialog-polyfill/dist/dialog-polyfill.css";
-  import '@picocss/pico/scss/pico.scss';
-  import { Component, Vue } from 'vue-property-decorator';
+<style lang="scss">
 
-  @Component
-  export default class App extends Vue {
-
-  };
-</script>
-
-<style lang="css">
+  @import "../node_modules/dialog-polyfill/dist/dialog-polyfill.css";
+  @import '@picocss/pico/scss/pico.scss';
 
  /**
   * Override default SCSS variables
