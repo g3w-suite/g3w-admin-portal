@@ -42,7 +42,7 @@
     "@vue/cli-plugin-typescript": "^3.12.1",
     "@vue/cli-service": "^3.12.1",
     "dotenv": "^16.0.3",
-    "vite": "^4.2.1",
+    "vite": "^4.3.0",
     "vite-plugin-commonjs": "^0.6.2",
     "vite-plugin-env-compatible": "^1.1.1",
     "vite-plugin-html": "3.2.0",
