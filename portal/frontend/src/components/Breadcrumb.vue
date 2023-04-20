@@ -159,7 +159,7 @@ export default class Breadcrumb extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="css">
   main#content {
     padding-top: calc(var(--block-spacing-vertical) / 4);
   }

@@ -40,7 +40,7 @@ export default class Main extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
   body > header {
     padding: 0;
   }

@@ -14,8 +14,6 @@
     "test:ui": "playwright test --ui",
     "test:gen": "playwright codegen",
     "test:report": "playwright show-report",
-    "serve:vue": "vue-cli-service serve",
-    "build:vue": "vue-cli-service build --mode production",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -45,9 +43,6 @@
     "@vue/cli-plugin-typescript": "^3.12.1",
     "@vue/cli-service": "^3.12.1",
     "dotenv": "^16.0.3",
-    "postcss": "^8.4.5",
-    "sass": "^1.18.0",
-    "sass-loader": "^7.1.0",
     "typescript": "^3.4.3",
     "vite": "^4.2.1",
     "vite-plugin-env-compatible": "^1.1.1",

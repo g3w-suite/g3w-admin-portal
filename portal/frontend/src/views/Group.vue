@@ -65,5 +65,5 @@ export default class VGroup extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 </style>

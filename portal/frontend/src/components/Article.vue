@@ -139,7 +139,7 @@ export default class Article extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
   /**
    * PROJECT ARTICLE
    */

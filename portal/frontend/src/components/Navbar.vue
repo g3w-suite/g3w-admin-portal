@@ -248,16 +248,18 @@ export default class Navbar extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
   body > nav.top-menu {
-    // justify-content: end;
-    // background-color: var(--contrast-focus);
+    /* justify-content: end; */
+    /* background-color: var(--contrast-focus); */
     --nav-element-spacing-vertical: var(--nav-element-spacing-horizontal);
   }
 
-  // body > nav.main-menu li {
-  //   padding: calc( var(--nav-element-spacing-vertical) / 2) var(--nav-element-spacing-horizontal);
-  // }
+  /**
+   * body > nav.main-menu li {
+   *   padding: calc( var(--nav-element-spacing-vertical) / 2) var(--nav-element-spacing-horizontal);
+   * }
+   */
 
   body > nav {
     border-bottom: var(--nav-border-color, rgba(115, 130, 140, 0.2)) 1px solid;
@@ -272,7 +274,7 @@ export default class Navbar extends Vue {
   body > nav.main-menu {
     position: sticky;
     top: 0;
-    // background: var(--background-color);
+    /* background: var(--background-color); */
     z-index: 10;
     flex-wrap: wrap;
   }

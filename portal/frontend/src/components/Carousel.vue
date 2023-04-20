@@ -41,7 +41,7 @@ export default class Carousel extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
   figure {
     margin-bottom: 0;
   }

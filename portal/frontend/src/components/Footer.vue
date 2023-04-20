@@ -165,7 +165,7 @@ export default class Footer extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
   .social-icons a {
     margin: 0 1ch;
   }

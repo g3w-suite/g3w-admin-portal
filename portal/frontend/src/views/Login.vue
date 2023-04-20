@@ -105,7 +105,7 @@ export default class Login extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
   article {
     padding: 0;
   }

@@ -20,7 +20,7 @@ export default class Projects extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
   .grid {
     grid-row-gap: var(--grid-spacing-horizontal);
   }

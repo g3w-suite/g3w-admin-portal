@@ -33,7 +33,7 @@ export default class ScrollTopArrow extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 .bottom-right {
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.55);

@@ -13,5 +13,5 @@ import { Component, Vue } from 'vue-property-decorator';
 export default class NotFound extends Vue { }
 </script>
 
-<style lang="scss" scoped>
+<style lang="css" scoped>
 </style>
