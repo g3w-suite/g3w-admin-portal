@@ -17,7 +17,7 @@ import Fragment from 'vue-fragment';
 import VueI18n from 'vue-i18n';
 
 // Reset all cookies while developing
-if (document.cookie && 'development' === (import.meta as any).env.MODE) {
+if (document.cookie && 'development' === (import .meta as any).env.MODE) {
   console.log(`Clearing document.cookie: "${document.cookie}"`);
   document.cookie.split(';').forEach((c) => {
     document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');

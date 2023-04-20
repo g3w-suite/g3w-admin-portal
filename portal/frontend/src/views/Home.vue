@@ -45,7 +45,6 @@ import { mapGetters } from 'vuex';
       settings: 'info/info',
     }),
   },
-
 })
 export default class Home extends Vue {
 
@@ -68,6 +67,3 @@ export default class Home extends Vue {
 
 }
 </script>
-
-<style lang="css" scoped>
-</style>

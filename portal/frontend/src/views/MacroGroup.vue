@@ -61,6 +61,3 @@ export default class VMacroGroup extends Vue {
 
 }
 </script>
-
-<style lang="css" scoped>
-</style>

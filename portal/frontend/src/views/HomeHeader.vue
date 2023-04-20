@@ -35,7 +35,6 @@ import { mapGetters } from 'vuex';
       }),
   },
 })
-
 export default class HomeHeader extends Vue {
   public info!: Info;
 

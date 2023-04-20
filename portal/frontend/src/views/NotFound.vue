@@ -7,11 +7,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-@Component({
-  components: { },
-})
+@Component({ components: { } })
 export default class NotFound extends Vue { }
 </script>
-
-<style lang="css" scoped>
-</style>
