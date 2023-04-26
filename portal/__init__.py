@@ -1,15 +1,6 @@
-from django.conf import settings
+from django import VERSION as django_version
 
-default_app_config = 'portal.apps.PortalConfig'
+# https://docs.djangoproject.com/en/3.2/releases/3.2/#automatic-appconfig-discovery
 
-# TODO: uninstall "django-samesite-none" in Django >= v3.1
-settings.MIDDLEWARE = [
-    'django_samesite_none.middleware.SameSiteNoneMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
-] + settings.MIDDLEWARE
-
-# Activate `corsheaders` package
-if hasattr(settings, 'THIRD_PARTY_APPS'):
-    settings.THIRD_PARTY_APPS += ['corsheaders'] # when we are running a G3W-ADMIN instance 
-else:
-    settings.INSTALLED_APPS   += ['corsheaders'] # when we are running a plain DJANGO instance
+if django_version < (3, 2):
+    default_app_config = 'portal.apps.PortalConfig'
