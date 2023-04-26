@@ -4,10 +4,12 @@
   </fragment>
 </template>
 
-<style lang="scss">
+<style lang="css">
 
-  @import "../node_modules/dialog-polyfill/dist/dialog-polyfill.css";
-  @import '@picocss/pico/scss/pico.scss';
+ /**
+  * @import "../node_modules/dialog-polyfill/dist/dialog-polyfill.css";
+  * @import '@picocss/pico/scss/pico.scss';
+  */
 
  /**
   * Override default SCSS variables

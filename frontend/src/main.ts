@@ -1,5 +1,7 @@
 import 'vite/modulepreload-polyfill';
 
+import "dialog-polyfill/dist/dialog-polyfill.css";
+import '@picocss/pico/css/pico.css';
 import '@fontsource/titillium-web/400-italic.css';
 import '@fontsource/titillium-web/400.css';
 import '@fontsource/titillium-web/700-italic.css';
@@ -17,7 +19,7 @@ import Fragment from 'vue-fragment';
 import VueI18n from 'vue-i18n';
 
 // Reset all cookies while developing
-if (document.cookie && 'development' === (import .meta as any).env.MODE) {
+if (document.cookie && 'development' === (import.meta as any).env.MODE) {
   console.log(`Clearing document.cookie: "${document.cookie}"`);
   document.cookie.split(';').forEach((c) => {
     document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');

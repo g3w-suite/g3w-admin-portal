@@ -29,7 +29,7 @@ export default defineConfig({
   plugins: [
     vue(),
     commonjs(),
-    envCompatible(),
+    envCompatible.default(),
     // createVuePlugin({ jsx: true }),
     // djangoVite(['frondend/main.js',]),
     // createHtmlPlugin({
@@ -40,16 +40,16 @@ export default defineConfig({
     //   }
     // })
   ],
-  base: (process.env.NODE_ENV === 'production' ? '/static/frontend/' : './'),
+  base: './', /* process.env.NODE_ENV === 'production' ? './static/frontend/' : './', */
   server: {
     strictPort: false,
-    port: (new URL(process.env.VITE_SERVER)).port,
+    port: +(new URL(process.env.VITE_SERVER as string)).port,
     origin: process.env.VITE_SERVER,
   },
   build: {
     emptyOutDir: true,
     manifest: true,
-    outDir: '../static/frontend/',
+    outDir: '../portal/static/frontend/',
     // assetsDir: 'assets',
     rollupOptions: {
       // input: [

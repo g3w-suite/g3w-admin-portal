@@ -1,4 +1,5 @@
 import { jwtManager } from '@/api/managers/jwtManager';
+import { loginManager as sessionManager } from '@/api/managers/loginManager';
 import config from '@/config';
 import { ELoginStatus } from '@/types/ELoginStatus';
 import { IRootState } from '@/types/IRootState';
@@ -28,8 +29,10 @@ const actions: ActionTree<IUserState, IRootState> = {
       .catch((e) => { commit('setUser', null); }),
 
   logout: ({commit, dispatch, rootState}, {locale}): Promise<void> =>
-    loginManager(rootState)
-      .logout(locale, rootState.refresh_token)
+      Promise.all([
+        jwtManager.logout(locale, rootState.refresh_token),
+        sessionManager.logout(locale),
+      ])
       .then((u) => {
         if (!rootState.useCookies) {
           dispatch('removeTokens', undefined, { root: true });

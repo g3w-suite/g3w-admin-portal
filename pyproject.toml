@@ -34,9 +34,13 @@ classifiers     = [
 
 [tool.setuptools]
 # Manual package discovery
-# packages        = ["portal"]
-# package-dir     = { portal = "portal" }
-#
+packages        = ["portal"]
+package-dir     = { portal = "portal" }
+
+# Custom package discovery
+# [tool.setuptools.packages]
+# find = { }
+
 # https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#automatic-discovery
 #
 # NB: see also: MANIFEST.in
