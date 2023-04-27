@@ -29,14 +29,13 @@ const actions: ActionTree<IUserState, IRootState> = {
       .catch((e) => { commit('setUser', null); }),
 
   logout: ({commit, dispatch, rootState}, {locale}): Promise<void> =>
+      // TODO: conditionally handle logout managers
       Promise.all([
         jwtManager.logout(locale, rootState.refresh_token),
         sessionManager.logout(locale),
       ])
+      // loginManager(rootState)
       .then((u) => {
-        if (!rootState.useCookies) {
-          dispatch('removeTokens', undefined, { root: true });
-        }
         commit('setUser', null);
       }),
 

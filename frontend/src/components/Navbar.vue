@@ -231,7 +231,7 @@ export default class Navbar extends Vue {
 
   get drf_token(): string {
     const drf_token = this.$store.getters['me/me'] ? this.$store.getters['me/me'].drf_token : '';
-    return drf_token ? get_admin_url(`/${this.$i18n.locale}/portal/api/whoami/?__drftk=${drf_token}`) : '';
+    return (drf_token && 'logout' !== this.$route.name) ? get_admin_url(`/${this.$i18n.locale}/portal/api/whoami/?__drftk=${drf_token}`) : '';
   }
 
   public logout() {

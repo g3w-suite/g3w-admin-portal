@@ -18,12 +18,15 @@ let ready: boolean = false;
 /**
  * Refresh data on user Login / Logout
  */
-store.subscribe((mutation, state) => {
+store.subscribe(async (mutation, state) => {
   if (mutation.type === 'me/setUser') {
-    store
-      .dispatch('group/reset')
-      .then(() => fetchData(i18n.locale))
-      .then(() => setActiveGroup(router.currentRoute));
+    console.log('reset');
+    if (!state.useCookies) {
+      await store.dispatch('removeTokens', undefined);
+    }
+    await store.dispatch('group/reset');
+    await fetchData(i18n.locale);
+    await setActiveGroup(router.currentRoute);
   }
 });
 
