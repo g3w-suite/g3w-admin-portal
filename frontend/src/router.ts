@@ -21,8 +21,8 @@ let ready: boolean = false;
 store.subscribe(async (mutation, state) => {
   if (mutation.type === 'me/setUser') {
     console.log('reset');
-    // disgread JWT tokens when after calling: commit('setUser', null)
-    const { me } = store.getters['info/info'];
+    // disgread JWT tokens after calling: commit('setUser', null)
+    const me = store.getters['me/me'];
     if (!state.useCookies && ! me) {
       await store.dispatch('removeTokens', undefined);
     }
