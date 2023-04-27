@@ -37,4 +37,44 @@ test.describe('Home Page', () => {
     await expect(page).toHaveTitle(/Home - G3W-SUITE/);
   });
 
+  test('change language', async({ page }) => {
+    // Click the language switcher link.
+    await page.getByRole('link', { name: 'Seleziona una lingua' }).click();
+    await page.getByRole('link', { name: 'en_GBEnglish' }).click();
+    await page.getByRole('link', { name: 'Choose a language' }).click(); // FIXME: users should not click again on dropdown
+
+    // Authenticate user.
+    await page.getByRole('link', { name: 'Login' }).click();
+    await page.getByLabel('Username').fill('admin');
+    await page.getByLabel('Password').fill('admin');
+    await page.getByRole('button', { name: 'Login' }).click();
+
+    // Wait until the page reaches a state where all is set (eg. server cookies).
+    await page.waitForURL('**/en/');
+    await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible();
+
+    // Click the search link.
+    await page.getByRole('link', { name: 'Search' }).click();
+    await page.waitForURL('**/en/search');
+
+    // Click the logout link.
+    await page.getByRole('link', { name: 'Logout' }).click();
+    await page.waitForURL('**/en/search');
+    await expect(page.getByRole('link', { name: 'Logout' })).not.toBeVisible();
+
+    // Click the home link.
+    await page.getByRole('link', { name: 'Home' }).click();
+    await page.waitForURL('**/en/');
+    await expect(page.getByRole('link', { name: 'Logout' })).not.toBeVisible();
+
+    // Click the language switcher link.
+    await page.getByRole('link', { name: 'Choose a language' }).click();
+    await page.getByRole('link', { name: 'it_ITItaliano' }).click();
+    await page.getByRole('link', { name: 'Seleziona una lingua' }).click();  // FIXME: users should not click again on dropdown
+
+    // End of authentication steps.
+    await page.waitForURL('**/it/');
+    await expect(page.getByRole('link', { name: 'Logout' })).not.toBeVisible();
+  });
+
 });
