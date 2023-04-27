@@ -21,9 +21,12 @@ let ready: boolean = false;
 store.subscribe(async (mutation, state) => {
   if (mutation.type === 'me/setUser') {
     console.log('reset');
-    if (!state.useCookies) {
+    // disgread JWT tokens when after calling: commit('setUser', null)
+    const { me } = store.getters['info/info'];
+    if (!state.useCookies && ! me) {
       await store.dispatch('removeTokens', undefined);
     }
+    // fetch again data from server 
     await store.dispatch('group/reset');
     await fetchData(i18n.locale);
     await setActiveGroup(router.currentRoute);
