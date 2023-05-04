@@ -57,8 +57,11 @@ Here are some reccomended local_settings.py (same site installation, alongside a
 
 ```python
 ...
-FRONTEND = True
-FRONTEND_APP = 'portal'
+
+# TODO: fix ModuleNotFoundError when app is disabled (g3w-admin v3.5)
+if ('portal' in G3WADMIN_LOCAL_MORE_APPS):
+    FRONTEND_APP = 'portal'
+    FRONTEND     = True
 
 # CSS OVERRIDES based on Pico.css v1.5.6 (https://picocss.com)
 PORTAL_CUSTOM_CSS = """
