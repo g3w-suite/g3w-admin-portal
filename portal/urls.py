@@ -9,8 +9,8 @@ __date__ = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
 
 
-from django.conf.urls import include, url
-from django.urls import path
+from django.conf import settings
+from django.urls import path, re_path
 from django.contrib.auth.decorators import login_required
 from base.urls import BASE_ADMIN_URLPATH
 from .views import (
@@ -31,20 +31,26 @@ from .api.views import (
     PicuresApiView
 )
 
+# For API urls:
+# if `portal` module is not used as settings.FRONTEND_APP module, remove `portal\` from path
+pre_api_url = 'portal/' if settings.FRONTEND_APP == 'portal' else ''
+
+
+
 urlpatterns = [
 
-    url(
-        r'^$',
+    path(
+        '',
         PortalView.as_view(),
         name='frontend'
     ),
-    url(
-        r'^jx/login/$',
+    path(
+        'jx/login/',
         LoginAjaxView.as_view(),
         name='portal-ajax-login'
     ),
-    url(
-        r'^jx/logout/$',
+    path(
+        'jx/logout/',
         LogoutAjaxView.as_view(),
         name='portal-ajax-logout'
     ),
@@ -52,84 +58,84 @@ urlpatterns = [
     # MOVE EVERY API URLS HERE TO USER I18N CAPABILITIES
     # --------------------------------------------------
     # Generic suite data
-    url(
-        r'^portal/api/infodata/$',
+    path(
+        f'{pre_api_url}api/infodata/',
         InfoDataApiView.as_view(),
         name='portal-infodata-api-list'
     ),
 
     # All Groups (filtered by user role)
-    url(
-        r'^portal/api/group/$',
+    path(
+        f'{pre_api_url}api/group/',
         GroupsApiView.as_view(),
         name='portal-group-api-list'
     ),
 
     # Return logged user info
-    url(
-        r'^portal/api/whoami/$',
+    path(
+        f'{pre_api_url}api/whoami/',
         WhoamiApiView.as_view(),
         name='portal-whoami-api'
     ),
 
     # All Projects (filtered by user role)
-    url(
-        r'^portal/api/project/$',
+    path(
+        f'{pre_api_url}api/project/',
         ProjectsApiView.as_view(),
         name='portal-project-api-list'
     ),
 
 
     # All Project (filtered by user role and groups)
-    url(
-        r'^portal/api/group/(?P<group_id>[0-9]+)/projects/$',
+    re_path(
+        r'^{}api/group/(?P<group_id>[0-9]+)/projects/$'.format(pre_api_url),
         ProjectsApiView.as_view(),
         name='portal-project-by-group-api-list'
     ),
 
     # Groups by MacroGroup
-    url(
-        r'^portal/api/group/(?P<macrogroup_id>[0-9]+)$',
+    re_path(
+        r'^{}api/group/(?P<macrogroup_id>[0-9]+)$'.format(pre_api_url),
         GroupsApiView.as_view(),
         name='portal-group-by-macrogroup-api-list'
     ),
 
     # Groups without MacroGroups
-    url(
-        r'^portal/api/group/nomacrogroup/$',
+    path(
+        f'{pre_api_url}api/group/nomacrogroup/',
         GroupsApiView.as_view(),
         name='portal-group-without-macrogroup-api-list'
     ),
 
     # All MacroGroups
-    url(
-        r'^portal/api/macrogroup/$',
+    path(
+        f'{pre_api_url}api/macrogroup/',
         MacroGroupsApiView.as_view(),
         name='portal-macrogroup-api-list'
     ),
 
     # Pictures manager
     # ------------------------------------
-    url(
-        r'^{}portal/pictures/$'.format(BASE_ADMIN_URLPATH),
+    path(
+        f'{BASE_ADMIN_URLPATH}{pre_api_url}pictures/',
         login_required(PictureListView.as_view()),
         name='portal-picture'
     ),
 
-    url(
-        r'^{}portal/pictures/add/$'.format(BASE_ADMIN_URLPATH),
+    path(
+        f'{BASE_ADMIN_URLPATH}{pre_api_url}pictures/add/',
         login_required(PictureCreateView.as_view()),
         name='portal-picture-add'
     ),
 
     path(
-        '{}portal/pictures/update/<int:pk>'.format(BASE_ADMIN_URLPATH),
+        f'{BASE_ADMIN_URLPATH}{pre_api_url}pictures/update/<int:pk>',
         login_required(PictureUpdateView.as_view()),
         name='portal-picture-update'
     ),
 
     path(
-        '{}portal/pictures/delete/<int:pk>'.format(BASE_ADMIN_URLPATH),
+        f'{BASE_ADMIN_URLPATH}{pre_api_url}pictures/delete/<int:pk>',
         login_required(PictureDeleteView.as_view()),
         name='portal-picture-delete'
     ),
@@ -138,7 +144,7 @@ urlpatterns = [
     # --------------------------------------
     # All MacroGroups
     path(
-        'portal/api/pictures/',
+        f'{pre_api_url}api/pictures/',
         PicuresApiView.as_view(),
         name='portal-picture-api-list'
     ),
