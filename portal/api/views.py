@@ -45,7 +45,8 @@ class ProjectsApiView(PortalApiViewMixin, generics.ListAPIView):
     filter_backends = (
         UserProjectFilter,
         GroupProjectFilter,
-        PanoramicProjectFilter
+        PanoramicProjectFilter,
+        ByMacroGroupFilter
     )
 
 
@@ -59,7 +60,8 @@ class GroupsApiView(PortalApiViewMixin, generics.ListAPIView):
 
     filter_backends = (
         UserGroupFilter,
-        MacroGroupGroupFilter
+        #MacroGroupGroupFilter,
+        ByMacroGroupFilter
     )
 
 
@@ -70,6 +72,10 @@ class MacroGroupsApiView(PortalApiViewMixin, generics.ListAPIView):
 
     queryset = MacroGroup.objects.all()
     serializer_class = MacroGroupSerializer
+
+    filter_backends = (
+        EmptyMacroGroupFilter,
+    )
 
 
 class InfoDataApiView(generics.RetrieveAPIView):

@@ -86,3 +86,34 @@ class PanoramicProjectFilter(BaseFilterBackend):
             queryset = queryset.filter(~Q(pk__in=[g.project_id for g in GroupProjectPanoramic.objects.all()]))
 
         return queryset
+
+class ByMacroGroupFilter(BaseFilterBackend):
+    """
+    A filter to usa a specify MacroGroup as filter for qdjango projects
+    """
+
+    def filter_queryset(self, request, queryset, view):
+
+        # Get Groups by specify macrogroup
+        groups = Group.objects.filter(macrogroups__name=getattr(settings, 'ALTAMURA_MAGROGROUP_NAME', 'ALTAMURA'))
+
+        if resolve(request.path_info).url_name == 'portal-project-api-list':
+            queryset = queryset.filter(group__pk__in=[g.pk for g in groups])
+
+        if resolve(request.path_info).url_name in ('portal-group-api-list', 'portal-group-without-macrogroup-api-list'):
+            queryset = queryset.filter(pk__in=[g.pk for g in groups])
+
+        return queryset
+
+
+class EmptyMacroGroupFilter(BaseFilterBackend):
+    """
+    return empty list
+    """
+
+    def filter_queryset(self, request, queryset, view):
+        queryset = queryset.filter(pk=-9999)
+
+        return queryset
+
+
