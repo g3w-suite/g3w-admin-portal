@@ -57,10 +57,14 @@ class PortalView(TemplateView):
     template_name = 'portal/index.html'
 
     def get_context_data(self, **kwargs):
+
+        api_base_url = settings.PORTAL_API_BASE_URL if getattr(settings, 'PORTAL_API_BASE_URL') else \
+            self.request.build_absolute_uri('/')
+
         return {
 
             # TODO optional setting for API_BASE_URL (cross domain API) 
-            'API_BASE_URL': self.request.build_absolute_uri('/'),
+            'API_BASE_URL': api_base_url,
 
             'LANGUAGES': [l[0] for l in settings.LANGUAGES],
 
