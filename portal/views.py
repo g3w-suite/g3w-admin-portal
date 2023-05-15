@@ -58,7 +58,7 @@ class PortalView(TemplateView):
 
     def get_context_data(self, **kwargs):
 
-        api_base_url = settings.PORTAL_API_BASE_URL if getattr(settings, 'PORTAL_API_BASE_URL') else \
+        api_base_url = settings.PORTAL_API_BASE_URL if hasattr(settings, 'PORTAL_API_BASE_URL') else \
             self.request.build_absolute_uri('/')
 
         return {
