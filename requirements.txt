@@ -1,4 +1,4 @@
 django-samesite-none==0.0.3
 django-cors-headers==3.10.1 # Max version number for Django 2.2 and Python 3.6
 
-g3w-admin-authjwt @ git+https://github.com/g3w-suite/g3w-admin-authjwt.git@v0.0.1
+#g3w-admin-authjwt @ git+https://github.com/g3w-suite/g3w-admin-authjwt.git@v0.0.1 # By hand on Bari
