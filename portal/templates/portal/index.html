@@ -9,9 +9,9 @@
     {# Fix relative URLs (eg. relative links and images within text) when we are working with an external API server  #}
     <base href="{{ API_BASE_URL }}" />
     <title>{{ admin_page_title }}</title>
-    <link rel="icon" href="https://https://sit.comune.altamura.ba.it/img/favicon.ico">
-    <script type="module" crossorigin src="https://https://sit.comune.altamura.ba.it/frontend/index.js"></script>
-    <link rel="stylesheet" href="https://https://sit.comune.altamura.ba.it/frontend/assets/index.css">
+    <link rel="icon" href="https://sit.comune.altamura.ba.it/img/favicon.ico">
+    <script type="module" crossorigin src="https://sit.comune.altamura.ba.it/frontend/index.js"></script>
+    <link rel="stylesheet" href="https://sit.comune.altamura.ba.it/frontend/assets/index.css">
     {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
         {% for css in SETTINGS.G3WSUITE_CUSTOM_CSS %}
             <link rel="stylesheet" href="{{ css }}" />
