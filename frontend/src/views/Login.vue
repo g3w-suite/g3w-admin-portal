@@ -56,20 +56,12 @@
 
 <script lang="ts">
 import { Info } from '@/types/TInfo';
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 
 @Component({
   name: 'Login',
-  computed: {
-    ...mapGetters({
-      settings: 'info/info',
-    }),
-  },
 })
 export default class Login extends Vue {
-
-  public settings!: Info;
 
   public username: string = '';
   public password: string = '';
@@ -78,6 +70,10 @@ export default class Login extends Vue {
   public usernameError: boolean = false;
   public loginError: boolean = false;
   private error_message: string = '';
+
+  get settings(): Info {
+    return this.$store.getters['info/info'];
+  }
 
   public login() {
     if (!this.username) {

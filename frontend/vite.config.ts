@@ -1,6 +1,7 @@
-import { defineConfig } from 'vite';
+// import packageJson from "./package.json"
+import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import path from 'path';
-import vue from '@vitejs/plugin-vue2'
+import vue from '@vitejs/plugin-vue'
 import envCompatible from 'vite-plugin-env-compatible';
 import commonjs from 'vite-plugin-commonjs';
 import * as dotenv from 'dotenv';
@@ -22,12 +23,25 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: /^~/, replacement: '' },
-      { find: '@', replacement: path.resolve(__dirname, 'src') }
+      { find: '@', replacement: path.resolve(__dirname, 'src') },
+      { find: 'vue', replacement: '@vue/compat' },
     ],
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue' ]
   },
+  // define: {
+  //   "process.env.__VERSION__": packageJson.version
+  // },
   plugins: [
-    vue(),
+    splitVendorChunkPlugin(),
+    vue({
+      template: {
+        compilerOptions: {
+          compatConfig: {
+            MODE: 2
+          }
+        }
+      }
+    }),
     commonjs(),
     envCompatible.default(),
     // createVuePlugin({ jsx: true }),

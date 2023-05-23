@@ -8,10 +8,10 @@
         <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3><b>{{title ||  $t('messages.maps.group')}}</b></h3></figcaption>
       </figure>
     </router-link>
-   </article>
+  </article>
 
   <!-- PROJECT ARTICLE -->
-  <article v-else  class="grid" :class="className">
+  <article v-else ref="article" class="grid" :class="className">
 
     <div>
       <figure>
@@ -31,11 +31,16 @@
 
     <hgroup>
       <h3>{{title}}</h3>
-      <div v-html="description"></div>
+      <!-- <read-more :text="description" :more-str="$t('messages.readmore')" :less-str="$t('messages.readless')" link="#"  :max-chars="500"></read-more> -->
+      <ReadMore :text="description" :more-str="$t('messages.readmore')" :less-str="$t('messages.readless')" link="#"  :max-chars="500"/>
+      <!-- <div v-html="description"></div> -->
+      <!-- <a href="#" @click.prevent="showModal">Preview</a> -->
+      <a href="#" @click.prevent="showModal">{{ $t('messages.readmore') }}</a>
     </hgroup>
 
   </article>
 
+  <Dialog ref="modal" />
 </template>
 
 <script lang="ts">
@@ -44,14 +49,16 @@ import { Group } from '@/types/TGroup';
 import { MacroGroup } from '@/types/TMacroGroup';
 import { Project } from '@/types/TProject';
 import { get_admin_url } from '@/utils';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
+import Dialog from '@/components/Dialog.vue';
+import ReadMore from '@/components/ReadMore.vue';
 
 @Component({
-  components: {},
+  components: { Dialog, ReadMore },
 })
 export default class Article extends Vue {
 
-  @Prop(Object) public readonly item!: Group | MacroGroup | Project;
+  @Prop public readonly item!: Group | MacroGroup | Project;
 
   public avgColor: string = '0,0,0';
 
@@ -113,6 +120,21 @@ export default class Article extends Vue {
    */
   public get_admin_url(folder: string): string {
     return get_admin_url(folder);
+  }
+
+  public showModal() {
+    const modal = (this.$refs.modal as any).$refs.dialog;
+    modal.innerHTML = `
+    <article style="background-color: #fff; max-width: min(90%, 960px); margin: 0;">
+      <header style="margin-bottom: 1rem;">
+        <form data-method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form>
+        <h2 style="margin: 0;">${this.title}</h2>
+      </header>
+      <figure><img loading="lazy" src="${this.img_url}" alt="${this.title || this.description}" style="width:100%;" /></figure>
+      <div>${this.description}</div>
+    </article>`;
+    //modal.innerHTML += (this.$refs.article as HTMLElement).outerHTML;
+    modal.showModal();
   }
 
   /**

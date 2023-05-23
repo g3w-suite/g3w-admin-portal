@@ -1,5 +1,4 @@
 import { picturesManager } from '@/api/managers/picturesManager';
-import { i18n } from '@/main';
 import { IPictures } from '@/types/IPictures';
 import { IRootState } from '@/types/IRootState';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';

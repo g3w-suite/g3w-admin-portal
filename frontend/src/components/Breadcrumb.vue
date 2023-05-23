@@ -15,7 +15,7 @@
     class="container"
   >
     <ul>
-      <li v-for="(crumb, idx) in breadcrumbs">
+      <li v-for="(crumb, idx) in breadcrumbs" :class="crumb.name">
         <router-link
           :to="{ name: crumb.name, params: crumb.params }"
           :aria-current="isLastCrumb(breadcrumbs, idx) ? 'page' : undefined">
@@ -29,7 +29,7 @@
 <script lang="ts">
 import { IBreadcrumbItem } from '@/types/IBreadcrumbItem';
 import { SuperGroup } from '@/types/TSuperGroup';
-import { Component, Vue, Watch} from 'vue-property-decorator';
+import { Component, Vue, Watch} from 'vue-facing-decorator';
 import { RouteRecord } from 'vue-router';
 
 @Component({
@@ -37,6 +37,7 @@ import { RouteRecord } from 'vue-router';
 })
 
 export default class Breadcrumb extends Vue {
+
   public breadcrumbs: IBreadcrumbItem[] = [];
 
   @Watch('$route.params', {

@@ -12,22 +12,19 @@
 
 <script lang="ts">
 import { IPictures } from '@/types/IPictures';
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 
 @Component({
   name: 'Carousel',
   components: {},
-  computed: {
-    ...mapGetters({
-      pictures: 'settings/pictures',
-    }),
-  },
 })
 export default class Carousel extends Vue {
-  public pictures!: IPictures[];
 
   private index: number = 0;
+
+  get pictures(): IPictures[] {
+    return this.$store.getters['settings/pictures'];
+  }
 
   get info() {
     return this.pictures[this.index % this.pictures.length] || {};
@@ -38,6 +35,7 @@ export default class Carousel extends Vue {
       this.index++;
     }, 3000);
   }
+
 }
 </script>
 

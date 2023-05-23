@@ -6,7 +6,6 @@ import { Group, IGroupDict } from '@/types/TGroup';
 import { IMacroGroupDict, MacroGroup } from '@/types/TMacroGroup';
 import { Project } from '@/types/TProject';
 import { SuperGroup } from '@/types/TSuperGroup';
-import Vue from 'vue';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
 const groupState: IGroupState = {
@@ -103,11 +102,11 @@ const actions: ActionTree<IGroupState, IRootState> = {
 
 const mutations: MutationTree<IGroupState> = {
   setActiveGroup:           (state, sg): void  => { state.ActiveGroup = sg; },
-  setMacroGroups:           (state, mc): void  => { Vue.set(state.MacroGroups, mc.id, mc); },
-  setGroupWithNoMacroGroup: (state, g): void   => { Vue.set(state.GroupsWithNoMacroGroup, g.id, g); },
-  setGroup:                 (state, g): void   => { Vue.set(state.Groups, g.id, g); },
-  setGroupsOfMacrogroup:    (state, g): void   => { Vue.set(state.GroupsInMacroGroups, g.id, g.gps); },
-  setProjectsOfGroup:       (state, g): void   => { Vue.set(state.ProjectsInGroups, g.id, g.prj); },
+  setMacroGroups:           (state, mc): void  => { state.MacroGroups[mc.id] = mc; },
+  setGroupWithNoMacroGroup: (state, g): void   => { state.GroupsWithNoMacroGroup[g.id] = g; },
+  setGroup:                 (state, g): void   => { state.Groups[g.id] = g; },
+  setGroupsOfMacrogroup:    (state, g): void   => { state.GroupsInMacroGroups[g.id] = g.gps; },
+  setProjectsOfGroup:       (state, g): void   => { state.ProjectsInGroups[g.id] = g.prj; },
   setProjects:              (state, ps): void  => { state.Projects = ps; },
   search:                   (state, s): void   => { state.Search = s; },
   reset:                    (state): void      => {

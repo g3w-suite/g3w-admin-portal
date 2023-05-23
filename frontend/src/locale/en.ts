@@ -56,5 +56,10 @@ export const en: any = {
       sview: 'View',
     },
 
+    readmore: 'Read more »',
+    readless: '« Read less',
+
   },
 };
+
+export default en;

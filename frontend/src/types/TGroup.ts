@@ -1,4 +1,4 @@
-import { i18n } from '@/main';
+import i18n from '@/i18n';
 import store from '@/store';
 import { EBoxType } from '@/types/EBoxType';
 import { IGroup } from '@/types/IGroup';
@@ -62,7 +62,7 @@ export class Group extends SuperGroup {
   }
 
   public fetchProjects() {
-    return store.dispatch('group/fetchProjectsByGroupId', { locale: i18n.locale, id: this.Id });
+    return store.dispatch('group/fetchProjectsByGroupId', { locale: i18n.global.locale, id: this.Id });
   }
 
 }

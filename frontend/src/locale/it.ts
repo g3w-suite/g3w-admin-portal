@@ -58,5 +58,10 @@ export const it: any = {
       view: 'Visualizza',
     },
 
+    readmore: 'Leggi di più »',
+    readless: '« Leggi di meno',
+
   },
 };
+
+export default it;

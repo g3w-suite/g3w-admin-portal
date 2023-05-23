@@ -1,12 +1,16 @@
-import Main from '@/components/Main.vue';
-import config from '@/config';
-import { i18n } from '@/main';
-import store from '@/store';
-import { before_admin, before_login, before_logout, fetchData, setActiveGroup } from '@/utils';
-import Vue from 'vue';
-import Router from 'vue-router';
+import * as Router from 'vue-router';
 
-Vue.use(Router);
+import config from '@/config';
+import i18n from '@/i18n';
+
+import {
+  before_admin,
+  before_login,
+  before_logout,
+  fetchData,
+  setActiveGroup,
+  loadLanguageAsync
+} from '@/utils';
 
 /**
  * @FIXME why do we need this?
@@ -15,39 +19,28 @@ Vue.use(Router);
  */
 let ready: boolean = false;
 
-/**
- * Refresh data on user Login / Logout
- */
-store.subscribe(async (mutation, state) => {
-  if (mutation.type === 'me/setUser') {
-    console.log('reset');
-    // disgread JWT tokens after calling: commit('setUser', null)
-    const me = store.getters['me/me'];
-    if (!state.useCookies && ! me) {
-      await store.dispatch('removeTokens', undefined);
-    }
-    // fetch again data from server 
-    await store.dispatch('group/reset');
-    await fetchData(i18n.locale);
-    await setActiveGroup(router.currentRoute);
-  }
-});
+
+const modes = {
+  "history": Router.createWebHistory,
+  "hash": Router.createWebHashHistory,
+  "abstract": Router.createMemoryHistory
+};
 
 /**
  * Vue Router
  */
-const router = new Router({
-  mode: config.router_mode,
-  base: process.env.BASE_URL,
+const router = Router.createRouter({
+  history: Router.createWebHashHistory(process.env.BASE_URL), // TODO: history: modes[config.router_mode](),
   routes: [
     {
       path: '/:lang/',
-      component: Main,
+      component: () => import('@/components/Main.vue'),
       children: [
         {
-          path: '/',
+          // path: '/',
+          // alias: 'home',
+          path: '',
           name: 'home',
-          alias: '',
           components: {
             default: () => import('@/views/Home.vue'),
             header: () => import('@/views/HomeHeader.vue'),
@@ -75,6 +68,7 @@ const router = new Router({
           path: 'admin/',
           name: 'admin',
           beforeEnter: before_admin,
+          component: () => import('@/views/NotFound.vue'),
         },
         {
           path: 'search/',
@@ -123,7 +117,7 @@ const router = new Router({
     }
     // smooth scroll to top after 500ms
     if (to.name !== 'home') {
-      return new Promise((resolve) => setTimeout(() => resolve({ x: 0, y: 0 }), 500));
+      return new Promise((resolve) => setTimeout(() => resolve({ left: 0, top: 0 }), 500));
     }
   },
 });
@@ -132,20 +126,21 @@ const router = new Router({
  * Apply some mixtures on each route change
  */
 router.beforeEach(async (to, from, next) => {
+
   const lang = to.params.lang;
 
   // fallback to default language (it)
   if (!config.languages.includes(lang)) { return next(`/it${to.path}`); }
 
   // listen for language change
-  if (!ready || i18n.locale !== lang) {
+  if (!ready || i18n.global.locale !== lang) {
     await fetchData(lang);
   }
 
   ready = true; // false = first time
 
   // update html lang attribute
-  document.documentElement.lang = i18n.locale = lang;
+  await loadLanguageAsync(lang);
 
   // update body css class name
   if (to.name) { document.body.classList.add(to.name); }
@@ -156,5 +151,7 @@ router.beforeEach(async (to, from, next) => {
 
   return next();
 });
+
+
 
 export default router;

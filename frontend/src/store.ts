@@ -1,3 +1,5 @@
+import * as Vuex from 'vuex';
+
 import config from '@/config';
 import group from '@/store/group';
 import info from '@/store/info';
@@ -7,15 +9,11 @@ import modal from '@/store/modal';
 import settings from '@/store/settings';
 import { IRootState } from '@/types/IRootState';
 import { sameOrigin } from '@/utils';
-import Vue from 'vue';
-import Vuex, { StoreOptions } from 'vuex';
-
-Vue.use(Vuex);
 
 // TODO: write some tests ...
 const refresh_token = false; // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY4MDY4MTYyNSwiaWF0IjoxNjgwNTk1MjI1LCJqdGkiOiJlZTBlMzUwNTdlNzM0YWU3YjBkODViZjFmZjNhM2RhMSIsInVzZXJfaWQiOjJ9.pDWo9Ei5f1ZMpjGmG2Um2V_xiCTaCMxzqkbNzVeFOvE" ;
 
-const store: StoreOptions<IRootState> = {
+const store_options: Vuex.StoreOptions<IRootState> = {
   state: {
     showLoader: false,
     errors: [],
@@ -73,7 +71,7 @@ const store: StoreOptions<IRootState> = {
       } else {
         localStorage.removeItem(name);
       }
-      Vue.set(state, name, value);
+      state[name] = value;
     },
     addError(state, error: string) {
       state.errors.push(error);
@@ -84,4 +82,6 @@ const store: StoreOptions<IRootState> = {
   },
 };
 
-export default new Vuex.Store(store);
+const store = Vuex.createStore(store_options);
+
+export default store;

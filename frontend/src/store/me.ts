@@ -1,6 +1,5 @@
 import { jwtManager } from '@/api/managers/jwtManager';
 import { loginManager as sessionManager } from '@/api/managers/loginManager';
-import config from '@/config';
 import { ELoginStatus } from '@/types/ELoginStatus';
 import { IRootState } from '@/types/IRootState';
 import { IUserState } from '@/types/IUserState';
@@ -81,9 +80,7 @@ const actions: ActionTree<IUserState, IRootState> = {
 };
 
 const mutations: MutationTree<IUserState> = {
-  setUser: (state, i): void => {
-    state.me = i; // TODO find out if doing like so could be more reccomended: `Vue.set(state, 'me', i);`
-  },
+  setUser: (state, i): void => { state.me = i; },
 };
 
 export default {

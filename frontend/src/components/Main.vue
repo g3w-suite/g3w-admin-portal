@@ -1,23 +1,19 @@
 <template>
-  <fragment>
+  <Navbar />
 
-    <Navbar />
+  <header id="header" v-if="has_header">
+    <router-view name="header" />
+  </header>
 
-    <header id="header" v-if="has_header">
-      <router-view name="header" />
-    </header>
+  <Breadcrumb id="breadcrumb" v-if="!$store.getters.showLoader" />
 
-    <Breadcrumb id="breadcrumb" v-if="!$store.getters.showLoader" />
+  <main id="content" class="container">
+    <progress v-if="$store.getters.showLoader"></progress>
+    <router-view />
+  </main>
 
-    <main id="content" class="container">
-      <progress v-if="$store.getters.showLoader"></progress>
-      <router-view />
-    </main>
-
-    <Footer />
-    <ScrollTopArrow />
-
-  </fragment>
+  <Footer />
+  <ScrollTopArrow />
 </template>
 
 <script lang="ts">
@@ -25,7 +21,7 @@ import Breadcrumb from '@/components/Breadcrumb.vue';
 import Footer from '@/components/Footer.vue';
 import Navbar from '@/components/Navbar.vue';
 import ScrollTopArrow from '@/components/ScrollTop.vue';
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-facing-decorator';
 
 @Component({
   components: { Navbar, Footer, Breadcrumb, ScrollTopArrow },

@@ -1,44 +1,39 @@
 <template>
-  <fragment>
-    <Carousel />
-    
-    <div
-      v-if="info.home_description"
-      class="container"
-      data-theme="dark"
-      v-html="info.home_description"
-    ></div>
-    <!-- <form v-else class="container" @keyup.enter="onSearchSubmit">
-      <input
-        type="search"
-        id="search"
-        name="search"
-        v-model="search"
-        :placeholder="$t('messages.menu.search_placeholder')"
-        :aria-label="$t('messages.menu.search_placeholder')"
-      />
-    </form> -->
-  </fragment>
+  <Carousel />
+  
+  <div
+    v-if="info.home_description"
+    class="container"
+    data-theme="dark"
+    v-html="info.home_description"
+  ></div>
+  <!-- <form v-else class="container" @keyup.enter="onSearchSubmit">
+    <input
+      type="search"
+      id="search"
+      name="search"
+      v-model="search"
+      :placeholder="$t('messages.menu.search_placeholder')"
+      :aria-label="$t('messages.menu.search_placeholder')"
+    />
+  </form> -->
 </template>
 
 <script lang="ts">
 import Carousel from '@/components/Carousel.vue';
 import { Info } from '@/types/TInfo';
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 
 @Component({
   components: { Carousel },
-  computed: {
-    ...mapGetters({
-      info: 'info/info',
-      }),
-  },
 })
 export default class HomeHeader extends Vue {
-  public info!: Info;
 
-  // @Prop(String) public search!: string;
+  get info(): Info {
+    return this.$store.getters['info/info'];
+  }
+
+  // @Prop public search!: string;
 
   // get search() {
   //   return this.$store.getters['group/search'];

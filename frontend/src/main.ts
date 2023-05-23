@@ -7,41 +7,21 @@ import '@fontsource/titillium-web/400.css';
 import '@fontsource/titillium-web/700-italic.css';
 import '@fontsource/titillium-web/700.css';
 
-import App from '@/App.vue';
+import Vue from 'vue';
+
+/** @TODO */
+// import './_version';
+
 import config from '@/config';
 import '@/icons';
-import { en } from '@/locale/en';
-import { it } from '@/locale/it';
-import router from '@/router';
+
+import i18n from '@/i18n';
 import store from '@/store';
-import Vue from 'vue';
-import Fragment from 'vue-fragment';
-import VueI18n from 'vue-i18n';
+import router from '@/router';
 
-// Reset all cookies while developing
-// if (document.cookie && 'development' === (import.meta as any).env.MODE) {
-//   console.log(`Clearing document.cookie: "${document.cookie}"`);
-//   document.cookie.split(';').forEach((c) => {
-//     document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
-//   });
-// }
+import { fetchData, setActiveGroup } from '@/utils';
 
-// if (config.stylesheet) {
-//   const css = document.createElement('link');
-//   css.setAttribute('rel', 'stylesheet');
-//   css.setAttribute('href', config.stylesheet);
-//   document.body.appendChild(css);
-// }
-
-// if (config.color) {
-//   document.documentElement.setAttribute('data-color', config.color);
-//   document.documentElement.style.setProperty('--custom-color', config.color);
-//   document.documentElement.style.setProperty('--header-color', config.color);
-//   document.documentElement.style.setProperty(
-//     '--header-color-alt',
-//     process.env.VUE_APP_CSS_COLOR_ALT || config.color
-//   );
-// }
+import App from '@/App.vue';
 
 if (config.theme) {
   document.documentElement.setAttribute('data-theme', config.theme);
@@ -53,22 +33,28 @@ if (config.favicon) {
   icon.setAttribute('href', config.favicon);
 }
 
-Vue.use(Fragment.Plugin);
-Vue.use(VueI18n);
+/**
+ * Refresh data on user Login / Logout
+ */
+store.subscribe(async (mutation, state) => {
+  if (mutation.type === 'me/setUser') {
+    console.log('reset');
+    // disgread JWT tokens after calling: commit('setUser', null)
+    const me = store.getters['me/me'];
+    if (!state.useCookies && ! me) {
+      await store.dispatch('removeTokens', undefined);
+    }
+    // fetch again data from server 
+    await store.dispatch('group/reset');
+    await fetchData(i18n.global.locale);
+    await setActiveGroup(router.currentRoute);
+  }
+});
 
-Vue.config.productionTip = false;
+(Vue as any).Portal = Vue.createApp(App)
+  .use(i18n)
+  .use(store)
+  .use(router)
+  .mount('#app');
 
-export const i18n = new VueI18n({ locale: 'it', fallbackLocale: 'it', messages: { it, en } });
-
-new Vue({
-  router,
-  store,
-  i18n,
-  render: (h) => h(App),
-  created: () => {
-    store.dispatch('info/fetchInfo', { locale: i18n.locale });
-    store.dispatch('settings/portalSections', { sections: config.portal_sections });
-    store.dispatch('settings/showAdminButton', { show: config.admin_btn });
-    store.dispatch('settings/fetchPictures', { locale: i18n.locale });
-  },
-}).$mount('#app');
+(globalThis as any).Vue = Vue;

@@ -1,22 +1,8 @@
 <template>
-  <fragment id="app">
-    <router-view />
-  </fragment>
+  <router-view />
 </template>
 
 <style lang="css">
-
- /**
-  * @import "../node_modules/dialog-polyfill/dist/dialog-polyfill.css";
-  * @import '@picocss/pico/scss/pico.scss';
-  */
-
- /**
-  * Override default SCSS variables
-  * $primary-500: #e91e63;
-  * $primary-600: #d81b60;
-  * $primary-700: #c2185b;
-  */
 
   :root {
     --font-family: "Titillium Web", system-ui,-apple-system, "Segoe UI", "Roboto", "Ubuntu", "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;

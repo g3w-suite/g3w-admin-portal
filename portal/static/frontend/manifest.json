@@ -1,4 +1,7 @@
 {
+  "_portal-vendor.js": {
+    "file": "portal-vendor.js"
+  },
   "index.css": {
     "file": "assets/index.css",
     "src": "index.css"
@@ -25,6 +28,7 @@
       "assets/index.css"
     ],
     "dynamicImports": [
+      "src/locale/it.ts",
       "src/views/Home.vue",
       "src/views/HomeHeader.vue",
       "src/views/Login.vue",
@@ -36,6 +40,9 @@
       "src/views/NotFound.vue"
     ],
     "file": "index.js",
+    "imports": [
+      "_portal-vendor.js"
+    ],
     "isEntry": true,
     "src": "index.html"
   },
@@ -113,15 +120,22 @@
     ],
     "file": "portal-Projects.js",
     "imports": [
-      "index.html"
+      "index.html",
+      "_portal-vendor.js"
     ],
     "isDynamicEntry": true,
     "src": "src/components/Projects.vue"
+  },
+  "src/locale/it.ts": {
+    "file": "portal-it.js",
+    "isDynamicEntry": true,
+    "src": "src/locale/it.ts"
   },
   "src/views/Group.vue": {
     "file": "portal-Group.js",
     "imports": [
       "src/components/Projects.vue",
+      "_portal-vendor.js",
       "index.html"
     ],
     "isDynamicEntry": true,
@@ -131,6 +145,7 @@
     "file": "portal-Home.js",
     "imports": [
       "src/components/Projects.vue",
+      "_portal-vendor.js",
       "index.html"
     ],
     "isDynamicEntry": true,
@@ -146,6 +161,7 @@
     ],
     "file": "portal-HomeHeader.js",
     "imports": [
+      "_portal-vendor.js",
       "index.html"
     ],
     "isDynamicEntry": true,
@@ -164,6 +180,7 @@
     ],
     "file": "portal-Login.js",
     "imports": [
+      "_portal-vendor.js",
       "index.html"
     ],
     "isDynamicEntry": true,
@@ -174,6 +191,7 @@
     "imports": [
       "src/components/Projects.vue",
       "src/views/Group.vue",
+      "_portal-vendor.js",
       "index.html"
     ],
     "isDynamicEntry": true,
@@ -182,6 +200,7 @@
   "src/views/NotFound.vue": {
     "file": "portal-NotFound.js",
     "imports": [
+      "_portal-vendor.js",
       "index.html"
     ],
     "isDynamicEntry": true,
@@ -198,6 +217,7 @@
     "file": "portal-Search.js",
     "imports": [
       "src/components/Projects.vue",
+      "_portal-vendor.js",
       "index.html"
     ],
     "isDynamicEntry": true,

@@ -1,10 +1,10 @@
-import { RouterMode } from 'vue-router';
+import * as Router from 'vue-router';
 
 const config  =  {
 
   favicon:    process.env.VUE_APP_FAVICON || (window as any).PORTAL_FAVICON,
 
-  theme:      (window as any).theme || process.env.VUE_APP_CSS_THEME,
+  theme:      (window as any).PORTAL_THEME || process.env.VUE_APP_CSS_THEME,
 
   languages:  process.env.VUE_APP_LANGUAGES.split(', '),
 
@@ -19,10 +19,15 @@ const config  =  {
    *
    * @see https://django-rest-framework-simplejwt.readthedocs.io/en/stable/settings.html#auth-header-types
    */
-  auth_mode: (window as any).AUTH_MODE || process.env.VUE_APP_AUTH_MODE,
+  auth_mode: (window as any).PORTAL_AUTH_MODE || process.env.VUE_APP_AUTH_MODE,
 
-  /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations */
-  router_mode: (process.env.VUE_APP_HISTORY_MODE as RouterMode),
+  /**
+   * @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#example-server-configurations
+   * @type { "history" | "hash" | "abstract" }
+   */
+  router_mode: (window as any).PORTAL_HISTORY_MODE ?? process.env.VUE_APP_HISTORY_MODE,
+
+  max_home_articles: (window as any).PORTAL_MAX_HOME_ARTICLES ?? process.env.VUE_APP_MAX_HOME_ARTICLES,
 
   /** @deprecated */
   portal_sections: [ 'maps', 'info' ],

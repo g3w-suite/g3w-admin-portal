@@ -1,4 +1,4 @@
-import { i18n } from '@/main';
+import i18n from '@/i18n';
 import store from '@/store';
 import { EBoxType } from '@/types/EBoxType';
 import { IMacroGroup } from '@/types/IMacroGroup';
@@ -55,7 +55,7 @@ export class MacroGroup extends SuperGroup {
   }
 
   public fetchGroups() {
-    return store.dispatch('group/fetchGroupsByMacroGroupId', {locale: i18n.locale, id: this.Id});
+    return store.dispatch('group/fetchGroupsByMacroGroupId', {locale: i18n.global.locale, id: this.Id});
   }
 }
 

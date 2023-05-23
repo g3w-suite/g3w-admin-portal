@@ -16,22 +16,18 @@ import Projects from '@/components/Projects.vue';
 import { Group } from '@/types/TGroup';
 import { Info } from '@/types/TInfo';
 import { MacroGroup } from '@/types/TMacroGroup';
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+import { Component, Vue, Watch } from 'vue-facing-decorator';
 
 @Component({
   components: { Projects },
-  computed: {
-    ...mapGetters({
-      info: 'info/info',
-    }),
-  },
 })
 export default class VGroup extends Vue {
 
   public items: Group[] = [];
 
-  public info!: Info;
+  get info(): Info {
+    return this.$store.getters['info/info'];
+  }
 
   @Watch('$route.params', {
     immediate: true,

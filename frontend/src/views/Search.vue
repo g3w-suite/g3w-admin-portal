@@ -1,39 +1,34 @@
 <template>
-  <fragment>
-    <input
-      type="search"
-      id="search"
-      name="search"
-      v-model="search"
-      :placeholder="$t('messages.menu.search_placeholder')"
-      :aria-label="$t('messages.menu.search_placeholder')"
-    />
-    <Projects
-      :items="
-        $store.getters['group/search']
-          ? $store.getters['group/filteredProjects']
-          : $store.getters['group/projects']
-      "
-    />
-  </fragment>
+  <input
+    type="search"
+    id="search"
+    name="search"
+    v-model="search"
+    :placeholder="$t('messages.menu.search_placeholder')"
+    :aria-label="$t('messages.menu.search_placeholder')"
+  />
+  <Projects
+    :items="
+      $store.getters['group/search']
+        ? $store.getters['group/filteredProjects']
+        : $store.getters['group/projects']
+    "
+  />
 </template>
 
 <script lang="ts">
 import Projects from '@/components/Projects.vue';
 import { Info } from '@/types/TInfo';
-import { Component, Vue } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+import { Component, Vue } from 'vue-facing-decorator';
 
 @Component({
   components: { Projects },
-  computed: {
-    ...mapGetters({
-      settings: 'info/info',
-    }),
-  },
 })
 export default class Search extends Vue {
-  public settings!: Info;
+
+  get settings(): Info {
+    return this.$store.getters['info/info'];
+  }
 
   get search() {
     return this.$store.getters['group/search'];

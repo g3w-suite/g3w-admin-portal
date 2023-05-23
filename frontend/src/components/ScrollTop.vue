@@ -5,13 +5,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-facing-decorator';
 
 @Component({
   components: { },
 })
 
 export default class ScrollTopArrow extends Vue {
+
   public visible: boolean = false;
 
   public scrollTop() {
@@ -26,7 +27,7 @@ export default class ScrollTopArrow extends Vue {
     window.addEventListener('scroll', this.onScroll);
   }
 
-  public beforeDestroy() {
+  public beforeUnmount() {
     window.removeEventListener('scroll', this.onScroll);
   }
 
