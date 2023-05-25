@@ -1,4 +1,4 @@
-import { IHttpClient, httpClient as HTTPCLIENT } from '@/utils';
+import { HTTPCLIENT, IHttpClient } from '@/utils';
 import { useLangStore } from '@/stores';
 
 /**

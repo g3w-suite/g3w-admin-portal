@@ -6,7 +6,7 @@ import { IWhoAmI } from '@/types/IWhoAmI';
 
 import { useRootStore, useLangStore } from '@/stores';
 
-import { httpClient as axios } from '@/utils';
+import { HTTPCLIENT as axios } from '@/utils';
 
 interface IUserState {
   user: User | null;

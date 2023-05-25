@@ -9,4 +9,4 @@ export { default as loadLanguageAsync } from './loadLanguageAsync';
 export { default as sameOrigin } from './sameOrigin';
 export { default as setActiveGroup } from './setActiveGroup';
 export * from './get_from_portal';
-export * from './HttpClient';
+export * from './axios';

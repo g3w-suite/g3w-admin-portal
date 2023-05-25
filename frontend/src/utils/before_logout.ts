@@ -9,7 +9,6 @@ export default function before_logout(to?: Route, from?: Route, next = (() => {}
     return false;
   }
   // default logout
-
   useAuthStore().logout();
   next();
 }
