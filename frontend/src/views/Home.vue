@@ -29,11 +29,14 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'vue-facing-decorator';
+
 import Projects from '@/components/Projects.vue';
 import { Info } from '@/types/TInfo';
 import { SuperGroup } from '@/types/TSuperGroup';
-import { Component, Vue } from 'vue-facing-decorator';
 import config from '@/config';
+
+import { useGroupStore, useInfoStore } from '@/stores';
 
 @Component({
   components: { Projects },
@@ -46,16 +49,16 @@ export default class Home extends Vue {
   public items: SuperGroup[] = [];
 
   get settings(): Info {
-    return this.$store.getters['info/info'];
+    return useInfoStore().info;
   }
 
   get featuredGroups(): SuperGroup[] {
-    const items = (-1 === this.maxItemstoShow) ? [] : this.$store.getters['group/superGroups'];
+    const items = (-1 === this.maxItemstoShow) ? [] : useGroupStore().superGroups;
     // hide elements from home page that execeds the given length
     this.items = (items.length > this.maxItemstoShow)
       ? items.slice(0, this.maxItemstoShow)
       : items;
-    this.$store.dispatch('group/setActiveGroup', { sg: null });
+    useGroupStore().setActiveGroup(null);
     return items;
   }
 

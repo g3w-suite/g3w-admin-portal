@@ -1,10 +1,12 @@
 import i18n from '@/i18n';
+import { useLangStore } from '@/stores';
 
 const loadedLanguages = ['en']; // our default language that is preloaded
 
 function setI18nLanguage (lang: 'en' | 'it') {
   // axios.defaults.headers.common['Accept-Language'] = lang
   document.documentElement.lang = i18n.global.locale = lang
+  useLangStore().switchLang(lang);
   return lang;
 }
 

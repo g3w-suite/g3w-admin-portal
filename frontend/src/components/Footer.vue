@@ -84,9 +84,11 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'vue-facing-decorator';
+
 import DialogCredits from '@/components/DialogCredits.vue';
 import { Info } from '@/types/TInfo';
-import { Component, Vue } from 'vue-facing-decorator';
+import { useInfoStore } from '@/stores';
 
 @Component({
   components: { DialogCredits },
@@ -95,7 +97,7 @@ import { Component, Vue } from 'vue-facing-decorator';
 export default class Footer extends Vue {
 
   get info(): Info {
-    return this.$store.getters['info/info'];
+    return useInfoStore().info;
   }
 
   public showModal() {

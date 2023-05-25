@@ -1,8 +1,9 @@
-import store from '@/store';
 import { Group } from '@/types/TGroup';
 import { MacroGroup } from '@/types/TMacroGroup';
 import { fetchGroupData } from '@/utils';
 import { Route } from 'vue-router';
+
+import { useGroupStore } from '@/stores';
 
 /**
  * Fetch MacroGroup data based on route params
@@ -14,7 +15,7 @@ export default async function fetchMacroGroupData(to: Route): Promise<Group | Ma
 
   // Home > MacroGroup
   if (!group && id) {
-    const macroGroups = store.getters['group/macroGroups'];
+    const macroGroups = useGroupStore().macroGroups;
     const macrogroup  = macroGroups[id];
     if (!macrogroup) { // inexistent group ID or unauthenticated user
       return false;

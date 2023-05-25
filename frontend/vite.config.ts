@@ -12,10 +12,6 @@ import * as dotenv from 'dotenv';
  */
 dotenv.config()
 
-// import { createVuePlugin } from 'vite-plugin-vue2'; // REPLACED BY: @vitejs/plugin-vue2
-// import { createHtmlPlugin } from 'vite-plugin-html';
-// import djangoVite from 'django-vite-plugin'
-
 /**
  * @see https://vitejs.dev/config/
  */
@@ -44,15 +40,7 @@ export default defineConfig({
     }),
     commonjs(),
     envCompatible.default(),
-    // createVuePlugin({ jsx: true }),
-    // djangoVite(['frondend/main.js',]),
-    // createHtmlPlugin({
-    //   inject: {
-    //     data: {
-    //       title: 'g3w-portal'
-    //     }
-    //   }
-    // })
+
   ],
   base: './', /* process.env.NODE_ENV === 'production' ? './static/frontend/' : './', */
   server: {

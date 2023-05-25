@@ -1,9 +1,10 @@
 import i18n from '@/i18n';
-import store from '@/store';
 import { EBoxType } from '@/types/EBoxType';
 import { IMacroGroup } from '@/types/IMacroGroup';
 import { Group } from '@/types/TGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
+
+import { useGroupStore } from '@/stores';
 
 export class MacroGroup extends SuperGroup {
   public id: number;
@@ -51,11 +52,11 @@ export class MacroGroup extends SuperGroup {
   }
 
   get Groups() {
-    return store.getters['group/groupsInMacroGroup'](this.Id);
+    return useGroupStore().groupsInMacroGroup(this.Id);
   }
 
   public fetchGroups() {
-    return store.dispatch('group/fetchGroupsByMacroGroupId', {locale: i18n.global.locale, id: this.Id});
+    return useGroupStore().fetchGroupsByMacroGroupId(this.Id);
   }
 }
 

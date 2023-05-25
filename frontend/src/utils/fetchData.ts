@@ -1,16 +1,16 @@
-import store from '@/store';
+import { useInfoStore, useSettingsStore, useGroupStore, useRootStore } from '@/stores';
 
 /**
  * Fetch some general application data
  */
-export default async function fetchData(locale: string) {
-  store.dispatch('showLoader');
+export default async function fetchData() {
+  useRootStore().showLoader();
   await Promise.allSettled([
-    store.dispatch('info/fetchInfo', { locale }),
-    store.dispatch('settings/fetchPictures', { locale }),
-    store.dispatch('group/fetchMacroGroups', { locale }),
-    store.dispatch('group/fetchGroupsWithNoMacroGroup', { locale }),
-    store.dispatch('group/fetchProjects', { locale }),
+    useInfoStore().fetchInfo(),
+    useSettingsStore().fetchPictures(),
+    useGroupStore().fetchMacroGroups(),
+    useGroupStore().fetchGroupsWithNoMacroGroup(),
+    useGroupStore().fetchProjects(),
   ]);
-  store.dispatch('hideLoader');
+  useRootStore().hideLoader();
 }

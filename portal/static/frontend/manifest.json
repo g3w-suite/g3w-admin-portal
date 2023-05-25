@@ -1,4 +1,13 @@
 {
+  "_portal-dialog-polyfill.esm.js": {
+    "file": "portal-dialog-polyfill.esm.js"
+  },
+  "_portal-index.js": {
+    "file": "portal-index.js",
+    "imports": [
+      "_portal-vendor.js"
+    ]
+  },
   "_portal-vendor.js": {
     "file": "portal-vendor.js"
   },
@@ -8,9 +17,6 @@
   },
   "index.html": {
     "assets": [
-      "assets/logo_g3wsuite.png",
-      "assets/logo_gis3w_156_85.png",
-      "assets/logo_g3wsuite-bw.png",
       "assets/titillium-web-latin-ext-400-italic.woff2",
       "assets/titillium-web-all-400-italic.woff",
       "assets/titillium-web-latin-400-italic.woff2",
@@ -28,11 +34,12 @@
       "assets/index.css"
     ],
     "dynamicImports": [
-      "src/locale/it.ts",
+      "src/components/Main.vue",
       "src/views/Home.vue",
       "src/views/HomeHeader.vue",
       "src/views/Login.vue",
       "src/views/Login.vue",
+      "src/views/NotFound.vue",
       "src/views/Search.vue",
       "src/views/Group.vue",
       "src/views/MacroGroup.vue",
@@ -110,6 +117,29 @@
     "file": "assets/sfondo.jpg",
     "src": "src/assets/img/sfondo.jpg"
   },
+  "src/components/Main.css": {
+    "file": "assets/Main.css",
+    "src": "src/components/Main.css"
+  },
+  "src/components/Main.vue": {
+    "assets": [
+      "assets/logo_g3wsuite.png",
+      "assets/logo_gis3w_156_85.png",
+      "assets/logo_g3wsuite-bw.png"
+    ],
+    "css": [
+      "assets/Main.css"
+    ],
+    "file": "portal-Main.js",
+    "imports": [
+      "_portal-index.js",
+      "index.html",
+      "_portal-vendor.js",
+      "_portal-dialog-polyfill.esm.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/components/Main.vue"
+  },
   "src/components/Projects.css": {
     "file": "assets/Projects.css",
     "src": "src/components/Projects.css"
@@ -121,22 +151,21 @@
     "file": "portal-Projects.js",
     "imports": [
       "index.html",
+      "_portal-index.js",
+      "_portal-dialog-polyfill.esm.js",
       "_portal-vendor.js"
     ],
     "isDynamicEntry": true,
     "src": "src/components/Projects.vue"
   },
-  "src/locale/it.ts": {
-    "file": "portal-it.js",
-    "isDynamicEntry": true,
-    "src": "src/locale/it.ts"
-  },
   "src/views/Group.vue": {
     "file": "portal-Group.js",
     "imports": [
       "src/components/Projects.vue",
+      "_portal-index.js",
+      "index.html",
       "_portal-vendor.js",
-      "index.html"
+      "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/Group.vue"
@@ -145,8 +174,10 @@
     "file": "portal-Home.js",
     "imports": [
       "src/components/Projects.vue",
+      "_portal-index.js",
+      "index.html",
       "_portal-vendor.js",
-      "index.html"
+      "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/Home.vue"
@@ -161,8 +192,9 @@
     ],
     "file": "portal-HomeHeader.js",
     "imports": [
-      "_portal-vendor.js",
-      "index.html"
+      "_portal-index.js",
+      "index.html",
+      "_portal-vendor.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/HomeHeader.vue"
@@ -180,8 +212,9 @@
     ],
     "file": "portal-Login.js",
     "imports": [
-      "_portal-vendor.js",
-      "index.html"
+      "_portal-index.js",
+      "index.html",
+      "_portal-vendor.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/Login.vue"
@@ -191,8 +224,10 @@
     "imports": [
       "src/components/Projects.vue",
       "src/views/Group.vue",
+      "_portal-index.js",
+      "index.html",
       "_portal-vendor.js",
-      "index.html"
+      "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/MacroGroup.vue"
@@ -200,6 +235,7 @@
   "src/views/NotFound.vue": {
     "file": "portal-NotFound.js",
     "imports": [
+      "_portal-index.js",
       "_portal-vendor.js",
       "index.html"
     ],
@@ -217,8 +253,10 @@
     "file": "portal-Search.js",
     "imports": [
       "src/components/Projects.vue",
+      "_portal-index.js",
+      "index.html",
       "_portal-vendor.js",
-      "index.html"
+      "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/Search.vue"

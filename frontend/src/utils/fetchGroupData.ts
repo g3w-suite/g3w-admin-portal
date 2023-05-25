@@ -1,6 +1,7 @@
-import store from '@/store';
 import { Group } from '@/types/TGroup';
 import { Route } from 'vue-router';
+
+import { useRootStore, useGroupStore } from '@/stores';
 
 /**
  * Fetch Group data based on route params
@@ -12,11 +13,11 @@ export default async function fetchGroupData(to: Route): Promise<Group | null | 
 
   // Home > Group
   if (undefined !== id) {
-    const groups = store.getters['group/groups'];
+    const groups = useGroupStore().groups;
     if (undefined !== group && undefined === groups[group]) {
-      store.dispatch('showLoader');
-      await store.dispatch('group/fetchGroupsByMacroGroupId', { id, locale: lang });
-      store.dispatch('hideLoader');
+      useRootStore().showLoader();
+      await useGroupStore().fetchGroupsByMacroGroupId(lang, id);
+      useRootStore().hideLoader();
     }
     const activeGroup: Group = groups[group || id];
     if (!activeGroup) {

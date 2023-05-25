@@ -8,6 +8,8 @@ import '@fontsource/titillium-web/700-italic.css';
 import '@fontsource/titillium-web/700.css';
 
 import Vue from 'vue';
+import { createPinia } from 'pinia';
+import { useRootStore, useAuthStore, useGroupStore, useLangStore } from '@/stores';
 
 /** @TODO */
 // import './_version';
@@ -16,7 +18,6 @@ import config from '@/config';
 import '@/icons';
 
 import i18n from '@/i18n';
-import store from '@/store';
 import router from '@/router';
 
 import { fetchData, setActiveGroup } from '@/utils';
@@ -33,28 +34,37 @@ if (config.favicon) {
   icon.setAttribute('href', config.favicon);
 }
 
+const pinia = createPinia();
+
+
+const app = (Vue as any).Portal = Vue.createApp(App)
+  .use(i18n)
+  .use(pinia)
+  .use(router);
+
+(globalThis as any).Vue = Vue;
+
+
 /**
  * Refresh data on user Login / Logout
  */
-store.subscribe(async (mutation, state) => {
-  if (mutation.type === 'me/setUser') {
-    console.log('reset');
-    // disgread JWT tokens after calling: commit('setUser', null)
-    const me = store.getters['me/me'];
-    if (!state.useCookies && ! me) {
-      await store.dispatch('removeTokens', undefined);
-    }
-    // fetch again data from server 
-    await store.dispatch('group/reset');
-    await fetchData(i18n.global.locale);
-    await setActiveGroup(router.currentRoute);
+useAuthStore().$onAction((action) => {
+  if (action.name === 'setUser') {
+    action.after(async(d) => {
+      console.log('reset');
+      // disgread JWT tokens after calling: commit('setUser', null)
+      const { me } = useAuthStore();
+      const { useCookies } = useRootStore();
+      if (!useCookies && ! me) {
+        await  useRootStore().removeTokens();
+      }
+      // fetch again data from server 
+      await useGroupStore().reset();
+      await fetchData();
+      await setActiveGroup(router.currentRoute);
+    });
   }
 });
 
-(Vue as any).Portal = Vue.createApp(App)
-  .use(i18n)
-  .use(store)
-  .use(router)
-  .mount('#app');
 
-(globalThis as any).Vue = Vue;
+app.mount('#app');

@@ -12,11 +12,14 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue, Watch } from 'vue-facing-decorator';
+
 import Projects from '@/components/Projects.vue';
 import { Group } from '@/types/TGroup';
 import { Info } from '@/types/TInfo';
 import { MacroGroup } from '@/types/TMacroGroup';
-import { Component, Vue, Watch } from 'vue-facing-decorator';
+
+import { useGroupStore, useInfoStore } from '@/stores';
 
 @Component({
   components: { Projects },
@@ -26,7 +29,7 @@ export default class VGroup extends Vue {
   public items: Group[] = [];
 
   get info(): Info {
-    return this.$store.getters['info/info'];
+    return useInfoStore().info;
   }
 
   @Watch('$route.params', {
@@ -36,9 +39,9 @@ export default class VGroup extends Vue {
   public async onRouteParamsChange({ id, group }: { id?: number, group?: number }) {
     // Home > Groups
     if (undefined === id) {
-      this.items = this.$store.getters['group/superGroups'];
+      this.items = useGroupStore().superGroups;
     } else {
-      this.items = this.$store.getters['group/projectsInGroup'](group || id);
+      this.items = useGroupStore().projectsInGroup(group || id);
     }
   }
 
@@ -46,7 +49,7 @@ export default class VGroup extends Vue {
    * @FIXME
    */
    get title(): string {
-    const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
+    const sg: MacroGroup | Group = useGroupStore().activeGroup;
     return sg ? sg.title : this.info.groups_title;
   }
 
@@ -54,7 +57,7 @@ export default class VGroup extends Vue {
    * @FIXME
    */
   get description(): string {
-    const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
+    const sg: MacroGroup | Group = useGroupStore().activeGroup;
     return sg ? sg.description : this.info.groups_map_description;
   }
 

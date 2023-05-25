@@ -1,8 +1,8 @@
 import i18n from '@/i18n';
-import store from '@/store';
 import { EBoxType } from '@/types/EBoxType';
 import { IGroup } from '@/types/IGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
+import { useGroupStore } from '@/stores';
 
 export class Group extends SuperGroup {
   public id: number;
@@ -58,11 +58,11 @@ export class Group extends SuperGroup {
   }
 
   get Projects() {
-    return store.getters['group/projectsInGroup'](this.Id);
+    return useGroupStore().projectsInGroup(this.Id);
   }
 
   public fetchProjects() {
-    return store.dispatch('group/fetchProjectsByGroupId', { locale: i18n.global.locale, id: this.Id });
+    return useGroupStore().fetchProjectsByGroupId(this.Id);
   }
 
 }

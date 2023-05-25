@@ -7,35 +7,35 @@
     :placeholder="$t('messages.menu.search_placeholder')"
     :aria-label="$t('messages.menu.search_placeholder')"
   />
-  <Projects
-    :items="
-      $store.getters['group/search']
-        ? $store.getters['group/filteredProjects']
-        : $store.getters['group/projects']
-    "
-  />
+  <Projects :items="items_filter" />
 </template>
 
 <script lang="ts">
-import Projects from '@/components/Projects.vue';
-import { Info } from '@/types/TInfo';
 import { Component, Vue } from 'vue-facing-decorator';
+
+import Projects from '@/components/Projects.vue';
+
+import { useGroupStore, useInfoStore } from '@/stores';
 
 @Component({
   components: { Projects },
 })
 export default class Search extends Vue {
 
-  get settings(): Info {
-    return this.$store.getters['info/info'];
+  get items_filter() {
+    return useGroupStore().Search ? useGroupStore().filteredProjects : useGroupStore().projects;
+  }
+
+  get settings() {
+    return useInfoStore().info;
   }
 
   get search() {
-    return this.$store.getters['group/search'];
+    return useGroupStore().Search;
   }
 
   set search(val: string) {
-    this.$store.dispatch('group/search', { s: val });
+    useGroupStore().setSearchFilter(val);
   }
 }
 </script>

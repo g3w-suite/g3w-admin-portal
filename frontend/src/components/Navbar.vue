@@ -236,14 +236,18 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'vue-facing-decorator';
+
 import config from '@/config';
 import { Info } from '@/types/TInfo';
 import { before_logout, get_admin_url } from '@/utils';
-import { Component, Vue, Watch } from 'vue-facing-decorator';
+
+import { useInfoStore, useSettingsStore, useAuthStore } from '@/stores';
 
 import flag_en_src from '@/assets/img/flags/en_GB.png';
 import flag_it_src from '@/assets/img/flags/it_IT.png';
 import g3w_logo_src from '@/assets/img/logo_g3wsuite-bw.png';
+
 
 @Component({
   components: { },
@@ -258,15 +262,15 @@ export default class Navbar extends Vue {
   public secondaryMenuVisible: boolean | null = true;
 
   get sections(): string[] {
-    return this.$store.getters['settings/portalSections'];
+    return useSettingsStore().portalSections;
   }
 
   get showAdmin(): boolean {
-    return this.$store.getters['settings/showAdminButton'];
+    return useSettingsStore().showAdminButton;
   }
 
   get info(): Info {
-    return this.$store.getters['info/info'];
+    return useInfoStore().info;
   }
 
   get languages() {
@@ -274,11 +278,11 @@ export default class Navbar extends Vue {
   }
 
   get whoIs() {
-    return this.$store.getters['me/me'];
+    return useAuthStore().me;
   }
 
   get isLoggedIn() {
-    return this.$store.getters['me/isLoggedIn'];
+    return useAuthStore().isLoggedIn;
   }
 
   get hasNavBarTop(): boolean {
@@ -290,7 +294,7 @@ export default class Navbar extends Vue {
   }
 
   get drf_token(): string {
-    const drf_token = this.$store.getters['me/me'] ? this.$store.getters['me/me'].drf_token : '';
+    const drf_token = useAuthStore().me ? useAuthStore().me.drf_token : '';
     return (drf_token && 'logout' !== this.$route.name) ? get_admin_url(`/${this.$i18n.locale}/portal/api/whoami/?__drftk=${drf_token}`) : '';
   }
 
@@ -299,7 +303,7 @@ export default class Navbar extends Vue {
   }
 
   public mounted() {
-    this.$store.dispatch('me/fetchWhoAmI', { locale: this.$i18n.locale });
+    useAuthStore().fetchWhoAmI();
   }
 
   public toggleSecondaryMenu() {
@@ -309,8 +313,10 @@ export default class Navbar extends Vue {
   public switchLang(e: Event) {
     if ((window as any).PORTAL_LANG_BUTTON) {
       e.preventDefault();
-      const lang = ('it' === this.$i18n.locale ? 'en' : 'it');
-      this.$router.push({ name: 'home', params: { lang: lang } });
+      this.$router.push({
+        name: 'home',
+        params: { lang: ('it' === this.$i18n.locale ? 'en' : 'it') }
+      });
     }
   }
 

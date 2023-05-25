@@ -1,9 +1,9 @@
 import router from '@/router';
-import store from '@/store';
 import { Group } from '@/types/TGroup';
 import { MacroGroup } from '@/types/TMacroGroup';
 import { fetchGroupData, fetchMacroGroupData } from '@/utils';
 import { Route } from 'vue-router';
+import { useGroupStore } from '@/stores';
 
 /**
  * Make sure that 'group/ActiveGroup' getter is always set after each route change
@@ -24,6 +24,6 @@ export default async function setActiveGroup(to: Route) {
   if (false === sg) {
     router.push({name: '404', params: router.currentRoute.params });
   } else {
-    store.dispatch('group/setActiveGroup', { sg });
+    useGroupStore().setActiveGroup(sg);
   }
 }

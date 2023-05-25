@@ -1,5 +1,5 @@
 <template>
-  <figure v-if="$store.getters['settings/pictures'].length">
+  <figure v-if="pictures.length">
     <figure>
       <img :src="info.image" />
       <figcaption>
@@ -11,8 +11,10 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'vue-facing-decorator';
+
 import { IPictures } from '@/types/IPictures';
-import { Component, Prop, Vue } from 'vue-facing-decorator';
+import { useSettingsStore } from '@/stores';
 
 @Component({
   name: 'Carousel',
@@ -23,7 +25,7 @@ export default class Carousel extends Vue {
   private index: number = 0;
 
   get pictures(): IPictures[] {
-    return this.$store.getters['settings/pictures'];
+    return useSettingsStore().pictures;
   }
 
   get info() {

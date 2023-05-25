@@ -44,12 +44,15 @@
 </template>
 
 <script lang="ts">
+import { Component, Prop, Vue } from 'vue-facing-decorator';
+
 import { EBoxType } from '@/types/EBoxType';
 import { Group } from '@/types/TGroup';
 import { MacroGroup } from '@/types/TMacroGroup';
 import { Project } from '@/types/TProject';
 import { get_admin_url } from '@/utils';
-import { Component, Prop, Vue } from 'vue-facing-decorator';
+import { useAuthStore } from '@/stores';
+
 import Dialog from '@/components/Dialog.vue';
 import ReadMore from '@/components/ReadMore.vue';
 
@@ -96,7 +99,7 @@ export default class Article extends Vue {
    * Check if current project could be edited by the user (admin backend)
    */
   public has_edit_url(): boolean {
-    return !!(this.type === this.boxtype.P && this.$store.getters['me/isLoggedIn'] && this.edit_url);
+    return !!(this.type === this.boxtype.P && useAuthStore().isLoggedIn && this.edit_url);
   }
 
   public get_group_url(): string {

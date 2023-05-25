@@ -9,6 +9,10 @@ const i18n = VueI18n.createI18n({
   fallbackLocale: 'en',
   messages: { en, it },
   globalInjection: true,
-});
+ 
+  /** @TODO https://vue-i18n.intlify.dev/guide/migration/vue3.html */
+  // allowComposition: true, // 
+}
+);
 
 export default i18n;

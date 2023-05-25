@@ -27,10 +27,13 @@
 </template>
 
 <script lang="ts">
-import { IBreadcrumbItem } from '@/types/IBreadcrumbItem';
-import { SuperGroup } from '@/types/TSuperGroup';
 import { Component, Vue, Watch} from 'vue-facing-decorator';
 import { RouteRecord } from 'vue-router';
+
+import { IBreadcrumbItem } from '@/types/IBreadcrumbItem';
+import { SuperGroup } from '@/types/TSuperGroup';
+import { useGroupStore, useInfoStore } from '@/stores';
+
 
 @Component({
   components: { },
@@ -68,7 +71,7 @@ export default class Breadcrumb extends Vue {
     matched.shift();
 
     // activeGroup contains a reference to current active element (last crumb)
-    const activeGroup: SuperGroup = this.$store.getters['group/activeGroup'];
+    const activeGroup: SuperGroup = useGroupStore().activeGroup;
 
     for (let i = 0; i < route.length; i++) {
 
@@ -115,7 +118,7 @@ export default class Breadcrumb extends Vue {
       /** @HOTFIX for Home > Macgroup > ID */
       /** @HOTFIX for Home > Macgroup > ID > Subgroup */
       if (this.isLastSecondCrumb(route, i) && this.$route.params.group) {
-        text = this.$store.getters['group/macroGroup'](this.$route.params.id).title;
+        text = useGroupStore().macroGroup(this.$route.params.id).title;
         name = 'organization';
       }
 
@@ -125,7 +128,7 @@ export default class Breadcrumb extends Vue {
     }
 
     // dynamically update document title text
-    window.document.title = title + titleSeparator + (this.$store.getters['info/info'].title || 'G3W-SUITE');
+    window.document.title = title + titleSeparator + (useInfoStore().info.title || 'G3W-SUITE');
 
     // update breadcrumbs array
     this.breadcrumbs = breadcrumbs;

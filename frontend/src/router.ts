@@ -109,13 +109,16 @@ const router = Router.createRouter({
       ],
     },
   ],
-  /** @link https://v3.router.vuejs.org/guide/advanced/scroll-behavior.html */
+  /**
+   * @param to.hash smooth scroll to element id
+   * @param to.name smooth scroll to top after 500ms
+   * 
+   * @see https://v3.router.vuejs.org/guide/advanced/scroll-behavior.html
+   */
   scrollBehavior(to, from, savedPosition) {
-    // smooth scroll to element id
     if (to.hash) {
       return { selector: to.hash, behavior: 'smooth', offset: { x: 0, y: 100 } };
     }
-    // smooth scroll to top after 500ms
     if (to.name !== 'home') {
       return new Promise((resolve) => setTimeout(() => resolve({ left: 0, top: 0 }), 500));
     }
@@ -127,20 +130,22 @@ const router = Router.createRouter({
  */
 router.beforeEach(async (to, from, next) => {
 
-  const lang = to.params.lang;
+  const { lang } = to.params;
+
+  console.log(lang);
 
   // fallback to default language (it)
   if (!config.languages.includes(lang)) { return next(`/it${to.path}`); }
 
+  // update html lang attribute
+  await loadLanguageAsync(lang);
+
   // listen for language change
   if (!ready || i18n.global.locale !== lang) {
-    await fetchData(lang);
+    await fetchData();
   }
 
   ready = true; // false = first time
-
-  // update html lang attribute
-  await loadLanguageAsync(lang);
 
   // update body css class name
   if (to.name) { document.body.classList.add(to.name); }

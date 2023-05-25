@@ -55,8 +55,11 @@
 </template>
 
 <script lang="ts">
-import { Info } from '@/types/TInfo';
 import { Component, Prop, Vue } from 'vue-facing-decorator';
+
+import { Info } from '@/types/TInfo';
+
+import { useAuthStore, useInfoStore } from '@/stores';
 
 @Component({
   name: 'Login',
@@ -72,7 +75,7 @@ export default class Login extends Vue {
   private error_message: string = '';
 
   get settings(): Info {
-    return this.$store.getters['info/info'];
+    return useInfoStore().info;
   }
 
   public login() {
@@ -88,11 +91,10 @@ export default class Login extends Vue {
       this.usernameError = false;
       this.passwordError = false;
       this.loginError = false;
-      this.$store
-        .dispatch('me/login', { username: this.username, password: this.password, locale: this.$i18n.locale })
-        .then(() => this.$store.dispatch('me/fetchWhoAmI', { locale: this.$i18n.locale }))
+      useAuthStore().login(this.username, this.password)
+        .then(() => useAuthStore().fetchWhoAmI())
         .then(() => this.$router.push({ name: 'home' }))
-        .catch((e) => {
+        .catch((e: string) => {
           this.error_message = e;
           this.loginError = true;
         });

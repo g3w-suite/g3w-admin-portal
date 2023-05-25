@@ -20,9 +20,12 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'vue-facing-decorator';
+
 import Carousel from '@/components/Carousel.vue';
 import { Info } from '@/types/TInfo';
-import { Component, Prop, Vue } from 'vue-facing-decorator';
+
+import { useGroupStore, useInfoStore } from '@/stores';
 
 @Component({
   components: { Carousel },
@@ -30,17 +33,17 @@ import { Component, Prop, Vue } from 'vue-facing-decorator';
 export default class HomeHeader extends Vue {
 
   get info(): Info {
-    return this.$store.getters['info/info'];
+    return useInfoStore().info;
   }
 
   // @Prop public search!: string;
 
   // get search() {
-  //   return this.$store.getters['group/search'];
+  //   return useGroupStore().search;
   // }
 
   // set search(val: string) {
-  //   this.$store.dispatch('group/search', { s: val });
+  //   useGroupStore().setSearchFilter(val);
   // }
 
   // public onSearchSubmit(e: Event) {
