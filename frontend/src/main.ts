@@ -7,15 +7,16 @@ import '@fontsource/titillium-web/400.css';
 import '@fontsource/titillium-web/700-italic.css';
 import '@fontsource/titillium-web/700.css';
 
-import Vue from 'vue';
+import * as Vue from 'vue';
 import { createPinia } from 'pinia';
 import { useRootStore, useAuthStore, useGroupStore, useLangStore } from '@/stores';
+
 
 /** @TODO */
 // import './_version';
 
 import config from '@/config';
-import '@/icons';
+import { FontAwesomeIcon } from '@/icons';
 
 import i18n from '@/i18n';
 import router from '@/router';
@@ -37,12 +38,14 @@ if (config.favicon) {
 const pinia = createPinia();
 
 
-const app = (Vue as any).Portal = Vue.createApp(App)
+const app = Vue.createApp(App)
   .use(i18n)
   .use(pinia)
-  .use(router);
+  .use(router)
+  .component('font-awesome-icon', FontAwesomeIcon);
 
-(globalThis as any).Vue = Vue;
+// (Vue as any).app = app;
+// (globalThis as any).Vue = Vue;
 
 
 /**

@@ -37,8 +37,6 @@ import {
   faUserShield,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import Vue from 'vue';
 
 library.add(
   faUserShield,
@@ -74,4 +72,4 @@ library.add(
   faChevronUp,
 );
 
-Vue.component('font-awesome-icon', FontAwesomeIcon);
+export { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';

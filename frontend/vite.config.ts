@@ -20,7 +20,6 @@ export default defineConfig({
     alias: [
       { find: /^~/, replacement: '' },
       { find: '@', replacement: path.resolve(__dirname, 'src') },
-      { find: 'vue', replacement: '@vue/compat' },
     ],
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue' ]
   },
