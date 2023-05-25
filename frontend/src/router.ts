@@ -1,16 +1,9 @@
 import * as Router from 'vue-router';
-
+import { useRootStore, useLangStore, useInfoStore, useAuthStore } from '@/stores';
+import { get_admin_url } from '@/utils';
 import config from '@/config';
 import i18n from '@/i18n';
 
-import {
-  before_admin,
-  before_login,
-  before_logout,
-  fetchData,
-  setActiveGroup,
-  loadLanguageAsync
-} from '@/utils';
 
 /**
  * @FIXME why do we need this?
@@ -54,7 +47,7 @@ const router = Router.createRouter({
           component: () => import('@/views/Login.vue'),
           meta: {
           },
-          beforeEnter: before_login,
+          beforeEnter: (...args) => useAuthStore().maybe_redirect(...args),
         },
         {
           path: 'logout/',
@@ -62,12 +55,12 @@ const router = Router.createRouter({
           meta: {
           },
           component: () => import('@/views/Login.vue'),
-          beforeEnter: before_logout,
+          beforeEnter: (...args) => useAuthStore().maybe_redirect(...args),
         },
         {
           path: 'admin/',
           name: 'admin',
-          beforeEnter: before_admin,
+          beforeEnter: (...args) => useAuthStore().maybe_redirect(...args),
           component: () => import('@/views/NotFound.vue'),
         },
         {
@@ -138,11 +131,11 @@ router.beforeEach(async (to, from, next) => {
   if (!config.languages.includes(lang)) { return next(`/it${to.path}`); }
 
   // update html lang attribute
-  await loadLanguageAsync(lang);
+  await useLangStore().loadLanguageAsync(lang);
 
   // listen for language change
   if (!ready || i18n.global.locale !== lang) {
-    await fetchData();
+    await useRootStore().fetchData();
   }
 
   ready = true; // false = first time
@@ -152,7 +145,7 @@ router.beforeEach(async (to, from, next) => {
   if (from.name && from.name !== to.name) { document.body.classList.remove(from.name); }
 
   // update 'group/ActiveGroup' getter
-  await setActiveGroup(to);
+  await useRootStore().setActiveGroup(/*to*/);
 
   return next();
 });

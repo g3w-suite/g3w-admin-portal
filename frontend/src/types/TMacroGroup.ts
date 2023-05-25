@@ -1,7 +1,5 @@
-import i18n from '@/i18n';
 import { EBoxType } from '@/types/EBoxType';
 import { IMacroGroup } from '@/types/IMacroGroup';
-import { Group } from '@/types/TGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
 
 import { useGroupStore } from '@/stores';
@@ -58,12 +56,4 @@ export class MacroGroup extends SuperGroup {
   public fetchGroups() {
     return useGroupStore().fetchGroupsByMacroGroupId(this.Id);
   }
-}
-
-export interface IMacroGroupDict {
-  [key: number]: MacroGroup;
-}
-
-export interface IGroupInMacrogroupDict {
-  [key: number]: Group[];
 }

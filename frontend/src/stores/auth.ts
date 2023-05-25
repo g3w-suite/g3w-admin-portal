@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia';
 import { ELoginStatus } from '@/types/ELoginStatus';
-import { get_from_portal } from '@/utils';
+import { get_admin_url, get_from_portal } from '@/utils';
 import User from '@/types/TUser';
 import { IWhoAmI } from '@/types/IWhoAmI';
 
-import { useRootStore, useLangStore } from '@/stores';
+import { useRootStore, useLangStore, useInfoStore } from '@/stores';
 
 import { HTTPCLIENT as axios } from '@/utils';
+import config from '@/config';
 
 interface IUserState {
   user: User | null;
@@ -28,6 +29,8 @@ export const useAuthStore = defineStore('auth', {
 
     setUser(i: User | null) {
       this.user = i;
+      // fetch again data from server on user Login / Logout 
+      useRootStore().fetchData(true);
     },
 
     /**
@@ -63,6 +66,36 @@ export const useAuthStore = defineStore('auth', {
         axios.get<{ status: ELoginStatus; message?: string; }>(useLangStore().locale + '/jx/logout/'),       // Cookie
       ]);
       this.setUser(null);
+    },
+
+    /**
+     * Redirect to custom pages (login, logout, admin) 
+     */
+    maybe_redirect(to: any, from?: any, next = ()=>{}) {
+      switch(to.name) {
+        case 'login':
+          // redirect to custom login page
+          if ('login' !== useInfoStore().info.login_url) {
+            location.href = useInfoStore().info.login_url;
+            return false;
+          }
+          // default login
+          next();
+          break;
+        case 'logout':
+          // redirect to custom logout page
+          if ('login' !== useInfoStore().info.login_url) {
+            location.href = useInfoStore().info.logout_url;
+            return false;
+          }
+          // default logout
+          this.logout();
+          next();
+          break;
+        case 'admin':
+          // redirect to admin dashboard page
+          location.href = get_admin_url(config.admin_root);
+      }
     },
 
     /**

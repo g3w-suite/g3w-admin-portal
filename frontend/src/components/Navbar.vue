@@ -240,7 +240,7 @@ import { Component, Vue } from 'vue-facing-decorator';
 
 import config from '@/config';
 import { Info } from '@/types/TInfo';
-import { before_logout, get_admin_url } from '@/utils';
+import { get_admin_url } from '@/utils';
 
 import { useInfoStore, useSettingsStore, useAuthStore } from '@/stores';
 
@@ -299,7 +299,7 @@ export default class Navbar extends Vue {
   }
 
   public logout() {
-    return before_logout();
+    return useAuthStore().maybe_redirect({ name: 'logout' });
   }
 
   public mounted() {

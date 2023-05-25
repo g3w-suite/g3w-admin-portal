@@ -1,6 +1,5 @@
 import { EBoxType } from '@/types/EBoxType';
 import { IProject } from '@/types/IProject';
-import { Group } from '@/types/TGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
 
 export class Project extends SuperGroup {
@@ -60,8 +59,4 @@ export class Project extends SuperGroup {
     return EBoxType.P;
   }
 
-}
-
-export interface IProgectInGroupDict {
-  [key: number]: Project[];
 }

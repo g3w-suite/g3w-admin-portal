@@ -1,6 +1,6 @@
-import { Group, IGroupDict } from '@/types/TGroup';
-import { MacroGroup, IGroupInMacrogroupDict, IMacroGroupDict } from '@/types/TMacroGroup';
-import { IProgectInGroupDict, Project } from '@/types/TProject';
+import { Group } from '@/types/TGroup';
+import { MacroGroup } from '@/types/TMacroGroup';
+import { Project } from '@/types/TProject';
 
 import { IGroup } from '@/types/IGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
@@ -11,14 +11,14 @@ import { get_from_portal } from '@/utils';
 import { defineStore } from 'pinia'
 
 interface IGroupState {
-  macroGroups: IMacroGroupDict;
-  groupsWithNoMacroGroup: IGroupDict;
-  groups: IGroupDict;
-  GroupsInMacroGroups: IGroupInMacrogroupDict;
-  ProjectsInGroups: IProgectInGroupDict;
-  projects: Project[];
-  activeGroup: SuperGroup | null;
-  search: string;
+  projects:               Project[];
+  macroGroups:            { [key: number]: MacroGroup; };
+  groupsWithNoMacroGroup: { [key: number]: Group };
+  groups:                 { [key: number]: Group };
+  GroupsInMacroGroups:    { [key: number]: Group[]; };
+  ProjectsInGroups:       { [key: number]: Project[]; };
+  activeGroup:            SuperGroup | null;
+  search:                 string;
 }
 
 export const useGroupStore = defineStore('group', {

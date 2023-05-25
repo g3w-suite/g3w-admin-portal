@@ -9,8 +9,6 @@ import '@fontsource/titillium-web/700.css';
 
 import * as Vue from 'vue';
 import { createPinia } from 'pinia';
-import { useRootStore, useAuthStore, useGroupStore, useLangStore } from '@/stores';
-
 
 /** @TODO */
 // import './_version';
@@ -20,8 +18,6 @@ import { FontAwesomeIcon } from '@/icons';
 
 import i18n from '@/i18n';
 import router from '@/router';
-
-import { fetchData, setActiveGroup } from '@/utils';
 
 import App from '@/App.vue';
 
@@ -37,8 +33,8 @@ if (config.favicon) {
 
 const pinia = createPinia();
 
-
-const app = Vue.createApp(App)
+const app = Vue
+  .createApp(App)
   .use(i18n)
   .use(pinia)
   .use(router)
@@ -46,28 +42,5 @@ const app = Vue.createApp(App)
 
 // (Vue as any).app = app;
 // (globalThis as any).Vue = Vue;
-
-
-/**
- * Refresh data on user Login / Logout
- */
-useAuthStore().$onAction((action) => {
-  if (action.name === 'setUser') {
-    action.after(async(d) => {
-      console.log('reset');
-      // disgread JWT tokens after calling: commit('setUser', null)
-      const { user } = useAuthStore();
-      const { useCookies } = useRootStore();
-      if (!useCookies && ! user) {
-        await  useRootStore().removeTokens();
-      }
-      // fetch again data from server 
-      await useGroupStore().reset();
-      await fetchData();
-      await setActiveGroup(router.currentRoute);
-    });
-  }
-});
-
 
 app.mount('#app');

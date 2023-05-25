@@ -1,4 +1,3 @@
-import i18n from '@/i18n';
 import { EBoxType } from '@/types/EBoxType';
 import { IGroup } from '@/types/IGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
@@ -65,8 +64,4 @@ export class Group extends SuperGroup {
     return useGroupStore().fetchProjectsByGroupId(this.Id);
   }
 
-}
-
-export interface IGroupDict {
-  [key: number]: Group;
 }
