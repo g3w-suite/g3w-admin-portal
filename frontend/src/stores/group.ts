@@ -44,9 +44,7 @@ export const useGroupStore = defineStore('group', {
     ],
     filteredProjects:       (state): Project[]                 => {
       const s = state.search.toLowerCase();
-      return state.projects.filter(
-        (p) => p.title.toLowerCase().includes(s) || p.description.toLowerCase().includes(s),
-      );
+      return state.projects.filter((p) => p.title.toLowerCase().includes(s) || p.description.toLowerCase().includes(s));
     },
 
   },

@@ -53,9 +53,9 @@ useAuthStore().$onAction((action) => {
     action.after(async(d) => {
       console.log('reset');
       // disgread JWT tokens after calling: commit('setUser', null)
-      const { me } = useAuthStore();
+      const { user } = useAuthStore();
       const { useCookies } = useRootStore();
-      if (!useCookies && ! me) {
+      if (!useCookies && ! user) {
         await  useRootStore().removeTokens();
       }
       // fetch again data from server 

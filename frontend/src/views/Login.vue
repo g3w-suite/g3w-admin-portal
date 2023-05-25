@@ -91,8 +91,9 @@ export default class Login extends Vue {
       this.usernameError = false;
       this.passwordError = false;
       this.loginError = false;
-      useAuthStore().login(this.username, this.password)
-        .then(() => useAuthStore().fetchWhoAmI())
+      useAuthStore()
+      .login(this.username, this.password)
+        // .then(() => useAuthStore().fetchWhoAmI())
         .then(() => this.$router.push({ name: 'home' }))
         .catch((e: string) => {
           this.error_message = e;
