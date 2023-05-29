@@ -25,7 +25,7 @@ import { Component, Vue } from 'vue-facing-decorator';
 import Carousel from '@/components/Carousel.vue';
 import { Info } from '@/types/TInfo';
 
-import { useGroupStore, useInfoStore } from '@/stores';
+import { useDataStore } from '@/stores';
 
 @Component({
   components: { Carousel },
@@ -33,17 +33,17 @@ import { useGroupStore, useInfoStore } from '@/stores';
 export default class HomeHeader extends Vue {
 
   get info(): Info {
-    return useInfoStore().info;
+    return useDataStore().info;
   }
 
   // @Prop public search!: string;
 
   // get search() {
-  //   return useGroupStore().search;
+  //   return useDataStore().search;
   // }
 
   // set search(val: string) {
-  //   useGroupStore().setSearchFilter(val);
+  //   useDataStore().setSearchFilter(val);
   // }
 
   // public onSearchSubmit(e: Event) {

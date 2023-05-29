@@ -4,7 +4,7 @@ import { it } from '@/locale/it';
 
 // import { loadLanguageAsync } from '@/utils'; 
 
-const i18n = VueI18n.createI18n({
+export const i18n = VueI18n.createI18n({
   locale: document.documentElement.lang || 'en',
   fallbackLocale: 'en',
   messages: { en, it },
@@ -14,5 +14,3 @@ const i18n = VueI18n.createI18n({
   // allowComposition: true, // 
 }
 );
-
-export default i18n;

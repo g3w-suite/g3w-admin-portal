@@ -32,7 +32,7 @@ import { RouteRecord } from 'vue-router';
 
 import { IBreadcrumbItem } from '@/types/IBreadcrumbItem';
 import { SuperGroup } from '@/types/TSuperGroup';
-import { useGroupStore, useInfoStore } from '@/stores';
+import { useDataStore } from '@/stores';
 
 
 @Component({
@@ -71,7 +71,7 @@ export default class Breadcrumb extends Vue {
     matched.shift();
 
     // activeGroup contains a reference to current active element (last crumb)
-    const activeGroup: SuperGroup = useGroupStore().activeGroup;
+    const activeGroup: SuperGroup = useDataStore().activeGroup;
 
     for (let i = 0; i < route.length; i++) {
 
@@ -118,7 +118,7 @@ export default class Breadcrumb extends Vue {
       /** @HOTFIX for Home > Macgroup > ID */
       /** @HOTFIX for Home > Macgroup > ID > Subgroup */
       if (this.isLastSecondCrumb(route, i) && this.$route.params.group) {
-        text = useGroupStore().macroGroup(this.$route.params.id).title;
+        text = useDataStore().macroGroup(this.$route.params.id).title;
         name = 'organization';
       }
 
@@ -128,7 +128,7 @@ export default class Breadcrumb extends Vue {
     }
 
     // dynamically update document title text
-    window.document.title = title + titleSeparator + (useInfoStore().info.title || 'G3W-SUITE');
+    window.document.title = title + titleSeparator + (useDataStore().info.title || 'G3W-SUITE');
 
     // update breadcrumbs array
     this.breadcrumbs = breadcrumbs;

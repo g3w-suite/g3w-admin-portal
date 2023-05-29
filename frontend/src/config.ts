@@ -1,5 +1,3 @@
-import * as Router from 'vue-router';
-
 const config  =  {
 
   favicon:    process.env.VUE_APP_FAVICON || (window as any).PORTAL_FAVICON,

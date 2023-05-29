@@ -8,17 +8,12 @@ import '@fontsource/titillium-web/700-italic.css';
 import '@fontsource/titillium-web/700.css';
 
 import * as Vue from 'vue';
-import { createPinia } from 'pinia';
 
 /** @TODO */
 // import './_version';
 
 import config from '@/config';
-import { FontAwesomeIcon } from '@/icons';
-
-import i18n from '@/i18n';
-import router from '@/router';
-
+import { FontAwesomeIcon, i18n, router, pinia } from '@/plugins';
 import App from '@/App.vue';
 
 if (config.theme) {
@@ -30,8 +25,6 @@ if (config.favicon) {
   icon.setAttribute('rel', 'icon');
   icon.setAttribute('href', config.favicon);
 }
-
-const pinia = createPinia();
 
 const app = Vue
   .createApp(App)

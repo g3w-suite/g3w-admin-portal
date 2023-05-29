@@ -59,7 +59,7 @@ import { Component, Prop, Vue } from 'vue-facing-decorator';
 
 import { Info } from '@/types/TInfo';
 
-import { useAuthStore, useInfoStore } from '@/stores';
+import { useAuthStore, useDataStore } from '@/stores';
 
 @Component({
   name: 'Login',
@@ -75,7 +75,7 @@ export default class Login extends Vue {
   private error_message: string = '';
 
   get settings(): Info {
-    return useInfoStore().info;
+    return useDataStore().info;
   }
 
   public login() {

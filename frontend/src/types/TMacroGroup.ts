@@ -2,7 +2,7 @@ import { EBoxType } from '@/types/EBoxType';
 import { IMacroGroup } from '@/types/IMacroGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
 
-import { useGroupStore } from '@/stores';
+import { useDataStore } from '@/stores';
 
 export class MacroGroup extends SuperGroup {
   public id: number;
@@ -50,10 +50,10 @@ export class MacroGroup extends SuperGroup {
   }
 
   get Groups() {
-    return useGroupStore().groupsInMacroGroup(this.Id);
+    return useDataStore().groupsInMacroGroup(this.Id);
   }
 
   public fetchGroups() {
-    return useGroupStore().fetchGroupsByMacroGroupId(this.Id);
+    return useDataStore().fetchGroupsByMacroGroupId(this.Id);
   }
 }

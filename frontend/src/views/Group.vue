@@ -19,7 +19,7 @@ import { Group } from '@/types/TGroup';
 import { Info } from '@/types/TInfo';
 import { MacroGroup } from '@/types/TMacroGroup';
 
-import { useGroupStore, useInfoStore } from '@/stores';
+import { useDataStore } from '@/stores';
 
 @Component({
   components: { Projects },
@@ -29,7 +29,7 @@ export default class VGroup extends Vue {
   public items: Group[] = [];
 
   get info(): Info {
-    return useInfoStore().info;
+    return useDataStore().info;
   }
 
   @Watch('$route.params', {
@@ -39,9 +39,9 @@ export default class VGroup extends Vue {
   public async onRouteParamsChange({ id, group }: { id?: number, group?: number }) {
     // Home > Groups
     if (undefined === id) {
-      this.items = useGroupStore().superGroups;
+      this.items = useDataStore().superGroups;
     } else {
-      this.items = useGroupStore().projectsInGroup(group || id);
+      this.items = useDataStore().projectsInGroup(group || id);
     }
   }
 
@@ -49,7 +49,7 @@ export default class VGroup extends Vue {
    * @FIXME
    */
    get title(): string {
-    const sg: MacroGroup | Group = useGroupStore().activeGroup;
+    const sg: MacroGroup | Group = useDataStore().activeGroup;
     return sg ? sg.title : this.info.groups_title;
   }
 
@@ -57,7 +57,7 @@ export default class VGroup extends Vue {
    * @FIXME
    */
   get description(): string {
-    const sg: MacroGroup | Group = useGroupStore().activeGroup;
+    const sg: MacroGroup | Group = useDataStore().activeGroup;
     return sg ? sg.description : this.info.groups_map_description;
   }
 

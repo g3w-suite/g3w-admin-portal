@@ -1,7 +1,7 @@
 import { EBoxType } from '@/types/EBoxType';
 import { IGroup } from '@/types/IGroup';
 import { SuperGroup } from '@/types/TSuperGroup';
-import { useGroupStore } from '@/stores';
+import { useDataStore } from '@/stores';
 
 export class Group extends SuperGroup {
   public id: number;
@@ -57,11 +57,11 @@ export class Group extends SuperGroup {
   }
 
   get Projects() {
-    return useGroupStore().projectsInGroup(this.Id);
+    return useDataStore().projectsInGroup(this.Id);
   }
 
   public fetchProjects() {
-    return useGroupStore().fetchProjectsByGroupId(this.Id);
+    return useDataStore().fetchProjectsByGroupId(this.Id);
   }
 
 }

@@ -14,7 +14,7 @@
 import { Component, Vue } from 'vue-facing-decorator';
 
 import { IPictures } from '@/types/IPictures';
-import { useSettingsStore } from '@/stores';
+import { useDataStore } from '@/stores';
 
 @Component({
   name: 'Carousel',
@@ -25,7 +25,7 @@ export default class Carousel extends Vue {
   private index: number = 0;
 
   get pictures(): IPictures[] {
-    return useSettingsStore().pictures;
+    return useDataStore().pictures;
   }
 
   get info() {

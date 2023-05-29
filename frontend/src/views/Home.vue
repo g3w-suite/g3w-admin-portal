@@ -36,7 +36,7 @@ import { Info } from '@/types/TInfo';
 import { SuperGroup } from '@/types/TSuperGroup';
 import config from '@/config';
 
-import { useGroupStore, useInfoStore } from '@/stores';
+import { useDataStore } from '@/stores';
 
 @Component({
   components: { Projects },
@@ -49,16 +49,16 @@ export default class Home extends Vue {
   public items: SuperGroup[] = [];
 
   get settings(): Info {
-    return useInfoStore().info;
+    return useDataStore().info;
   }
 
   get featuredGroups(): SuperGroup[] {
-    const items = (-1 === this.maxItemstoShow) ? [] : useGroupStore().superGroups;
+    const items = (-1 === this.maxItemstoShow) ? [] : useDataStore().superGroups;
     // hide elements from home page that execeds the given length
     this.items = (items.length > this.maxItemstoShow)
       ? items.slice(0, this.maxItemstoShow)
       : items;
-    useGroupStore().setActiveGroup(null);
+    useDataStore().unsetActiveGroup();
     return items;
   }
 

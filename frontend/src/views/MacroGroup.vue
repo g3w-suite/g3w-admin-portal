@@ -17,7 +17,7 @@ import { Info } from '@/types/TInfo';
 import { MacroGroup } from '@/types/TMacroGroup';
 import Group from '@/views/Group.vue';
 
-import { useGroupStore, useInfoStore } from '@/stores';
+import { useDataStore } from '@/stores';
 
 @Component({
   components: { Group, Projects },
@@ -27,7 +27,7 @@ export default class VMacroGroup extends Vue {
   public items: MacroGroup[] = [];
 
   get info(): Info {
-    return useInfoStore().info;
+    return useDataStore().info;
   }
 
   @Watch('$route.params', {
@@ -36,9 +36,9 @@ export default class VMacroGroup extends Vue {
   public async onRouteParamsChange({ id }: { id?: number } ) {
     // Home > MacroGroups
     if (!id) {
-      this.items = Object.values(useGroupStore().macroGroups);
+      this.items = Object.values(useDataStore().macroGroups);
     } else {
-      this.items = useGroupStore().groupsInMacroGroup(id);
+      this.items = useDataStore().groupsInMacroGroup(id);
     }
   }
 
@@ -46,7 +46,7 @@ export default class VMacroGroup extends Vue {
    * @FIXME
    */
    get title(): string {
-    const sg: MacroGroup | Group = useGroupStore().activeGroup;
+    const sg: MacroGroup | Group = useDataStore().activeGroup;
     return sg ? sg.title : this.info.groups_title;
   }
 
@@ -54,7 +54,7 @@ export default class VMacroGroup extends Vue {
    * @FIXME
    */
   get description(): string {
-    const sg: MacroGroup | Group = useGroupStore().activeGroup;
+    const sg: MacroGroup | Group = useDataStore().activeGroup;
     return sg ? sg.description : this.info.groups_map_description;
   }
 

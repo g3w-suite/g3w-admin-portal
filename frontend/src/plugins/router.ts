@@ -1,17 +1,8 @@
 import * as Router from 'vue-router';
-import { useRootStore, useLangStore, useInfoStore, useAuthStore } from '@/stores';
-import { get_admin_url } from '@/utils';
+
 import config from '@/config';
-import i18n from '@/i18n';
-
-
-/**
- * @FIXME why do we need this?
- *
- * Used to set first time application ready
- */
-let ready: boolean = false;
-
+import { useRootStore, useAuthStore, useDataStore } from '@/stores';
+import { i18n } from '@/plugins';
 
 const modes = {
   "history": Router.createWebHistory,
@@ -22,7 +13,7 @@ const modes = {
 /**
  * Vue Router
  */
-const router = Router.createRouter({
+export const router = Router.createRouter({
   history: Router.createWebHashHistory(process.env.BASE_URL), // TODO: history: modes[config.router_mode](),
   routes: [
     {
@@ -122,34 +113,10 @@ const router = Router.createRouter({
  * Apply some mixtures on each route change
  */
 router.beforeEach(async (to, from, next) => {
-
-  const { lang } = to.params;
-
-  console.log(lang);
-
-  // fallback to default language (it)
-  if (!config.languages.includes(lang)) { return next(`/it${to.path}`); }
-
-  // update html lang attribute
-  await useLangStore().loadLanguageAsync(lang);
-
-  // listen for language change
-  if (!ready || i18n.global.locale !== lang) {
-    await useRootStore().fetchData();
+  if (!config.languages.includes(to.params.lang)) {
+    return next(`/it${to.path}`);                   // redirect to fallback language (it)
+  } else {
+    await useRootStore().setupPage(to, from);       // show current route content (view)
   }
-
-  ready = true; // false = first time
-
-  // update body css class name
-  if (to.name) { document.body.classList.add(to.name); }
-  if (from.name && from.name !== to.name) { document.body.classList.remove(from.name); }
-
-  // update 'group/ActiveGroup' getter
-  await useRootStore().setActiveGroup(/*to*/);
-
   return next();
 });
-
-
-
-export default router;

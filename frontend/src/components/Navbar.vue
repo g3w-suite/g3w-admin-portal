@@ -242,7 +242,7 @@ import config from '@/config';
 import { Info } from '@/types/TInfo';
 import { get_admin_url } from '@/utils';
 
-import { useInfoStore, useSettingsStore, useAuthStore } from '@/stores';
+import { useRootStore, useAuthStore, useDataStore } from '@/stores';
 
 import flag_en_src from '@/assets/img/flags/en_GB.png';
 import flag_it_src from '@/assets/img/flags/it_IT.png';
@@ -262,15 +262,15 @@ export default class Navbar extends Vue {
   public secondaryMenuVisible: boolean | null = true;
 
   get sections(): string[] {
-    return useSettingsStore().portalSections;
+    return useRootStore().portalSections;
   }
 
   get showAdmin(): boolean {
-    return useSettingsStore().showAdminButton;
+    return useRootStore().showAdminButton;
   }
 
   get info(): Info {
-    return useInfoStore().info;
+    return useDataStore().info;
   }
 
   get languages() {

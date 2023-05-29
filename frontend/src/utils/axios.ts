@@ -1,6 +1,6 @@
 import appConfig from '@/config';
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { useRootStore, useAuthStore } from '@/stores';
+import { useAuthStore } from '@/stores';
 
 export interface IHttpClient {
   get: <T>(url: string, config?: AxiosRequestConfig)               => Promise<T>;
@@ -25,13 +25,14 @@ class HttpClient implements IHttpClient {
 
     this.http.interceptors.request.use(
       (config) => {
+        const auth = useAuthStore();
         // CORS sessions (ie. with cookies)
-        if (useRootStore().crossOrigin) {
+        if (auth.crossOrigin) {
           config.withCredentials = true;
         }
         // CORS JWT sessions
-        if (!useRootStore().useCookies && useRootStore().access_token) {
-          config.headers.Authorization = `${appConfig.auth_mode} ${useRootStore().access_token}`;
+        if (!auth.useCookies && auth.access_token) {
+          config.headers.Authorization = `${appConfig.auth_mode} ${auth.access_token}`;
           config.timeout = 5000;
         }
         return config;
@@ -42,8 +43,9 @@ class HttpClient implements IHttpClient {
     const ejectResponse = this.http.interceptors.response.use(
       (response) => response,
       (error: AxiosError) => {
+        const auth = useAuthStore();
         // CORS JWT sessions (expired access_token)
-        if (!useRootStore().useCookies && useRootStore().refresh_token) {
+        if (!auth.useCookies && auth.refresh_token) {
           if (error.response && [401, 403].includes(error.response.status)) {
           // prevent infinite loops for any subsequent failed intercepted response
           this.http.interceptors.response.eject(ejectResponse);
@@ -68,4 +70,4 @@ class HttpClient implements IHttpClient {
   }
 }
 
-export const HTTPCLIENT: IHttpClient = new HttpClient();
+export const HTTPCLIENT = new HttpClient();

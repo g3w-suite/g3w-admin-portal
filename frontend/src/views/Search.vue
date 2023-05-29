@@ -15,7 +15,7 @@ import { Component, Vue } from 'vue-facing-decorator';
 
 import Projects from '@/components/Projects.vue';
 
-import { useGroupStore, useInfoStore } from '@/stores';
+import { useDataStore } from '@/stores';
 
 @Component({
   components: { Projects },
@@ -23,19 +23,19 @@ import { useGroupStore, useInfoStore } from '@/stores';
 export default class Search extends Vue {
 
   get items_filter() {
-    return useGroupStore().Search ? useGroupStore().filteredProjects : useGroupStore().projects;
+    return useDataStore().search ? useDataStore().filteredProjects : useDataStore().projects;
   }
 
   get settings() {
-    return useInfoStore().info;
+    return useDataStore().info;
   }
 
   get search() {
-    return useGroupStore().Search;
+    return useDataStore().search;
   }
 
   set search(val: string) {
-    useGroupStore().setSearchFilter(val);
+    useDataStore().setSearchFilter(val);
   }
 }
 </script>
