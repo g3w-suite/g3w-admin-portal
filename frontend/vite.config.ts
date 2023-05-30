@@ -3,6 +3,7 @@ import { defineConfig, loadEnv, splitVendorChunkPlugin } from 'vite';
 import path from 'path';
 import vue from '@vitejs/plugin-vue'
 import envCompatible from 'vite-plugin-env-compatible';
+import checker from 'vite-plugin-checker'
 import commonjs from 'vite-plugin-commonjs';
 // import * as dotenv from 'dotenv';
 
@@ -30,6 +31,9 @@ export default defineConfig(({ mode }) => {
     // },
     plugins: [
       splitVendorChunkPlugin(),
+      checker({
+        typescript: true,
+      }),
       vue({
         template: {
           compilerOptions: {

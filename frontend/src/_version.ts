@@ -22,6 +22,6 @@ g3w.info = () => {
 
 g3w.version = process.env.__VERSION__;
 
-if ('development' === (import.meta as any).env.MODE) {
+if ('development' === import.meta.env.MODE) {
   g3w.info();
 }

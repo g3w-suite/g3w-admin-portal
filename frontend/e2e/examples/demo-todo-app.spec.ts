@@ -1,4 +1,4 @@
-import { expect, Page, test type } from '@playwright/test';
+import { expect, Page, test, } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('https://demo.playwright.dev/todomvc');
