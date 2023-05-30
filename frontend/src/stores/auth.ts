@@ -14,8 +14,8 @@ const refresh_token = false; // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl
 interface IUserState {
   user: User | null;
   crossOrigin: boolean;
-  access_token: string | null;
-  refresh_token: string | null;
+  access_token: string;
+  refresh_token: string;
   useCookies: boolean;
   await_token_refresh: Promise<string> | null;
 }

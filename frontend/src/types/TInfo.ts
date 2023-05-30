@@ -35,9 +35,9 @@ export class Info {
    */
   public readonly suite_org_url: string      = process.env.VUE_APP_SUITE_ORG_URL || (window as any).PORTAL_ORG_URL;
   public readonly suite_org_name: string     = process.env.VUE_APP_SUITE_ORG_NAME || (window as any).PORTAL_ORG_NAME;
-  public readonly cookie_policy_url: string  = process.env.VUE_APP_COOKIE_POLICY_URL;
-  public readonly privacy_policy_url: string = process.env.VUE_APP_PRIVACY_POLICY_URL;
-  public readonly credits_url: string        = process.env.VUE_APP_CREDITS_URL;
+  public readonly cookie_policy_url: string  = process.env.VUE_APP_COOKIE_POLICY_URL || '';
+  public readonly privacy_policy_url: string = process.env.VUE_APP_PRIVACY_POLICY_URL || '';
+  public readonly credits_url: string        = process.env.VUE_APP_CREDITS_URL || '';
 
   constructor(data?: IInfo) {
     this.id                     = data && data.id || -1;

@@ -134,7 +134,7 @@ export const useDataStore = defineStore('data', {
         const groups = this.groups;
         if (undefined !== group && undefined === groups[group]) {
           useRootStore().showLoader();
-          await this.fetchGroupsByMacroGroupId(lang, id);
+          await this.fetchGroupsByMacroGroupId(id);
           useRootStore().hideLoader();
         }
         const activeGroup: Group = groups[group || id];
