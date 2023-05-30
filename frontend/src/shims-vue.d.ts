@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 /**
  * Add typescript support for vue files
  */
