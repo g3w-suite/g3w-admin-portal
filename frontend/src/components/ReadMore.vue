@@ -19,9 +19,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-facing-decorator';
 
-@Component({
-  components: { },
-})
+@Component
 export default class ScrollTopArrow extends Vue {
 
   @Prop({ default: "Read More" }) public readonly moreStr!: string;

@@ -34,12 +34,9 @@ export default class VMacroGroup extends Vue {
     immediate: true,
   })
   public async onRouteParamsChange({ id }: { id?: number } ) {
-    // Home > MacroGroups
-    if (!id) {
-      this.items = Object.values(useDataStore().macroGroups);
-    } else {
-      this.items = useDataStore().groupsInMacroGroup(id);
-    }
+     this.items = id
+      ? useDataStore().groupsInMacroGroup(id)
+      : Object.values(useDataStore().macroGroups); // Home > MacroGroups
   }
 
   /**

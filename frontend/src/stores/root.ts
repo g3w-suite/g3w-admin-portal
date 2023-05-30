@@ -1,6 +1,7 @@
 import { i18n } from '@/plugins';
 import { useDataStore, useAuthStore } from '@/stores';
 import { defineStore } from 'pinia'
+import { RouteLocationNormalizedLoaded as Route, useRouter } from 'vue-router';
 
 type lang_code = 'en' | 'it';
 
@@ -19,6 +20,8 @@ interface IRootState {
  * Used to set first time application ready
  */
 let ready: boolean = false;
+
+let currentPage: Route;
 
 export const useRootStore = defineStore('root', {
 
@@ -41,27 +44,24 @@ export const useRootStore = defineStore('root', {
       this.isLoading = false;
     },
 
-    async setupPage(to, from) {
-      const { lang } = to.params;
-
-      console.log(lang);
+    async setupPage(to: Route, from: Route) {
+      currentPage = to;
 
       // update html lang attribute
-      await this.loadLanguageAsync(lang);
+      await this.loadLanguageAsync(to.params.lang as lang_code);
 
       // listen for language change
-      if (!ready || i18n.global.locale !== lang) {
+      if (!ready || i18n.global.locale !== to.params.lang) {
         await this.fetchData();
       }
 
       ready = true; // false = first time
 
       // update body css class name
-      if (to.name) { document.body.classList.add(to.name as string); }
-      if (from.name && from.name !== to.name) { document.body.classList.remove(from.name as string); }
+      this.setBodyClass(to.name as string, from.name as string);
 
       // update 'group/ActiveGroup' getter
-      await useDataStore().setActiveGroup();
+      await useDataStore().setActiveGroup(to);
     },
 
     /**
@@ -74,7 +74,7 @@ export const useRootStore = defineStore('root', {
       }
       if (refresh) {
         await useDataStore().reset();
-        await useDataStore().setActiveGroup();
+        await useDataStore().setActiveGroup(currentPage);
       }
       this.showLoader();
       await Promise.allSettled([
@@ -101,6 +101,11 @@ export const useRootStore = defineStore('root', {
         this.loadedLanguages.push(lang);
       }
       return Promise.resolve(this.switchLang(lang))
+    },
+
+    setBodyClass(to_name: string, from_name: string) {
+      if (to_name) { document.body.classList.add(to_name as string); }
+      if (from_name && from_name !== to_name) { document.body.classList.remove(from_name as string); }
     },
 
     // toggleMenu() {

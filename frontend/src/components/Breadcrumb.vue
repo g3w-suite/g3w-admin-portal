@@ -28,17 +28,18 @@
 
 <script lang="ts">
 import { Component, Vue, Watch} from 'vue-facing-decorator';
-import { RouteRecord } from 'vue-router';
+import { RouteParamsRaw, RouteRecord } from 'vue-router';
 
-import { IBreadcrumbItem } from '@/types/IBreadcrumbItem';
 import { SuperGroup } from '@/types/TSuperGroup';
 import { useDataStore } from '@/stores';
 
+interface IBreadcrumbItem {
+  name: string;
+  text?: string;
+  params?: RouteParamsRaw;
+}
 
-@Component({
-  components: { },
-})
-
+@Component
 export default class Breadcrumb extends Vue {
 
   public breadcrumbs: IBreadcrumbItem[] = [];
@@ -47,11 +48,6 @@ export default class Breadcrumb extends Vue {
     immediate: true,
   })
   public async onRouteParamsChange() {
-    // setTimeout(() => {
-
-    // return (this.$route.path || '').split('/').filter((b:string) => b !== '');
-    // console.log(this.$route)
-
     // 404 page
     if (this.isErrorPage()) {
       return [{ name: 'home' }, { name: '404' }];
@@ -71,7 +67,9 @@ export default class Breadcrumb extends Vue {
     matched.shift();
 
     // activeGroup contains a reference to current active element (last crumb)
-    const activeGroup: SuperGroup = useDataStore().activeGroup;
+    const activeGroup: SuperGroup | null = useDataStore().activeGroup;
+
+    console.log('active', activeGroup);
 
     for (let i = 0; i < route.length; i++) {
 
@@ -82,7 +80,7 @@ export default class Breadcrumb extends Vue {
       let text = '';
 
       // route params
-      const params: { [key: string]: string } = {};
+      const params: RouteParamsRaw /*{ [key: string]: string }*/ = {};
 
       // active crumb item (last item of array)
       const activeCrumb = (activeGroup && activeGroup.title) || '';
@@ -126,6 +124,8 @@ export default class Breadcrumb extends Vue {
 
       breadcrumbs.push({ name, text, params });
     }
+
+    console.log(breadcrumbs, this.$route, activeGroup, matched, route)
 
     // dynamically update document title text
     window.document.title = title + titleSeparator + (useDataStore().info.title || 'G3W-SUITE');

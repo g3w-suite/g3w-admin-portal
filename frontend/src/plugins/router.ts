@@ -84,7 +84,7 @@ export const router = Router.createRouter({
         },
         {
           /** @link https://v3.router.vuejs.org/guide/essentials/history-mode.html#caveat */
-          path: ':catchAll(.*)',
+          path: ':catchAll(.*)*',
           name: '404',
           component: () => import('@/views/NotFound.vue'),
           meta: {
@@ -113,6 +113,9 @@ export const router = Router.createRouter({
  * Apply some mixtures on each route change
  */
 router.beforeEach(async (to, from, next) => {
+  console.info('to', to);
+  console.info('from', from);
+  console.info('lang\n', to.params.lang);
   if (!config.languages.includes(to.params.lang)) {
     return next(`/it${to.path}`);                   // redirect to fallback language (it)
   } else {

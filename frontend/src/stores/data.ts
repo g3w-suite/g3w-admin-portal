@@ -14,6 +14,7 @@ import { defineStore } from 'pinia';
 
 import { router } from '@/plugins';
 import { useRootStore } from './root';
+import { RouteLocationNormalizedLoaded as Route } from 'vue-router';
 
 interface IDataState {
   projects: Project[];
@@ -75,8 +76,8 @@ export const useDataStore = defineStore('data', {
     /**
      * Make sure that 'group/ActiveGroup' getter is always set after each route change
      */
-    async setActiveGroup() {
-      const to = router.currentRoute.value;
+    async setActiveGroup(to: Route) {
+      // const to = router.currentRoute.value;
       let sg: Group | MacroGroup | null | false = null;
 
       switch (to.name) {

@@ -37,12 +37,9 @@ export default class VGroup extends Vue {
     deep: true,
   })
   public async onRouteParamsChange({ id, group }: { id?: number, group?: number }) {
-    // Home > Groups
-    if (undefined === id) {
-      this.items = useDataStore().superGroups;
-    } else {
-      this.items = useDataStore().projectsInGroup(group || id);
-    }
+    this.items = undefined === id
+      ? useDataStore().superGroups                   // Home > Groups
+      : useDataStore().projectsInGroup(group || id);
   }
 
   /**

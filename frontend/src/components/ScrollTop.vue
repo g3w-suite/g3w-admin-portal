@@ -7,10 +7,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
 
-@Component({
-  components: { },
-})
-
+@Component
 export default class ScrollTopArrow extends Vue {
 
   public visible: boolean = false;

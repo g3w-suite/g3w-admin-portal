@@ -12,5 +12,4 @@ export const i18n = VueI18n.createI18n({
  
   /** @TODO https://vue-i18n.intlify.dev/guide/migration/vue3.html */
   // allowComposition: true, // 
-}
-);
+});

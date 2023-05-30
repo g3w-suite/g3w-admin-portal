@@ -249,10 +249,7 @@ import flag_it_src from '@/assets/img/flags/it_IT.png';
 import g3w_logo_src from '@/assets/img/logo_g3wsuite-bw.png';
 
 
-@Component({
-  components: { },
-})
-
+@Component
 export default class Navbar extends Vue {
 
   public g3w_logo: string = g3w_logo_src;

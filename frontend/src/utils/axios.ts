@@ -1,73 +1,69 @@
 import appConfig from '@/config';
-import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useAuthStore } from '@/stores';
 
-export interface IHttpClient {
-  get: <T>(url: string, config?: AxiosRequestConfig)               => Promise<T>;
-  post: <T>(url: string, data?: any, config?: AxiosRequestConfig)  => Promise<T>;
-  patch: <T>(url: string, data?: any, config?: AxiosRequestConfig) => Promise<T>;
-}
+class HttpClient {
 
-// Make Axios play nice with Django CSRF
-// axios.defaults.xsrfCookieName = "csrftoken";
-// axios.defaults.xsrfHeaderName = "X-CSRFToken"
+  public async get<T>(url: string, data?: any): Promise<T> {
+    return this.fetch<T>(url, { method: 'GET', data });
+  }
 
-class HttpClient implements IHttpClient {
-  private http: AxiosInstance;
+  public async post<T>(url: string, data?: any, headers?: any, customConfig?: any): Promise<T> {
+    return this.fetch<T>(url, { method: 'POST', data, headers, customConfig });
+  }
 
-  constructor() {
-    this.http = axios.create({
-      baseURL: appConfig.api_base_url,
+  public async fetch<T>(endpoint: string, { data, method, headers: customHeaders, ...customConfig }: any): Promise<T> {
+    const url = new URL(endpoint, appConfig.api_base_url).toString();
+    const config = this.auth_request({
+      method: method ?? 'GET',
+      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
+        ...customHeaders
       },
+      ...customConfig
     });
-
-    this.http.interceptors.request.use(
-      (config) => {
-        const auth = useAuthStore();
-        // CORS sessions (ie. with cookies)
-        if (auth.crossOrigin) {
-          config.withCredentials = true;
+    return window
+      .fetch(url, config)
+      .then(async response => {
+        const error = this.auth_error(response, endpoint, config);
+        if (-1 !== error) {
+          return error;
         }
-        // CORS JWT sessions
-        if (!auth.useCookies && auth.access_token) {
-          config.headers.Authorization = `${appConfig.auth_mode} ${auth.access_token}`;
-          config.timeout = 5000;
+        if (response.ok) {
+          return await response.json()
         }
-        return config;
-      },
-      (error) => Promise.reject(error),
-    );
-
-    const ejectResponse = this.http.interceptors.response.use(
-      (response) => response,
-      (error: AxiosError) => {
-        const auth = useAuthStore();
-        // CORS JWT sessions (expired access_token)
-        if (!auth.useCookies && auth.refresh_token) {
-          if (error.response && [401, 403].includes(error.response.status)) {
-          // prevent infinite loops for any subsequent failed intercepted response
-          this.http.interceptors.response.eject(ejectResponse);
-          return useAuthStore().refresh().then(() => this.http.request(error.config));
-          }
-        }
-        return Promise.reject(error);
-    });
-
+        return Promise.reject(await response.json());
+      });
   }
 
-  public async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return (await this.http.get(url, config) as AxiosResponse).data;
+  private auth_request(config: any): any {
+    const auth = useAuthStore();
+    // CORS sessions (ie. with cookies)
+    if (auth.crossOrigin) {
+      config.withCredentials = true;
+    }
+    // CORS JWT sessions
+    if (!auth.useCookies && auth.access_token) {
+      config.headers.Authorization = `${appConfig.auth_mode} ${auth.access_token}`;
+      config.timeout = 5000;
+    }
+    return config;
   }
 
-  public async post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return (await this.http.post(url, data, config) as AxiosResponse).data;
+  private auth_error(response: any, url: any, config: any): any {
+    const auth = useAuthStore();
+    // CORS JWT sessions (expired access_token)
+    if (!auth.useCookies && auth.refresh_token) {
+      if (auth.await_token_refresh) {
+        return auth.await_token_refresh;
+      }
+      if ([401, 403].includes(response.status)) {
+        return useAuthStore().refresh().then(() => this.fetch(url, config));
+      }
+    }
+    return -1;
   }
 
-  public async patch<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
-    return (await this.http.patch(url, data, config) as AxiosResponse).data;
-  }
 }
 
 export const HTTPCLIENT = new HttpClient();
