@@ -33,6 +33,9 @@ export default defineConfig(({ mode }) => {
       splitVendorChunkPlugin(),
       checker({
         typescript: true,
+        overlay: {
+          initialIsOpen: false,
+        }
       }),
       vue({
         template: {
