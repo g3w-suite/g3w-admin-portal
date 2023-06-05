@@ -4,7 +4,7 @@ const g3w = (window as any).g3w = (window as any).g3w || {};
 
 g3w.info = () => {
   Promise.all([
-    import('https://unpkg.com/platform@1.3.6/platform.js'),
+    import('https://unpkg.com/platform@1.3.6/platform.js' as any),
     fetch(new URL('/api/deploy/info/', config.api_base_url).toString()).then(d => d.json().then((d: any) => d.data))
   ]).then((m) => {
     const platform = (window as any).platform;

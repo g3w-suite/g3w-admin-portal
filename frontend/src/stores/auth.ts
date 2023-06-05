@@ -53,7 +53,7 @@ export const useAuthStore = defineStore('auth', {
       this.setLocalStorage('refresh_token');
     },
 
-    setLocalStorage(id: 'access_token' | 'refresh_token', value?: string | null) {
+    setLocalStorage(id: 'access_token' | 'refresh_token', value = '') {
       // TODO: for security purposes, take localStorage out of the project
       if (value) {
         localStorage.setItem(id, value);
@@ -143,7 +143,7 @@ function _jx_login(username: string, password: string) {
     )
     .then(data => {
       if (data.status !== ELoginStatus.OK) {
-        this.setUser(null);
+        useAuthStore().setUser(null);
         throw data.error_form;
       }
     });

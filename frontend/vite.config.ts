@@ -40,9 +40,11 @@ export default defineConfig(({ mode }) => {
       vue({
         template: {
           compilerOptions: {
-            compatConfig: {
-              MODE: 2
-            }
+            // compatConfig: {
+            //   MODE: 2
+            // },
+            // treat all tags with a dash as custom elements
+            // isCustomElement: (tag) => tag.includes('-')
           }
         }
       }),
@@ -57,6 +59,11 @@ export default defineConfig(({ mode }) => {
       origin: process.env.VITE_SERVER,
     },
     build: {
+      // lib: {
+      //   entry: path.resolve('./src/main.ts'),
+      //   name: 'DarkModeSwitch',
+      //   fileName: format => `index.${format}.js`
+      // },
       emptyOutDir: true,
       manifest: true,
       outDir: '../portal/static/frontend/',

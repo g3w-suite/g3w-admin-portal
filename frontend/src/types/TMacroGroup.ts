@@ -54,6 +54,6 @@ export class MacroGroup extends SuperGroup {
   }
 
   public fetchGroups() {
-    return useDataStore().fetchGroupsByMacroGroupId(this.Id);
+    return useDataStore().fetchGroupsByMacroGroupId(this.Id.toString());
   }
 }

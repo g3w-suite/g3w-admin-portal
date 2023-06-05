@@ -132,12 +132,12 @@ export const useDataStore = defineStore('data', {
       // Home > Group
       if (undefined !== id) {
         const groups = this.groups;
-        if (undefined !== group && undefined === groups[group]) {
+        if (undefined !== group && undefined === groups[parseInt(group as string)]) {
           useRootStore().showLoader();
-          await this.fetchGroupsByMacroGroupId(id);
+          await this.fetchGroupsByMacroGroupId(id as string);
           useRootStore().hideLoader();
         }
-        const activeGroup: Group = groups[group || id];
+        const activeGroup: Group = groups[parseInt((group || id) as string)];
         if (!activeGroup) {
           return false; // inexistent group ID or unauthenticated user
         }
@@ -159,7 +159,7 @@ export const useDataStore = defineStore('data', {
       // Home > MacroGroup
       if (!group && id) {
         const macroGroups = this.macroGroups;
-        const macrogroup = macroGroups[id];
+        const macrogroup = macroGroups[parseInt(id as string)];
         if (!macrogroup) { // inexistent group ID or unauthenticated user
           return false;
         }
@@ -206,7 +206,7 @@ export const useDataStore = defineStore('data', {
      * Fetch all groups within a macrogroup
      */
     async fetchGroupsByMacroGroupId(id: string) {
-      this.GroupsInMacroGroups[id] = (await get_from_portal<IGroup[]>(`/api/group/${id}`))
+      this.GroupsInMacroGroups[parseInt(id as string)] = (await get_from_portal<IGroup[]>(`/api/group/${id}`))
         .map((g) => {
           const gr = new Group(g);
           this.groups[gr.id] = gr;
@@ -218,7 +218,7 @@ export const useDataStore = defineStore('data', {
      * Fetch all projects within a group
      */
     async fetchProjectsByGroupId(id: string) {
-      this.ProjectsInGroups[id] = (await get_from_portal<IProject[]>(`/api/group/${id}/projects/`)).map((p) => new Project(p));
+      this.ProjectsInGroups[parseInt(id)] = (await get_from_portal<IProject[]>(`/api/group/${id}/projects/`)).map((p) => new Project(p));
     },
 
   }

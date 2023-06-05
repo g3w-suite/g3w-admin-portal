@@ -61,7 +61,7 @@ export class Group extends SuperGroup {
   }
 
   public fetchProjects() {
-    return useDataStore().fetchProjectsByGroupId(this.Id);
+    return useDataStore().fetchProjectsByGroupId(this.Id.toString());
   }
 
 }

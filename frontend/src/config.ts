@@ -6,7 +6,7 @@ const config  =  {
 
   languages:  (process.env.VUE_APP_LANGUAGES ?? '').split(', '),
 
-  admin_root: process.env.VUE_APP_ADMIN_ROOT,
+  admin_root: process.env.VUE_APP_ADMIN_ROOT ?? '',
 
   api_base_url: (window as any).API_BASE_URL || process.env.VUE_APP_API_BASE_URL,
 

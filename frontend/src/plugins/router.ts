@@ -116,7 +116,7 @@ router.beforeEach(async (to, from, next) => {
   console.info('to', to);
   console.info('from', from);
   console.info('lang\n', to.params.lang);
-  if (!config.languages.includes(to.params.lang)) {
+  if (!config.languages.includes(to.params.lang as string)) {
     return next(`/it${to.path}`);                   // redirect to fallback language (it)
   } else {
     await useRootStore().setupPage(to, from);       // show current route content (view)

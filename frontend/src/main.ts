@@ -37,3 +37,17 @@ const app = Vue
 // (globalThis as any).Vue = Vue;
 
 app.mount('#app');
+
+// customElements.define(
+//   'g3w-portal',
+//   createElementInstance({
+//     component: App,
+//     // props: { title: String },
+//     sharedStoreInstance: true,
+//     plugins: [i18n, pinia, router],
+//     components: {
+//       'font-awesome-icon': FontAwesomeIcon
+//     },
+//     renderOptions: { ref: 'component' }
+//   })
+// );
