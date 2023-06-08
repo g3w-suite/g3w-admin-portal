@@ -12,8 +12,7 @@ import { RouteLocationNormalized, Router } from 'vue-router';
 export const breadcrumbs = {
   install: (app: App) => {
     // Init breadcrumbs
-    app.config.globalProperties.$breadcrumbs = new Breadcrumbs(app)
-    app.config.globalProperties.$breadcrumbs.init()
+    app.config.globalProperties.$breadcrumbs = new Breadcrumbs(app).init()
 
     // Component import
     // if (options?.includeComponent) {
@@ -42,7 +41,8 @@ class Breadcrumbs {
     this.#router.afterEach((route, from, failure) => {
       if (failure || (route.path === from.path && from.matched.length)) return false
       this.setBreadcrumbsByRoute(route)
-    })
+    });
+    return this;
   }
 
   /**
