@@ -18,7 +18,7 @@ export class MacroGroup extends SuperGroup {
     this.description = data && data.description || '';
     this.logo_img    = data && data.logo_img || '';
     this.logo_link   = data && data.logo_link || '';
-    this.order       = 100 + order; 
+    this.order       = parseFloat("200." + order);
   }
 
   get Key() {

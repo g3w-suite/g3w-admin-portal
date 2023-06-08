@@ -27,7 +27,7 @@ export class Group extends SuperGroup {
       this.title = this.name;
     }
 
-    this.order = 200 + order; 
+    this.order = parseFloat("1000." + order);
   }
   get Key() {
     return EBoxType[this.InstanceOf] + '_' + this.id;
