@@ -1,5 +1,7 @@
 <template>
-  <router-view />
+  <teleport to="body">
+    <router-view />
+  </teleport>
 </template>
 
 <style lang="css">

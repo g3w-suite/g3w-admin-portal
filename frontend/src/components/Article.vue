@@ -40,6 +40,7 @@
 
   </article>
 
+  <!-- TODO: replace it with https://vuejs.org/guide/built-ins/teleport.html -->
   <Dialog ref="modal" />
 </template>
 
