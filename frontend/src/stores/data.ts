@@ -12,9 +12,11 @@ import { get_from_portal } from '@/utils';
 
 import { defineStore } from 'pinia';
 
-import { router } from '@/plugins';
 import { useRootStore } from './root';
-import { RouteLocationNormalizedLoaded as Route } from 'vue-router';
+
+/* HOTFIX for invalid group order (frontend != admin) */
+const MC_ORDER = 100;
+const G_ORDER = 200;
 
 interface IDataState {
   projects: Project[];
@@ -51,7 +53,7 @@ export const useDataStore = defineStore('data', {
     superGroups: (state): SuperGroup[] => [
       ...Object.values(state.macroGroups),
       ...Object.values(state.groupsWithNoMacroGroup),
-    ],
+    ].sort((a, b) => a.order > b.order),
     filteredProjects: (state): Project[] => {
       const s = state.search.toLowerCase();
       return state.projects.filter((p) => p.title.toLowerCase().includes(s) || p.description.toLowerCase().includes(s));
@@ -76,11 +78,11 @@ export const useDataStore = defineStore('data', {
     /**
      * Make sure that 'group/ActiveGroup' getter is always set after each route change
      */
-    async setActiveGroup(to: Route) {
-      // const to = router.currentRoute.value;
+    async setActiveGroup() {
+      // const to = this.router.currentRoute.value;
       let sg: Group | MacroGroup | null | false = null;
 
-      switch (to.name) {
+      switch (useRootStore().currentRoute.name) {
         case 'group':
           sg = await this.fetchGroupData();
           break;
@@ -91,7 +93,7 @@ export const useDataStore = defineStore('data', {
       // Redirect users to 404 page when they to visit an inexistent
       // group URL (also applies to unauthenticated user sessions)
       if (false === sg) {
-        router.push({ name: '404', params: router.currentRoute.value.params });
+        this.router.push({ name: '404', params: useRootStore().currentPage.params /*this.router.currentRoute.value.params*/ });
       } else {
         this.activeGroup = sg;
       }
@@ -127,7 +129,7 @@ export const useDataStore = defineStore('data', {
      * @return a valid 'group/ActiveGroup' element
      */
     async fetchGroupData(): Promise<Group | null | false> {
-      const { id, group, lang } = router.currentRoute.value.params;
+      const { id, group } = useRootStore().currentPage.params;
 
       // Home > Group
       if (undefined !== id) {
@@ -154,12 +156,11 @@ export const useDataStore = defineStore('data', {
      * @return a valid 'group/ActiveGroup' element
      */
     async fetchMacroGroupData(): Promise<Group | MacroGroup | null | false> {
-      const { id, group } = router.currentRoute.value.params;
+      const { id, group } = useRootStore().currentPage.params;
 
       // Home > MacroGroup
       if (!group && id) {
-        const macroGroups = this.macroGroups;
-        const macrogroup = macroGroups[parseInt(id as string)];
+        const macrogroup = this.macroGroups[parseInt(id as string)];
         if (!macrogroup) { // inexistent group ID or unauthenticated user
           return false;
         }
@@ -175,9 +176,11 @@ export const useDataStore = defineStore('data', {
      * Fetch all macrogroups
      */
     async fetchMacroGroups() {
-      (await get_from_portal<IMacroGroup[]>('/api/macrogroup/')).forEach((m) => {
+      (await get_from_portal<IMacroGroup[]>('/api/macrogroup/')).forEach((m, idx) => {
         const mc = new MacroGroup(m);
         this.macroGroups[mc.id] = mc;
+
+        this.macroGroups[mc.id].order = MC_ORDER + '-' + idx;
       });
     },
 
@@ -185,10 +188,13 @@ export const useDataStore = defineStore('data', {
      * Fetch all groups without a parent macrogroup
      */
     async fetchGroupsWithNoMacroGroup() {
-      (await get_from_portal<IGroup[]>('/api/group/nomacrogroup/')).forEach((g) => {
+      (await get_from_portal<IGroup[]>('/api/group/nomacrogroup/')).forEach((g, idx) => {
         const gr = new Group(g);
         this.groupsWithNoMacroGroup[gr.id] = gr;
         this.groups[gr.id] = gr;
+
+        this.groupsWithNoMacroGroup[gr.id].order = G_ORDER + '-' + idx;
+        this.groups[gr.id].order = G_ORDER + '-' + idx;
       });
     },
 
@@ -196,9 +202,11 @@ export const useDataStore = defineStore('data', {
      * Fetch all groups
      */
     async fetchGroups() {
-      (await get_from_portal<IGroup[]>('/api/group/')).forEach((g) => {
+      (await get_from_portal<IGroup[]>('/api/group/')).forEach((g, idx) => {
         const gr = new Group(g);
         this.groups[gr.id] = gr;
+
+        // this.groups[gr.id].order = 'g-' + idx;
       });
     },
 
@@ -206,10 +214,12 @@ export const useDataStore = defineStore('data', {
      * Fetch all groups within a macrogroup
      */
     async fetchGroupsByMacroGroupId(id: string) {
-      this.GroupsInMacroGroups[parseInt(id as string)] = (await get_from_portal<IGroup[]>(`/api/group/${id}`))
-        .map((g) => {
+      this.GroupsInMacroGroups[parseInt(id)] = (await get_from_portal<IGroup[]>(`/api/group/${id}`))
+        .map((g, idx) => {
           const gr = new Group(g);
           this.groups[gr.id] = gr;
+
+          this.groups[gr.id].order = 'g-' + idx;
           return gr;
         });
     },

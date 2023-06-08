@@ -12,6 +12,7 @@ interface IRootState {
   showAdminButton: boolean;
   locale: string;
   loadedLanguages: string[];
+  currentPage: Route;
 }
 
 /**
@@ -31,8 +32,13 @@ export const useRootStore = defineStore('root', {
     portalSections: [],
     showAdminButton: false,
     locale: 'en',
-    loadedLanguages: ['en'] // our default language that is preloaded
+    loadedLanguages: ['en'], // our default language that is preloaded
+    currentPage,
   }),
+
+  getters: {
+    currentRoute: (state) => state.currentPage.matched[state.currentPage.matched.length -1]
+  },
 
   actions: {
 
@@ -45,7 +51,7 @@ export const useRootStore = defineStore('root', {
     },
 
     async setupPage(to: Route, from: Route) {
-      currentPage = to;
+      this.currentPage = to;
 
       // update html lang attribute
       await this.loadLanguageAsync(to.params.lang as lang_code);
@@ -61,7 +67,7 @@ export const useRootStore = defineStore('root', {
       this.setBodyClass(to.name as string, from.name as string);
 
       // update 'group/ActiveGroup' getter
-      await useDataStore().setActiveGroup(to);
+      await useDataStore().setActiveGroup();
     },
 
     /**
@@ -74,7 +80,7 @@ export const useRootStore = defineStore('root', {
       }
       if (refresh) {
         await useDataStore().reset();
-        await useDataStore().setActiveGroup(currentPage);
+        await useDataStore().setActiveGroup();
       }
       this.showLoader();
       await Promise.allSettled([

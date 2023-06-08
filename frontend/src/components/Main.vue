@@ -5,7 +5,7 @@
     <router-view name="header" />
   </header>
 
-  <Breadcrumb id="breadcrumb" v-if="!show_loader" />
+  <Breadcrumbs id="breadcrumb" v-if="!show_loader" />
 
   <main id="content" class="container">
     <progress v-if="show_loader"></progress>
@@ -19,14 +19,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
 
-import Breadcrumb from '@/components/Breadcrumb.vue';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import Footer from '@/components/Footer.vue';
 import Navbar from '@/components/Navbar.vue';
 import ScrollTopArrow from '@/components/ScrollTop.vue';
 import { useRootStore } from '@/stores';
 
 @Component({
-  components: { Navbar, Footer, Breadcrumb, ScrollTopArrow },
+  components: { Navbar, Footer, Breadcrumbs, ScrollTopArrow },
 })
 
 export default class Main extends Vue {

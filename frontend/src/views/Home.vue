@@ -53,7 +53,7 @@ export default class Home extends Vue {
   }
 
   get featuredGroups(): SuperGroup[] {
-    const items = (-1 === this.maxItemstoShow) ? [] : useDataStore().superGroups;
+    let items = (-1 === this.maxItemstoShow) ? [] : useDataStore().superGroups;
     // hide elements from home page that execeds the given length
     this.items = (items.length > this.maxItemstoShow)
       ? items.slice(0, this.maxItemstoShow)

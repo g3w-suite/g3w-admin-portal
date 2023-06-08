@@ -3,6 +3,10 @@ import * as Router from 'vue-router';
 import config from '@/config';
 import { useRootStore, useAuthStore, useDataStore } from '@/stores';
 import { i18n } from '@/plugins';
+import { App } from 'vue';
+
+
+const { t: $t } = i18n.global;
 
 const modes = {
   "history": Router.createWebHistory,
@@ -19,6 +23,13 @@ export const router = Router.createRouter({
     {
       path: '/:lang/',
       component: () => import('@/components/Main.vue'),
+      meta: {
+        breadcrumb(route: Router.RouteLocationNormalized, app: App) {
+          if ('home' !== app.config.globalProperties.$router.currentRoute.value.name) {
+            return 'Home'
+          }
+        }
+      },
       children: [
         {
           // path: '/',
@@ -37,6 +48,7 @@ export const router = Router.createRouter({
           name: 'login',
           component: () => import('@/views/Login.vue'),
           meta: {
+            breadcrumb: 'Login'
           },
           beforeEnter: (...args) => useAuthStore().maybe_redirect(...args),
         },
@@ -44,6 +56,7 @@ export const router = Router.createRouter({
           path: 'logout/',
           name: 'logout',
           meta: {
+            breadcrumb: 'Logout'
           },
           component: () => import('@/views/Login.vue'),
           beforeEnter: (...args) => useAuthStore().maybe_redirect(...args),
@@ -59,6 +72,7 @@ export const router = Router.createRouter({
           name: 'search',
           component: () => import('@/views/Search.vue'),
           meta: {
+            breadcrumb: 'Search'
           },
         },
         {
@@ -66,6 +80,11 @@ export const router = Router.createRouter({
           name: 'group',
           component: () => import('@/views/Group.vue'),
           meta: {
+            breadcrumb(route: Router.RouteLocationNormalized, app: App) {
+              return route.params.id
+                ? useDataStore().groups[parseInt(route.params.id)]?.title
+                : $t('messages.menu.group');
+            },
           },
         },
         {
@@ -73,6 +92,25 @@ export const router = Router.createRouter({
           name: 'organization',
           component: () => import('@/views/MacroGroup.vue'),
           meta: {
+            breadcrumb(route: Router.RouteLocationNormalized, app: App) {
+              if (route.params.id) {
+                if (route.params.group) {
+                  return useDataStore().groups[parseInt(route.params.id)]?.title;
+                }
+                return useDataStore().macroGroups[parseInt(route.params.id)]?.title;
+              }
+              // if(useRootStore().currentPage.params.id) {
+              //   return {
+              //     label: $t('messages.menu.group'),
+              //     link: app.config.globalProperties.$router.resolve({name: 'group'}).href 
+              //     // app.$router.resolve({
+              //     //   name: 'group',
+              //     //   params: { id: useRootStore().currentPage.params.group }
+              //     // })
+              //   }
+              // }
+              return $t('messages.menu.organization');
+            },
           },
         },
         {
@@ -88,6 +126,7 @@ export const router = Router.createRouter({
           name: '404',
           component: () => import('@/views/NotFound.vue'),
           meta: {
+            breadcrumb: '404',
           },
         },
       ],
@@ -113,9 +152,6 @@ export const router = Router.createRouter({
  * Apply some mixtures on each route change
  */
 router.beforeEach(async (to, from, next) => {
-  console.info('to', to);
-  console.info('from', from);
-  console.info('lang\n', to.params.lang);
   if (!config.languages.includes(to.params.lang as string)) {
     return next(`/it${to.path}`);                   // redirect to fallback language (it)
   } else {
@@ -123,3 +159,7 @@ router.beforeEach(async (to, from, next) => {
   }
   return next();
 });
+
+// router.beforeResolve(to => {
+//   if (to.meta.requiresAuth && !isAuthenticated) return false
+// })

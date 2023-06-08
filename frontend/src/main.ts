@@ -13,8 +13,9 @@ import * as Vue from 'vue';
 // import './_version';
 
 import config from '@/config';
-import { FontAwesomeIcon, i18n, router, pinia } from '@/plugins';
+import { FontAwesomeIcon, i18n, router, pinia, breadcrumbs } from '@/plugins';
 import App from '@/App.vue';
+
 
 if (config.theme) {
   document.documentElement.setAttribute('data-theme', config.theme);
@@ -31,6 +32,7 @@ const app = Vue
   .use(i18n)
   .use(pinia)
   .use(router)
+  .use(breadcrumbs)
   .component('font-awesome-icon', FontAwesomeIcon);
 
 // (Vue as any).app = app;
