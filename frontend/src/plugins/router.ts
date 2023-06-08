@@ -25,9 +25,10 @@ export const router = Router.createRouter({
       component: () => import('@/components/Main.vue'),
       meta: {
         breadcrumb(route: Router.RouteLocationNormalized, app: App) {
-          if ('home' !== app.config.globalProperties.$router.currentRoute.value.name) {
-            return 'Home'
-          }
+          const { currentRoute } = app.config.globalProperties.$router;
+          return 'home' === currentRoute.value.name
+            ? { label: '', title: 'Home' }
+            : { label: 'Home', title: '' }
         }
       },
       children: [

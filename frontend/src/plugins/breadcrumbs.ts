@@ -1,3 +1,4 @@
+import { useDataStore } from '@/stores';
 import { App, reactive } from 'vue'
 import { RouteLocationNormalized, Router } from 'vue-router';
 
@@ -29,7 +30,7 @@ class Breadcrumbs {
   
   #router: Router
 
-  value: Crumb[] // breadcrumbs array
+  value: Array<Crumb | string> // breadcrumbs array
 
   constructor(app: App) {
     this.#app = app
@@ -48,10 +49,12 @@ class Breadcrumbs {
    * Creates and sets breadcrumbs chain for route
    */
   setBreadcrumbsByRoute(route: RouteLocationNormalized) {
-    if (!route) return false
-    let arPath = route.path.replace(/\/$/, "").split('/')
-    let iterablePath = ''
-    let spliced = false
+    if (!route) return false;
+    let arPath = route.path.replace(/\/$/, "").split('/');
+    let iterablePath = '';
+    let spliced = false;
+
+    const title: string[] = [];
 
     arPath.forEach((item, i) => {
       // 1. Get path for crumb
@@ -72,23 +75,31 @@ class Breadcrumbs {
       // 3. Create and add crumb
       const breadcrumb = this.createBreadcrumb(iterablePath, isCurrentCrumb)
 
-      if (!breadcrumb) return false
+      if (!breadcrumb) return false;
 
-      this.value.push(breadcrumb)
-    })
+      this.value.push(breadcrumb);
+    });
+
+    const current = this.value[this.value.length-1];
+
+    title.push(current.title ?? current);
+    title.push(useDataStore().info.title || 'G3W-SUITE')
+
+    window.document.title = title.join(' - ');
   }
 
   /**
    * Resolves route meta by path and creates breadcrumb object 
    */
-  createBreadcrumb(path: string, isCurrent = false): Crumb | false {
+  createBreadcrumb(path: string, isCurrent = false): Crumb | string | false {
     if (!path) return false
     let route = this.#router.resolve(path)
     let crumb: Crumb = route.meta?.breadcrumb as any
     if ('function' === typeof crumb) crumb = crumb.call(null, route, this.#app)
 
     return crumb ? {
-      label: ('object' === typeof crumb) ? crumb.label : crumb,
+      label: crumb?.label ?? crumb,
+      title: crumb?.title ?? crumb?.label ?? crumb,
       link: ('object' === typeof crumb && crumb.link) ? crumb.link : route.path,
       current: isCurrent,
       _path: path
@@ -106,6 +117,7 @@ declare module "@vue/runtime-core" {
 interface Crumb {
   label: string;
   link: string;
+  title: string;
   current: boolean;
   _path: string;
 }
