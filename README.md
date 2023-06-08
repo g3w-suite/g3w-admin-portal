@@ -97,6 +97,18 @@ main#content article figure > figcaption {
   background-color: var(--primary);
 }
 
+/* Card item: fixed header "top position" independently of other card items heights */
+main#content article > a {
+  display: flex;
+}
+
+/* Card item: fixed header height of 3.5rem */
+main#content article > a > figure > figcaption {
+  display: grid;
+  grid-template-rows: 3.5rem;
+  align-items: center;
+}
+
 /* Typography colors */
 :root[data-theme="light"] {
   --primary: #af0b22;
