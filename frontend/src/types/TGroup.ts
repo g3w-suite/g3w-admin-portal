@@ -12,7 +12,7 @@ export class Group extends SuperGroup {
   public header_logo_link: string | null;
   public header_logo_img: string;
 
-  constructor(data: IGroup) {
+  constructor(data: IGroup, order = 0) {
     super();
     this.id               = data && data.id || -1;
     this.name             = data && data.name || '';
@@ -26,6 +26,8 @@ export class Group extends SuperGroup {
     if (!this.title) {
       this.title = this.name;
     }
+
+    this.order = 200 + order; 
   }
   get Key() {
     return EBoxType[this.InstanceOf] + '_' + this.id;

@@ -14,10 +14,6 @@ import { defineStore } from 'pinia';
 
 import { useRootStore } from './root';
 
-/* HOTFIX for invalid group order (frontend != admin) */
-const MC_ORDER = 100;
-const G_ORDER = 200;
-
 interface IDataState {
   projects: Project[];
   macroGroups: { [key: number]: MacroGroup; };
@@ -53,7 +49,7 @@ export const useDataStore = defineStore('data', {
     superGroups: (state): SuperGroup[] => [
       ...Object.values(state.macroGroups),
       ...Object.values(state.groupsWithNoMacroGroup),
-    ].sort((a, b) => a.order > b.order),
+    ].sort((a, b) => a.order - b.order ),
     filteredProjects: (state): Project[] => {
       const s = state.search.toLowerCase();
       return state.projects.filter((p) => p.title.toLowerCase().includes(s) || p.description.toLowerCase().includes(s));
@@ -108,12 +104,7 @@ export const useDataStore = defineStore('data', {
     },
 
     async fetchPictures() {
-      this.pictures = (await get_from_portal<IPictures[]>('/api/pictures/'))
-        .sort((a: IPictures, b: IPictures) => {
-          if (a.order < b.order) { return -1; }
-          if (a.order > b.order) { return 1; }
-          return 0;
-        });
+      this.pictures = (await get_from_portal<IPictures[]>('/api/pictures/')).sort((a, b) => a.order - b.order);
     },
 
     /**
@@ -177,10 +168,8 @@ export const useDataStore = defineStore('data', {
      */
     async fetchMacroGroups() {
       (await get_from_portal<IMacroGroup[]>('/api/macrogroup/')).forEach((m, idx) => {
-        const mc = new MacroGroup(m);
+        const mc = new MacroGroup(m, idx);
         this.macroGroups[mc.id] = mc;
-
-        this.macroGroups[mc.id].order = MC_ORDER + '-' + idx;
       });
     },
 
@@ -189,12 +178,9 @@ export const useDataStore = defineStore('data', {
      */
     async fetchGroupsWithNoMacroGroup() {
       (await get_from_portal<IGroup[]>('/api/group/nomacrogroup/')).forEach((g, idx) => {
-        const gr = new Group(g);
+        const gr = new Group(g, idx);
         this.groupsWithNoMacroGroup[gr.id] = gr;
         this.groups[gr.id] = gr;
-
-        this.groupsWithNoMacroGroup[gr.id].order = G_ORDER + '-' + idx;
-        this.groups[gr.id].order = G_ORDER + '-' + idx;
       });
     },
 
@@ -203,10 +189,8 @@ export const useDataStore = defineStore('data', {
      */
     async fetchGroups() {
       (await get_from_portal<IGroup[]>('/api/group/')).forEach((g, idx) => {
-        const gr = new Group(g);
+        const gr = new Group(g, idx);
         this.groups[gr.id] = gr;
-
-        // this.groups[gr.id].order = 'g-' + idx;
       });
     },
 
@@ -216,10 +200,8 @@ export const useDataStore = defineStore('data', {
     async fetchGroupsByMacroGroupId(id: string) {
       this.GroupsInMacroGroups[parseInt(id)] = (await get_from_portal<IGroup[]>(`/api/group/${id}`))
         .map((g, idx) => {
-          const gr = new Group(g);
+          const gr = new Group(g, idx);
           this.groups[gr.id] = gr;
-
-          this.groups[gr.id].order = 'g-' + idx;
           return gr;
         });
     },
