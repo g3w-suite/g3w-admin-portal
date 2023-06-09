@@ -1,6 +1,7 @@
 <template>
   <teleport to="body">
-    <router-view />
+    <!-- <div v-cloak><div class="loadingspinner"></div></div> -->
+    <router-view  />
   </teleport>
 </template>
 
@@ -14,6 +15,32 @@
     scroll-behavior: smooth;
     scroll-padding-top: 1rem;
   }
+
+  /* [v-cloak] {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  [v-cloak] .loadingspinner {
+    pointer-events: none;
+    width: 2.5em;
+    height: 2.5em;
+    border: 0.4em solid transparent;
+    border-color: #eee;
+    border-top-color: #3e67ec;
+    border-radius: 50%;
+    animation: loadingspin 1s linear infinite !important;
+  }
+
+  @keyframes loadingspin {
+    100% {
+      transform: rotate(360deg);
+    }
+  } */
 
   .show-on-mobile {
     display: none;
