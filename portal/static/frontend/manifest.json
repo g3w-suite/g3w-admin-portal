@@ -2,6 +2,9 @@
   "_portal-dialog-polyfill.esm.js": {
     "file": "portal-dialog-polyfill.esm.js"
   },
+  "_portal-get_img_url.js": {
+    "file": "portal-get_img_url.js"
+  },
   "_portal-index.js": {
     "file": "portal-index.js",
     "imports": [
@@ -18,17 +21,21 @@
   "index.html": {
     "assets": [
       "assets/titillium-web-latin-ext-400-italic.woff2",
-      "assets/titillium-web-all-400-italic.woff",
+      "assets/titillium-web-latin-ext-400-italic.woff",
       "assets/titillium-web-latin-400-italic.woff2",
+      "assets/titillium-web-latin-400-italic.woff",
       "assets/titillium-web-latin-ext-400-normal.woff2",
-      "assets/titillium-web-all-400-normal.woff",
+      "assets/titillium-web-latin-ext-400-normal.woff",
       "assets/titillium-web-latin-400-normal.woff2",
+      "assets/titillium-web-latin-400-normal.woff",
       "assets/titillium-web-latin-ext-700-italic.woff2",
-      "assets/titillium-web-all-700-italic.woff",
+      "assets/titillium-web-latin-ext-700-italic.woff",
       "assets/titillium-web-latin-700-italic.woff2",
+      "assets/titillium-web-latin-700-italic.woff",
       "assets/titillium-web-latin-ext-700-normal.woff2",
-      "assets/titillium-web-all-700-normal.woff",
-      "assets/titillium-web-latin-700-normal.woff2"
+      "assets/titillium-web-latin-ext-700-normal.woff",
+      "assets/titillium-web-latin-700-normal.woff2",
+      "assets/titillium-web-latin-700-normal.woff"
     ],
     "css": [
       "assets/index.css"
@@ -53,49 +60,65 @@
     "isEntry": true,
     "src": "index.html"
   },
-  "node_modules/@fontsource/titillium-web/files/titillium-web-all-400-italic.woff": {
-    "file": "assets/titillium-web-all-400-italic.woff",
-    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-all-400-italic.woff"
-  },
-  "node_modules/@fontsource/titillium-web/files/titillium-web-all-400-normal.woff": {
-    "file": "assets/titillium-web-all-400-normal.woff",
-    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-all-400-normal.woff"
-  },
-  "node_modules/@fontsource/titillium-web/files/titillium-web-all-700-italic.woff": {
-    "file": "assets/titillium-web-all-700-italic.woff",
-    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-all-700-italic.woff"
-  },
-  "node_modules/@fontsource/titillium-web/files/titillium-web-all-700-normal.woff": {
-    "file": "assets/titillium-web-all-700-normal.woff",
-    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-all-700-normal.woff"
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-italic.woff": {
+    "file": "assets/titillium-web-latin-400-italic.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-italic.woff"
   },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-italic.woff2": {
     "file": "assets/titillium-web-latin-400-italic.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-italic.woff2"
   },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-normal.woff": {
+    "file": "assets/titillium-web-latin-400-normal.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-normal.woff"
+  },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-normal.woff2": {
     "file": "assets/titillium-web-latin-400-normal.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-normal.woff2"
+  },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-italic.woff": {
+    "file": "assets/titillium-web-latin-700-italic.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-italic.woff"
   },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-italic.woff2": {
     "file": "assets/titillium-web-latin-700-italic.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-italic.woff2"
   },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-normal.woff": {
+    "file": "assets/titillium-web-latin-700-normal.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-normal.woff"
+  },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-normal.woff2": {
     "file": "assets/titillium-web-latin-700-normal.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-normal.woff2"
+  },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-italic.woff": {
+    "file": "assets/titillium-web-latin-ext-400-italic.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-italic.woff"
   },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-italic.woff2": {
     "file": "assets/titillium-web-latin-ext-400-italic.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-italic.woff2"
   },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-normal.woff": {
+    "file": "assets/titillium-web-latin-ext-400-normal.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-normal.woff"
+  },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-normal.woff2": {
     "file": "assets/titillium-web-latin-ext-400-normal.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-normal.woff2"
   },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-italic.woff": {
+    "file": "assets/titillium-web-latin-ext-700-italic.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-italic.woff"
+  },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-italic.woff2": {
     "file": "assets/titillium-web-latin-ext-700-italic.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-italic.woff2"
+  },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-normal.woff": {
+    "file": "assets/titillium-web-latin-ext-700-normal.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-normal.woff"
   },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-normal.woff2": {
     "file": "assets/titillium-web-latin-ext-700-normal.woff2",
@@ -150,8 +173,9 @@
     ],
     "file": "portal-Projects.js",
     "imports": [
-      "index.html",
       "_portal-index.js",
+      "index.html",
+      "_portal-get_img_url.js",
       "_portal-dialog-polyfill.esm.js",
       "_portal-vendor.js"
     ],
@@ -161,10 +185,11 @@
   "src/views/Group.vue": {
     "file": "portal-Group.js",
     "imports": [
-      "src/components/Projects.vue",
       "_portal-index.js",
+      "src/components/Projects.vue",
       "index.html",
       "_portal-vendor.js",
+      "_portal-get_img_url.js",
       "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
@@ -173,10 +198,11 @@
   "src/views/Home.vue": {
     "file": "portal-Home.js",
     "imports": [
-      "src/components/Projects.vue",
       "_portal-index.js",
+      "src/components/Projects.vue",
       "index.html",
       "_portal-vendor.js",
+      "_portal-get_img_url.js",
       "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
@@ -194,6 +220,7 @@
     "imports": [
       "_portal-index.js",
       "index.html",
+      "_portal-get_img_url.js",
       "_portal-vendor.js"
     ],
     "isDynamicEntry": true,
@@ -222,11 +249,12 @@
   "src/views/MacroGroup.vue": {
     "file": "portal-MacroGroup.js",
     "imports": [
+      "_portal-index.js",
       "src/components/Projects.vue",
       "src/views/Group.vue",
-      "_portal-index.js",
       "index.html",
       "_portal-vendor.js",
+      "_portal-get_img_url.js",
       "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
@@ -236,8 +264,8 @@
     "file": "portal-NotFound.js",
     "imports": [
       "_portal-index.js",
-      "_portal-vendor.js",
-      "index.html"
+      "index.html",
+      "_portal-vendor.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/NotFound.vue"
@@ -252,10 +280,11 @@
     ],
     "file": "portal-Search.js",
     "imports": [
-      "src/components/Projects.vue",
       "_portal-index.js",
+      "src/components/Projects.vue",
       "index.html",
       "_portal-vendor.js",
+      "_portal-get_img_url.js",
       "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
