@@ -40,34 +40,34 @@ export class Info {
   public readonly credits_url: string        = process.env.VUE_APP_CREDITS_URL || '';
 
   constructor(data?: IInfo) {
-    this.id                     = data && data.id || -1;
-    this.title                  = data && data.title || '';
-    this.sub_title              = data && data.sub_title || '';
-    this.home_description       = data && data.home_description || '';
-    this.about_title            = data && data.about_title || '';
-    this.about_description      = data && data.about_description || '';
-    this.about_name             = data && data.about_name || '';
-    this.about_tel              = data && data.about_tel || '';
-    this.about_email            = data && data.about_email || '';
-    this.about_address          = data && data.about_address || '';
-    this.groups_title           = data && data.groups_title || '';
-    this.groups_map_description = data && data.groups_map_description || '';
-    this.login_description      = data && data.login_description || '';
-    this.login_title            = data && data.login_title || '';
-    this.login_url              = data && data.login_url || '';
-    this.logout_url             = data && data.logout_url || '';
-    this.suite_logo             = data && data.suite_logo || '';
-    this.url_suite_logo         = data && data.url_suite_logo || '';
-    this.credits                = data && data.credits || '';
-    this.main_map_title         = data && data.main_map_title || '';
-    this.facebook_url           = data && data.facebook_url || '';
-    this.twitter_url            = data && data.twitter_url || '';
-    this.googleplus_url         = data && data.googleplus_url || '';
-    this.youtube_url            = data && data.youtube_url || '';
-    this.instagram_url          = data && data.instagram_url || '';
-    this.flickr_url             = data && data.flickr_url || '';
-    this.tripadvisor_url        = data && data.tripadvisor_url || '';
-    this.reset_password_url     = data && data.reset_password_url || '';
+    this.id                     = data?.id                     ?? -1;
+    this.title                  = data?.title                  ?? '';
+    this.sub_title              = data?.sub_title              ?? '';
+    this.home_description       = data?.home_description       ?? '';
+    this.about_title            = data?.about_title            ?? '';
+    this.about_description      = data?.about_description      ?? '';
+    this.about_name             = data?.about_name             ?? '';
+    this.about_tel              = data?.about_tel              ?? '';
+    this.about_email            = data?.about_email            ?? '';
+    this.about_address          = data?.about_address          ?? '';
+    this.groups_title           = data?.groups_title           ?? '';
+    this.groups_map_description = data?.groups_map_description ?? '';
+    this.login_description      = data?.login_description      ?? '';
+    this.login_title            = data?.login_title            ?? '';
+    this.login_url              = data?.login_url              ?? '';
+    this.logout_url             = data?.logout_url             ?? '';
+    this.suite_logo             = data?.suite_logo             ?? '';
+    this.url_suite_logo         = data?.url_suite_logo         ?? '';
+    this.credits                = data?.credits                ?? '';
+    this.main_map_title         = data?.main_map_title         ?? '';
+    this.facebook_url           = data?.facebook_url           ?? '';
+    this.twitter_url            = data?.twitter_url            ?? '';
+    this.googleplus_url         = data?.googleplus_url         ?? '';
+    this.youtube_url            = data?.youtube_url            ?? '';
+    this.instagram_url          = data?.instagram_url          ?? '';
+    this.flickr_url             = data?.flickr_url             ?? '';
+    this.tripadvisor_url        = data?.tripadvisor_url        ?? '';
+    this.reset_password_url     = data?.reset_password_url     ?? '';
 
     // prevent using folder as img url
     if (this.suite_logo.endsWith('/')) {

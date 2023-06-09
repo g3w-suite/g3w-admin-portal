@@ -14,13 +14,13 @@ export class Group extends SuperGroup {
 
   constructor(data: IGroup, order = 0) {
     super();
-    this.id               = data && data.id || -1;
-    this.name             = data && data.name || '';
-    this.description      = data && data.description || '';
-    this.title            = data && data.title || '';
-    this.srid             = data && data.srid || -1;
-    this.logo_link = data && data.header_logo_link || '';
-    this.logo_img  = data && data.header_logo_img || '';
+    this.id          = data?.id               ?? -1;
+    this.name        = data?.name             ?? '';
+    this.description = data?.description      ?? '';
+    this.title       = data?.title            ?? '';
+    this.srid        = data?.srid             ?? -1;
+    this.logo_link   = data?.header_logo_link ?? '';
+    this.logo_img    = data?.header_logo_img  ?? '';
 
     // in case of empty title try to get title from name property
     if (!this.title) {

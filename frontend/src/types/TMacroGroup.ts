@@ -13,11 +13,11 @@ export class MacroGroup extends SuperGroup {
 
   constructor(data: IMacroGroup, order = 0) {
     super();
-    this.id          = data && data.id || -1;
-    this.title       = data && data.title || '';
-    this.description = data && data.description || '';
-    this.logo_img    = data && data.logo_img || '';
-    this.logo_link   = data && data.logo_link || '';
+    this.id          = data?.id          ?? -1;
+    this.title       = data?.title       ?? '';
+    this.description = data?.description ?? '';
+    this.logo_img    = data?.logo_img    ?? '';
+    this.logo_link   = data?.logo_link   ?? '';
     this.order       = parseFloat("200." + order);
   }
 

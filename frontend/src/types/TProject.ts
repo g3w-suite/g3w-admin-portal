@@ -14,12 +14,12 @@ export class Project extends SuperGroup {
 
   constructor(data: IProject) {
     super();
-    this.id          = data && data.id || -1;
-    this.title       = data && data.title || '';
-    this.description = data && data.description || '';
-    this.thumbnail   = data && data.thumbnail || '';
-    this.edit_url    = data && data.edit_url || '';
-    this.map_url     = data && data.map_url || '';
+    this.id          = data?.id          ?? -1;
+    this.title       = data?.title       ?? '';
+    this.description = data?.description ?? '';
+    this.thumbnail   = data?.thumbnail   ?? '';
+    this.edit_url    = data?.edit_url    ?? '';
+    this.map_url     = data?.map_url     ?? '';
 
     this.logo_img    = this.thumbnail;
     this.logo_link   = this.map_url;
