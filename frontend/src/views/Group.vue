@@ -15,18 +15,17 @@
 import { Component, Vue, Watch } from 'vue-facing-decorator';
 
 import Projects from '@/components/Projects.vue';
-import { Group } from '@/types/TGroup';
 import { Info } from '@/types/TInfo';
-import { MacroGroup } from '@/types/TMacroGroup';
 
 import { useDataStore } from '@/stores';
+import { SuperGroup } from '@/types/TSuperGroup';
 
 @Component({
   components: { Projects },
 })
 export default class VGroup extends Vue {
 
-  public items: Group[] = [];
+  public items: SuperGroup[] = [];
 
   get info(): Info {
     return useDataStore().info;
@@ -46,16 +45,14 @@ export default class VGroup extends Vue {
    * @FIXME
    */
    get title(): string {
-    const sg: MacroGroup | Group = useDataStore().activeGroup;
-    return sg ? sg.title : this.info.groups_title;
+    return useDataStore()?.activeGroup?.title ?? this.info.groups_title;
   }
 
   /**
    * @FIXME
    */
   get description(): string {
-    const sg: MacroGroup | Group = useDataStore().activeGroup;
-    return sg ? sg.description : this.info.groups_map_description;
+    return useDataStore()?.activeGroup?.description ?? this.info.groups_map_description;
   }
 
 }

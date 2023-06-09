@@ -21,7 +21,7 @@ interface IDataState {
   groups: { [key: number]: Group };
   GroupsInMacroGroups: { [key: number]: Group[]; };
   ProjectsInGroups: { [key: number]: Project[]; };
-  activeGroup: SuperGroup | null;
+  activeGroup: MacroGroup | Group | null;
   search: string;
   info: Info;
   pictures: IPictures[];

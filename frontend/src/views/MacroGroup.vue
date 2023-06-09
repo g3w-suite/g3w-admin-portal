@@ -18,13 +18,14 @@ import { MacroGroup } from '@/types/TMacroGroup';
 import Group from '@/views/Group.vue';
 
 import { useDataStore } from '@/stores';
+import { SuperGroup } from '@/types/TSuperGroup';
 
 @Component({
   components: { Group, Projects },
 })
 export default class VMacroGroup extends Vue {
 
-  public items: MacroGroup[] = [];
+  public items: SuperGroup[] = [];
 
   get info(): Info {
     return useDataStore().info;
@@ -43,16 +44,14 @@ export default class VMacroGroup extends Vue {
    * @FIXME
    */
    get title(): string {
-    const sg: MacroGroup | Group = useDataStore().activeGroup;
-    return sg ? sg.title : this.info.groups_title;
+    return useDataStore()?.activeGroup?.title ?? this.info.groups_title;
   }
 
   /**
    * @FIXME
    */
   get description(): string {
-    const sg: MacroGroup | Group = useDataStore().activeGroup;
-    return sg ? sg.description : this.info.groups_map_description;
+    return useDataStore()?.activeGroup?.description ?? this.info.groups_map_description;
   }
 
 }
