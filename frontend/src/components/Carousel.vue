@@ -1,7 +1,7 @@
 <template>
   <figure v-if="pictures.length">
     <figure>
-      <img :src="info.image" />
+      <img :src="picture_url" />
       <figcaption>
         <a v-if="info.author_url" :href="info.author_url">Photo by <u>{{info.author}}</u></a>
         <span v-else-if="info.author">Photo by {{info.author}}</span>
@@ -15,6 +15,7 @@ import { Component, Vue } from 'vue-facing-decorator';
 
 import { IPictures } from '@/types/IPictures';
 import { useDataStore } from '@/stores';
+import { get_img_url } from '@/utils';
 
 @Component({
   name: 'Carousel',
@@ -30,6 +31,10 @@ export default class Carousel extends Vue {
 
   get info() {
     return this.pictures[this.index % this.pictures.length] || {};
+  }
+
+  get picture_url(): string {
+    return get_img_url(this.info.image);
   }
 
   public mounted() {

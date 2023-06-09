@@ -44,17 +44,20 @@ export const useDataStore = defineStore('data', {
 
   getters: {
     macroGroup: (state): (id: number) => MacroGroup => (id: number) => state.macroGroups[id],
+
     groupsInMacroGroup: (state): (id: number) => Group[] => (id: number) => state.GroupsInMacroGroups[id],
+
     projectsInGroup: (state): (id: number) => Project[] => (id: number) => state.ProjectsInGroups[id],
+
     superGroups: (state): SuperGroup[] => [
       ...Object.values(state.macroGroups),
       ...Object.values(state.groupsWithNoMacroGroup),
     ].sort((a, b) => a.order - b.order ),
+
     filteredProjects: (state): Project[] => {
       const s = state.search.toLowerCase();
       return state.projects.filter((p) => p.title.toLowerCase().includes(s) || p.description.toLowerCase().includes(s));
     },
-
   },
 
   actions: {

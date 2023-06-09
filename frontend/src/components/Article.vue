@@ -56,6 +56,7 @@ import { useAuthStore } from '@/stores';
 
 import Dialog from '@/components/Dialog.vue';
 import ReadMore from '@/components/ReadMore.vue';
+import { get_img_url } from '@/utils';
 
 @Component({
   components: { Dialog, ReadMore },
@@ -81,7 +82,7 @@ export default class Article extends Vue {
   }
 
   get img_url(): string {
-    return this.item.Logo;
+    return get_img_url(this.item.Logo);
   }
 
   get map_url(): string {
