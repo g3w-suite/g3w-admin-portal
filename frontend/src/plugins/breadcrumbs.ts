@@ -12,7 +12,7 @@ import { RouteLocationNormalized, Router } from 'vue-router';
 export const breadcrumbs = {
   install: (app: App) => {
     // Init breadcrumbs
-    app.config.globalProperties.$breadcrumbs = new Breadcrumbs(app).init()
+    app.config.globalProperties.$breadcrumbs = new Breadcrumbs(app).init();
 
     // Component import
     // if (options?.includeComponent) {
@@ -32,15 +32,15 @@ class Breadcrumbs {
   value: Array<Crumb | string> // breadcrumbs array
 
   constructor(app: App) {
-    this.#app = app
-    this.#router = app.config.globalProperties.$router
-    this.value = reactive([])
+    this.#app = app;
+    this.#router = app.config.globalProperties.$router;
+    this.value = reactive([]);
   }
 
   init() {
     this.#router.afterEach((route, from, failure) => {
-      if (failure || (route.path === from.path && from.matched.length)) return false
-      this.setBreadcrumbsByRoute(route)
+      if (failure || (route.path === from.path && from.matched.length)) return false;
+      this.setBreadcrumbsByRoute(route);
     });
     return this;
   }
@@ -58,32 +58,34 @@ class Breadcrumbs {
 
     arPath.forEach((item, i) => {
       // 1. Get path for crumb
-      iterablePath += (i === 1) ? item : '/' + item
+      iterablePath += (i === 1) ? item : '/' + item;
       let isCurrentCrumb = i + 1 >= arPath.length;
 
+      const cached = this.value[i] as Crumb;
+
       // 2. Check if this crumb already exist, delete excess crumbs
-      if (this.value[i]?._path === iterablePath) {
+      if (cached?._path === iterablePath) {
         // if this is last crumb delete excess existing crumbs
-        if (isCurrentCrumb) this.value.splice(i + 1, this.value.length)
-        this.value[i].current = i + 1 >= arPath.length
-        return false
+        if (isCurrentCrumb) this.value.splice(i + 1, this.value.length);
+        cached.current = i + 1 >= arPath.length;
+        return false;
       } else if (!spliced && i < this.value.length) {
-        this.value.splice(i, this.value.length)
-        spliced = true
+        this.value.splice(i, this.value.length);
+        spliced = true;
       }
 
       // 3. Create and add crumb
-      const breadcrumb = this.createBreadcrumb(iterablePath, isCurrentCrumb)
+      const breadcrumb = this.createBreadcrumb(iterablePath, isCurrentCrumb);
 
       if (!breadcrumb) return false;
 
       this.value.push(breadcrumb);
     });
 
-    const current = this.value[this.value.length-1];
+    const current = this.value[this.value.length-1] as Crumb;
 
     title.push(current.title ?? current);
-    title.push(useDataStore().info.title || 'G3W-SUITE')
+    title.push(useDataStore().info.title || 'G3W-SUITE');
 
     window.document.title = title.join(' - ');
   }
@@ -92,10 +94,10 @@ class Breadcrumbs {
    * Resolves route meta by path and creates breadcrumb object 
    */
   createBreadcrumb(path: string, isCurrent = false): Crumb | string | false {
-    if (!path) return false
-    let route = this.#router.resolve(path)
-    let crumb: Crumb = route.meta?.breadcrumb as any
-    if ('function' === typeof crumb) crumb = crumb.call(null, route, this.#app)
+    if (!path) return false;
+    let route = this.#router.resolve(path);
+    let crumb = route.meta?.breadcrumb as Crumb;
+    if ('function' === typeof crumb) crumb = (crumb as Function).call(null, route, this.#app);
 
     return crumb ? {
       label: crumb?.label ?? crumb,
