@@ -70,7 +70,7 @@ export default class Article extends Vue {
   public boxtype = EBoxType;
 
   get title(): string {
-    return this.item.Title;
+    return this.item.title;
   }
 
   get description(): string {
@@ -82,7 +82,7 @@ export default class Article extends Vue {
   }
 
   get img_url(): string {
-    return get_img_url(this.item.Logo);
+    return get_img_url(this.item.logo_img);
   }
 
   get map_url(): string {
@@ -90,7 +90,7 @@ export default class Article extends Vue {
   }
 
   get className(): string {
-    return EBoxType[this.type] + '-' + this.item.Id + ' item-' + EBoxType[this.type];
+    return EBoxType[this.type] + '-' + this.item.id + ' item-' + EBoxType[this.type];
   }
 
   get type(): EBoxType {
@@ -107,15 +107,15 @@ export default class Article extends Vue {
   public get_group_url(): string {
     // Macrogroups > Macrogroup
     if (this.type === this.boxtype.MG) {
-      return `/${this.$i18n.locale}/organization/${this.item.Id}`;
+      return `/${this.$i18n.locale}/organization/${this.item.id}`;
     }
     // Macrogroups > Macrogroup > Group
     if (this.type === this.boxtype.G && this.$route.name === 'organization') {
-      return `/${this.$i18n.locale}/organization/${this.$route.params.id}/${this.item.Id}`;
+      return `/${this.$i18n.locale}/organization/${this.$route.params.id}/${this.item.id}`;
     }
     // Groups > Group
     if (this.type === this.boxtype.G) {
-      return `/${this.$i18n.locale}/group/${this.item.Id}`;
+      return `/${this.$i18n.locale}/group/${this.item.id}`;
     }
     return '';
   }

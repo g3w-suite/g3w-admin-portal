@@ -3,14 +3,14 @@ import { IProject } from '@/types/IProject';
 import { SuperGroup } from '@/types/TSuperGroup';
 
 export class Project extends SuperGroup {
-  public id: number;
-  public title: string;
-  public description: string;
-  public thumbnail: string;
-  public edit_url: string;
-  public map_url: string;
-  public logo_img: string;
-  public logo_link: string | null;
+  public readonly id: number;
+  public readonly title: string;
+  public readonly description: string;
+  public readonly thumbnail: string;
+  public readonly edit_url: string;
+  public readonly map_url: string;
+  public readonly logo_img: string;
+  public readonly logo_link: string | null;
 
   constructor(data: IProject) {
     super();
@@ -32,26 +32,6 @@ export class Project extends SuperGroup {
 
   get Key() {
     return EBoxType[this.InstanceOf] + '_' + this.id;
-  }
-
-  get Id() {
-    return this.id;
-  }
-
-  get Title() {
-    return this.title;
-  }
-
-  get Description() {
-    return this.description;
-  }
-
-  get Logo() {
-    return this.logo_img;
-  }
-
-  get LogoLink() {
-    return this.logo_link;
   }
 
   // non mettere statico

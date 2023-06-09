@@ -8,7 +8,7 @@ export class SuperGroup {
   /**
    * Random key to be used within v-for loops
    */
-  public _vue_uid: string = Date.now().toString(36) + Math.random().toString(36).substr(2);
+  public readonly _vue_uid: string = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
   constructor() {
     this.title = '';
