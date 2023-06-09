@@ -25,7 +25,7 @@ export default class Projects extends Vue {
     grid-row-gap: var(--grid-spacing-horizontal);
   }
 
-  .grid article {
+  .grid >>> article {
     margin: 0;
   }
 
