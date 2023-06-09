@@ -83,7 +83,7 @@ export const router = Router.createRouter({
           meta: {
             breadcrumb(route: Router.RouteLocationNormalized, app: App) {
               return route.params.id
-                ? useDataStore().groups[parseInt(route.params.id)]?.title
+                ? useDataStore().groups[parseInt(route.params.id as string)]?.title
                 : $t('messages.menu.group');
             },
           },
@@ -96,9 +96,9 @@ export const router = Router.createRouter({
             breadcrumb(route: Router.RouteLocationNormalized, app: App) {
               if (route.params.id) {
                 if (route.params.group) {
-                  return useDataStore().groups[parseInt(route.params.id)]?.title;
+                  return useDataStore().groups[parseInt(route.params.id  as string)]?.title;
                 }
-                return useDataStore().macroGroups[parseInt(route.params.id)]?.title;
+                return useDataStore().macroGroups[parseInt(route.params.id as string)]?.title;
               }
               // if(useRootStore().currentPage.params.id) {
               //   return {
