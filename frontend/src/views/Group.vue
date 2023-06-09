@@ -6,7 +6,7 @@
     </hgroup>
     <Projects
       :items="items"
-      :class="$route.params.id !== undefined ? '' : 'grid'"
+      :class="archive_class"
     />
   </section>
 </template>
@@ -27,6 +27,8 @@ export default class VGroup extends Vue {
 
   public items: SuperGroup[] = [];
 
+  public archive_class = ''
+
   get info(): Info {
     return useDataStore().info;
   }
@@ -35,11 +37,35 @@ export default class VGroup extends Vue {
     immediate: true,
     deep: true,
   })
-  public async onRouteParamsChange({ id, group }: { id?: number, group?: number }) {
-    this.items = undefined === id
+  public async onRouteParamsChange({ id, group }: { id?: string, group?: string }) {
+    const is_archive = (undefined === id || '' ===  id); // TODO: make it generic ( eg. has_route_param('id') )
+    this.archive_class = is_archive ? 'grid' : '';
+    this.items = is_archive
       ? useDataStore().superGroups                   // Home > Groups
-      : useDataStore().projectsInGroup(group || id);
+      : useDataStore().projectsInGroup(parseInt(group || id));
   }
+
+  // /**
+  //  * Fetch Data before navigation
+  //  * 
+  //  * @see https://router.vuejs.org/guide/advanced/data-fetching.html
+  //  */
+  // @Hook
+  // beforeRouteEnter(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
+  //   next(vm => console.log(vm));
+  // }
+
+  // /**
+  //  * Fetch Data when route changes and this component is already rendered
+  //  * 
+  //  * @see https://router.vuejs.org/guide/advanced/data-fetching.html
+  //  */
+  // @Hook
+  // async beforeRouteUpdate(to: RouteLocationNormalized, from: RouteLocationNormalized) {
+  //   this.items = undefined === to.params.id
+  //     ? useDataStore().superGroups                   // Home > Groups
+  //     : useDataStore().projectsInGroup(to.params.group || to.params.id);
+  // }
 
   /**
    * @FIXME

@@ -52,7 +52,7 @@ export const useDataStore = defineStore('data', {
     superGroups: (state): SuperGroup[] => [
       ...Object.values(state.macroGroups),
       ...Object.values(state.groupsWithNoMacroGroup),
-    ].sort((a, b) => a.order - b.order ),
+    ].sort((a, b) => a.order - b.order),
 
     filteredProjects: (state): Project[] => {
       const s = state.search.toLowerCase();
@@ -125,15 +125,16 @@ export const useDataStore = defineStore('data', {
     async fetchGroupData(): Promise<Group | null | false> {
       const { id, group } = useRootStore().currentPage.params;
 
+      const is_archive = (undefined === id || '' ===  id); // TODO: make it generic ( eg. has_route_param('id') )
+
       // Home > Group
-      if (undefined !== id) {
-        const groups = this.groups;
-        if (undefined !== group && undefined === groups[parseInt(group as string)]) {
+      if (!is_archive) {
+        if (undefined !== group && undefined === this.groups[parseInt(group as string)]) {
           useRootStore().showLoader();
           await this.fetchGroupsByMacroGroupId(id as string);
           useRootStore().hideLoader();
         }
-        const activeGroup: Group = groups[parseInt((group || id) as string)];
+        const activeGroup = this.groups[parseInt((group || id) as string)];
         if (!activeGroup) {
           return false; // inexistent group ID or unauthenticated user
         }

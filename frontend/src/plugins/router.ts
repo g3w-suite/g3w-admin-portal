@@ -100,16 +100,6 @@ export const router = Router.createRouter({
                 }
                 return useDataStore().macroGroups[parseInt(route.params.id as string)]?.title;
               }
-              // if(useRootStore().currentPage.params.id) {
-              //   return {
-              //     label: $t('messages.menu.group'),
-              //     link: app.config.globalProperties.$router.resolve({name: 'group'}).href 
-              //     // app.$router.resolve({
-              //     //   name: 'group',
-              //     //   params: { id: useRootStore().currentPage.params.group }
-              //     // })
-              //   }
-              // }
               return $t('messages.menu.organization');
             },
           },
