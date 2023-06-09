@@ -1,11 +1,11 @@
 import { IWhoAmI } from '@/types/IWhoAmI';
 
 export default class User {
-  private readonly last_name: string;
-  private readonly first_name: string;
-  private readonly username: string;
-  private readonly email: string;
-  private readonly drf_token: string;
+  public readonly last_name: string;
+  public readonly first_name: string;
+  public readonly username: string;
+  public readonly email: string;
+  public readonly drf_token: string;
 
   constructor(data: IWhoAmI) {
     this.last_name  = data && data.data && data.data.last_name || '';

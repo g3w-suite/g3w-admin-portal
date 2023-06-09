@@ -29,7 +29,7 @@ class Breadcrumbs {
   
   #router: Router
 
-  value: Array<Crumb | string> // breadcrumbs array
+  value: Crumb[] // breadcrumbs array
 
   constructor(app: App) {
     this.#app = app;
@@ -61,7 +61,7 @@ class Breadcrumbs {
       iterablePath += (i === 1) ? item : '/' + item;
       let isCurrentCrumb = i + 1 >= arPath.length;
 
-      const cached = this.value[i] as Crumb;
+      const cached = this.value[i];
 
       // 2. Check if this crumb already exist, delete excess crumbs
       if (cached?._path === iterablePath) {
@@ -93,11 +93,12 @@ class Breadcrumbs {
   /**
    * Resolves route meta by path and creates breadcrumb object 
    */
-  createBreadcrumb(path: string, isCurrent = false): Crumb | string | false {
+  createBreadcrumb(path: string, isCurrent = false): Crumb | false {
     if (!path) return false;
     let route = this.#router.resolve(path);
     let crumb = route.meta?.breadcrumb as Crumb;
     if ('function' === typeof crumb) crumb = (crumb as Function).call(null, route, this.#app);
+    if ('string' === typeof crumb) crumb = { label: crumb, title: crumb, link: route.path } as any;
 
     return crumb ? {
       label: crumb?.label ?? crumb,

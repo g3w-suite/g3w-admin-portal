@@ -32,7 +32,7 @@ import { useRootStore } from '@/stores';
 export default class Main extends Vue {
 
   get has_header(): boolean {
-    return !!this.$route.matched[this.$route.matched.length - 1].components.header;
+    return !!this.$route.matched[this.$route.matched.length - 1].components?.header;
   }
 
   get show_loader(): boolean {
