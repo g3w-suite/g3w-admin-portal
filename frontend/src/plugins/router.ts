@@ -45,7 +45,7 @@ export const router = Router.createRouter({
           },
         },
         {
-          path: 'login/',
+          path: 'login',
           name: 'login',
           component: () => import('@/views/Login.vue'),
           meta: {
@@ -54,7 +54,7 @@ export const router = Router.createRouter({
           beforeEnter: (...args) => useAuthStore().maybe_redirect(...args),
         },
         {
-          path: 'logout/',
+          path: 'logout',
           name: 'logout',
           meta: {
             breadcrumb: 'Logout'
@@ -63,13 +63,13 @@ export const router = Router.createRouter({
           beforeEnter: (...args) => useAuthStore().maybe_redirect(...args),
         },
         {
-          path: 'admin/',
+          path: 'admin',
           name: 'admin',
           beforeEnter: (...args) => useAuthStore().maybe_redirect(...args),
           component: () => import('@/views/NotFound.vue'),
         },
         {
-          path: 'search/',
+          path: 'search',
           name: 'search',
           component: () => import('@/views/Search.vue'),
           meta: {
@@ -77,7 +77,7 @@ export const router = Router.createRouter({
           },
         },
         {
-          path: 'group/:id?/',
+          path: 'group/:id?',
           name: 'group',
           component: () => import('@/views/Group.vue'),
           meta: {
@@ -89,7 +89,7 @@ export const router = Router.createRouter({
           },
         },
         {
-          path: 'organization/:id?/:group?/',
+          path: 'organization/:id?/:group?',
           name: 'organization',
           component: () => import('@/views/MacroGroup.vue'),
           meta: {
@@ -115,7 +115,7 @@ export const router = Router.createRouter({
           },
         },
         {
-          path: 'map/:id?/',
+          path: 'map/:id?',
           name: 'map',
           component: () => import('@/components/Projects.vue'),
           meta: {
