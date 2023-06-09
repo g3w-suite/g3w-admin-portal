@@ -132,6 +132,13 @@ export const router = Router.createRouter({
         },
       ],
     },
+    /* Redirect root path to fallback language (it) */
+    {
+      path: '/',
+      redirect(to) {
+        return { path: `/it${to.path}` };
+      }
+    },
   ],
   /**
    * @param to.hash smooth scroll to element id
