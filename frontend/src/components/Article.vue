@@ -31,11 +31,15 @@
 
     <hgroup>
       <h3>{{title}}</h3>
+      <div v-html="description"></div>
+
+      <!-- READ-MORE (v1) -->
       <!-- <read-more :text="description" :more-str="$t('messages.readmore')" :less-str="$t('messages.readless')" link="#"  :max-chars="500"></read-more> -->
-      <ReadMore :text="description" :more-str="$t('messages.readmore')" :less-str="$t('messages.readless')" link="#"  :max-chars="500"/>
-      <!-- <div v-html="description"></div> -->
       <!-- <a href="#" @click.prevent="showModal">Preview</a> -->
-      <a href="#" @click.prevent="showModal">{{ $t('messages.readmore') }}</a>
+
+      <!-- READ-MORE (v2) -->
+      <!-- <ReadMore :text="description" :more-str="$t('messages.readmore')" :less-str="$t('messages.readless')" link="#"  :max-chars="500"/> -->
+      <!-- <a href="#" @click.prevent="showModal">{{ $t('messages.readmore') }}</a> -->
     </hgroup>
 
   </article>
