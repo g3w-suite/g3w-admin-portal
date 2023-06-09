@@ -53,11 +53,13 @@ export const useRootStore = defineStore('root', {
     async setupPage(to: Route, from: Route) {
       this.currentPage = to;
 
+      const refresh_data = !ready || i18n.global.locale !== to.params.lang; // TODO: move this within switchLang() ?
+
       // update html lang attribute
       await this.loadLanguageAsync(to.params.lang as lang_code);
 
       // listen for language change
-      if (!ready || i18n.global.locale !== to.params.lang) {
+      if (refresh_data) {
         await this.fetchData();
       }
 
