@@ -39,6 +39,10 @@ export const useAuthStore = defineStore('auth', {
 
     setUser(i: User | null) {
       this.user = i;
+      // disgread JWT tokens after calling: commit('setUser', null)
+      if (!this.useCookies && !this.user) {
+        this.removeTokens();
+      }
       // fetch again data from server on user Login / Logout 
       useRootStore().fetchData(true);
     },

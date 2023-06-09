@@ -74,10 +74,6 @@ export const useRootStore = defineStore('root', {
      * Fetch general application data
      */
     async fetchData(refresh = false) {
-      // disgread JWT tokens after calling: commit('setUser', null)
-      if (!useAuthStore().useCookies && !useAuthStore().user) {
-        await useAuthStore().removeTokens();
-      }
       if (refresh) {
         await useDataStore().reset();
         await useDataStore().setActiveGroup();
