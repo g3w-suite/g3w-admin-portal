@@ -119,7 +119,7 @@ export const useAuthStore = defineStore('auth', {
         case 'admin':
           // redirect to admin dashboard page
           location.href = get_admin_url(config.admin_root);
-          break;
+          return false;
       }
     },
 
