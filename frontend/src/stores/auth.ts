@@ -40,7 +40,7 @@ export const useAuthStore = defineStore('auth', {
     setUser(i: User | null) {
       this.user = i;
       // disgread JWT tokens after calling: commit('setUser', null)
-      if (!this.useCookies && !this.user) {
+      if (this.useCookies || (!this.useCookies && !this.user)) {
         this.removeTokens();
       }
       // fetch again data from server on user Login / Logout 
@@ -143,7 +143,7 @@ function _jx_login(username: string, password: string) {
     .post<{ status: ELoginStatus; error_form?: object; message?: string }>(
       useRootStore().locale + '/jx/login/',
       (new URLSearchParams({ username, password })).toString(),
-      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+      { 'Content-Type': 'application/x-www-form-urlencoded' }
     )
     .then(data => {
       if (data.status !== ELoginStatus.OK) {

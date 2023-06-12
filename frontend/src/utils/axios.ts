@@ -15,7 +15,7 @@ class HttpClient {
     const url = new URL(endpoint, appConfig.api_base_url).toString();
     const config = this.auth_request({
       method: method ?? 'GET',
-      body: JSON.stringify(data),
+      body: (customHeaders && 'application/json' !== customHeaders['Content-Type'] ? data : JSON.stringify(data)),
       headers: {
         'Content-Type': 'application/json',
         ...customHeaders
