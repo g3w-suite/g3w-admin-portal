@@ -13,7 +13,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-facing-decorator';
 
-import { IPictures } from '@/types/IPictures';
 import { useDataStore } from '@/stores';
 import { get_img_url } from '@/utils';
 
@@ -25,7 +24,7 @@ export default class Carousel extends Vue {
 
   private index: number = 0;
 
-  get pictures(): IPictures[] {
+  get pictures() {
     return useDataStore().pictures;
   }
 

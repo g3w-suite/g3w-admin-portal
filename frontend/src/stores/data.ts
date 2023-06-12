@@ -159,7 +159,7 @@ export const useDataStore = defineStore('data', {
         if (!macrogroup) { // inexistent group ID or unauthenticated user
           return false;
         }
-        await (macrogroup as MacroGroup).fetchGroups();
+        await macrogroup.fetchGroups();
         return macrogroup;
       } else if (group) {
         return await this.fetchGroupData();
