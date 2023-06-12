@@ -25,7 +25,7 @@ class HttpClient {
     return window
       .fetch(url, config)
       .then(async response => {
-        const error = this.auth_error(response, endpoint, config);
+        const error = await this.auth_error(response, endpoint, config);
         if (-1 !== error) {
           return error;
         }
@@ -33,7 +33,7 @@ class HttpClient {
           return await response.json()
         }
         return Promise.reject(await response.json());
-      });
+      }).catch(e => console.warn('HTTP Error', e));
   }
 
   private auth_request(config: any): any {
@@ -54,9 +54,6 @@ class HttpClient {
     const auth = useAuthStore();
     // CORS JWT sessions (expired access_token)
     if (!auth.useCookies && auth.refresh_token) {
-      if (auth.await_token_refresh) {
-        return auth.await_token_refresh;
-      }
       if ([401, 403].includes(response.status)) {
         return useAuthStore().refresh().then(() => this.fetch(url, config));
       }
