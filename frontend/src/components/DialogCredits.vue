@@ -3,7 +3,7 @@
     <article style="max-width: unset;">
       <header style="background-color: rgb(149, 173, 54); margin-bottom: 1rem;">
         <form method="dialog">
-          <input type="submit" aria-label="Close" value="" class="close contrast" />
+          <input type="submit" aria-label="Close" value="Close" class="close contrast" style="text-indent: -9999px;" />
         </form>
         <!-- <a href="#close" aria-label="Close" class="close" ></a> -->
         <div style="color: #fff">Applicativo realizzato con il framework Open Source</div>
