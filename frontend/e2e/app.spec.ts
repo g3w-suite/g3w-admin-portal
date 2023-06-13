@@ -43,6 +43,8 @@ test.describe('Home Page', () => {
     await page.getByRole('link', { name: 'en_GBEnglish' }).click();
     await page.getByRole('link', { name: 'Choose a language' }).click(); // FIXME: users should not click again on dropdown
 
+    await page.waitForURL('**/en/')
+
     // Authenticate user.
     await page.getByRole('link', { name: 'Login' }).click();
     await page.getByLabel('Username').fill('admin');
