@@ -4,8 +4,8 @@
   <article v-if="type !== boxtype.P" :class="className">
     <router-link :to="get_group_url()">
       <figure>
-        <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('messages.maps.group')" />
-        <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3><b>{{title ||  $t('messages.maps.group')}}</b></h3></figcaption>
+        <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('maps.group')" />
+        <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3><b>{{title ||  $t('maps.group')}}</b></h3></figcaption>
       </figure>
     </router-link>
   </article>
@@ -20,11 +20,11 @@
       <p class="grid">
         <a :href="get_admin_url(map_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="expand-arrows-alt" size="lg" />
-          <span> {{ $t('messages.maps.view') }}</span>
+          <span> {{ $t('maps.view') }}</span>
         </a>
         <a v-if="has_edit_url()" :href="get_admin_url(edit_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="pencil-alt" size="lg" />
-          <span> {{ $t('messages.maps.edit') }}</span>
+          <span> {{ $t('maps.edit') }}</span>
         </a>
       </p>
     </div>
@@ -34,12 +34,12 @@
       <div v-html="description"></div>
 
       <!-- READ-MORE (v1) -->
-      <!-- <read-more :text="description" :more-str="$t('messages.readmore')" :less-str="$t('messages.readless')" link="#"  :max-chars="500"></read-more> -->
+      <!-- <read-more :text="description" :more-str="$t('readmore')" :less-str="$t('readless')" link="#"  :max-chars="500"></read-more> -->
       <!-- <a href="#" @click.prevent="showModal">Preview</a> -->
 
       <!-- READ-MORE (v2) -->
-      <!-- <ReadMore :text="description" :more-str="$t('messages.readmore')" :less-str="$t('messages.readless')" link="#"  :max-chars="500"/> -->
-      <!-- <a href="#" @click.prevent="showModal">{{ $t('messages.readmore') }}</a> -->
+      <!-- <ReadMore :text="description" :more-str="$t('readmore')" :less-str="$t('readless')" link="#"  :max-chars="500"/> -->
+      <!-- <a href="#" @click.prevent="showModal">{{ $t('readmore') }}</a> -->
     </hgroup>
 
   </article>

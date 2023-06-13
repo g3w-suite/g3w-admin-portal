@@ -10,7 +10,7 @@
         <!--  Empty space  -->
         <div></div>
         <address>
-          <h3>{{$t('messages.footer.contacts')}}</h3>
+          <h3>{{$t('footer.contacts')}}</h3>
 
           <p v-if="info.about_name">
             <font-awesome-icon icon="user" /> {{info.about_name}}

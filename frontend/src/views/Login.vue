@@ -2,46 +2,46 @@
   <article class="grid">
     
     <div>
-      <h2>{{settings.login_title || $tc("messages.login.title")}}</h2>
+      <h2>{{settings.login_title || $tc("login.title")}}</h2>
 
       <form @keyup.enter="login">
 
         <!-- USERNAME FIELD -->
-        <label for="username">{{$t('messages.login.username')}}</label>
+        <label for="username">{{$t('login.username')}}</label>
         <input
-          :placeholder="$tc('messages.login.username')"
+          :placeholder="$tc('login.username')"
           autocomplete="username"
           id="username"
           required
           type="text"
           v-model="username"
         />
-        <p class="error_or_missing" v-if="usernameError">{{$t('messages.login.requiredField')}}</p>
+        <p class="error_or_missing" v-if="usernameError">{{$t('login.requiredField')}}</p>
 
         <!-- PASSWORD FIELD -->
-        <label for="password">{{$t('messages.login.password')}}</label>
+        <label for="password">{{$t('login.password')}}</label>
         <input
-          :placeholder="$tc('messages.login.password')"
+          :placeholder="$tc('login.password')"
           autocomplete="current-password"
           id="password"
           required
           type="password"
           v-model="password"
         />
-        <p class="error_or_missing" v-if="passwordError">{{$t('messages.login.requiredField')}}</p>
+        <p class="error_or_missing" v-if="passwordError">{{$t('login.requiredField')}}</p>
 
         <!-- SUBMIT BUTTON -->
         <button
           @click="login"
           id="button"
           type="button"
-          class="contrast">{{$t('messages.login.submit')}}
+          class="contrast">{{$t('login.submit')}}
         </button>
-        <p class="error_or_missing" v-if="loginError">{{$t('messages.login.erroreLogin')}}</p>
+        <p class="error_or_missing" v-if="loginError">{{$t('login.erroreLogin')}}</p>
 
         <!-- RESET PASSWORD LINK -->
         <div v-if="settings.reset_password_url" >
-          <a :href="settings.reset_password_url">{{$t('messages.login.reset_password_url')}}</a>
+          <a :href="settings.reset_password_url">{{$t('login.reset_password_url')}}</a>
         </div>
 
       </form>

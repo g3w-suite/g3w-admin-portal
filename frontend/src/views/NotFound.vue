@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ $t('messages.menu.404') }}</h1>
+  <h1>{{ $t('menu.404') }}</h1>
 </template>
 
 <script lang="ts">

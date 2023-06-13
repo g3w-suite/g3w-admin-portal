@@ -4,8 +4,8 @@
     id="search"
     name="search"
     v-model="search"
-    :placeholder="$t('messages.menu.search_placeholder')"
-    :aria-label="$t('messages.menu.search_placeholder')"
+    :placeholder="$t('menu.search_placeholder')"
+    :aria-label="$t('menu.search_placeholder')"
   />
   <Projects :items="items_filter" />
 </template>

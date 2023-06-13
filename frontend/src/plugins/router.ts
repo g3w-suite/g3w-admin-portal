@@ -1,4 +1,10 @@
-import * as Router from 'vue-router';
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+  createMemoryHistory,
+  RouteLocationNormalized
+} from 'vue-router';
 
 import config from '@/config';
 import { useRootStore, useAuthStore, useDataStore } from '@/stores';
@@ -9,22 +15,22 @@ import { App } from 'vue';
 const { t: $t } = i18n.global;
 
 const modes = {
-  "history": Router.createWebHistory,
-  "hash": Router.createWebHashHistory,
-  "abstract": Router.createMemoryHistory
+  "history": createWebHistory,
+  "hash": createWebHashHistory,
+  "abstract": createMemoryHistory
 };
 
 /**
  * Vue Router
  */
-export const router = Router.createRouter({
-  history: Router.createWebHashHistory(process.env.BASE_URL), // TODO: history: modes[config.router_mode](),
+export const router = createRouter({
+  history: createWebHashHistory(process.env.BASE_URL), // TODO: history: modes[config.router_mode](),
   routes: [
     {
       path: '/:lang/',
       component: () => import('@/components/Main.vue'),
       meta: {
-        breadcrumb(route: Router.RouteLocationNormalized, app: App) {
+        breadcrumb(route: RouteLocationNormalized, app: App) {
           const { currentRoute } = app.config.globalProperties.$router;
           return 'home' === currentRoute.value.name
             ? { label: '', title: 'Home' }
@@ -81,10 +87,10 @@ export const router = Router.createRouter({
           name: 'group',
           component: () => import('@/views/Group.vue'),
           meta: {
-            breadcrumb(route: Router.RouteLocationNormalized, app: App) {
+            breadcrumb(route: RouteLocationNormalized, app: App) {
               return route.params.id
                 ? useDataStore().groups[parseInt(route.params.id as string)]?.title
-                : $t('messages.menu.group');
+                : $t('menu.group');
             },
           },
         },
@@ -93,14 +99,14 @@ export const router = Router.createRouter({
           name: 'organization',
           component: () => import('@/views/MacroGroup.vue'),
           meta: {
-            breadcrumb(route: Router.RouteLocationNormalized, app: App) {
+            breadcrumb(route: RouteLocationNormalized, app: App) {
               if (route.params.id) {
                 if (route.params.group) {
                   return useDataStore().groups[parseInt(route.params.id  as string)]?.title;
                 }
                 return useDataStore().macroGroups[parseInt(route.params.id as string)]?.title;
               }
-              return $t('messages.menu.organization');
+              return $t('menu.organization');
             },
           },
         },

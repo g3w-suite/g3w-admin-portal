@@ -23,7 +23,7 @@
       role="button"
       :to="{name: 'group'}"
     >
-      {{$t('messages.home.show_all_button')}}
+      {{$t('home.show_all_button')}}
     </router-link>
   </div>
 </template>

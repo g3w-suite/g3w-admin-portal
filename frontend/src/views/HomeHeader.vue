@@ -13,8 +13,8 @@
       id="search"
       name="search"
       v-model="search"
-      :placeholder="$t('messages.menu.search_placeholder')"
-      :aria-label="$t('messages.menu.search_placeholder')"
+      :placeholder="$t('menu.search_placeholder')"
+      :aria-label="$t('menu.search_placeholder')"
     />
   </form> -->
 </template>

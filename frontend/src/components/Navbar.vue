@@ -15,46 +15,46 @@
 
       <!-- ADMIN LINK -->
       <li v-if="isLoggedIn" class="nav-admin">
-        <router-link :to="{ name: 'admin' }" :title="$t('messages.tooltip.admin')" class="secondary">
+        <router-link :to="{ name: 'admin' }" :title="$t('tooltip.admin')" class="secondary">
           <font-awesome-icon icon="gear" size="lg" />
-          <span class="hide-on-mobile"> {{$t('messages.menu.admin')}}</span>
+          <span class="hide-on-mobile"> {{$t('menu.admin')}}</span>
         </router-link>
       </li>
 
       <!-- LOGOUT LINK -->
       <li v-if="isLoggedIn" class="nav-logout">
-        <a href="#" @click.prevent="logout" :title="$t('messages.tooltip.logout')" class="secondary">
+        <a href="#" @click.prevent="logout" :title="$t('tooltip.logout')" class="secondary">
           <font-awesome-icon icon="sign-out-alt" size="lg" />
-          <span class="hide-on-mobile"> {{$t('messages.menu.logout')}}</span>
+          <span class="hide-on-mobile"> {{$t('menu.logout')}}</span>
         </a>
       </li>
 
       <!-- LOGIN LINK -->
       <li v-else  class="nav-login">
-        <router-link :to="{ name: 'login' }" :title="$t('messages.tooltip.login')" class="secondary">
+        <router-link :to="{ name: 'login' }" :title="$t('tooltip.login')" class="secondary">
           <font-awesome-icon icon="user" size="lg" />
-          <span class="hide-on-mobile"> {{$t('messages.menu.login')}}</span>
+          <span class="hide-on-mobile"> {{$t('menu.login')}}</span>
         </router-link>
       </li>
 
       <!-- LANGUAGE SELECTOR -->
       <li class="nav-lang">
-        <details role="list" dir="ltr" :title="$t('messages.tooltip.choose_language')">
+        <details role="list" dir="ltr" :title="$t('tooltip.choose_language')">
           <summary aria-haspopup="listbox" role="link" class="secondary">
-            <img :alt="$t('messages.tooltip.choose_language')" :title="$t('messages.language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
-            <span class="hide-on-mobile">{{$t('messages.language.' + $i18n.locale)}}</span>
+            <img :alt="$t('tooltip.choose_language')" :title="$t('language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
+            <span class="hide-on-mobile">{{$t('language.' + $i18n.locale)}}</span>
           </summary>
           <ul role="listbox">
             <li>
-              <router-link :to="{ name: 'home', params: { lang: 'it' } }" hreflang="it" class="secondary">
+              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary">
                 <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
-                <span>{{$t('messages.language.it')}}</span>
+                <span>{{$t('language.it')}}</span>
               </router-link>
             </li>
             <li>
-              <router-link :to="{ name: 'home', params: { lang: 'en' } }" hreflang="en" class="secondary">
+              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary">
                 <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
-                <span>{{$t('messages.language.en')}}</span>
+                <span>{{$t('language.en')}}</span>
               </router-link>
             </li>
           </ul>
@@ -89,54 +89,54 @@
 
       <!-- SEARCH LINK -->
       <li class="nav-search" :class="{'hide-on-mobile': hasMenuButton && !hasNavBarTop }">
-        <router-link :to="{ name: 'search' }" :title="$t('messages.menu.search_placeholder')" class="contrast outline">
+        <router-link :to="{ name: 'search' }" :title="$t('menu.search_placeholder')" class="contrast outline">
           <font-awesome-icon icon="search" size="lg" />
-          <span>{{ $t('messages.menu.search') }}</span>
+          <span>{{ $t('menu.search') }}</span>
         </router-link>
       </li>
 
       <!-- ADMIN LINK -->
       <li v-if="!hasNavBarTop && isLoggedIn" class="nav-admin" :class="{'hide-on-mobile': hasMenuButton && !hasNavBarTop }">
-        <router-link :to="{ name: 'admin' }" :title="$t('messages.tooltip.admin')" class="secondary">
+        <router-link :to="{ name: 'admin' }" :title="$t('tooltip.admin')" class="secondary">
           <font-awesome-icon icon="gear" size="lg" />
-          <span class="hide-on-mobile"> {{$t('messages.menu.admin')}}</span>
+          <span class="hide-on-mobile"> {{$t('menu.admin')}}</span>
         </router-link>
       </li>
 
       <!-- LOGOUT LINK -->
       <li v-if="!hasNavBarTop && isLoggedIn" class="nav-logout" :class="{'hide-on-mobile': hasMenuButton && !hasNavBarTop }">
-        <a href="#" @click.prevent="logout" :title="$t('messages.tooltip.logout')" class="secondary">
+        <a href="#" @click.prevent="logout" :title="$t('tooltip.logout')" class="secondary">
           <font-awesome-icon icon="sign-out-alt" size="lg" />
-          <span class="hide-on-mobile"> {{$t('messages.menu.logout')}}</span>
+          <span class="hide-on-mobile"> {{$t('menu.logout')}}</span>
         </a>
       </li>
 
       <!-- LOGIN LINK -->
       <li v-else-if="!hasNavBarTop" class="nav-login" :class="{'hide-on-mobile': hasMenuButton && !hasNavBarTop }">
-        <router-link :to="{ name: 'login' }" :title="$t('messages.tooltip.login')" class="secondary">
+        <router-link :to="{ name: 'login' }" :title="$t('tooltip.login')" class="secondary">
           <font-awesome-icon icon="user" size="lg" />
-          <span class="hide-on-mobile"> {{$t('messages.menu.login')}}</span>
+          <span class="hide-on-mobile"> {{$t('menu.login')}}</span>
         </router-link>
       </li>
 
       <!-- LANGUAGE SELECTOR -->
       <li v-if="!hasNavBarTop" class="nav-lang" :class="{'hide-on-mobile': hasMenuButton && !hasNavBarTop }">
-        <details role="list" dir="ltr" :title="$t('messages.tooltip.choose_language')" @click="switchLang">
+        <details role="list" dir="ltr" :title="$t('tooltip.choose_language')" @click="switchLang">
           <summary aria-haspopup="listbox" role="link" class="secondary">
-            <img :alt="$t('messages.tooltip.choose_language')" :title="$t('messages.language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
-            <span class="hide-on-mobile">{{$t('messages.language.' + $i18n.locale)}}</span>
+            <img :alt="$t('tooltip.choose_language')" :title="$t('language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
+            <span class="hide-on-mobile">{{$t('language.' + $i18n.locale)}}</span>
           </summary>
           <ul role="listbox">
             <li>
-              <router-link :to="{ name: 'home', params: { lang: 'it' } }" hreflang="it" class="secondary">
+              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary">
                 <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
-                <span>{{$t('messages.language.it')}}</span>
+                <span>{{$t('language.it')}}</span>
               </router-link>
             </li>
             <li>
-              <router-link :to="{ name: 'home', params: { lang: 'en' } }" hreflang="en" class="secondary">
+              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary">
                 <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
-                <span>{{$t('messages.language.en')}}</span>
+                <span>{{$t('language.en')}}</span>
               </router-link>
             </li>
           </ul>
@@ -145,9 +145,9 @@
 
       <!-- MENU LINK -->
       <li v-if="hasMenuButton" class="nav-toggle" :class="{'show-on-mobile': hasMenuButton && !hasNavBarTop }">
-        <button @click="toggleSecondaryMenu" :title="$t('messages.tooltip.menu')" class="contrast outline">
+        <button @click="toggleSecondaryMenu" :title="$t('tooltip.menu')" class="contrast outline">
           <font-awesome-icon :icon="secondaryMenuVisible ? 'bars' : 'xmark'" size="lg" />
-          <span>{{ $t('messages.menu.toggle') }}</span>
+          <span>{{ $t('menu.toggle') }}</span>
         </button>
       </li>
     </ul>
@@ -155,73 +155,73 @@
     <ul :class="{ 'active': !secondaryMenuVisible }">
 
       <li class="nav-home" :class="{'active': 'home' === $route.name }">
-          <router-link :to="{ name: 'home' }" class="secondary" :title="$t('messages.tooltip.home')">
-            {{ $t('messages.menu.home') }}
+          <router-link :to="{ name: 'home' }" class="secondary" :title="$t('tooltip.home')">
+            {{ $t('menu.home') }}
           </router-link>
       </li>
 
       <li class="nav-group" :class="{'active': 'group' === $route.name }">
         <router-link :to="{ name: 'group' }" class="secondary">
-          {{ $t('messages.menu.group') }}
+          {{ $t('menu.group') }}
         </router-link>
       </li>
 
       <!-- <li class="nav-org" :class="{'active': 'organization' === $route.name }">
         <router-link :to="{ name: 'organization' }" class="secondary">
-          {{ $t('messages.menu.organization') }}
+          {{ $t('menu.organization') }}
         </router-link>
       </li> -->
 
       <!-- SEARCH LINK -->
       <li class="nav-search" :hidden="!(hasMenuButton && !hasNavBarTop)">
-        <router-link :to="{ name: 'search' }" :title="$t('messages.menu.search_placeholder')" class="contrast outline">
+        <router-link :to="{ name: 'search' }" :title="$t('menu.search_placeholder')" class="contrast outline">
           <font-awesome-icon icon="search" size="lg" />
-          <span>{{ $t('messages.menu.search') }}</span>
+          <span>{{ $t('menu.search') }}</span>
         </router-link>
       </li>
 
       <!-- ADMIN LINK -->
       <li v-if="isLoggedIn" :hidden="!(hasMenuButton && !hasNavBarTop)" class="nav-admin">
-        <router-link :to="{ name: 'admin' }" :title="$t('messages.tooltip.admin')" class="secondary">
+        <router-link :to="{ name: 'admin' }" :title="$t('tooltip.admin')" class="secondary">
           <font-awesome-icon icon="gear" size="lg" />
-          <span> {{$t('messages.menu.admin')}}</span>
+          <span> {{$t('menu.admin')}}</span>
         </router-link>
       </li>
 
       <!-- LOGOUT LINK -->
       <li v-if="isLoggedIn" :hidden="!(hasMenuButton && !hasNavBarTop)" class="nav-logout">
-        <a href="#" @click.prevent="logout" :title="$t('messages.tooltip.logout')" class="secondary">
+        <a href="#" @click.prevent="logout" :title="$t('tooltip.logout')" class="secondary">
           <font-awesome-icon icon="sign-out-alt" size="lg" />
-          <span> {{$t('messages.menu.logout')}}</span>
+          <span> {{$t('menu.logout')}}</span>
         </a>
       </li>
 
       <!-- LOGIN LINK -->
       <li v-else :hidden="!(hasMenuButton && !hasNavBarTop)" class="nav-login">
-        <router-link :to="{ name: 'login' }" :title="$t('messages.tooltip.login')" class="secondary">
+        <router-link :to="{ name: 'login' }" :title="$t('tooltip.login')" class="secondary">
           <font-awesome-icon icon="user" size="lg" />
-          <span> {{$t('messages.menu.login')}}</span>
+          <span> {{$t('menu.login')}}</span>
         </router-link>
       </li>
 
       <!-- LANGUAGE SELECTOR -->
       <li :hidden="!(hasMenuButton && !hasNavBarTop)" class="nav-lang">
-        <details role="list" dir="ltr" :title="$t('messages.tooltip.choose_language')" @click="switchLang">
+        <details role="list" dir="ltr" :title="$t('tooltip.choose_language')" @click="switchLang">
           <summary aria-haspopup="listbox" role="link" class="secondary">
-            <img :alt="$t('messages.tooltip.choose_language')" :title="$t('messages.language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
-            <span>{{$t('messages.language.' + $i18n.locale)}}</span>
+            <img :alt="$t('tooltip.choose_language')" :title="$t('language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
+            <span>{{$t('language.' + $i18n.locale)}}</span>
           </summary>
           <ul role="listbox">
             <li>
-              <router-link :to="{ name: 'home', params: { lang: 'it' } }" hreflang="it" class="secondary">
+              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary">
                 <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
-                <span>{{$t('messages.language.it')}}</span>
+                <span>{{$t('language.it')}}</span>
               </router-link>
             </li>
             <li>
-              <router-link :to="{ name: 'home', params: { lang: 'en' } }" hreflang="en" class="secondary">
+              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary">
                 <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
-                <span>{{$t('messages.language.en')}}</span>
+                <span>{{$t('language.en')}}</span>
               </router-link>
             </li>
           </ul>
@@ -307,13 +307,17 @@ export default class Navbar extends Vue {
     this.secondaryMenuVisible = this.secondaryMenuVisible ? null : true;
   }
 
+  public switchLangLink(lang_code: string) {
+    return {
+      name: this.$router.currentRoute.value.name as string,
+      params: { lang: lang_code }
+    };
+  }
+
   public switchLang(e: Event) {
     if ((window as any).PORTAL_LANG_BUTTON) {
       e.preventDefault();
-      this.$router.push({
-        name: 'home',
-        params: { lang: ('it' === this.$i18n.locale ? 'en' : 'it') }
-      });
+      this.$router.push(this.switchLangLink('it' === this.$i18n.locale ? 'en' : 'it'));
     }
   }
 

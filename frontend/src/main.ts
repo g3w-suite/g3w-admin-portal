@@ -7,7 +7,9 @@ import '@fontsource/titillium-web/400.css';
 import '@fontsource/titillium-web/700-italic.css';
 import '@fontsource/titillium-web/700.css';
 
-import * as Vue from 'vue';
+// import * as Vue from 'vue';
+
+import { createApp } from 'vue';
 
 /** @TODO */
 // import './_version';
@@ -27,8 +29,7 @@ if (config.favicon) {
   icon.setAttribute('href', config.favicon);
 }
 
-const app = Vue
-  .createApp(App)
+const app = createApp(App)
   .use(i18n)
   .use(pinia)
   .use(router)

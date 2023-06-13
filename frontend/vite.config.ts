@@ -2,6 +2,7 @@
 import { defineConfig, loadEnv, splitVendorChunkPlugin } from 'vite';
 import path from 'path';
 import vue from '@vitejs/plugin-vue'
+// import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import envCompatible from 'vite-plugin-env-compatible';
 import checker from 'vite-plugin-checker'
 import commonjs from 'vite-plugin-commonjs';
@@ -48,6 +49,10 @@ export default defineConfig(({ mode }) => {
           }
         }
       }),
+      // VueI18nPlugin({
+      //   include: path.resolve(__dirname, './src/locale/**'), // PUT YOUR OWN PATH TO LOCALES HERE
+      //   allowDynamic: true
+      // }),
       commonjs(),
       envCompatible.default(),
 
