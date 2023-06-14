@@ -27,7 +27,7 @@ const config  =  {
    */
   router_mode: window.PORTAL_HISTORY_MODE ?? process.env.VUE_APP_HISTORY_MODE,
 
-  max_home_articles: window.PORTAL_MAX_HOME_ARTICLES ?? process.env.VUE_APP_MAX_HOME_ARTICLES,
+  max_home_articles: window.PORTAL_MAX_HOME_ARTICLES ?? process.env.VUE_APP_MAX_HOME_ARTICLES ?? 6,
 
   /** @deprecated */
   portal_sections: [ 'maps', 'info' ],

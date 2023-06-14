@@ -9,20 +9,14 @@
   </hgroup>
   
   <!-- FEATURED GROUPS -->
-  <Projects
-    :items="featuredGroups"
-    class="grid"
-  />
+  <Projects :items="items" class="grid" />
   
   <!-- LOAD MORE BUTTON -->
   <div
-    v-if="items.length === maxItemstoShow"
+    v-if="show_more"
     id="load-more"
     style="text-align: center; margin: calc(var(--block-spacing-vertical)) auto;">
-    <router-link
-      role="button"
-      :to="{name: 'group'}"
-    >
+    <router-link role="button" :to="{name: 'group'}">
       {{$t('home.show_all_button')}}
     </router-link>
   </div>
@@ -32,34 +26,37 @@
 import { Component, Vue } from 'vue-facing-decorator';
 
 import Projects from '@/components/Projects.vue';
-import { Info } from '@/types/TInfo';
-import { SuperGroup } from '@/types/TSuperGroup';
 import config from '@/config';
 
 import { useDataStore } from '@/stores';
+
+const max = parseInt(config.max_home_articles, 10);
 
 @Component({
   components: { Projects },
 })
 export default class Home extends Vue {
 
-  public maxItemstoShow: number = parseInt(config.max_home_articles, 10);
+  public maxItemstoShow: number = isNaN(max) || -1 === max ? +Infinity : max;
 
-  // get all super group (macro group and group not in macro group)
-  public items: SuperGroup[] = [];
-
-  get settings(): Info {
+  get settings() {
     return useDataStore().info;
   }
 
-  get featuredGroups(): SuperGroup[] {
-    let items = (-1 === this.maxItemstoShow) ? [] : useDataStore().superGroups;
-    // hide elements from home page that execeds the given length
-    this.items = (items.length > this.maxItemstoShow)
-      ? items.slice(0, this.maxItemstoShow)
-      : items;
+  get superGroups() {
+    return useDataStore().superGroups;
+  }
+
+  get show_more() {
+    return ![0, +Infinity].includes(this.maxItemstoShow) && this.superGroups.length > this.maxItemstoShow;  
+  }
+
+  // get all super group (macro group and group not in macro group)
+  get items() {
     useDataStore().unsetActiveGroup();
-    return items;
+    // hide elements from home page that execeds the given length
+    const items = this.superGroups;
+    return items.slice(0, Math.min(items.length, this.maxItemstoShow));
   }
 
 }
