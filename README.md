@@ -237,6 +237,21 @@ npm run test           # test all "*.spec.ts" files (headless mode)
 npm run test:ui        # test all "*.spec.ts" files (interactive mode)
 ```
 
+## Release a new version
+
+```sh
+cd frontend
+
+npm run build          # build frontend files
+
+cd ..
+
+make install           # init makefiles (once)
+make version v=X.Y.Z   # add new git version
+make push-tags         # update remote git tags (local --> remote)
+```
+
+
 ---
 
 **Compatibile with:**
