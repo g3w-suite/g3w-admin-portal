@@ -5,7 +5,7 @@
         <img :src="picture_url" :key="index" />
       </transition>
       <figcaption>
-        <a v-if="info.author_url" :href="info.author_url">Photo by <u>{{info.author}}</u></a>
+        <a v-if="info.author_url" :href="info.author_url">Photo by {{info.author}}</a>
         <span v-else-if="info.author">Photo by {{info.author}}</span>
       </figcaption>
     </figure>
@@ -52,8 +52,16 @@ export default class Carousel extends Vue {
 <style lang="css" scoped>
   figure {
     margin-bottom: 0;
+    display:grid;
+    place-items: center;
+    place-content: center stretch;
+    place-self: center stretch;
     display: grid;
-    grid-template: "carousel";
+    grid-template: "slideshow";
+  }
+
+  figure > * {
+    grid-area: slideshow;
   }
 
   figure > img {
@@ -62,16 +70,27 @@ export default class Carousel extends Vue {
     height: 80vh;
     aspect-ratio: 16/9;
     object-fit: cover;
-    grid-row: 1;
-    grid-column: 1;
     z-index: -1;
   }
 
   figure > figcaption {
+    place-self: center;
+    place-self: end right;
+    margin: 1em;
     z-index: 100;
-    position: absolute;
-    bottom: 0;
-    right: 0;
+  }
+
+  figure > figcaption > :first-child {
+    --bg-opacity: .75;
+    background: rgb(255,255,255,var(--bg-opacity));
+    padding: .5em;
+    border-radius: 1.5px;
+    font-size: 80%;
+    transition: background .5s !important;
+  }
+
+  figure > figcaption > :first-child:hover {
+    --bg-opacity: 1;
   }
 
   .fade-enter-active,
