@@ -366,6 +366,10 @@ export default class Navbar extends Vue {
     flex-basis: 100%;
   }
 
+  body > nav.main-menu > ul:last-of-type:not(.active) {
+    display: none;
+  }
+
   nav .logo {
     max-height: 4rem;
     max-width: 10rem;
@@ -375,5 +379,9 @@ export default class Navbar extends Vue {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--h1-color);
+  }
+  
+  nav ul .svg-inline--fa {
+    padding: 0 0.5ch;
   }
 </style>
