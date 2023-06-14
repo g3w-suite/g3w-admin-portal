@@ -46,13 +46,13 @@
           </summary>
           <ul role="listbox">
             <li>
-              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary">
+              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary" @click="closeLangNav">
                 <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
                 <span>{{$t('language.it')}}</span>
               </router-link>
             </li>
             <li>
-              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary">
+              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary" @click="closeLangNav">
                 <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
                 <span>{{$t('language.en')}}</span>
               </router-link>
@@ -128,13 +128,13 @@
           </summary>
           <ul role="listbox">
             <li>
-              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary">
+              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary" @click="closeLangNav">
                 <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
                 <span>{{$t('language.it')}}</span>
               </router-link>
             </li>
             <li>
-              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary">
+              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary" @click="closeLangNav">
                 <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
                 <span>{{$t('language.en')}}</span>
               </router-link>
@@ -213,13 +213,13 @@
           </summary>
           <ul role="listbox">
             <li>
-              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary">
+              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary" @click="closeLangNav">
                 <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
                 <span>{{$t('language.it')}}</span>
               </router-link>
             </li>
             <li>
-              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary">
+              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary" @click="closeLangNav">
                 <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
                 <span>{{$t('language.en')}}</span>
               </router-link>
@@ -312,6 +312,10 @@ export default class Navbar extends Vue {
       name: this.$router.currentRoute.value.name as string,
       params: { lang: lang_code }
     };
+  }
+
+  public closeLangNav(e: Event) {
+    (e.target as HTMLElement)?.closest('details')?.removeAttribute('open');
   }
 
   public switchLang(e: Event) {
