@@ -1,7 +1,9 @@
 <template>
   <figure v-if="pictures.length">
     <figure>
-      <img :src="picture_url" />
+      <transition name="fade" appear>
+        <img :src="picture_url" :key="index" />
+      </transition>
       <figcaption>
         <a v-if="info.author_url" :href="info.author_url">Photo by <u>{{info.author}}</u></a>
         <span v-else-if="info.author">Photo by {{info.author}}</span>
@@ -22,7 +24,9 @@ import { get_img_url } from '@/utils';
 })
 export default class Carousel extends Vue {
 
-  private index: number = 0;
+  public index: number = 0;
+
+  public showing = false;
 
   get pictures() {
     return useDataStore().pictures;
@@ -39,7 +43,7 @@ export default class Carousel extends Vue {
   public mounted() {
     window.setInterval(() => {
       this.index++;
-    }, 3000);
+    }, 5000);
   }
 
 }
@@ -48,6 +52,8 @@ export default class Carousel extends Vue {
 <style lang="css" scoped>
   figure {
     margin-bottom: 0;
+    display: grid;
+    grid-template: "carousel";
   }
 
   figure > img {
@@ -56,6 +62,9 @@ export default class Carousel extends Vue {
     height: 80vh;
     aspect-ratio: 16/9;
     object-fit: cover;
+    grid-row: 1;
+    grid-column: 1;
+    z-index: -1;
   }
 
   figure > figcaption {
@@ -63,5 +72,15 @@ export default class Carousel extends Vue {
     position: absolute;
     bottom: 0;
     right: 0;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 1s !important;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
   }
 </style>
