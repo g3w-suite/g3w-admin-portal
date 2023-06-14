@@ -193,7 +193,7 @@ CORS_ALLOWED_ORIGINS    = [                      # NB: DIFFERENT PORT == DIFFERE
 
 To load default portal pictures:
 
-```
+```sh
 ./manage.py loaddata_picture
 ```
 
@@ -216,6 +216,25 @@ To load default portal pictures:
 
 # Set default portal palette color (chose from 'yellow' 'violet' or 'blue')
 # PORTAL_COLOR = 'yellow' #(violet, default) 
+```
+
+## Running tests
+
+Backend tests are located within the [`portal/tests`](./portal/tests) folder, to run them use django management command:
+
+```sh
+./manage.py test
+```
+
+Frontend tests are located within the [`frontend/e2e`](./frontend/e2e) folder, to run them use npm commands:
+
+```sh
+cd frontend
+
+npm i                  # install dependencies
+npx playwright install # init playwright (once)
+npm run test           # test all "*.spec.ts" files (headless mode)
+npm run test:ui        # test all "*.spec.ts" files (interactive mode)
 ```
 
 ---
