@@ -384,4 +384,8 @@ export default class Navbar extends Vue {
   nav ul .svg-inline--fa {
     padding: 0 0.5ch;
   }
+
+  nav details[role="list"] summary + ul {
+    min-width: max-content;
+  }
 </style>
