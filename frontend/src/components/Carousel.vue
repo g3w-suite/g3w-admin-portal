@@ -77,7 +77,6 @@ export default class Carousel extends Vue {
     place-self: center;
     place-self: end right;
     margin: 1em;
-    z-index: 100;
   }
 
   figure > figcaption > :first-child {
