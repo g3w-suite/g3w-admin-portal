@@ -11,10 +11,19 @@
     {# Fix relative URLs (eg. relative links and images within text) when we are working with an external API server  #}
     <base href="{{ API_BASE_URL }}" />
     <title>{{ admin_page_title }}</title>
+
     <link rel="icon" href="{% if SETTINGS.PORTAL_FAVICON %}{{ SETTINGS.PORTAL_FAVICON }}{% else %}{% static '/img/favicon.ico' %}{% endif %}">
+
+    {% if SETTINGS.PORTAL_STATIC_URL %}
+    <script type="module" crossorigin src="{{ SETTINGS.PORTAL_STATIC_URL }}frontend/portal-vendor.js"></script>
+    <script type="module" crossorigin src="{{ SETTINGS.PORTAL_STATIC_URL }}frontend/index.js"></script>
+    <link rel="stylesheet" href="{{ SETTINGS.PORTAL_STATIC_URL }}frontend/assets/index.css">
+    {% else %}
     <script type="module" crossorigin src="{% static 'frontend/portal-vendor.js' %}"></script>
     <script type="module" crossorigin src="{% static 'frontend/index.js' %}"></script>
     <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
+    {% endif %}
+
     {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
         {% for css in SETTINGS.G3WSUITE_CUSTOM_CSS %}
             <link rel="stylesheet" href="{{ css }}" />

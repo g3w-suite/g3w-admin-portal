@@ -142,8 +142,9 @@ And then update your CORS settings accordingly within local_settings.py file:
 ```py
 # TODO: improve documentation
 
-PORTAL_API_BASE_URL = {# 'cookie' | 'Bearer' | 'JWT' #}
-PORTAL_AUTH_MODE = {# URI path to cross domain API #}
+PORTAL_AUTH_MODE    = # 'cookie' | 'Bearer' | 'JWT'
+PORTAL_API_BASE_URL = # URI path to cross domain API
+PORTAL_STATIC_URL   = # URI path to cross domain CDN
 ```
 
 ```py
