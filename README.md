@@ -130,9 +130,21 @@ PORTAL_FAVICON  = '/static/img/favicon.ico'
 
 ### Cross domain authentication
 
-Install [g3w-admin-authjwt](https://github.com/g3w-suite/g3w-admin-authjwt) module on your remote server.
+
+Install [g3w-admin-authjwt](https://github.com/g3w-suite/g3w-admin-authjwt) module on your remote server:
+
+```sh
+pip install "portal[authjwt] @ git+https://bitbucket.org/gis3w/g3w-admin-portal.git@v4.0.0"
+```
 
 And then update your CORS settings accordingly within local_settings.py file:
+
+```py
+# TODO: improve documentation
+
+PORTAL_API_BASE_URL = {# 'cookie' | 'Bearer' | 'JWT' #}
+PORTAL_AUTH_MODE = {# URI path to cross domain API #}
+```
 
 ```py
 ## Django Rest Framework (restore default settings)
