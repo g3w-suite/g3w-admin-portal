@@ -97,6 +97,18 @@ main#content article figure > figcaption {
   background-color: var(--primary);
 }
 
+/* Card item: fixed header "top position" independently of other card items heights */
+main#content article > a {
+  display: flex;
+}
+
+/* Card item: fixed header height of 3.5rem */
+main#content article > a > figure > figcaption {
+  display: grid;
+  grid-template-rows: 3.5rem;
+  align-items: center;
+}
+
 /* Typography colors */
 :root[data-theme="light"] {
   --primary: #af0b22;
@@ -181,7 +193,7 @@ CORS_ALLOWED_ORIGINS    = [                      # NB: DIFFERENT PORT == DIFFERE
 
 To load default portal pictures:
 
-```
+```sh
 ./manage.py loaddata_picture
 ```
 
@@ -205,6 +217,40 @@ To load default portal pictures:
 # Set default portal palette color (chose from 'yellow' 'violet' or 'blue')
 # PORTAL_COLOR = 'yellow' #(violet, default) 
 ```
+
+## Running tests
+
+Backend tests are located within the [`portal/tests`](./portal/tests) folder, to run them use django management command:
+
+```sh
+./manage.py test
+```
+
+Frontend tests are located within the [`frontend/e2e`](./frontend/e2e) folder, to run them use npm commands:
+
+```sh
+cd frontend
+
+npm i                  # install dependencies
+npx playwright install # init playwright (once)
+npm run test           # test all "*.spec.ts" files (headless mode)
+npm run test:ui        # test all "*.spec.ts" files (interactive mode)
+```
+
+## Release a new version
+
+```sh
+cd frontend
+
+npm run build          # build frontend files
+
+cd ..
+
+make install           # init makefiles (once)
+make version v=X.Y.Z   # add new git version
+make push-tags         # update remote git tags (local --> remote)
+```
+
 
 ---
 

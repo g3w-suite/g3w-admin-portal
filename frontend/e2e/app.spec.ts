@@ -1,4 +1,4 @@
-import { expect, test,  } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.describe('Home Page', () => {
 
@@ -37,11 +37,12 @@ test.describe('Home Page', () => {
     await expect(page).toHaveTitle(/Home - G3W-SUITE/);
   });
 
-  test('change language', async({ page }) => {
+  test('change language', async ({ page }) => {
     // Click the language switcher link.
     await page.getByRole('link', { name: 'Seleziona una lingua' }).click();
     await page.getByRole('link', { name: 'en_GBEnglish' }).click();
-    await page.getByRole('link', { name: 'Choose a language' }).click(); // FIXME: users should not click again on dropdown
+
+    await page.waitForURL('**/en/')
 
     // Authenticate user.
     await page.getByRole('link', { name: 'Login' }).click();
@@ -51,7 +52,7 @@ test.describe('Home Page', () => {
 
     // Wait until the page reaches a state where all is set (eg. server cookies).
     await page.waitForURL('**/en/');
-    await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible();
+    await page.getByRole('link', { name: 'Logout' }).waitFor({ state: 'visible' });
 
     // Click the search link.
     await page.getByRole('link', { name: 'Search' }).click();
@@ -60,21 +61,70 @@ test.describe('Home Page', () => {
     // Click the logout link.
     await page.getByRole('link', { name: 'Logout' }).click();
     await page.waitForURL('**/en/search');
-    await expect(page.getByRole('link', { name: 'Logout' })).not.toBeVisible();
+    await page.getByRole('link', { name: 'Logout' }).waitFor({ state: 'hidden' });
 
     // Click the home link.
-    await page.getByRole('link', { name: 'Home' }).click();
+    await page.getByRole('link', { name: 'Home' }).first().click();
     await page.waitForURL('**/en/');
-    await expect(page.getByRole('link', { name: 'Logout' })).not.toBeVisible();
+    await page.getByRole('link', { name: 'Logout' }).waitFor({ state: 'hidden' });
 
     // Click the language switcher link.
     await page.getByRole('link', { name: 'Choose a language' }).click();
     await page.getByRole('link', { name: 'it_ITItaliano' }).click();
-    await page.getByRole('link', { name: 'Seleziona una lingua' }).click();  // FIXME: users should not click again on dropdown
 
     // End of authentication steps.
     await page.waitForURL('**/it/');
     await expect(page.getByRole('link', { name: 'Logout' })).not.toBeVisible();
+  });
+
+});
+
+test.describe('login_url and logout_url', () => {
+
+  test.beforeEach(async ({ page }) => {
+    // Modify the response
+    await page.route('**/portal/api/infodata/', async (route) => {
+      const response = await route.fetch();
+      const result = await response.json();
+      route.fulfill({
+        body: JSON.stringify({
+          ...result,
+          login_url: 'https://www.example.com/login',
+          logout_url: 'https://www.example.com/logout',
+        })
+      });
+    });
+  });
+
+  test('login_url', async ({ page }) => {
+    // Navigate to Home Page
+    await page.goto('/');
+
+    await page.getByRole('link', { name: 'Login' }).click();
+
+    expect(page.url()).toBe('https://www.example.com/login');
+  });
+
+  test('logout_url', async ({ page }) => {
+
+    // Modify the response
+    await page.route('**/portal/api/whoami/', async (route) => {
+      route.fulfill({
+        body: JSON.stringify({
+          is_authenticated: true,
+          username: 'admin',
+        })
+      });
+    });
+
+    // Navigate to Home Page
+    await page.goto('/');
+
+    await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible();
+
+    await page.getByRole('link', { name: 'Logout' }).click();
+
+    expect(page.url()).toBe('https://www.example.com/logout');
   });
 
 });

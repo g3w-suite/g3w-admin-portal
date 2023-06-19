@@ -1,7 +1,9 @@
 {% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +11,8 @@
     {# Fix relative URLs (eg. relative links and images within text) when we are working with an external API server  #}
     <base href="{{ API_BASE_URL }}" />
     <title>{{ admin_page_title }}</title>
-    <link rel="icon" href="{% static '/img/favicon.ico' %}">
+    <link rel="icon" href="{% if SETTINGS.PORTAL_FAVICON %}{{ SETTINGS.PORTAL_FAVICON }}{% else %}{% static '/img/favicon.ico' %}{% endif %}">
+    <script type="module" crossorigin src="{% static 'frontend/portal-vendor.js' %}"></script>
     <script type="module" crossorigin src="{% static 'frontend/index.js' %}"></script>
     <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
     {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
@@ -24,21 +27,28 @@
 <body>
     <noscript><strong>You must enable JavaScript to continue.</strong></noscript>
     <script>
-        {# TODO: add a new custom django setting or a dedicated rest API endpoint #}
-        window.AUTH_MODE         = 'Bearer' {# 'cookie' | 'Bearer' | 'JWT' #}
-
-        window.API_BASE_URL      = '{{ API_BASE_URL }}'
-        window.LANGUAGES         = {{ LANGUAGES | safe }}
-        window.PORTAL_ORG_NAME   = '{{ SETTINGS.PORTAL_ORG_NAME }}'
-        window.PORTAL_ORG_URL    = '{{ SETTINGS.PORTAL_ORG_URL }}'
-        window.PORTAL_FAVICON    = '{{ SETTINGS.PORTAL_FAVICON }}'
-        window.PORTAL_NAVBAR_TOP = {{ SETTINGS.PORTAL_NAVBAR_TOP | yesno:"true,false" }}
+        window.API_BASE_URL             = '{{ API_BASE_URL }}';
+        window.LANGUAGES                = {{ LANGUAGES | safe }};
+        window.PORTAL_ORG_NAME          = '{{ SETTINGS.PORTAL_ORG_NAME }}';
+        window.PORTAL_ORG_URL           = '{{ SETTINGS.PORTAL_ORG_URL }}';
+        window.PORTAL_FAVICON           = `{{ SETTINGS.PORTAL_FAVICON | safe }}`;
+        window.PORTAL_NAVBAR_TOP        = {{ SETTINGS.PORTAL_NAVBAR_TOP | yesno:"true,false" }};
+        window.PORTAL_MENU_BUTTON       = {{ SETTINGS.PORTAL_MENU_BUTTON | yesno:"true,false" }};
+        window.PORTAL_LANG_BUTTON       = {{ SETTINGS.PORTAL_LANG_BUTTON | yesno:"true,false" }};
+        window.PORTAL_THEME             = '{% if SETTINGS.PORTAL_THEME %}{{ SETTINGS.PORTAL_THEME }}{% else %}light{% endif %}';
+        window.PORTAL_AUTH_MODE         = '{% if SETTINGS.PORTAL_AUTH_MODE %}{{ SETTINGS.PORTAL_AUTH_MODE }}{% else %}cookie{% endif %}'; {# 'cookie' | 'Bearer' | 'JWT' #}
+        window.PORTAL_MAX_HOME_ARTICLES = {% if SETTINGS.PORTAL_MAX_HOME_ARTICLES is None %}10{% else %}{{ SETTINGS.PORTAL_MAX_HOME_ARTICLES }}{% endif %};
+        window.PORTAL_HOME_ARTICLES     = {{ SETTINGS.PORTAL_HOME_ARTICLES | yesno:"true,false" }};
+        window.PORTAL_HISTORY_MODE      = '{% if SETTINGS.PORTAL_HISTORY_MODE %}{{ SETTINGS.PORTAL_HISTORY_MODE }}{% else %}hash{% endif %}';           {# 'hash' | 'history' | 'abstract' #}
     </script>
     <div id="app"></div>
     {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
         {% for js in SETTINGS.G3WSUITE_CUSTOM_JS %}
             <script src="{{ js }}"></script>
         {% endfor %}
+    {% endif %}
+    {% if SETTINGS.PORTAL_CUSTOM_JS %}
+        <script>{{ SETTINGS.PORTAL_CUSTOM_JS | safe }}</script>
     {% endif %}
 </body>
 </html>

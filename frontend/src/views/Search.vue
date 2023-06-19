@@ -1,46 +1,41 @@
 <template>
-  <fragment>
-    <input
-      type="search"
-      id="search"
-      name="search"
-      v-model="search"
-      :placeholder="$t('messages.menu.search_placeholder')"
-      :aria-label="$t('messages.menu.search_placeholder')"
-    />
-    <Projects
-      :items="
-        $store.getters['group/search']
-          ? $store.getters['group/filteredProjects']
-          : $store.getters['group/projects']
-      "
-    />
-  </fragment>
+  <input
+    type="search"
+    id="search"
+    name="search"
+    v-model="search"
+    :placeholder="$t('menu.search_placeholder')"
+    :aria-label="$t('menu.search_placeholder')"
+  />
+  <Projects :items="items_filter" />
 </template>
 
 <script lang="ts">
+import { Component, Vue } from 'vue-facing-decorator';
+
 import Projects from '@/components/Projects.vue';
-import { Info } from '@/types/TInfo';
-import { Component, Vue } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+
+import { useDataStore } from '@/stores';
 
 @Component({
   components: { Projects },
-  computed: {
-    ...mapGetters({
-      settings: 'info/info',
-    }),
-  },
 })
 export default class Search extends Vue {
-  public settings!: Info;
+
+  get items_filter() {
+    return useDataStore().search ? useDataStore().filteredProjects : useDataStore().projects;
+  }
+
+  get settings() {
+    return useDataStore().info;
+  }
 
   get search() {
-    return this.$store.getters['group/search'];
+    return useDataStore().search;
   }
 
   set search(val: string) {
-    this.$store.dispatch('group/search', { s: val });
+    useDataStore().setSearchFilter(val);
   }
 }
 </script>

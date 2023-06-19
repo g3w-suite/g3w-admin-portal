@@ -9,14 +9,14 @@ import Article from '@/components/Article.vue';
 import { Group } from '@/types/TGroup';
 import { MacroGroup } from '@/types/TMacroGroup';
 import { Project } from '@/types/TProject';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-facing-decorator';
 
 @Component({
   components: { Article },
 })
 
 export default class Projects extends Vue {
-  @Prop(Array) public readonly items!: Array<MacroGroup | Group | Project>;
+  @Prop public readonly items!: Array<MacroGroup | Group | Project>;
 }
 </script>
 
@@ -25,7 +25,7 @@ export default class Projects extends Vue {
     grid-row-gap: var(--grid-spacing-horizontal);
   }
 
-  .grid article {
+  .grid :deep(article) {
     margin: 0;
   }
 

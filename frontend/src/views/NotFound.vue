@@ -1,12 +1,10 @@
 <template>
-  <fragment>
-    <h1>{{ $t('messages.menu.404') }}</h1>
-  </fragment>
+  <h1>{{ $t('menu.404') }}</h1>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-facing-decorator';
 
-@Component({ components: { } })
+@Component
 export default class NotFound extends Vue { }
 </script>

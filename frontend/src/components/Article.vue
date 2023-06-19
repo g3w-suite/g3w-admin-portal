@@ -4,14 +4,14 @@
   <article v-if="type !== boxtype.P" :class="className">
     <router-link :to="get_group_url()">
       <figure>
-        <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('messages.maps.group')" />
-        <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3><b>{{title ||  $t('messages.maps.group')}}</b></h3></figcaption>
+        <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || $t('maps.group')" />
+        <figcaption :style="{'--figcaption-background-color': avgColor }" ><h3><b>{{title ||  $t('maps.group')}}</b></h3></figcaption>
       </figure>
     </router-link>
-   </article>
+  </article>
 
   <!-- PROJECT ARTICLE -->
-  <article v-else  class="grid" :class="className">
+  <article v-else ref="article" class="grid" :class="className">
 
     <div>
       <figure>
@@ -20,11 +20,11 @@
       <p class="grid">
         <a :href="get_admin_url(map_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="expand-arrows-alt" size="lg" />
-          <span> {{ $t('messages.maps.view') }}</span>
+          <span> {{ $t('maps.view') }}</span>
         </a>
         <a v-if="has_edit_url()" :href="get_admin_url(edit_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="pencil-alt" size="lg" />
-          <span> {{ $t('messages.maps.edit') }}</span>
+          <span> {{ $t('maps.edit') }}</span>
         </a>
       </p>
     </div>
@@ -32,33 +32,49 @@
     <hgroup>
       <h3>{{title}}</h3>
       <div v-html="description"></div>
+
+      <!-- READ-MORE (v1) -->
+      <!-- <read-more :text="description" :more-str="$t('readmore')" :less-str="$t('readless')" link="#"  :max-chars="500"></read-more> -->
+      <!-- <a href="#" @click.prevent="showModal">Preview</a> -->
+
+      <!-- READ-MORE (v2) -->
+      <!-- <ReadMore :text="description" :more-str="$t('readmore')" :less-str="$t('readless')" link="#"  :max-chars="500"/> -->
+      <!-- <a href="#" @click.prevent="showModal">{{ $t('readmore') }}</a> -->
     </hgroup>
 
   </article>
 
+  <!-- TODO: replace it with https://vuejs.org/guide/built-ins/teleport.html -->
+  <Dialog ref="modal" />
 </template>
 
 <script lang="ts">
+import { Component, Prop, Vue } from 'vue-facing-decorator';
+
 import { EBoxType } from '@/types/EBoxType';
 import { Group } from '@/types/TGroup';
 import { MacroGroup } from '@/types/TMacroGroup';
 import { Project } from '@/types/TProject';
 import { get_admin_url } from '@/utils';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { useAuthStore } from '@/stores';
+
+import Dialog from '@/components/Dialog.vue';
+import ReadMore from '@/components/ReadMore.vue';
+import { get_img_url } from '@/utils';
 
 @Component({
-  components: {},
+  components: { Dialog, ReadMore },
 })
 export default class Article extends Vue {
 
-  @Prop(Object) public readonly item!: Group | MacroGroup | Project;
+  @Prop public readonly item!: Group | MacroGroup | Project;
 
   public avgColor: string = '0,0,0';
 
   public boxtype = EBoxType;
 
   get title(): string {
-    return this.item.Title;
+    return this.item.title;
   }
 
   get description(): string {
@@ -70,7 +86,7 @@ export default class Article extends Vue {
   }
 
   get img_url(): string {
-    return this.item.Logo;
+    return get_img_url(this.item.logo_img);
   }
 
   get map_url(): string {
@@ -78,7 +94,7 @@ export default class Article extends Vue {
   }
 
   get className(): string {
-    return EBoxType[this.type] + '-' + this.item.Id + ' item-' + EBoxType[this.type];
+    return EBoxType[this.type] + '-' + this.item.id + ' item-' + EBoxType[this.type];
   }
 
   get type(): EBoxType {
@@ -89,21 +105,21 @@ export default class Article extends Vue {
    * Check if current project could be edited by the user (admin backend)
    */
   public has_edit_url(): boolean {
-    return !!(this.type === this.boxtype.P && this.$store.getters['me/isLoggedIn'] && this.edit_url);
+    return !!(this.type === this.boxtype.P && useAuthStore().isLoggedIn && this.edit_url);
   }
 
   public get_group_url(): string {
     // Macrogroups > Macrogroup
     if (this.type === this.boxtype.MG) {
-      return `/${this.$i18n.locale}/organization/${this.item.Id}`;
+      return `/${this.$i18n.locale}/organization/${this.item.id}`;
     }
     // Macrogroups > Macrogroup > Group
     if (this.type === this.boxtype.G && this.$route.name === 'organization') {
-      return `/${this.$i18n.locale}/organization/${this.$route.params.id}/${this.item.Id}`;
+      return `/${this.$i18n.locale}/organization/${this.$route.params.id}/${this.item.id}`;
     }
     // Groups > Group
     if (this.type === this.boxtype.G) {
-      return `/${this.$i18n.locale}/group/${this.item.Id}`;
+      return `/${this.$i18n.locale}/group/${this.item.id}`;
     }
     return '';
   }
@@ -113,6 +129,21 @@ export default class Article extends Vue {
    */
   public get_admin_url(folder: string): string {
     return get_admin_url(folder);
+  }
+
+  public showModal() {
+    const modal = (this.$refs.modal as any).$refs.dialog;
+    modal.innerHTML = `
+    <article style="background-color: #fff; max-width: min(90%, 960px); margin: 0;">
+      <header style="margin-bottom: 1rem;">
+        <form data-method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form>
+        <h2 style="margin: 0;">${this.title}</h2>
+      </header>
+      <figure><img loading="lazy" src="${this.img_url}" alt="${this.title || this.description}" style="width:100%;" /></figure>
+      <div>${this.description}</div>
+    </article>`;
+    //modal.innerHTML += (this.$refs.article as HTMLElement).outerHTML;
+    modal.showModal();
   }
 
   /**

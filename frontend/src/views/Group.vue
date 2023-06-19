@@ -6,60 +6,79 @@
     </hgroup>
     <Projects
       :items="items"
-      :class="$route.params.id !== undefined ? '' : 'grid'"
+      :class="archive_class"
     />
   </section>
 </template>
 
 <script lang="ts">
+import { Component, Vue, Watch } from 'vue-facing-decorator';
+
 import Projects from '@/components/Projects.vue';
-import { Group } from '@/types/TGroup';
 import { Info } from '@/types/TInfo';
-import { MacroGroup } from '@/types/TMacroGroup';
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+
+import { useDataStore } from '@/stores';
+import { SuperGroup } from '@/types/TSuperGroup';
 
 @Component({
   components: { Projects },
-  computed: {
-    ...mapGetters({
-      info: 'info/info',
-    }),
-  },
 })
 export default class VGroup extends Vue {
 
-  public items: Group[] = [];
+  public items: SuperGroup[] = [];
 
-  public info!: Info;
+  public archive_class = ''
+
+  get info(): Info {
+    return useDataStore().info;
+  }
 
   @Watch('$route.params', {
     immediate: true,
     deep: true,
   })
-  public async onRouteParamsChange({ id, group }: { id?: number, group?: number }) {
-    // Home > Groups
-    if (undefined === id) {
-      this.items = this.$store.getters['group/superGroups'];
-    } else {
-      this.items = this.$store.getters['group/projectsInGroup'](group || id);
-    }
+  public async onRouteParamsChange({ id, group }: { id?: string, group?: string }) {
+    const is_archive = (undefined === id || '' ===  id); // TODO: make it generic ( eg. has_route_param('id') )
+    this.archive_class = is_archive ? 'grid' : '';
+    this.items = is_archive
+      ? useDataStore().superGroups                   // Home > Groups
+      : useDataStore().projectsInGroup(parseInt(group || id));
   }
+
+  // /**
+  //  * Fetch Data before navigation
+  //  * 
+  //  * @see https://router.vuejs.org/guide/advanced/data-fetching.html
+  //  */
+  // @Hook
+  // beforeRouteEnter(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
+  //   next(vm => console.log(vm));
+  // }
+
+  // /**
+  //  * Fetch Data when route changes and this component is already rendered
+  //  * 
+  //  * @see https://router.vuejs.org/guide/advanced/data-fetching.html
+  //  */
+  // @Hook
+  // async beforeRouteUpdate(to: RouteLocationNormalized, from: RouteLocationNormalized) {
+  //   this.items = undefined === to.params.id
+  //     ? useDataStore().superGroups                   // Home > Groups
+  //     : useDataStore().projectsInGroup(to.params.group || to.params.id);
+  // }
 
   /**
    * @FIXME
    */
    get title(): string {
-    const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
-    return sg ? sg.title : this.info.groups_title;
+    return useDataStore()?.activeGroup?.title ?? this.info.groups_title;
   }
 
   /**
    * @FIXME
    */
   get description(): string {
-    const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
-    return sg ? sg.description : this.info.groups_map_description;
+    return useDataStore()?.activeGroup?.description ?? this.info.groups_map_description;
   }
 
 }

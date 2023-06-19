@@ -1,10 +1,5 @@
-export { default as before_admin } from './before_admin';
-export { default as before_login } from './before_login';
-export { default as before_logout } from './before_logout';
-export { default as fetchData } from './fetchData';
-export { default as fetchGroupData } from './fetchGroupData';
-export { default as fetchMacroGroupData } from './fetchMacroGroupData';
-export { default as get_admin_url } from './get_admin_url';
-export { default as loginManager } from './loginManager';
-export { default as sameOrigin } from './sameOrigin';
-export { default as setActiveGroup } from './setActiveGroup';
+export * from './get_admin_url';
+export * from './get_img_url';
+export * from './sameOrigin';
+export * from './get_from_portal';
+export * from './axios';

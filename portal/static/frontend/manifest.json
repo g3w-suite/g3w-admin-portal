@@ -1,34 +1,52 @@
 {
+  "_portal-dialog-polyfill.esm.js": {
+    "file": "portal-dialog-polyfill.esm.js"
+  },
+  "_portal-get_img_url.js": {
+    "file": "portal-get_img_url.js"
+  },
+  "_portal-index.js": {
+    "file": "portal-index.js",
+    "imports": [
+      "_portal-vendor.js"
+    ]
+  },
+  "_portal-vendor.js": {
+    "file": "portal-vendor.js"
+  },
   "index.css": {
     "file": "assets/index.css",
     "src": "index.css"
   },
   "index.html": {
     "assets": [
-      "assets/logo_g3wsuite.png",
-      "assets/logo_gis3w_156_85.png",
-      "assets/logo_g3wsuite-bw.png",
       "assets/titillium-web-latin-ext-400-italic.woff2",
-      "assets/titillium-web-all-400-italic.woff",
+      "assets/titillium-web-latin-ext-400-italic.woff",
       "assets/titillium-web-latin-400-italic.woff2",
+      "assets/titillium-web-latin-400-italic.woff",
       "assets/titillium-web-latin-ext-400-normal.woff2",
-      "assets/titillium-web-all-400-normal.woff",
+      "assets/titillium-web-latin-ext-400-normal.woff",
       "assets/titillium-web-latin-400-normal.woff2",
+      "assets/titillium-web-latin-400-normal.woff",
       "assets/titillium-web-latin-ext-700-italic.woff2",
-      "assets/titillium-web-all-700-italic.woff",
+      "assets/titillium-web-latin-ext-700-italic.woff",
       "assets/titillium-web-latin-700-italic.woff2",
+      "assets/titillium-web-latin-700-italic.woff",
       "assets/titillium-web-latin-ext-700-normal.woff2",
-      "assets/titillium-web-all-700-normal.woff",
-      "assets/titillium-web-latin-700-normal.woff2"
+      "assets/titillium-web-latin-ext-700-normal.woff",
+      "assets/titillium-web-latin-700-normal.woff2",
+      "assets/titillium-web-latin-700-normal.woff"
     ],
     "css": [
       "assets/index.css"
     ],
     "dynamicImports": [
+      "src/components/Main.vue",
       "src/views/Home.vue",
       "src/views/HomeHeader.vue",
       "src/views/Login.vue",
       "src/views/Login.vue",
+      "src/views/NotFound.vue",
       "src/views/Search.vue",
       "src/views/Group.vue",
       "src/views/MacroGroup.vue",
@@ -36,52 +54,71 @@
       "src/views/NotFound.vue"
     ],
     "file": "index.js",
+    "imports": [
+      "_portal-vendor.js"
+    ],
     "isEntry": true,
     "src": "index.html"
   },
-  "node_modules/@fontsource/titillium-web/files/titillium-web-all-400-italic.woff": {
-    "file": "assets/titillium-web-all-400-italic.woff",
-    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-all-400-italic.woff"
-  },
-  "node_modules/@fontsource/titillium-web/files/titillium-web-all-400-normal.woff": {
-    "file": "assets/titillium-web-all-400-normal.woff",
-    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-all-400-normal.woff"
-  },
-  "node_modules/@fontsource/titillium-web/files/titillium-web-all-700-italic.woff": {
-    "file": "assets/titillium-web-all-700-italic.woff",
-    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-all-700-italic.woff"
-  },
-  "node_modules/@fontsource/titillium-web/files/titillium-web-all-700-normal.woff": {
-    "file": "assets/titillium-web-all-700-normal.woff",
-    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-all-700-normal.woff"
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-italic.woff": {
+    "file": "assets/titillium-web-latin-400-italic.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-italic.woff"
   },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-italic.woff2": {
     "file": "assets/titillium-web-latin-400-italic.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-italic.woff2"
   },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-normal.woff": {
+    "file": "assets/titillium-web-latin-400-normal.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-normal.woff"
+  },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-normal.woff2": {
     "file": "assets/titillium-web-latin-400-normal.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-400-normal.woff2"
+  },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-italic.woff": {
+    "file": "assets/titillium-web-latin-700-italic.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-italic.woff"
   },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-italic.woff2": {
     "file": "assets/titillium-web-latin-700-italic.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-italic.woff2"
   },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-normal.woff": {
+    "file": "assets/titillium-web-latin-700-normal.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-normal.woff"
+  },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-normal.woff2": {
     "file": "assets/titillium-web-latin-700-normal.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-700-normal.woff2"
+  },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-italic.woff": {
+    "file": "assets/titillium-web-latin-ext-400-italic.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-italic.woff"
   },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-italic.woff2": {
     "file": "assets/titillium-web-latin-ext-400-italic.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-italic.woff2"
   },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-normal.woff": {
+    "file": "assets/titillium-web-latin-ext-400-normal.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-normal.woff"
+  },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-normal.woff2": {
     "file": "assets/titillium-web-latin-ext-400-normal.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-400-normal.woff2"
   },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-italic.woff": {
+    "file": "assets/titillium-web-latin-ext-700-italic.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-italic.woff"
+  },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-italic.woff2": {
     "file": "assets/titillium-web-latin-ext-700-italic.woff2",
     "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-italic.woff2"
+  },
+  "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-normal.woff": {
+    "file": "assets/titillium-web-latin-ext-700-normal.woff",
+    "src": "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-normal.woff"
   },
   "node_modules/@fontsource/titillium-web/files/titillium-web-latin-ext-700-normal.woff2": {
     "file": "assets/titillium-web-latin-ext-700-normal.woff2",
@@ -103,6 +140,29 @@
     "file": "assets/sfondo.jpg",
     "src": "src/assets/img/sfondo.jpg"
   },
+  "src/components/Main.css": {
+    "file": "assets/Main.css",
+    "src": "src/components/Main.css"
+  },
+  "src/components/Main.vue": {
+    "assets": [
+      "assets/logo_g3wsuite.png",
+      "assets/logo_gis3w_156_85.png",
+      "assets/logo_g3wsuite-bw.png"
+    ],
+    "css": [
+      "assets/Main.css"
+    ],
+    "file": "portal-Main.js",
+    "imports": [
+      "_portal-index.js",
+      "index.html",
+      "_portal-vendor.js",
+      "_portal-dialog-polyfill.esm.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "src/components/Main.vue"
+  },
   "src/components/Projects.css": {
     "file": "assets/Projects.css",
     "src": "src/components/Projects.css"
@@ -113,7 +173,11 @@
     ],
     "file": "portal-Projects.js",
     "imports": [
-      "index.html"
+      "_portal-index.js",
+      "index.html",
+      "_portal-get_img_url.js",
+      "_portal-dialog-polyfill.esm.js",
+      "_portal-vendor.js"
     ],
     "isDynamicEntry": true,
     "src": "src/components/Projects.vue"
@@ -121,8 +185,12 @@
   "src/views/Group.vue": {
     "file": "portal-Group.js",
     "imports": [
+      "_portal-index.js",
       "src/components/Projects.vue",
-      "index.html"
+      "index.html",
+      "_portal-vendor.js",
+      "_portal-get_img_url.js",
+      "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/Group.vue"
@@ -130,8 +198,12 @@
   "src/views/Home.vue": {
     "file": "portal-Home.js",
     "imports": [
+      "_portal-index.js",
       "src/components/Projects.vue",
-      "index.html"
+      "index.html",
+      "_portal-vendor.js",
+      "_portal-get_img_url.js",
+      "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/Home.vue"
@@ -146,7 +218,10 @@
     ],
     "file": "portal-HomeHeader.js",
     "imports": [
-      "index.html"
+      "_portal-index.js",
+      "index.html",
+      "_portal-get_img_url.js",
+      "_portal-vendor.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/HomeHeader.vue"
@@ -164,7 +239,9 @@
     ],
     "file": "portal-Login.js",
     "imports": [
-      "index.html"
+      "_portal-index.js",
+      "index.html",
+      "_portal-vendor.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/Login.vue"
@@ -172,9 +249,13 @@
   "src/views/MacroGroup.vue": {
     "file": "portal-MacroGroup.js",
     "imports": [
+      "_portal-index.js",
       "src/components/Projects.vue",
       "src/views/Group.vue",
-      "index.html"
+      "index.html",
+      "_portal-vendor.js",
+      "_portal-get_img_url.js",
+      "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/MacroGroup.vue"
@@ -182,7 +263,9 @@
   "src/views/NotFound.vue": {
     "file": "portal-NotFound.js",
     "imports": [
-      "index.html"
+      "_portal-index.js",
+      "index.html",
+      "_portal-vendor.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/NotFound.vue"
@@ -197,8 +280,12 @@
     ],
     "file": "portal-Search.js",
     "imports": [
+      "_portal-index.js",
       "src/components/Projects.vue",
-      "index.html"
+      "index.html",
+      "_portal-vendor.js",
+      "_portal-get_img_url.js",
+      "_portal-dialog-polyfill.esm.js"
     ],
     "isDynamicEntry": true,
     "src": "src/views/Search.vue"

@@ -10,53 +10,48 @@
 </template>
 
 <script lang="ts">
+import { Component, Vue, Watch } from 'vue-facing-decorator';
+
 import Projects from '@/components/Projects.vue';
 import { Info } from '@/types/TInfo';
 import { MacroGroup } from '@/types/TMacroGroup';
 import Group from '@/views/Group.vue';
-import { Component, Vue, Watch } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
+
+import { useDataStore } from '@/stores';
+import { SuperGroup } from '@/types/TSuperGroup';
 
 @Component({
   components: { Group, Projects },
-  computed: {
-    ...mapGetters({
-      info: 'info/info',
-    }),
-  },
 })
 export default class VMacroGroup extends Vue {
 
-  public items: MacroGroup[] = [];
+  public items: SuperGroup[] = [];
 
-  public info!: Info;
+  get info(): Info {
+    return useDataStore().info;
+  }
 
   @Watch('$route.params', {
     immediate: true,
   })
   public async onRouteParamsChange({ id }: { id?: number } ) {
-    // Home > MacroGroups
-    if (!id) {
-      this.items = Object.values(this.$store.getters['group/macroGroups']);
-    } else {
-      this.items = this.$store.getters['group/groupsInMacroGroup'](id);
-    }
+     this.items = id
+      ? useDataStore().groupsInMacroGroup(id)
+      : Object.values(useDataStore().macroGroups); // Home > MacroGroups
   }
 
   /**
    * @FIXME
    */
    get title(): string {
-    const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
-    return sg ? sg.title : this.info.groups_title;
+    return useDataStore()?.activeGroup?.title ?? this.info.groups_title;
   }
 
   /**
    * @FIXME
    */
   get description(): string {
-    const sg: MacroGroup | Group = this.$store.getters['group/activeGroup'];
-    return sg ? sg.description : this.info.groups_map_description;
+    return useDataStore()?.activeGroup?.description ?? this.info.groups_map_description;
   }
 
 }
