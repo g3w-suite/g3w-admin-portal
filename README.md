@@ -262,7 +262,9 @@ To load default portal pictures:
 Backend tests are located within the [`portal/tests`](./portal/tests) folder, to run them use django management command:
 
 ```sh
-./manage.py test
+cd /code/g3w-admin
+
+python3 manage.py test portal
 ```
 
 Frontend tests are located within the [`frontend/e2e`](./frontend/e2e) folder, to run them use npm commands:
@@ -294,8 +296,8 @@ make push-tags         # update remote git tags (local --> remote)
 ---
 
 **Compatibile with:**
-[![g3w-admin version](https://img.shields.io/badge/g3w--admin-3.5-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-admin/tree/v.3.5.x)
-[![g3w-suite-docker version](https://img.shields.io/badge/g3w--suite--docker-3.5-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-suite-docker/tree/v3.5.x)
+[![g3w-admin version](https://img.shields.io/badge/g3w--admin-3.6-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-admin/tree/v.3.6.x)
+[![g3w-suite-docker version](https://img.shields.io/badge/g3w--suite--docker-3.6-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-suite-docker/tree/v3.6.x)
 
 ---
 

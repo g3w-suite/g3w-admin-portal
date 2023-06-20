@@ -18,42 +18,42 @@ from rest_framework.test import APIClient
 from usersmanage.models import User, Group as UserGroup
 from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup, GroupProjectPanoramic
 from qdjango.utils.data import QgisProject
+
 from portal.models import Picture
+
 import os
 import json
 
-
-CURRENT_PATH = os.getcwd()
-TEST_BASE_PATH = '/portal/tests/data/'
+CURRENT_PATH    = os.path.dirname(os.path.realpath(__file__))
+TEST_BASE_PATH  = '/data/'
 DATASOURCE_PATH = '{}{}'.format(CURRENT_PATH, TEST_BASE_PATH)
-QGS_DB = 'portal_test_project.sqlite'
-QGS_FILE = 'portal_test_project.qgs'
-QGS_FILE_2 = 'portal_test_project2.qgs'
+QGS_DB          = 'portal_test_project.sqlite'
+QGS_FILE        = 'portal_test_project.qgs'
+QGS_FILE_2      = 'portal_test_project2.qgs'
 
 
 @override_settings(
-    CACHES={
+    CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
             'LOCATION': 'some',
             }
     },
     DATASOURCE_PATH=DATASOURCE_PATH,
-    G3WADMIN_LOCAL_MORE_APPS=[
-        'portal',
-    ],
+    G3WADMIN_LOCAL_MORE_APPS= [ 'portal', ],
     FRONTEND=True,
     FRONTEND_APP='portal'
 )
 class PortalTestsBase(TestCase):
     """Base class for Portal tests"""
 
-    fixtures = ['BaseLayer.json',
-                'G3WMapControls.json',
-                'G3WSpatialRefSys.json',
-                'G3WGeneralDataSuite.json',
-                'portal_picture.json'
-                ]
+    fixtures = [
+        'BaseLayer.json',
+        'G3WMapControls.json',
+        'G3WSpatialRefSys.json',
+        'G3WGeneralDataSuite.json',
+        'portal_picture.json'
+    ]
 
     @classmethod
     def setUpTestData(cls):
