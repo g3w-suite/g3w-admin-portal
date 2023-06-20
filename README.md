@@ -4,6 +4,23 @@ G3W-ADMIN fronted portal for G3W-SUITE.
 
 ## Installation
 
+### Legacy install (git only)
+
+Installing via git is not recommended and should only be considered in edge cases:
+
+```sh
+# Git clone "portal" subfolder into "g3w-admin/portal" (works with git v2.37.1+)
+
+mkdir g3w-admin/portal
+cd portal
+
+git clone --filter=blob:none --no-checkout --depth 1 --sparse <project-url> .
+git sparse-checkout add portal
+git checkout
+```
+
+### PIP install (recommended)
+
 **NB** whatever your final purpose is (deploying or contributing), make sure to download this repository outside of the [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.5.x/g3w-admin) applications folder (that's why here we are using the python [flat-layout](https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#flat-layout) packaging structure). If in doubt the `/shared-volume/g3w-admin-portal` folder is a great place to start:
 
 ```sh
