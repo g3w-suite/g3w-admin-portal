@@ -27,7 +27,7 @@ logger = logging.getLogger('g3wadmin.debug')
 
 class PortalApiViewMixin(object):
 
-    # to remove pagination for portal api
+    # remove pagination for portal api
     pagination_class = None
 
 
@@ -40,13 +40,8 @@ class ProjectsApiView(PortalApiViewMixin, generics.ListAPIView):
     serializer_class = ProjectSerializer
     pagination_class = None
 
-
-
     filter_backends = (
-        UserProjectFilter,
-        GroupProjectFilter,
-        PanoramicProjectFilter,
-        ActiveFilter
+        ProjectsAPIFilter,
     )
 
 
@@ -59,9 +54,7 @@ class GroupsApiView(PortalApiViewMixin, generics.ListAPIView):
     serializer_class = GroupSerializer
 
     filter_backends = (
-        UserGroupFilter,
-        MacroGroupGroupFilter,
-        ActiveFilter
+        GroupsAPIFilter,
     )
 
 
@@ -72,6 +65,10 @@ class MacroGroupsApiView(PortalApiViewMixin, generics.ListAPIView):
 
     queryset = MacroGroup.objects.all()
     serializer_class = MacroGroupSerializer
+
+    filter_backends = (
+        MacroGroupsAPIFilter,
+    )
 
 
 class InfoDataApiView(generics.RetrieveAPIView):

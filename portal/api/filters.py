@@ -19,79 +19,95 @@ from rest_framework.filters import BaseFilterBackend
 from core.models import *
 from qdjango.models import Project
 
-
-class UserGroupFilter(BaseFilterBackend):
+class ProjectsAPIFilter(BaseFilterBackend):
     """A filter backend for portal module"""
 
     def filter_queryset(self, request, queryset, view):
-        """
-        Return a filtered queryset by guardian grant
-        """
-        queryset = get_objects_for_user(request.user, 'core.view_group', Group).order_by('order') \
-                 | get_objects_for_user(AnonymousUser(), 'core.view_group', Group).order_by('order')
 
-        return queryset
+        url_name        = resolve(request.path_info).url_name
 
+        user_projects   = get_objects_for_user(request.user, 'qdjango.view_project', Project)
+        public_projects = get_objects_for_user(AnonymousUser(), 'qdjango.view_project', Project)
 
-class UserProjectFilter(BaseFilterBackend):
-    """A filter backend for portal module for qdjango project"""
+        # filter by guardian grant
+        queryset = (user_projects | public_projects).order_by('title')
 
-    def filter_queryset(self, request, queryset, view):
-        """
-        Return a filtered queryset by guardian grant
-        """
-        queryset = get_objects_for_user(request.user, 'qdjango.view_project', Project).order_by('title') \
-                 | get_objects_for_user(AnonymousUser(), 'qdjango.view_project', Project).order_by('title')
-
-        return queryset
-
-
-class GroupProjectFilter(BaseFilterBackend):
-    """A filter backend for portal module for qdjango project , filter by group"""
-
-    def filter_queryset(self, request, queryset, view):
-        """
-        Return a filtered queryset by group_id
-        """
+        # filter by "group_id"
         if 'group_id' in view.kwargs:
             queryset = queryset.filter(group_id=view.kwargs['group_id']).order_by('order')
 
-        return queryset
-
-
-class MacroGroupGroupFilter(BaseFilterBackend):
-    """A filter backend for portal module for group, filter by macrogroup"""
-
-    def filter_queryset(self, request, queryset, view):
-        """
-        Return a filtered queryset by macrogroup_id
-        """
-        if 'macrogroup_id' in view.kwargs:
-            queryset = queryset.filter(macrogroups__pk=view.kwargs['macrogroup_id'])
-
-        # check for group without macrogroup
-        if resolve(request.path_info).url_name == 'portal-group-without-macrogroup-api-list':
-            queryset = queryset.filter(macrogroups__pk=None)
-
-        return queryset
-
-
-class PanoramicProjectFilter(BaseFilterBackend):
-    """A filter backend for portal module for qdjango project , filter by not panoramic"""
-
-    def filter_queryset(self, request, queryset, view):
-
-        # get number of project; if only one skip panoramic exclude query:
+        # filter by not panoramic (skipped when number of projects == 1)
         if len(queryset) > 1:
             queryset = queryset.filter(~Q(pk__in=[g.project_id for g in GroupProjectPanoramic.objects.all()]))
 
-        return queryset
+        # filter groups by specific "macrogroup_name"
+        if (
+            hasattr(settings, 'PORTAL_GROUPS_FILTER') and
+            url_name == 'portal-project-api-list'
+        ):
+            groups   = Group.objects.filter(**getattr(settings, 'PORTAL_GROUPS_FILTER'))
+            queryset = queryset.filter(group__pk__in=[g.pk for g in groups])
+        
+        queryset = groups_filter.send(sender=self)
 
-class ActiveFilter(BaseFilterBackend):
-    """A filter backend: filter active group or project"""
+        # filter by active projects
+        return queryset.filter(is_active=True)
+
+
+class GroupsAPIFilter(BaseFilterBackend):
+    """A filter backend for portal module"""
 
     def filter_queryset(self, request, queryset, view):
-        """
-        Return a filtered queryset by guardian grant
-        """
+
+        url_name      = resolve(request.path_info).url_name
+
+        user_groups   = get_objects_for_user(request.user, 'core.view_group', Group)
+        public_groups = get_objects_for_user(AnonymousUser(), 'core.view_group', Group)
+
+        # filter by guardian grant
+        queryset = (user_groups | public_groups).order_by('order')
+
+        # filter by "macrogroup_id"
+        if 'macrogroup_id' in view.kwargs:
+            queryset = queryset.filter(macrogroups__pk=view.kwargs['macrogroup_id'])
+
+        # TODO: find out how to make it more generic (django signals?)
+        ##
+        # Example:
+        # 
+        # filter groups by specific "macrogroup_name"
+        #
+        # PORTAL_GROUPS_FILTER = { 'macrogroups__name': 'ALTAMURA' }
+        ##
+        # if (
+        #     hasattr(settings, 'PORTAL_GROUPS_FILTER') and
+        #     url_name in ('portal-group-api-list', 'portal-group-without-macrogroup-api-list')
+        # ):
+        #     groups = Group.objects.filter(**getattr(settings, 'PORTAL_GROUPS_FILTER'))
+        #     queryset = queryset.filter(pk__in=[g.pk for g in groups])
+        #
+        # # check for group without macrogroup
+        # elif (url_name == 'portal-group-without-macrogroup-api-list'):
+        if (url_name == 'portal-group-without-macrogroup-api-list'):
+             queryset = queryset.filter(macrogroups__pk=None)
+
+        # filter by active groups
         return queryset.filter(is_active=True)
+
+class MacroGroupsAPIFilter(BaseFilterBackend):
+    """A filter backend for portal module"""
+
+    def filter_queryset(self, request, queryset, view):
+
+        # TODO: find out how to make it more generic (django signals?)
+        ##
+        # Example:
+        # 
+        # hide macrogroups on frontend (returns empty list)
+        #
+        # PORTAL_MAGROGROUPS_FILTER = { "pk": -9999 }
+        ##
+        # if (hasattr(settings, 'PORTAL_MAGROGROUPS_FILTER')):
+        #    queryset = queryset.filter(**getattr(settings, 'PORTAL_MAGROGROUPS_FILTER'))
+
+        return queryset
