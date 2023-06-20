@@ -64,13 +64,6 @@ urlpatterns = [
         name='portal-infodata-api-list'
     ),
 
-    # All Groups (filtered by user role)
-    path(
-        f'{pre_api_url}api/group/',
-        GroupsApiView.as_view(),
-        name='portal-group-api-list'
-    ),
-
     # Return logged user info
     path(
         f'{pre_api_url}api/whoami/',
@@ -85,12 +78,18 @@ urlpatterns = [
         name='portal-project-api-list'
     ),
 
-
     # All Project (filtered by user role and groups)
     re_path(
         r'^{}api/group/(?P<group_id>[0-9]+)/projects/$'.format(pre_api_url),
         ProjectsApiView.as_view(),
         name='portal-project-by-group-api-list'
+    ),
+
+    # All Groups (filtered by user role)
+    path(
+        f'{pre_api_url}api/group/',
+        GroupsApiView.as_view(),
+        name='portal-group-api-list'
     ),
 
     # Groups by MacroGroup

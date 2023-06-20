@@ -29,7 +29,7 @@ class ProjectsAPIFilter(BaseFilterBackend):
         user_projects   = get_objects_for_user(request.user, 'qdjango.view_project', Project)
         public_projects = get_objects_for_user(AnonymousUser(), 'qdjango.view_project', Project)
 
-        # filter by guardian grant
+        # filter by user role
         queryset = (user_projects | public_projects).order_by('title')
 
         # filter by "group_id"
@@ -40,20 +40,19 @@ class ProjectsAPIFilter(BaseFilterBackend):
         if len(queryset) > 1:
             queryset = queryset.filter(~Q(pk__in=[g.project_id for g in GroupProjectPanoramic.objects.all()]))
 
-        # TODO: find out how to make it more generic (django signals?)
         ##
         # Example:
         # 
-        # filter groups by specific "macrogroup_name"
+        # filter projects by specific "macrogroup_name"
         #
-        # PORTAL_GROUPS_FILTER = { 'macrogroups__name': 'ALTAMURA' }
+        # PORTAL_PROJECTS_FILTER = { 'macrogroups__name': 'ALTAMURA' }
         ##
-        # if (
-        #     hasattr(settings, 'PORTAL_GROUPS_FILTER') and
-        #     url_name == 'portal-project-api-list'
-        # ):
-        #     groups   = Group.objects.filter(**getattr(settings, 'PORTAL_GROUPS_FILTER'))
-        #     queryset = queryset.filter(group__pk__in=[g.pk for g in groups])
+        if (
+            hasattr(settings, 'PORTAL_PROJECTS_FILTER') and
+            url_name == 'portal-project-api-list'
+        ):
+            groups   = Group.objects.filter(**getattr(settings, 'PORTAL_PROJECTS_FILTER'))
+            queryset = queryset.filter(group__pk__in=[g.pk for g in groups])
 
         # filter by active projects
         return queryset.filter(is_active=True)
@@ -69,14 +68,13 @@ class GroupsAPIFilter(BaseFilterBackend):
         user_groups   = get_objects_for_user(request.user, 'core.view_group', Group)
         public_groups = get_objects_for_user(AnonymousUser(), 'core.view_group', Group)
 
-        # filter by guardian grant
+        # filter by user role
         queryset = (user_groups | public_groups).order_by('order')
 
         # filter by "macrogroup_id"
         if 'macrogroup_id' in view.kwargs:
             queryset = queryset.filter(macrogroups__pk=view.kwargs['macrogroup_id'])
 
-        # TODO: find out how to make it more generic (django signals?)
         ##
         # Example:
         # 
@@ -84,16 +82,15 @@ class GroupsAPIFilter(BaseFilterBackend):
         #
         # PORTAL_GROUPS_FILTER = { 'macrogroups__name': 'ALTAMURA' }
         ##
-        # if (
-        #     hasattr(settings, 'PORTAL_GROUPS_FILTER') and
-        #     url_name in ('portal-group-api-list', 'portal-group-without-macrogroup-api-list')
-        # ):
-        #     groups = Group.objects.filter(**getattr(settings, 'PORTAL_GROUPS_FILTER'))
-        #     queryset = queryset.filter(pk__in=[g.pk for g in groups])
-        #
-        # # check for group without macrogroup
-        # elif (url_name == 'portal-group-without-macrogroup-api-list'):
-        if (url_name == 'portal-group-without-macrogroup-api-list'):
+        if (
+            hasattr(settings, 'PORTAL_DEFAULT_GROUPS_FILTER') and
+            url_name in ('portal-group-api-list', 'portal-group-without-macrogroup-api-list')
+        ):
+            groups = Group.objects.filter(**getattr(settings, 'PORTAL_GROUPS_FILTER'))
+            queryset = queryset.filter(pk__in=[g.pk for g in groups])
+
+        # check for group without macrogroup
+        elif (url_name == 'portal-group-without-macrogroup-api-list'):
              queryset = queryset.filter(macrogroups__pk=None)
 
         # filter by active groups
@@ -104,7 +101,6 @@ class MacroGroupsAPIFilter(BaseFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
 
-        # TODO: find out how to make it more generic (django signals?)
         ##
         # Example:
         # 
@@ -112,7 +108,7 @@ class MacroGroupsAPIFilter(BaseFilterBackend):
         #
         # PORTAL_MAGROGROUPS_FILTER = { "pk": -9999 }
         ##
-        # if (hasattr(settings, 'PORTAL_MAGROGROUPS_FILTER')):
-        #    queryset = queryset.filter(**getattr(settings, 'PORTAL_MAGROGROUPS_FILTER'))
+        if (hasattr(settings, 'PORTAL_MACROGROUPS_FILTER')):
+           queryset = queryset.filter(**getattr(settings, 'PORTAL_MACROGROUPS_FILTER'))
 
         return queryset

@@ -143,6 +143,15 @@ PORTAL_ORG_URL    = 'https://github.com/g3w-suite'
 # Custom favicon url
 PORTAL_FAVICON  = '/static/img/favicon.ico'
 
+# ☢️ DANGER ZONE ☢️
+# -----------------
+
+# List projects and groups that belong to specific "macrogroup_name"
+# PORTAL_PROJECTS_FILTER = { 'macrogroups__name': 'ALTAMURA' }
+# PORTAL_GROUPS_FILTER   = { 'macrogroups__name': 'ALTAMURA' }
+
+# Hide macrogroups on frontend (returns empty list)
+# PORTAL_MAGROGROUPS_FILTER = { 'pk': -9999 }
 ```
 
 ### Cross domain authentication
