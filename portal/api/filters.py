@@ -40,15 +40,20 @@ class ProjectsAPIFilter(BaseFilterBackend):
         if len(queryset) > 1:
             queryset = queryset.filter(~Q(pk__in=[g.project_id for g in GroupProjectPanoramic.objects.all()]))
 
+        # TODO: find out how to make it more generic (django signals?)
+        ##
+        # Example:
+        # 
         # filter groups by specific "macrogroup_name"
-        if (
-            hasattr(settings, 'PORTAL_GROUPS_FILTER') and
-            url_name == 'portal-project-api-list'
-        ):
-            groups   = Group.objects.filter(**getattr(settings, 'PORTAL_GROUPS_FILTER'))
-            queryset = queryset.filter(group__pk__in=[g.pk for g in groups])
-        
-        queryset = groups_filter.send(sender=self)
+        #
+        # PORTAL_GROUPS_FILTER = { 'macrogroups__name': 'ALTAMURA' }
+        ##
+        # if (
+        #     hasattr(settings, 'PORTAL_GROUPS_FILTER') and
+        #     url_name == 'portal-project-api-list'
+        # ):
+        #     groups   = Group.objects.filter(**getattr(settings, 'PORTAL_GROUPS_FILTER'))
+        #     queryset = queryset.filter(group__pk__in=[g.pk for g in groups])
 
         # filter by active projects
         return queryset.filter(is_active=True)
