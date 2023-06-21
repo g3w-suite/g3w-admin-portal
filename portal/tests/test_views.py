@@ -9,19 +9,22 @@ __date__      = '2019-09-10'
 __copyright__ = 'Copyright 2019, GIS3W'
 __license__   = "MPL 2.0"
 
-
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client
 import json
 
-from portal.models import Picture
-from .test_api import PortalTestsBase, DATASOURCE_PATH
-
+from .test_base import PortalTestsBase
 
 class PortalViewsTest(PortalTestsBase):
 
     def test_index(self):
+        print('-------------------')
+        print(self.settings.FRONTEND)
+        print(self.settings.FRONTEND_APP)
+        print('-------------------')
+
+
         """ test index page"""
         url = reverse('frontend')
 
