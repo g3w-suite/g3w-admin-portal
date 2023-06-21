@@ -4,9 +4,10 @@
      it under the terms of the Mozilla Public License 2.0.
 """
 
-__author__ = 'lorenzetti@gis3w.it'
-__date__ = '2019-09-04'
+__author__    = 'lorenzetti@gis3w.it'
+__date__      = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
+__license__   = "MPL 2.0"
 
 
 from django.conf import settings
@@ -55,8 +56,9 @@ urlpatterns = [
         name='portal-ajax-logout'
     ),
 
-    # MOVE EVERY API URLS HERE TO USER I18N CAPABILITIES
-    # --------------------------------------------------
+    # INCLUDE API URLS HERE TO USE I18N
+    # ----------------------------------
+
     # Generic suite data
     path(
         f'{pre_api_url}api/infodata/',
@@ -78,7 +80,7 @@ urlpatterns = [
         name='portal-project-api-list'
     ),
 
-    # All Project (filtered by user role and groups)
+    # Projects (filtered by user role and group_id)
     re_path(
         r'^{}api/group/(?P<group_id>[0-9]+)/projects/$'.format(pre_api_url),
         ProjectsApiView.as_view(),
@@ -92,14 +94,14 @@ urlpatterns = [
         name='portal-group-api-list'
     ),
 
-    # Groups by MacroGroup
+    # Groups (filterd by macrogroup_id)
     re_path(
         r'^{}api/group/(?P<macrogroup_id>[0-9]+)$'.format(pre_api_url),
         GroupsApiView.as_view(),
         name='portal-group-by-macrogroup-api-list'
     ),
 
-    # Groups without MacroGroups
+    # All Groups (without a parent MacroGroup)
     path(
         f'{pre_api_url}api/group/nomacrogroup/',
         GroupsApiView.as_view(),
@@ -114,7 +116,7 @@ urlpatterns = [
     ),
 
     # Pictures manager
-    # ------------------------------------
+    # ----------------------------------
     path(
         f'{BASE_ADMIN_URLPATH}{pre_api_url}pictures/',
         login_required(PictureListView.as_view()),
@@ -140,8 +142,8 @@ urlpatterns = [
     ),
 
     # Picture api urls
-    # --------------------------------------
-    # All MacroGroups
+    # ----------------------------------
+    # All Pirctures
     path(
         f'{pre_api_url}api/pictures/',
         PicuresApiView.as_view(),

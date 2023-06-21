@@ -4,9 +4,10 @@
      it under the terms of the Mozilla Public License 2.0.
 """
 
-__author__ = 'lorenzetti@gis3w.it'
-__date__ = '2020-03-31'
+__author__    = 'lorenzetti@gis3w.it'
+__date__      = '2020-03-31'
 __copyright__ = 'Copyright 2020, GIS3W'
+__license__   = "MPL 2.0"
 
 from django.db import models
 from django.utils.translation import ugettext, ugettext_lazy as _

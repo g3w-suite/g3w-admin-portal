@@ -6,9 +6,10 @@ from __future__ import unicode_literals
      it under the terms of the Mozilla Public License 2.0.
 """
 
-__author__ = 'lorenzetti@gis3w.it'
-__date__ = '2019-09-04'
+__author__    = 'lorenzetti@gis3w.it'
+__date__      = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
+__license__   = "MPL 2.0"
 
 
 from rest_framework import serializers

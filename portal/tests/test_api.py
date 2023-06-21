@@ -4,9 +4,10 @@
      it under the terms of the Mozilla Public License 2.0.
 """
 
-__author__ = 'lorenzetti@gis3w.it'
-__date__ = '2019-09-04'
+__author__    = 'lorenzetti@gis3w.it'
+__date__      = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
+__license__   = "MPL 2.0"
 
 from django.conf import settings
 from django.test import TestCase, override_settings
@@ -19,10 +20,9 @@ from usersmanage.models import User, Group as UserGroup
 from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup, GroupProjectPanoramic
 from qdjango.utils.data import QgisProject
 
-from portal.models import Picture
+import os, json
 
-import os
-import json
+from portal.models import Picture
 
 CURRENT_PATH    = os.path.dirname(os.path.realpath(__file__))
 TEST_BASE_PATH  = '/data/'

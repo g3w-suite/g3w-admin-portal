@@ -7,9 +7,10 @@ from __future__ import unicode_literals, absolute_import
 
 """
 
-__author__ = 'lorenzetti@gis3w.it'
-__date__ = '2019-08-04'
+__author__    = 'lorenzetti@gis3w.it'
+__date__      = '2019-08-04'
 __copyright__ = 'Copyright 2019, Gis3w'
+__license__   = "MPL 2.0"
 
 
 from django.contrib.auth.models import AnonymousUser

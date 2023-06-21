@@ -4,17 +4,19 @@
      it under the terms of the Mozilla Public License 2.0.
 """
 
-__author__ = 'lorenzetti@gis3w.it'
-__date__ = '2019-09-10'
+__author__    = 'lorenzetti@gis3w.it'
+__date__      = '2019-09-10'
 __copyright__ = 'Copyright 2019, GIS3W'
+__license__   = "MPL 2.0"
 
 
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client
+import json
+
 from portal.models import Picture
 from .test_api import PortalTestsBase, DATASOURCE_PATH
-import json
 
 
 class PortalViewsTest(PortalTestsBase):
@@ -37,7 +39,7 @@ class PortalViewsTest(PortalTestsBase):
         # instance client
         client = Client()
 
-        # test login true
+        # test login
         response = client.post(url, {
             'username': self.test_user_admin1.username,
             'password': self.test_user_admin1.username

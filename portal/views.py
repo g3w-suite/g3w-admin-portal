@@ -4,9 +4,10 @@
      it under the terms of the Mozilla Public License 2.0.
 """
 
-__author__ = 'lorenzetti@gis3w.it'
-__date__ = '2019-09-10'
+__author__    = 'lorenzetti@gis3w.it'
+__date__      = '2019-09-10'
 __copyright__ = 'Copyright 2019, GIS3W'
+__license__   = "MPL 2.0"
 
 import json
 
