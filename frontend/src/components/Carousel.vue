@@ -42,7 +42,9 @@ export default class Carousel extends Vue {
 
   public mounted() {
     window.setInterval(() => {
-      this.index++;
+      if (this.pictures.length > 1) {
+        this.index++;
+      }
     }, 5000);
   }
 
