@@ -22,6 +22,9 @@ import logging
 from .serializers import *
 from .filters import *
 
+import requests
+import json
+
 logger = logging.getLogger('g3wadmin.debug')
 
 
@@ -78,16 +81,31 @@ class MacroGroupsApiView(PortalApiViewMixin, generics.ListAPIView):
     )
 
 
-class InfoDataApiView(generics.RetrieveAPIView):
+# class InfoDataApiView(generics.RetrieveAPIView):
+#     """
+#     API for Generic suite data
+#     """
+#
+#     queryset = GeneralSuiteData.objects.all()
+#     serializer_class = GenericSuiteDataSerializer
+#
+#     def get_object(self):
+#         return self.get_queryset()[0]
+
+
+class InfoDataApiView(APIView):
     """
     API for Generic suite data
     """
 
-    queryset = GeneralSuiteData.objects.all()
-    serializer_class = GenericSuiteDataSerializer
+    def get(self, request):
 
-    def get_object(self):
-        return self.get_queryset()[0]
+        res = requests.get('https://sit.comune.altamura.ba.it/it/portal/api/infodata/', verify=False)
+
+        return Response(
+            json.loads(res.content)
+        )
+
 
 class WhoamiApiView(APIView):
     """
@@ -183,13 +201,24 @@ class WhoamiApiView(APIView):
             }
         return None 
 
-class PicuresApiView(PortalApiViewMixin, generics.ListAPIView):
+# class PicuresApiView(PortalApiViewMixin, generics.ListAPIView):
+#     """
+#     API list view for portal pictures
+#     """
+#
+#     queryset = Picture.objects.order_by('id').all()
+#     serializer_class = PictureSerializer
+
+
+class PicuresApiView(APIView):
     """
-    API list view for portal pictures
+    API for Generic suite data
     """
 
-    queryset = Picture.objects.order_by('id').all()
-    serializer_class = PictureSerializer
+    def get(self, request):
 
+        res = requests.get('https://sit.comune.altamura.ba.it/it/portal/api/pictures/', verify=False)
 
-
+        return Response(
+            json.loads(res.content)
+        )
