@@ -17,6 +17,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.urls import resolve
 from django.db.models import Q
 from rest_framework.filters import BaseFilterBackend
+
 from core.models import *
 from qdjango.models import Project
 

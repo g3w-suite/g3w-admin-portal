@@ -15,8 +15,7 @@ __license__   = "MPL 2.0"
 from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
-import os
-import shutil
+import os, shutil
 
 FILE_ROOT = os.path.abspath(os.path.dirname(__file__))
 PICTURE_DEFAULT_ROOT = '%s/../../fixtures/data' % FILE_ROOT

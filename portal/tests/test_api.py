@@ -17,6 +17,7 @@ from django.utils import translation
 from guardian.compat import get_user_model
 from rest_framework.test import APIClient
 from usersmanage.models import User, Group as UserGroup
+
 from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup, GroupProjectPanoramic
 from qdjango.utils.data import QgisProject
 

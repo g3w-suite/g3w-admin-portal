@@ -18,10 +18,12 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.urls import reverse
-from usersmanage.decorators import user_passes_test_or_403
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
+from usersmanage.decorators import user_passes_test_or_403
+
 from core.mixins.views import G3WAjaxDeleteViewMixin
+
 from .models import Picture
 from .forms import PictureForm
 
