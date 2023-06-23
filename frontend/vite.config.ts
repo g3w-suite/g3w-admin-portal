@@ -18,8 +18,10 @@ import commonjs from 'vite-plugin-commonjs';
  * @see https://vitejs.dev/config/
  */
 export default defineConfig(({ mode }) => {
-  process.env = { ...process.env, ...loadEnv(mode, process.cwd(), ['VITE_', 'VUE_']) };
+  const envPrefix = ['VITE_', 'VUE_'];
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd(), envPrefix) };
   return {
+    envPrefix,
     resolve: {
       alias: [
         { find: /^~/, replacement: '' },
