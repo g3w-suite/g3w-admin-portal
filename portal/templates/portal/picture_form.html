@@ -11,9 +11,8 @@
             {% trans 'Picture' %}
             <small>{{ object.slug }}</small>
         {% else %}
-        {% trans 'New' %} {% trans 'Picture' %}
+            {% trans 'New' %} {% trans 'Picture' %}
         {% endif %}
-
     </h1>
 {% endblock %}
 
@@ -23,10 +22,10 @@
     {% if form.errors %}
         <div class="row">
             <div class="col-md-12">
-            <div class="alert alert-danger alert-dismissable">
-                <h4><i class="icon fa fa-ban"></i> {% trans 'Alert' %}!</h4>
+                <div class="alert alert-danger alert-dismissable">
+                    <h4><i class="icon fa fa-ban"></i> {% trans 'Alert' %}!</h4>
                     {% trans 'Some errors on form. Check it and send again.' %}
-              </div>
+                </div>
             </div>
         </div>
     {% endif %}

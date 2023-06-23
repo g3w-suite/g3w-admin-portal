@@ -56,9 +56,7 @@
                         {% if object.author %}{{ object.author }}{% endif %}
                     </td>
                     <td>
-                        {% if object.author_url %}
-                        <a href="{{ object.author_url }}" target="_blank">{{ object.author_url }}</a>
-                        {% endif %}
+                        {% if object.author_url %}<a href="{{ object.author_url }}" target="_blank">{{ object.author_url }}</a>{% endif %}
                     </td>
                 </tr>
                 {% endfor %}

@@ -46,10 +46,10 @@ class PictureForm(G3WFormMixin, FileFormMixin, ModelForm):
                                             Div(
                                                 HTML(
                                                     "<h3 class='box-title'><i class='fa fa-file'></i> {}</h3>"
-                                                    .format(
-                                                        _('Picture data'))),
-                                                        css_class='box-header with-border'
-                                                    ),
+                                                    .format(_('Picture data'))
+                                                ),
+                                                css_class='box-header with-border'
+                                            ),
                                             Div(
                                                 'image',
                                                 HTML(
@@ -60,7 +60,7 @@ class PictureForm(G3WFormMixin, FileFormMixin, ModelForm):
                                                 ),
                                                 'form_id',
                                                 'upload_url',
-                                                'delete_url',
+                                                # 'delete_url', removed in g3w-admin@v3.6
                                                 css_class='box-body',
                                             ),
                                             css_class='box box-success'
@@ -72,9 +72,7 @@ class PictureForm(G3WFormMixin, FileFormMixin, ModelForm):
                                             Div(
                                                 HTML(
                                                     "<h3 class='box-title'><i class='fa fa-file'></i> {}</h3>"
-                                                    .format(
-                                                        _('Author and style data')
-                                                    )
+                                                    .format(_('Author and style data'))
                                                 ),
                                                 css_class='box-header with-border'
                                             ),

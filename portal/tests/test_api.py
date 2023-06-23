@@ -317,4 +317,3 @@ class PortalTestAPI(PortalTestsBase):
         self.assertEqual(len(jcontent), 2)
 
         client.logout()
-

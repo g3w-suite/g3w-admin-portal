@@ -14,14 +14,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Picture',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('order', models.PositiveIntegerField(db_index=True, editable=False, verbose_name='order')),
-                ('image', models.ImageField(upload_to='', verbose_name='Picture')),
-                ('main_color', models.CharField(default='#FFF', max_length=7, verbose_name='Main color')),
+                ('id',               models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('order',            models.PositiveIntegerField(db_index=True, editable=False, verbose_name='order')),
+                ('image',            models.ImageField(upload_to='', verbose_name='Picture')),
+                ('main_color',       models.CharField(default='#FFF', max_length=7, verbose_name='Main color')),
                 ('main_title_color', models.CharField(default='#FFF', max_length=7, verbose_name='Main title color')),
-                ('subtitle_color', models.CharField(default='#FFF', max_length=7, verbose_name='Subtitle color')),
-                ('author', models.CharField(blank=True, max_length=255, null=True, verbose_name='Author')),
-                ('author_url', models.URLField(blank=True, null=True, verbose_name='Author URL')),
+                ('subtitle_color',   models.CharField(default='#FFF', max_length=7, verbose_name='Subtitle color')),
+                ('author',           models.CharField(blank=True, max_length=255, null=True, verbose_name='Author')),
+                ('author_url',       models.URLField(blank=True, null=True, verbose_name='Author URL')),
             ],
             options={
                 'ordering': ('order',),
