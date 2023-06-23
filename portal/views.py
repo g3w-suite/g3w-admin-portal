@@ -23,6 +23,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from usersmanage.decorators import user_passes_test_or_403
 
 from core.mixins.views import G3WAjaxDeleteViewMixin
+from base import __version__ as version
+
 
 from .models import Picture
 from .forms import PictureForm
@@ -108,6 +110,15 @@ class PictureViewMixin(object):
 
         # return to picture list
         return reverse('portal-picture')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # BACKCOMP: removed template in g3w-admin@v3.6 ("core/django_file_form/upload_template.html")
+        context["has_django_file_form_upload_template"] = (version < (3, 6))
+        
+        return context
+    
 
 
 class PictureCreateView(PictureViewMixin, CreateView):

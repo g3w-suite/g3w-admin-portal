@@ -33,5 +33,11 @@
     {% crispy form %}
     {% g3wadmin_add_button_form %}
 </form>
-{% include 'core/django_file_form/upload_template.html' %}
+
+{{has_django_file_form_upload_template}}
+
+{% if has_django_file_form_upload_template %}
+    {% include 'core/django_file_form/upload_template.html' %}
+{% endif %}
+
 {% endblock %}
