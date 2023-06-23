@@ -28,5 +28,5 @@ class PortalConfig(AppConfig):
             settings.INSTALLED_APPS   += ['corsheaders'] # when we are running a plain DJANGO instance
 
     except ImportError:
-        logger.info('[PORTAL] missing requirements_authjwt.txt dependencies, skipping optional setup...')
+        logger.info('[PORTAL] optional "requirements_authjwt.txt" packages not installed')
         pass
