@@ -84,6 +84,7 @@ export default class HomeHeader extends Vue {
     border-radius: 1.5px;
     width: fit-content;
     text-align: center;
+    z-index: 0;
   }
 </style>
 

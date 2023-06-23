@@ -72,7 +72,6 @@ export default class Carousel extends Vue {
     height: 80vh;
     aspect-ratio: 16/9;
     object-fit: cover;
-    z-index: -1;
   }
 
   figure > figcaption {
