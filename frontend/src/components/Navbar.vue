@@ -72,8 +72,8 @@
 
       <!-- LOGO -->
       <li class="nav-logo">
-        <router-link :to="{ name:'home' }" aria-label="Back home" class="secondary">
-          <img :src="info.suite_logo || info.url_suite_logo || g3w_logo" :alt="info.title" class="logo" />
+        <router-link :to="{ name:'home' }" @click="onNavLogoClick" aria-label="Back home" class="secondary">
+          <img :src="info.suite_logo || g3w_logo" :alt="info.title" class="logo" />
         </router-link>
       </li>
 
@@ -322,6 +322,13 @@ export default class Navbar extends Vue {
     if ((window as any).PORTAL_LANG_BUTTON) {
       e.preventDefault();
       this.$router.push(this.switchLangLink('it' === this.$i18n.locale ? 'en' : 'it'));
+    }
+  }
+
+  public onNavLogoClick(e: Event) {
+    if (this.info.url_suite_logo) {
+      e.preventDefault();
+      location.href = this.info.url_suite_logo;
     }
   }
 
