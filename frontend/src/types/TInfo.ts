@@ -33,11 +33,13 @@ export class Info {
   /**
    * @TODO add the following in "g3w-admin" REST API
    */
-  public readonly suite_org_url: string      = process.env.VUE_APP_SUITE_ORG_URL || (window as any).PORTAL_ORG_URL;
-  public readonly suite_org_name: string     = process.env.VUE_APP_SUITE_ORG_NAME || (window as any).PORTAL_ORG_NAME;
-  public readonly cookie_policy_url: string  = process.env.VUE_APP_COOKIE_POLICY_URL || '';
+  public readonly suite_org_url: string      = process.env.VUE_APP_SUITE_ORG_URL      || (window as any).PORTAL_ORG_URL;
+  public readonly suite_org_name: string     = process.env.VUE_APP_SUITE_ORG_NAME     || (window as any).PORTAL_ORG_NAME;
+  public readonly suite_org_title: string    = process.env.VUE_APP_SUITE_ORG_TITLE    || (window as any).PORTAL_ORG_TITLE;
+  public readonly suite_org_image: string     = process.env.VUE_APP_SUITE_ORG_IMAGE   || (window as any).PORTAL_ORG_IMAGE;
+  public readonly cookie_policy_url: string  = process.env.VUE_APP_COOKIE_POLICY_URL  || '';
   public readonly privacy_policy_url: string = process.env.VUE_APP_PRIVACY_POLICY_URL || '';
-  public readonly credits_url: string        = process.env.VUE_APP_CREDITS_URL || '';
+  public readonly credits_url: string        = process.env.VUE_APP_CREDITS_URL        || '';
 
   constructor(data?: IInfo) {
     this.id                     = data?.id                     ?? -1;

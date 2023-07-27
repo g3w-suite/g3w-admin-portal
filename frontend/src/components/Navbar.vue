@@ -4,10 +4,25 @@
 
     <!-- ORGANIZATION NAME -->
     <ul>
-      <li v-if="info.suite_org_url" class="nav-org">
-        <a :href="info.suite_org_url">
-          <font-awesome-icon icon="arrow-up-right-from-square" size="sm" /> {{info.suite_org_name}}
-        </a>
+      <li v-if="info.suite_org_url || info.suite_org_name" class="nav-org">
+        <component
+          :is     = "info.suite_org_url ? 'a'                : 'figure'"
+          :href   = "info.suite_org_url ? info.suite_org_url : undefined"
+          :style  = "info.suite_org_url ? undefined          : 'margin: 0;'"
+          :title  = "info.suite_org_title"
+        >
+          <img
+            v-if  = "info.suite_org_image"
+            class = "logo"
+            :src  = "info.suite_org_image"
+            :alt  = "info.suite_org_name"
+            style = "max-width: unset;"
+          />
+          <template v-else>
+            <font-awesome-icon icon="arrow-up-right-from-square" size="sm" />
+            {{info.suite_org_name}}
+          </template>
+        </component>
       </li>
     </ul>
 
@@ -72,9 +87,19 @@
 
       <!-- LOGO -->
       <li class="nav-logo">
-        <router-link :to="{ name:'home' }" @click="onNavLogoClick" aria-label="Back home" class="secondary">
-          <img :src="info.suite_logo || g3w_logo" :alt="info.title" class="logo" />
-        </router-link>
+        <component
+          :is        = "info.url_suite_logo ? 'a'                 : 'router-link'"
+          :to        = "info.url_suite_logo ? undefined           : { name:'home' }"
+          :href      = "info.url_suite_logo ? info.url_suite_logo : undefined"
+          aria-label = "Back home"
+          class      = "secondary"
+        >
+          <img
+            :src     = "info.suite_logo || g3w_logo"
+            :alt     = "info.title"
+            class    = "logo"
+          />
+        </component>
       </li>
 
       <!-- TITLE -->
@@ -325,13 +350,6 @@ export default class Navbar extends Vue {
     }
   }
 
-  public onNavLogoClick(e: Event) {
-    if (this.info.url_suite_logo) {
-      e.preventDefault();
-      location.href = this.info.url_suite_logo;
-    }
-  }
-
   // @Watch('$route.params', {
   //   immediate: true,
   // })
@@ -385,6 +403,7 @@ export default class Navbar extends Vue {
     max-height: 4rem;
     max-width: 10rem;
   }
+
   nav .h1 {
     display:block;
     font-size: 1.5rem;
