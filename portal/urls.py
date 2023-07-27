@@ -48,12 +48,12 @@ urlpatterns = [
         name='frontend'
     ),
     path(
-        'jx/login/',
+        f'{pre_api_url}jx/login/',
         LoginAjaxView.as_view(),
         name='portal-ajax-login'
     ),
     path(
-        'jx/logout/',
+        f'{pre_api_url}jx/logout/',
         LogoutAjaxView.as_view(),
         name='portal-ajax-logout'
     ),
