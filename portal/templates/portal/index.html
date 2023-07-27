@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     {# Fix relative URLs (eg. relative links and images within text) when we are working with an external API server  #}
-    <base href="{{ API_BASE_URL }}" />
+    {# <base href="{{ API_BASE_URL }}" /> #}
     <title>{{ admin_page_title }}</title>
 
     <link rel="icon" href="{% if SETTINGS.PORTAL_FAVICON %}{{ SETTINGS.PORTAL_FAVICON }}{% else %}{% static '/img/favicon.ico' %}{% endif %}">
@@ -39,6 +39,8 @@
         window.API_BASE_URL             = '{{ API_BASE_URL }}';
         window.LANGUAGES                = {{ LANGUAGES | safe }};
         window.PORTAL_ORG_NAME          = '{{ SETTINGS.PORTAL_ORG_NAME }}';
+        window.PORTAL_ORG_IMAGE         = '{{ SETTINGS.PORTAL_ORG_IMAGE }}';
+        window.PORTAL_ORG_TITLE         = '{{ SETTINGS.PORTAL_ORG_TITLE }}';
         window.PORTAL_ORG_URL           = '{{ SETTINGS.PORTAL_ORG_URL }}';
         window.PORTAL_FAVICON           = `{{ SETTINGS.PORTAL_FAVICON | safe }}`;
         window.PORTAL_NAVBAR_TOP        = {{ SETTINGS.PORTAL_NAVBAR_TOP | yesno:"true,false" }};
