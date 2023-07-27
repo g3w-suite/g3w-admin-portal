@@ -24,7 +24,7 @@ const modes = {
  * Vue Router
  */
 export const router = createRouter({
-  history: createWebHashHistory(process.env.BASE_URL), // TODO: history: modes[config.router_mode](),
+  history: createWebHashHistory(import.meta.env.BASE_URL), // TODO: history: modes[config.router_mode](),
   routes: [
     {
       path: '/:lang/',
