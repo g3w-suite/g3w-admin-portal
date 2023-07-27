@@ -138,7 +138,7 @@ export const useAuthStore = defineStore('auth', {
 function _jx_login(username: string, password: string) {
   return axios
     .post<{ status: ELoginStatus; error_form?: object; message?: string }>(
-      useRootStore().locale + '/jx/login/',
+      useRootStore().locale + '/portal/jx/login/',
       (new URLSearchParams({ username, password })).toString(),
       { 'Content-Type': 'application/x-www-form-urlencoded' }
     )
@@ -151,7 +151,7 @@ function _jx_login(username: string, password: string) {
 }
 
 function _jx_logout() {
-  return axios.get<{ status: ELoginStatus; message?: string; }>(useRootStore().locale + '/jx/logout/');
+  return axios.get<{ status: ELoginStatus; message?: string; }>(useRootStore().locale + '/portal/jx/logout/');
 }
 
 function _jwt_login(username: string, password: string) {
