@@ -25,9 +25,10 @@ from usersmanage.decorators import user_passes_test_or_403
 from core.mixins.views import G3WAjaxDeleteViewMixin
 from base import __version__ as version
 
-
 from .models import Picture
 from .forms import PictureForm
+
+from portal.utils import get_response_headers
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -52,7 +53,15 @@ class LogoutAjaxView(View):
 
     def get(self, request, *args, **kwargs):
         auth_logout(self.request)
-        return JsonResponse({'status': 'ok', 'message': 'Logout'})
+
+        response = JsonResponse({'status': 'ok', 'message': 'Logout'})
+
+        h = get_response_headers(self, request)
+        if h is not None:
+            for k in h:
+                response[k] = h[k]
+
+        return response
 
 
 class PortalView(TemplateView):
