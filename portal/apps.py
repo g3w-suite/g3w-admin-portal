@@ -9,6 +9,8 @@ logger = logging.getLogger('g3wadmin.debug')
 class PortalConfig(AppConfig):
     name = 'portal'
 
+    settings.MIDDLEWARE = [ 'portal.middleware.PartitionedCookieMiddleware' ] + settings.MIDDLEWARE
+
     # OPTIONAL packages from "requirements_authjwt.txt"
     try:
         from corsheaders.middleware import CorsMiddleware
@@ -18,7 +20,7 @@ class PortalConfig(AppConfig):
         # TODO: uninstall "django-samesite-none" in Django >= v3.1
         settings.MIDDLEWARE = [
             'django_samesite_none.middleware.SameSiteNoneMiddleware',
-            'corsheaders.middleware.CorsMiddleware'
+            'corsheaders.middleware.CorsMiddleware',
         ] + settings.MIDDLEWARE
 
         # Activate `corsheaders` package

@@ -11,6 +11,37 @@ __copyright__ = 'Copyright 2015 - 2023, Gis3w'
 __license__ = 'MPL 2.0'
 
 
+#########################################################
+# CHIPS - Cookies Having Independent Partitioned State
+#########################################################
+
+from http import cookies
+
+cookies.Morsel._reserved["partitioned"] = "Partitioned"
+cookies.Morsel._flags.add("partitioned")
+
+token_key = '__drftk'
+
+class PartitionedCookieMiddleware:
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+
+        if token_key in request.GET:
+
+            for name, value in response.cookies.items():
+                value["partitioned"] = True
+                print(name, value)
+
+        return response
+    
+
+#########################################################
+# UNUSUED: Auth by Django Rest Framework Token
+#########################################################
 
 from django.http import HttpResponsePermanentRedirect
 from django.conf import settings
