@@ -154,7 +154,7 @@ function _jx_logout() {
   /**
    * Ensure all cookies are delete before logout (JWT Auth)
    *
-   * @TODO double check if when `partitioned○ cookies would addres this problem as well:
+   * @TODO double check if using `partitioned` cookies could address the following problem as well:
    *
    * Partitioned cookie or storage access was provided to “https://remotehost:8080/en/portal/api/whoami/?__drftk=<token>”
    * because it is loaded in the third-party context and dynamic state partitioning is enabled.
