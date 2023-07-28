@@ -33,7 +33,10 @@ class HttpClient {
           return await response.json()
         }
         return Promise.reject(await response.json());
-      }).catch(e => console.warn('HTTP Error', e));
+      }).catch(e => {
+        console.warn('HTTP Error', e);
+        throw e;
+      });
   }
 
   private auth_request(config: any): any {

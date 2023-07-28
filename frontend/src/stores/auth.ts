@@ -182,7 +182,7 @@ function _jwt_login(username: string, password: string) {
 function _jwt_logout() {
   return Promise.all([
     axios.post<unknown>('/authjwt/api/token/blacklist/', { refresh: useAuthStore().refresh_token }), // JWT
-    _jx_logout()                                                                           // Cookie
+    _jx_logout()                                                                                     // Cookie
   ]);
 }
 
