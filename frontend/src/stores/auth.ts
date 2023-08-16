@@ -40,6 +40,14 @@ export const useAuthStore = defineStore('auth', {
       if (this.useCookies || (!this.useCookies && !this.user)) {
         this.removeTokens();
       }
+      /**
+       * @TODO find out if we can replace the following in order to get rid of watcher inside "views/Login.vue" 
+       */
+      // set remote server cookies after login (JWT Auth)
+      // const drf_token = useAuthStore().user?.drf_token;
+      // if (drf_token) {
+      //   location.href = get_admin_url(`/${useRootStore().locale}/portal/api/whoami/?__drftk=${drf_token}&redirect=` + location.origin);
+      // }
       // fetch again data from server on user Login / Logout 
       useRootStore().fetchData(true);
     },
@@ -151,25 +159,6 @@ function _jx_login(username: string, password: string) {
 }
 
 function _jx_logout() {
-  /**
-   * Ensure all cookies are delete before logout (JWT Auth)
-   *
-   * @TODO double check if using `partitioned` cookies could address the following problem as well:
-   *
-   * Partitioned cookie or storage access was provided to “https://remotehost:8080/en/portal/api/whoami/?__drftk=<token>”
-   * because it is loaded in the third-party context and dynamic state partitioning is enabled.
-   * 
-   * @see https://developer.mozilla.org/en-US/docs/Web/Privacy/Storage_Access_Policy/Errors/CookiePartitionedForeign
-   * @see https://developer.mozilla.org/en-US/docs/Web/Privacy/State_Partitioning
-   */
-  const drf_token = useAuthStore().user?.drf_token;
-  if (drf_token) {
-    const iframe = document.createElement('iframe');
-    iframe.onload = () => (iframe as any).parentNode.removeChild(iframe);
-    iframe.setAttribute('hidden', '');
-    iframe.setAttribute('src', get_admin_url(`/${useRootStore().locale}/portal/jx/logout/?__drftk=${drf_token}`));
-    document.body.insertAdjacentElement('beforeend', iframe);
-  }
   return axios.get<{ status: ELoginStatus; message?: string; }>(useRootStore().locale + '/portal/jx/logout/');
 }
 
@@ -183,7 +172,14 @@ function _jwt_logout() {
   return Promise.all([
     axios.post<unknown>('/authjwt/api/token/blacklist/', { refresh: useAuthStore().refresh_token }), // JWT
     _jx_logout()                                                                                     // Cookie
-  ]);
+  ])
+  // Delete remote server cookies after logout (JWT Auth)
+  .then(r => {
+    const drf_token = useAuthStore().user?.drf_token;
+    if (drf_token) {
+      location.href = get_admin_url(`/${useRootStore().locale}/portal/jx/logout/?__drftk=${drf_token}&redirect=${location.origin}`)
+    }
+  });
 }
 
 function _jwt_refresh() {

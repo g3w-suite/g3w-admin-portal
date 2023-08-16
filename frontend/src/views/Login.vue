@@ -55,11 +55,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-facing-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-facing-decorator';
 
 import { Info } from '@/types/TInfo';
-
 import { useAuthStore, useDataStore } from '@/stores';
+import { get_admin_url } from '@/utils';
 
 @Component({
   name: 'Login',
@@ -94,13 +94,27 @@ export default class Login extends Vue {
       useAuthStore()
         .login(this.username, this.password)
         // .then(() => useAuthStore().fetchWhoAmI())
-        .then(() => this.$router.push({ name: 'home' }))
+        .then(() => { if (useAuthStore().useCookies) { this.$router.push({ name: 'home' }) } })
         .catch((e: string) => {
           this.error_message = e;
           this.loginError = true;
         });
     }
   }
+
+  get drf_token(): string {
+    return useAuthStore().user?.drf_token || '';
+  }
+
+  @Watch('drf_token', {
+    immediate: true,
+  })
+  public onDrfTokenChange(drf_token: string) {
+    if (drf_token) {
+      location.href = get_admin_url(`/${this.$i18n.locale}/portal/api/whoami/?__drftk=${drf_token}&redirect=` + location.origin);
+    }
+  }
+
 }
 </script>
 

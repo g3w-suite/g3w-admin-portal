@@ -30,7 +30,7 @@ def get_response_headers(self, request, token_key  = '__drftk'):
     csp_frame_src = getattr(settings, 'CSP_FRAME_SRC', getattr(settings, 'CORS_ALLOWED_ORIGINS', [])) 
 
     # try to found token key into url
-    if (token_key in request.GET):
+    if (token_key in request.GET): # and 'iframe' == request.META.HTTP_SEC_FETCH_DEST
         return {
             'Content-Security-Policy': "frame-ancestors 'self' " + " ".join(csp_frame_src)
         }

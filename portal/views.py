@@ -11,24 +11,23 @@ __license__   = "MPL 2.0"
 
 import json
 
-from django.conf import settings
-from django.views.generic.edit import BaseFormView, SingleObjectMixin
-from django.views.generic import TemplateView, View, ListView, CreateView, UpdateView
-from django.http import JsonResponse
+from django.conf                  import settings
+from django.views.generic.edit    import BaseFormView, SingleObjectMixin
+from django.views.generic         import TemplateView, View, ListView, CreateView, UpdateView
+from django.http                  import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
-from django.urls import reverse
-from django.contrib.auth import login as auth_login, logout as auth_logout
-from django.contrib.auth.forms import AuthenticationForm
-from usersmanage.decorators import user_passes_test_or_403
+from django.utils.decorators      import method_decorator
+from django.urls                  import reverse
+from django.contrib.auth          import login as auth_login, logout as auth_logout
+from django.contrib.auth.forms    import AuthenticationForm
+from usersmanage.decorators       import user_passes_test_or_403
 
-from core.mixins.views import G3WAjaxDeleteViewMixin
-from base import __version__ as version
+from core.mixins.views            import G3WAjaxDeleteViewMixin
+from base                         import __version__ as version
 
-from .models import Picture
-from .forms import PictureForm
-
-from portal.utils import get_response_headers
+from portal.models                import Picture
+from portal.forms                 import PictureForm
+from portal.utils                 import get_response_headers
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -54,12 +53,17 @@ class LogoutAjaxView(View):
     def get(self, request, *args, **kwargs):
         auth_logout(self.request)
 
-        response = JsonResponse({'status': 'ok', 'message': 'Logout'})
+        response = JsonResponse({'status': 'ok', 'message': 'Logout'}, )
 
         h = get_response_headers(self, request)
         if h is not None:
             for k in h:
                 response[k] = h[k]
+
+        # 302 redirect after logout
+        if ('redirect' in request.GET):
+            response['Location'] = request.GET['redirect'] # TODO: ALLOWED_ORIGINS
+            response.status_code = 302
 
         return response
 

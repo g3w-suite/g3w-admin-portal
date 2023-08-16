@@ -9,20 +9,19 @@ __date__      = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
 __license__   = 'MPL 2.0'
 
-from django.contrib import auth
-from django.conf import settings
+from django.contrib                  import auth
+from django.conf                     import settings
 
-from rest_framework import generics
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework                  import generics
+from rest_framework.views            import APIView
+from rest_framework.response         import Response
 from rest_framework.authtoken.models import Token
 
 import logging
 
-from .serializers import *
-from .filters import *
-
-from portal.utils import get_response_headers
+from portal.api.serializers          import *
+from portal.api.filters              import *
+from portal.utils                    import get_response_headers
 
 logger = logging.getLogger('g3wadmin.debug')
 
@@ -95,7 +94,7 @@ class WhoamiApiView(APIView):
 
         if user.is_authenticated:
             token, created = Token.objects.get_or_create(user=user)
-            ret = {
+            data = {
                 'is_authenticated': True,
                 'username': user.username,
                 'email': user.email,
@@ -107,13 +106,22 @@ class WhoamiApiView(APIView):
             }
 
         else:
-            ret = {
+            data = {
                 'is_authenticated': False,
             }
 
+        headers = get_response_headers(self, request)
+        status = 200
+
+        # 302 redirect after login
+        if (user.is_authenticated and 'redirect' in request.GET):
+            headers['Location'] = request.GET['redirect'] # TODO: ALLOWED_ORIGINS
+            status = 302
+
         return Response(
-            ret,
-            headers = get_response_headers(self, request)
+            data,
+            status  = status,
+            headers = headers
         )
     
     def get_authenticated_user(self, request, token_key  = '__drftk'):
