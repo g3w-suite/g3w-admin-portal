@@ -12,13 +12,13 @@ __copyright__ = 'Copyright 2019, GIS3W'
 __license__   = "MPL 2.0"
 
 
-from django.urls import reverse
+from django.urls    import reverse
 from rest_framework import serializers
 
-from core.models import *
+from core.models    import *
 from qdjango.models import Project
 
-from portal.models import Picture
+from portal.models  import Picture
 
 
 class ProjectSerializer(serializers.ModelSerializer):

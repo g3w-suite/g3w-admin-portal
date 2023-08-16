@@ -14,12 +14,12 @@ __license__   = "MPL 2.0"
 
 
 from django.contrib.auth.models import AnonymousUser
-from django.urls import resolve
-from django.db.models import Q
-from rest_framework.filters import BaseFilterBackend
+from django.urls                import resolve
+from django.db.models           import Q
+from rest_framework.filters     import BaseFilterBackend
 
-from core.models import *
-from qdjango.models import Project
+from core.models                import *
+from qdjango.models             import Project
 
 class ProjectsAPIFilter(BaseFilterBackend):
     """A filter backend for portal module"""

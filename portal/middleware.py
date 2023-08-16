@@ -11,9 +11,9 @@ __copyright__ = 'Copyright 2015 - 2023, Gis3w'
 __license__ = 'MPL 2.0'
 
 
-#########################################################
-# CHIPS - Cookies Having Independent Partitioned State
-#########################################################
+##################################################################
+# DEPRECATED: CHIPS - Cookies Having Independent Partitioned State
+##################################################################
 
 from http import cookies
 
@@ -39,9 +39,9 @@ class PartitionedCookieMiddleware:
         return response
     
 
-#########################################################
-# UNUSUED: Auth by Django Rest Framework Token
-#########################################################
+##################################################################
+# DEPRECATED: Auth by Token (Django Rest Framework)
+##################################################################
 
 from django.http import HttpResponsePermanentRedirect
 from django.conf import settings

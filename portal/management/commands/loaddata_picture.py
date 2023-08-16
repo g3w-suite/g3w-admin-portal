@@ -12,8 +12,8 @@ __copyright__ = 'Copyright 2015 - 2020, Gis3w'
 __license__   = "MPL 2.0"
 
 
-from django.conf import settings
-from django.core.management import call_command
+from django.conf                 import settings
+from django.core.management      import call_command
 from django.core.management.base import BaseCommand, CommandError
 import os, shutil
 

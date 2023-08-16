@@ -10,13 +10,13 @@ __copyright__ = 'Copyright 2019, GIS3W'
 __license__   = "MPL 2.0"
 
 
-from django.conf import settings
-from django.urls import path, re_path
+from django.conf                    import settings
+from django.urls                    import path, re_path
 from django.contrib.auth.decorators import login_required
 
-from base.urls import BASE_ADMIN_URLPATH
+from base.urls                      import BASE_ADMIN_URLPATH
 
-from .views import (
+from portal.views import (
     LoginAjaxView,
     LogoutAjaxView,
     PortalView,
@@ -25,7 +25,7 @@ from .views import (
     PictureUpdateView,
     PictureDeleteView,
 )
-from .api.views import (
+from portal.api.views import (
     InfoDataApiView,
     GroupsApiView,
     WhoamiApiView,

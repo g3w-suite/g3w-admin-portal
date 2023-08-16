@@ -9,9 +9,9 @@ __date__      = '2020-03-31'
 __copyright__ = 'Copyright 2020, GIS3W'
 __license__   = "MPL 2.0"
 
-from django.db import models
+from django.db                import models
 from django.utils.translation import ugettext, ugettext_lazy as _
-from ordered_model.models import OrderedModel
+from ordered_model.models     import OrderedModel
 
 
 class Picture(OrderedModel):

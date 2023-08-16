@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+from __future__  import unicode_literals
 from django.apps import AppConfig
 from django.conf import settings
+
 import logging
 
 logger = logging.getLogger('g3wadmin.debug')

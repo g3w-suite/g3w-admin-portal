@@ -12,16 +12,16 @@ __copyright__ = 'Copyright 2015 - 2020, Gis3w'
 __license__   = "MPL 2.0"
 
 
-from django.forms import ModelForm, ValidationError, Form, CharField, DateField
+from django.forms             import ModelForm, ValidationError, Form, CharField, DateField
 from django.utils.translation import ugettext_lazy as _
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, HTML, Row, Field
-from crispy_forms.bootstrap import AppendedText
-from django_file_form.forms import FileFormMixin, UploadedFileField
+from crispy_forms.helper      import FormHelper
+from crispy_forms.layout      import Layout, Div, HTML, Row, Field
+from crispy_forms.bootstrap   import AppendedText
+from django_file_form.forms   import FileFormMixin, UploadedFileField
 
-from core.mixins.forms import G3WRequestFormMixin, G3WFormMixin
+from core.mixins.forms        import G3WRequestFormMixin, G3WFormMixin
 
-from .models import Picture
+from portal.models import Picture
 
 
 class PictureForm(G3WFormMixin, FileFormMixin, ModelForm):

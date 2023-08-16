@@ -11,7 +11,7 @@ __copyright__ = 'Copyright 2019, GIS3W'
 __license__   = "MPL 2.0"
 
 from django.conf.urls import url
-from .api.views import *
+from .api.views       import *
 
 
 urlpatterns = []
