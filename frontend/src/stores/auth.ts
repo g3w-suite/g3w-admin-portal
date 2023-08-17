@@ -159,13 +159,7 @@ function _jx_login(username: string, password: string) {
 }
 
 function _jx_logout() {
-  // Delete remote server cookies after logout (JWT Auth)
-  const drf_token = useAuthStore().user?.drf_token;
-  if (drf_token) {
-    location.href = get_admin_url(`/${useRootStore().locale}/portal/jx/logout/?__drftk=${drf_token}&redirect=${location.origin}`)
-  } else {
-    return axios.get<{ status: ELoginStatus; message?: string; }>(useRootStore().locale + '/portal/jx/logout/');
-  }
+  return axios.get<{ status: ELoginStatus; message?: string; }>(useRootStore().locale + '/portal/jx/logout/');
 }
 
 function _jwt_login(username: string, password: string) {
@@ -175,10 +169,15 @@ function _jwt_login(username: string, password: string) {
 }
 
 function _jwt_logout() {
-  return Promise.all([
-    axios.post<unknown>('/authjwt/api/token/blacklist/', { refresh: useAuthStore().refresh_token }), // JWT
-    _jx_logout()                                                                                     // Cookie
-  ]);
+  return axios
+    .post<unknown>('/authjwt/api/token/blacklist/', { refresh: useAuthStore().refresh_token })
+    .then(d => {
+      // Delete remote server cookies after logout (JWT Auth)
+      const drf_token = useAuthStore().user?.drf_token;
+      if (drf_token) {
+        location.href = get_admin_url(`/${useRootStore().locale}/portal/jx/logout/?__drftk=${drf_token}&redirect=${location.origin}`)
+      }
+    });
 }
 
 function _jwt_refresh() {
