@@ -23,7 +23,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from core.mixins.views import G3WAjaxDeleteViewMixin
 from .models import Picture
 from .forms import PictureForm
-
+from .utils  import get_response_headers
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LoginAjaxView(BaseFormView):
@@ -47,7 +47,20 @@ class LogoutAjaxView(View):
 
     def get(self, request, *args, **kwargs):
         auth_logout(self.request)
-        return JsonResponse({'status': 'ok', 'message': 'Logout'})
+
+        response = JsonResponse({'status': 'ok', 'message': 'Logout'}, )
+
+        h = get_response_headers(self, request)
+        if h is not None:
+            for k in h:
+                response[k] = h[k]
+
+        # 302 redirect after logout
+        if ('redirect' in request.GET):
+            response['Location'] = request.GET['redirect'] # TODO: ALLOWED_ORIGINS
+            response.status_code = 302
+
+        return response
 
 
 class PortalView(TemplateView):

@@ -21,6 +21,7 @@ import logging
 
 from .serializers import *
 from .filters import *
+from portal.utils import get_response_headers
 
 import requests
 import json
@@ -134,9 +135,18 @@ class WhoamiApiView(APIView):
                 'is_authenticated': False,
             }
 
+        headers = get_response_headers(self, request)
+        status = 200
+
+        # 302 redirect after login
+        if (user.is_authenticated and 'redirect' in request.GET):
+            headers['Location'] = request.GET['redirect'] # TODO: ALLOWED_ORIGINS
+            status = 302
+
         return Response(
             ret,
-            headers = self.get_response_headers(request)
+            status  = status,
+            headers = headers
         )
     
     def get_authenticated_user(self, request, token_key  = '__drftk'):
