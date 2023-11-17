@@ -1,5 +1,14 @@
 const window = globalThis as any;
 
+// convert relative base URLs to absolute (eg. '/' → 'http://localhost:8080/')
+if (window.API_BASE_URL) {
+  try {
+    new(window.API_BASE_URL);
+  } catch (error) {
+    window.API_BASE_URL = (new URL(window.API_BASE_URL, window.location)).toString();
+  }
+}
+
 const config  =  {
 
   favicon:    process.env.VUE_APP_FAVICON || window.PORTAL_FAVICON,

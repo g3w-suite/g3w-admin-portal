@@ -3,7 +3,10 @@
     "file": "portal-dialog-polyfill.esm.js"
   },
   "_portal-get_img_url.js": {
-    "file": "portal-get_img_url.js"
+    "file": "portal-get_img_url.js",
+    "imports": [
+      "index.html"
+    ]
   },
   "_portal-index.js": {
     "file": "portal-index.js",
