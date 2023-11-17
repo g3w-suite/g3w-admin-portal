@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', {
     user:                null,
     access_token:        localStorage.getItem('access_token') || '',
     refresh_token:       localStorage.getItem('refresh_token') || '',
-    crossOrigin:         !sameOrigin((window as any).location, config.api_base_url),
+    crossOrigin:         config.api_base_url == '/' ? false : !sameOrigin((window as any).location, config.api_base_url),
     useCookies:          !['Bearer', 'JWT'].includes(config.auth_mode),
     await_token_refresh: null,
   }),
