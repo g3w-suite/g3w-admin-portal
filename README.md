@@ -228,6 +228,29 @@ CORS_ALLOWED_ORIGINS    = [                      # NB: DIFFERENT PORT == DIFFERE
 # SESSION_COOKIE_SECURE   = CSRF_COOKIE_SECURE
 ```
 
+### Troubleshooting
+
+Make use of cookie authentication when the host is behind multiple proxies:
+
+```py
+PORTAL_AUTH_MODE = 'cookie'
+
+PORTAL_API_BASE_URL = '/'
+
+PORTAL_CUSTOM_JS = """
+// convert relative base URLs to absolute (eg. '/' → 'http://localhost:8080/')
+if (window.API_BASE_URL) {
+  try {
+    new(window.API_BASE_URL);
+  } catch (error) {
+    window.API_BASE_URL = (new URL(window.API_BASE_URL, window.location)).toString();
+  }
+}
+"""
+```
+
+See also: [MultipleProxyMiddleware](https://docs.djangoproject.com/en/3.2/ref/request-response/#django.http.HttpRequest.get_host)
+
 ## Demo content
 
 To load default portal pictures:
