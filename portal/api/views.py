@@ -37,7 +37,7 @@ class ProjectsApiView(PortalApiViewMixin, generics.ListAPIView):
     API list view for map projects
     """
 
-    queryset = Project.objects.all()
+    queryset = Project.objects.all().order_by('order')
     serializer_class = ProjectSerializer
     pagination_class = None
 
@@ -51,7 +51,7 @@ class GroupsApiView(PortalApiViewMixin, generics.ListAPIView):
     API list view for map groups
     """
 
-    queryset = Group.objects.all()
+    queryset = Group.objects.all().order_by('order')
     serializer_class = GroupSerializer
 
     filter_backends = (
@@ -64,7 +64,7 @@ class MacroGroupsApiView(PortalApiViewMixin, generics.ListAPIView):
     API list view for map macrogroups
     """
 
-    queryset = MacroGroup.objects.all()
+    queryset = MacroGroup.objects.all().order_by('order')
     serializer_class = MacroGroupSerializer
 
     filter_backends = (
