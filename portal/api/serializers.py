@@ -62,11 +62,11 @@ class ProjectSerializer(serializers.ModelSerializer):
         thumbnail = instance.thumbnail
         try:
             if instance.group.use_logo_client:
-                thumbnail = instance.group.header_logo_img.url
+                thumbnail = instance.group.header_logo_img
             else:
                 macrogroup = instance.group.macrogroups.get(
                     use_logo_client=True)
-                thumbnail = macrogroup.logo_img.url
+                thumbnail = macrogroup.logo_img
         except:
             pass
 
