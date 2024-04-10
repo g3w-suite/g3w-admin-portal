@@ -12,16 +12,17 @@ __copyright__ = 'Copyright 2019, GIS3W'
 __license__   = "MPL 2.0"
 
 
-from django.urls    import reverse
+from django.urls import reverse
 from rest_framework import serializers
 
-from core.models    import *
+from core.models import *
+from core.mixins.api.serializers import G3WRequestSerializer
 from qdjango.models import Project
 
-from portal.models  import Picture
+from portal.models import Picture
 
 
-class ProjectSerializer(serializers.ModelSerializer):
+class ProjectSerializer(G3WRequestSerializer, serializers.ModelSerializer):
     """
     Map group serializer for portal
     """
@@ -59,6 +60,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         media_url = getattr(settings, 'MEDIA_URL', '/media/')
 
         # Set thumbnail
+        # -----------------------------------------------------------
         thumbnail = instance.thumbnail
         try:
             if instance.group.use_logo_client:
@@ -71,6 +73,44 @@ class ProjectSerializer(serializers.ModelSerializer):
             pass
 
         feature['thumbnail'] = '%s%s' % (media_url, thumbnail)
+
+        # Set ogc links
+        # -----------------------------------------------------------
+
+        ogc_links = []
+        if self.request.user.has_perm('qdjango.view_project', instance):
+
+            # WMS
+            # ---
+            ogc_links.append({
+                'type': 'wms',
+                'url': reverse('OWS:ows', args=[instance.group.slug, 'qdjango', instance.pk])
+            })
+
+            # WFS and OGC API
+            # ---------------
+            # Check if WFS layers is active
+            wfs = False
+            for layer in instance.layer_set.all():
+                if layer.wfscapabilities is not None:
+                    wfs = True
+            if wfs:
+                ogc_links.append({
+                    'type': 'wfs',
+                    'url': reverse('OWS:ows', args=[instance.group.slug, 'qdjango', instance.pk])
+                })
+
+                # From G3S-SUITE >= 3.8
+                try:
+                    ogc_links.append({
+                        'type': 'wfs3',
+                        'url': reverse('OWS:ows-wfs3', args=[instance.group.slug, 'qdjango', instance.pk])
+                    })
+                except:
+                    pass
+
+            if ogc_links:
+                feature['ogc_links'] = ogc_links
 
         return feature
 
