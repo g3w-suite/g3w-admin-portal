@@ -17,7 +17,7 @@
       <figure>
         <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
       </figure>
-      <p class="grid">
+      <p>
         <a :href="get_admin_url(map_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="expand-arrows-alt" size="lg" />
           <span> {{ $t('maps.view') }}</span>
@@ -147,9 +147,9 @@ export default class Article extends Vue {
         <form method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form>
         <h3 style="margin: 0;">${this.title}</h3>
       </header>
-      <h4>OGC</h4>
+      <h4>OGC <sup><a href="https://docs.qgis.org/3.34/${this.$i18n.locale}/docs/server_manual/services/ogcapif.html" target="_blank" style="font-size:0.75em">&#x2139;&#xFE0F;</a></sup></h4>
       <ul>
-        ${ Object.entries(this.ogc_urls).map(([name, url]) => `<li><b>${name}:</b> <a href="${url}" target="_blank">${url}</a></li>`).join('') }
+        ${ Object.entries(this.ogc_urls).map(([name, url]) => `<li><b>${name}:</b> <a href="${get_admin_url(url)}" target="_blank">${get_admin_url(url)}</a></li>`).join('') }
       </ul>
     </article>`;
     //modal.innerHTML += (this.$refs.article as HTMLElement).outerHTML;
@@ -234,13 +234,15 @@ export default class Article extends Vue {
     margin-top: 0;
   }
 
-  @media (min-width: 992px) {
-    article.item-P:first-of-type > .grid > a {
-      text-align: center;
-    }
-    article.item-P:first-of-type > .grid > a > span {
+  article.item-P > div:first-of-type > p {
+    display: flex;
+    justify-content: space-around;
+    margin: 1em 0;
+    text-align: center;
+  }
+
+  article.item-P > div:first-of-type > p > a > span {
       display: block;
-    }
   }
 
   /**
