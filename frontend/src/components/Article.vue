@@ -222,7 +222,7 @@ export default class Article extends Vue {
     left: 0;
   }
 
-  .item-P > div:nth-of-type(2) {
+  .item-P > hgroup {
     grid-column: span 2;
   }
 
