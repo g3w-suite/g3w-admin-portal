@@ -9,6 +9,7 @@ export class Project extends SuperGroup {
   public readonly thumbnail: string;
   public readonly edit_url: string;
   public readonly map_url: string;
+  public readonly ogc_urls: { [key:string]: string };
   public readonly logo_img: string;
   public readonly logo_link: string | null;
 
@@ -20,6 +21,7 @@ export class Project extends SuperGroup {
     this.thumbnail   = data?.thumbnail   ?? '';
     this.edit_url    = data?.edit_url    ?? '';
     this.map_url     = data?.map_url     ?? '';
+    this.ogc_urls    = data?.ogc_urls    ?? {};
 
     this.logo_img    = this.thumbnail;
     this.logo_link   = this.map_url;

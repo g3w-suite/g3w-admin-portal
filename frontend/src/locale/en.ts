@@ -50,6 +50,7 @@ export const en: any = {
   },
 
   maps: {
+    dataset: 'Dataset',
     group: 'Group',
     edit: 'Edit',
     sview: 'View',

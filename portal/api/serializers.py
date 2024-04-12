@@ -66,9 +66,7 @@ class ProjectSerializer(G3WRequestSerializer, serializers.ModelSerializer):
             if instance.group.use_logo_client:
                 thumbnail = instance.group.header_logo_img
             else:
-                macrogroup = instance.group.macrogroups.get(
-                    use_logo_client=True)
-                thumbnail = macrogroup.logo_img
+                thumbnail = instance.group.macrogroups.get(use_logo_client=True).logo_img
         except:
             pass
 
@@ -77,40 +75,19 @@ class ProjectSerializer(G3WRequestSerializer, serializers.ModelSerializer):
         # Set ogc links
         # -----------------------------------------------------------
 
-        ogc_links = []
         if self.request.user.has_perm('qdjango.view_project', instance):
-
-            # WMS
-            # ---
-            ogc_links.append({
-                'type': 'wms',
-                'url': reverse('OWS:ows', args=[instance.group.slug, 'qdjango', instance.pk])
-            })
-
-            # WFS and OGC API
-            # ---------------
-            # Check if WFS layers is active
-            wfs = False
-            for layer in instance.layer_set.all():
-                if layer.wfscapabilities is not None:
-                    wfs = True
-            if wfs:
-                ogc_links.append({
-                    'type': 'wfs',
-                    'url': reverse('OWS:ows', args=[instance.group.slug, 'qdjango', instance.pk])
-                })
-
-                # From G3S-SUITE >= 3.8
-                try:
-                    ogc_links.append({
-                        'type': 'wfs3',
-                        'url': reverse('OWS:ows-wfs3', args=[instance.group.slug, 'qdjango', instance.pk])
-                    })
-                except:
-                    pass
-
-            if ogc_links:
-                feature['ogc_links'] = ogc_links
+            args = [instance.group.slug, 'qdjango', instance.pk]
+            wfs = wfs3 = any(layer.wfscapabilities is not None for layer in instance.layer_set.all())
+            try:
+                wfs3 = reverse('OWS:ows-wfs3', args=args) # From G3W-SUITE >= 3.8
+            except:
+                pass
+            feature['ogc_urls'] = {
+                'wms': reverse('OWS:ows', args=args),
+                # Add WFS and OGC API when WFS layers are active
+                **({ 'wfs': reverse('OWS:ows', args=args) } if wfs else {}),
+                **({ 'wfs3': wfs3 } if wfs3 else {}),
+            }
 
         return feature
 

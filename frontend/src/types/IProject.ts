@@ -5,4 +5,5 @@ export interface IProject {
   thumbnail: string | null;
   edit_url: string | null;
   map_url: string | null;
+  ogc_urls: { [key:string]: string } | null;
 }

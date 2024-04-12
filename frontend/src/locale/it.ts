@@ -51,6 +51,7 @@ export const it: any = {
   },
 
   maps: {
+    dataset: 'Dataset',
     group: 'Gruppo',
     edit: 'Modifica',
     view: 'Visualizza',
