@@ -233,6 +233,16 @@ export default class Article extends Vue {
   article.item-P:first-of-type {
     margin-top: 0;
   }
+
+  @media (min-width: 992px) {
+    article.item-P:first-of-type > .grid > a {
+      text-align: center;
+    }
+    article.item-P:first-of-type > .grid > a > span {
+      display: block;
+    }
+  }
+
   /**
    * GROUP ARTICLE
    */
