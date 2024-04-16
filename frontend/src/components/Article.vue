@@ -24,7 +24,7 @@
         </a>
         <a v-if="ogc_urls" href="#" @click.prevent="showMetadata">
           <font-awesome-icon icon="layer-group" size="lg" />
-          <span> {{ $t('maps.dataset') }}</span>
+          <span> {{ $t('maps.services') }}</span>
         </a>
         <a v-if="has_edit_url()" :href="get_admin_url(edit_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="pencil-alt" size="lg" />
@@ -147,7 +147,7 @@ export default class Article extends Vue {
         <form method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form>
         <h3 style="margin: 0;">${this.title}</h3>
       </header>
-      <h4>OGC API <sup><a href="https://docs.qgis.org/3.34/${this.$i18n.locale}/docs/server_manual/services/ogcapif.html" target="_blank" style="font-size:0.75em">&#x2139;&#xFE0F;</a></sup></h4>
+      <h4>${this.$t('ogc_services')} <sup><a href="https://docs.qgis.org/3.34/${this.$i18n.locale}/docs/server_manual/services.html" target="_blank" style="font-size:0.75em">&#x2139;&#xFE0F;</a></sup></h4>
       <ul>
         ${ Object.entries(this.ogc_urls).map(([name, url]) => `<li><b>${name}:</b> <a href="${get_admin_url(url)}" target="_blank">${get_admin_url(url)}</a></li>`).join('') }
       </ul>

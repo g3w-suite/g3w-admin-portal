@@ -55,6 +55,8 @@ export const useRootStore = defineStore('root', {
 
       const refresh_data = !ready || i18n.global.locale !== to.params.lang; // TODO: move this within switchLang() ?
 
+      console.log('REFRESH', refresh_data);
+
       // update html lang attribute
       await this.loadLanguageAsync(to.params.lang as lang_code);
 

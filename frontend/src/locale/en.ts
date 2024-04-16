@@ -50,14 +50,16 @@ export const en: any = {
   },
 
   maps: {
-    dataset: 'Dataset',
+    services: 'Services',
     group: 'Group',
     edit: 'Edit',
-    sview: 'View',
+    view: 'View',
   },
 
   readmore: 'Read more »',
   readless: '« Read less',
+
+  ogc_services: 'Network services - OGC',
 
 };
 

@@ -89,6 +89,11 @@ export const useDataStore = defineStore('data', {
           sg = await this.fetchMacroGroupData();
           break;
       }
+
+      console.trace();
+      console.log('LOADING', useRootStore().isLoading);
+      console.log(useRootStore().currentRoute.name, false === sg);
+      
       // Redirect users to 404 page when they to visit an inexistent
       // group URL (also applies to unauthenticated user sessions)
       if (false === sg) {
@@ -135,6 +140,7 @@ export const useDataStore = defineStore('data', {
           useRootStore().hideLoader();
         }
         const activeGroup = this.groups[parseInt((group || id) as string)];
+        console.log(activeGroup, JSON.stringify(this.groups));
         if (!activeGroup) {
           return false; // inexistent group ID or unauthenticated user
         }

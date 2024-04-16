@@ -51,7 +51,7 @@ export const it: any = {
   },
 
   maps: {
-    dataset: 'Dataset',
+    services: 'Servizi',
     group: 'Gruppo',
     edit: 'Modifica',
     view: 'Visualizza',
@@ -59,6 +59,8 @@ export const it: any = {
 
   readmore: 'Leggi di più »',
   readless: '« Leggi di meno',
+
+  ogc_services: 'Servizi di rete - OGC',
 
 };
 
