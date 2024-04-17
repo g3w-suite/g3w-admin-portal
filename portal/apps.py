@@ -33,3 +33,5 @@ class PortalConfig(AppConfig):
     except ImportError:
         logger.info('[PORTAL] optional "requirements_authjwt.txt" packages not installed')
         pass
+    except ModuleNotFoundError:
+        pass
