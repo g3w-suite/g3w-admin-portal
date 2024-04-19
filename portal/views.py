@@ -29,6 +29,7 @@ from portal.models                import Picture
 from portal.forms                 import PictureForm
 from portal.utils                 import get_response_headers
 
+from importlib.metadata           import version as get_version
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LoginAjaxView(BaseFormView):
@@ -94,6 +95,8 @@ class PortalView(TemplateView):
             
             # DEPRECATED since v1.0.0
             'PORTAL_COLOR': getattr(settings, 'PORTAL_COLOR', 'violet'),
+
+            'PORTAL_VERSION': 'g3w-portal v' + get_version('portal'),
 
         }
 
