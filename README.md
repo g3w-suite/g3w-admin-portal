@@ -21,7 +21,7 @@ git checkout
 
 ### PIP install (recommended)
 
-**NB** whatever your final purpose is (deploying or contributing), make sure to download this repository outside of the [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.5.x/g3w-admin) applications folder (that's why here we are using the python [flat-layout](https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#flat-layout) packaging structure). If in doubt the `/shared-volume/g3w-admin-portal` folder is a great place to start:
+**NB** whatever your final purpose is (deploying or contributing), make sure to download this repository outside of the [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.8.x/g3w-admin) applications folder (that's why here we are using the python [flat-layout](https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#flat-layout) packaging structure). If in doubt the `/shared-volume/plugins/g3w-admin-portal` folder is a great place to start:
 
 ```sh
 # Install module from bitbucket (v1.0.0)
@@ -70,7 +70,7 @@ pip3 install ...
 
 # Configuration
 
-Here are some reccomended local_settings.py (same site installation, alongside a [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.5.x/g3w-admin) instance):
+Here are some reccomended local_settings.py (same site installation, alongside a [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.8.x/g3w-admin) instance):
 
 ```python
 ...
@@ -241,7 +241,7 @@ PORTAL_CUSTOM_JS = """
 // convert relative base URLs to absolute (eg. '/' → 'http://localhost:8080/')
 if (window.API_BASE_URL) {
   try {
-    new(window.API_BASE_URL);
+    new URL(window.API_BASE_URL);
   } catch (error) {
     window.API_BASE_URL = (new URL(window.API_BASE_URL, window.location)).toString();
   }
@@ -319,8 +319,8 @@ make push-tags         # update remote git tags (local --> remote)
 ---
 
 **Compatibile with:**
-[![g3w-admin version](https://img.shields.io/badge/g3w--admin-3.6-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-admin/tree/v.3.6.x)
-[![g3w-suite-docker version](https://img.shields.io/badge/g3w--suite--docker-3.6-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-suite-docker/tree/v3.6.x)
+[![g3w-admin version](https://img.shields.io/badge/g3w--admin-3.8-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-admin/tree/v.3.8.x)
+[![g3w-suite-docker version](https://img.shields.io/badge/g3w--suite--docker-3.8-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-suite-docker/tree/v3.8.x)
 
 ---
 
