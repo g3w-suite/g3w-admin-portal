@@ -17,10 +17,14 @@
       <figure>
         <img loading="lazy" :src="img_url" @load="get_average_color" :alt="title || description" />
       </figure>
-      <p class="grid">
+      <p>
         <a :href="get_admin_url(map_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="expand-arrows-alt" size="lg" />
           <span> {{ $t('maps.view') }}</span>
+        </a>
+        <a v-if="ogc_urls" href="#" @click.prevent="showMetadata">
+          <font-awesome-icon icon="layer-group" size="lg" />
+          <span> {{ $t('maps.services') }}</span>
         </a>
         <a v-if="has_edit_url()" :href="get_admin_url(edit_url)" rel="noopener noreferrer" target="_blank">
           <font-awesome-icon icon="pencil-alt" size="lg" />
@@ -30,7 +34,7 @@
     </div>
 
     <hgroup>
-      <h3>{{title}}</h3>
+      <h3>{{ title }}</h3>
       <div v-html="description"></div>
 
       <!-- READ-MORE (v1) -->
@@ -93,6 +97,10 @@ export default class Article extends Vue {
     return (this.item as Project).map_url;
   }
 
+  get ogc_urls(): { [key:string]: string } {
+    return (this.item as Project).ogc_urls;
+  }
+
   get className(): string {
     return EBoxType[this.type] + '-' + this.item.id + ' item-' + EBoxType[this.type];
   }
@@ -129,6 +137,23 @@ export default class Article extends Vue {
    */
   public get_admin_url(folder: string): string {
     return get_admin_url(folder);
+  }
+
+  public showMetadata() {
+    const modal = (this.$refs.modal as any).$refs.dialog;
+    modal.innerHTML = `
+    <article style="background-color: #fff; max-width: min(90%, 960px); min-width: 70vw; margin: 0;">
+      <header style="margin-bottom: 1rem;">
+        <form method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form>
+        <h3 style="margin: 0;">${this.title}</h3>
+      </header>
+      <h4>${this.$t('ogc_services')} <sup><a href="https://docs.qgis.org/3.34/${this.$i18n.locale}/docs/server_manual/services.html" target="_blank" style="font-size:0.75em">&#x2139;&#xFE0F;</a></sup></h4>
+      <ul>
+        ${ Object.entries(this.ogc_urls).map(([name, url]) => `<li><b>${name}:</b> <a href="${get_admin_url(url)}" target="_blank">${get_admin_url(url)}</a></li>`).join('') }
+      </ul>
+    </article>`;
+    //modal.innerHTML += (this.$refs.article as HTMLElement).outerHTML;
+    modal.showModal();
   }
 
   public showModal() {
@@ -197,7 +222,7 @@ export default class Article extends Vue {
     left: 0;
   }
 
-  .item-P hgroup {
+  .item-P > hgroup {
     grid-column: span 2;
   }
 
@@ -208,6 +233,18 @@ export default class Article extends Vue {
   article.item-P:first-of-type {
     margin-top: 0;
   }
+
+  article.item-P > div:first-of-type > p {
+    display: flex;
+    justify-content: space-around;
+    margin: 1em 0;
+    text-align: center;
+  }
+
+  article.item-P > div:first-of-type > p > a > span {
+      display: block;
+  }
+
   /**
    * GROUP ARTICLE
    */

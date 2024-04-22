@@ -89,6 +89,7 @@ export const useDataStore = defineStore('data', {
           sg = await this.fetchMacroGroupData();
           break;
       }
+      
       // Redirect users to 404 page when they to visit an inexistent
       // group URL (also applies to unauthenticated user sessions)
       if (false === sg) {

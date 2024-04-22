@@ -78,9 +78,10 @@ export const useRootStore = defineStore('root', {
     async fetchData(refresh = false) {
       if (refresh) {
         await useDataStore().reset();
-        await useDataStore().setActiveGroup();
       }
+
       this.showLoader();
+
       await Promise.allSettled([
         useDataStore().fetchInfo(),
         useDataStore().fetchPictures(),
@@ -88,7 +89,12 @@ export const useRootStore = defineStore('root', {
         useDataStore().fetchGroupsWithNoMacroGroup(),
         useDataStore().fetchProjects(),
       ]);
+
       this.hideLoader();
+
+      if (refresh) {
+        await useDataStore().setActiveGroup();
+      }
     },
 
     switchLang(lang: lang_code) {

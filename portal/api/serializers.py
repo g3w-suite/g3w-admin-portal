@@ -12,16 +12,17 @@ __copyright__ = 'Copyright 2019, GIS3W'
 __license__   = "MPL 2.0"
 
 
-from django.urls    import reverse
+from django.urls import reverse
 from rest_framework import serializers
 
-from core.models    import *
+from core.models import *
+from core.mixins.api.serializers import G3WRequestSerializer
 from qdjango.models import Project
 
-from portal.models  import Picture
+from portal.models import Picture
 
 
-class ProjectSerializer(serializers.ModelSerializer):
+class ProjectSerializer(G3WRequestSerializer, serializers.ModelSerializer):
     """
     Map group serializer for portal
     """
@@ -59,18 +60,34 @@ class ProjectSerializer(serializers.ModelSerializer):
         media_url = getattr(settings, 'MEDIA_URL', '/media/')
 
         # Set thumbnail
+        # -----------------------------------------------------------
         thumbnail = instance.thumbnail
         try:
             if instance.group.use_logo_client:
                 thumbnail = instance.group.header_logo_img
             else:
-                macrogroup = instance.group.macrogroups.get(
-                    use_logo_client=True)
-                thumbnail = macrogroup.logo_img
+                thumbnail = instance.group.macrogroups.get(use_logo_client=True).logo_img
         except:
             pass
 
         feature['thumbnail'] = '%s%s' % (media_url, thumbnail)
+
+        # Set ogc links
+        # -----------------------------------------------------------
+
+        if self.request.user.has_perm('qdjango.view_project', instance):
+            args = [instance.group.slug, 'qdjango', instance.pk]
+            wfs = wfs3 = any(layer.wfscapabilities is not None for layer in instance.layer_set.all())
+            try:
+                wfs3 = reverse('OWS:ows-wfs3', args=args) # From G3W-SUITE >= 3.8
+            except:
+                pass
+            feature['ogc_urls'] = {
+                'WMS': reverse('OWS:ows', args=args),
+                # Add WFS and OGC API when WFS layers are active
+                **({ 'WFS': reverse('OWS:ows', args=args) } if wfs else {}),
+                **({ 'WFS3': wfs3 } if wfs3 else {}),
+            }
 
         return feature
 

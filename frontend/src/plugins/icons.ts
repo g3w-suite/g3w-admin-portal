@@ -24,6 +24,7 @@ import {
   faInfo,
   faKey,
   faLanguage,
+  faLayerGroup,
   faMapMarkerAlt,
   faNewspaper,
   faPencilAlt,
@@ -70,6 +71,7 @@ library.add(
   faXmark,
   faArrowUpRightFromSquare,
   faChevronUp,
+  faLayerGroup,
 );
 
 export { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';

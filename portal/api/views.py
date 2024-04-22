@@ -45,6 +45,14 @@ class ProjectsApiView(PortalApiViewMixin, generics.ListAPIView):
         ProjectsAPIFilter,
     )
 
+    def get_serializer(self, *args, **kwargs):
+
+        # Add request instance
+        kwargs.update({
+            'request': self.request
+        })
+        return super().get_serializer(*args, **kwargs)
+
 
 class GroupsApiView(PortalApiViewMixin, generics.ListAPIView):
     """
