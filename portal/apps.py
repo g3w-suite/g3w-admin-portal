@@ -10,7 +10,11 @@ logger = logging.getLogger('g3wadmin.debug')
 class PortalConfig(AppConfig):
     name = 'portal'
 
-    settings.MIDDLEWARE = [ 'portal.middleware.PartitionedCookieMiddleware' ] + settings.MIDDLEWARE
+    # DEPRECATED: since chrome 115
+    # see: https://developer.chrome.com/blog/bounce-tracking-mitigations-dev-trial
+    # see: https://github.com/privacycg/nav-tracking-mitigations/blob/main/bounce-tracking-explainer.md
+
+    # settings.MIDDLEWARE = [ 'portal.middleware.PartitionedCookieMiddleware' ] + settings.MIDDLEWARE
 
     # OPTIONAL packages from "requirements_authjwt.txt"
     try:

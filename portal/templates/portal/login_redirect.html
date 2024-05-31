@@ -1,0 +1,54 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+    <head>
+        <title>login redirect</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
+        <meta http-equiv="refresh" content="{{ REFRESH_DELAY }};url={{ REDIRECT_URL }}">
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#x1F6A8;</text></svg>">
+        <style>
+            /* CSS reset */
+            html, body, div, span, h1, h2, h3, p, a, img {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                font-size: 100%;
+                font: inherit;
+                vertical-align: baseline;
+            }
+
+            /* Style */
+            html,
+            body {
+                font-family: sans-serif;
+                font-size: 16px;
+                line-height: 1.4;
+                width: 100%;
+                height: 100%;
+                background: #fff;
+            }
+
+            /* Language selection */
+            html[lang="en"] [lang]:not([lang="en"]),
+            html[lang="it"] [lang]:not([lang="it"]) {
+                display:none
+            }
+            .spin::before,
+            .spin::after        { content: ''; height: 10em; border-radius: 50%; background-color: #f39c12; opacity: 0.6; position: fixed; inset: 0;  animation: bounce 2.0s infinite ease-in-out; aspect-ratio: 1; margin: auto; }
+            .spin::after        { animation-delay: -1.0s; }
+            @-webkit-keyframes bounce { 0%, 100% { transform: scale(0) }  50% { transform: scale(1) } }
+            @keyframes bounce         { 0%, 100% { transform: scale(0); } 50% { transform: scale(1); } }
+        </style>
+    </head>
+    <body class="spin">
+        <div style="position: fixed;inset: auto 0 1em 0;text-align: center;">
+            <span lang="en">Page will redirect in <span class="tick">{{ REFRESH_DELAY }}</span> seconds</span>
+            <span lang="it">La pagina verrà reindirizzata in <span class="tick">{{ REFRESH_DELAY }}</span> secondi</span>
+            <pre>&#x1F449; <a href="{{ REDIRECT_URL }}">{{ REDIRECT_URL }}</a></pre>
+        </div>
+        <script>setInterval(() => document.querySelectorAll('.tick').forEach(t => t.innerHTML = Math.max(parseInt(t.innerHTML) - 1, 0)), 1000);</script>
+    </body>
+</html>
