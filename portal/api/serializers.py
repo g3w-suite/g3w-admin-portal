@@ -86,7 +86,7 @@ class ProjectSerializer(G3WRequestSerializer, serializers.ModelSerializer):
                 'WMS': reverse('OWS:ows', args=args),
                 # Add WFS and OGC API when WFS layers are active
                 **({ 'WFS': reverse('OWS:ows', args=args) } if wfs else {}),
-                **({ 'WFS3': wfs3 } if wfs3 else {}),
+                **({ 'WFS3': wfs3 } if isinstance(wfs3, str) else {}),
             }
 
         return feature

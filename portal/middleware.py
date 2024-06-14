@@ -112,6 +112,3 @@ class AuthByDRFTokenMiddleware(object):
             return HttpResponsePermanentRedirect(request.path)
         else:
             return response
-
-
-

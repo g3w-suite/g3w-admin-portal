@@ -17,6 +17,10 @@ from rest_framework.views            import APIView
 from rest_framework.response         import Response
 from rest_framework.authtoken.models import Token
 
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.template import loader
+
 import logging
 
 from portal.api.serializers          import *
@@ -122,9 +126,9 @@ class WhoamiApiView(APIView):
         status = 200
 
         # 302 redirect after login
-        if (user.is_authenticated and 'redirect' in request.GET):
-            headers['Location'] = request.GET['redirect'] # TODO: ALLOWED_ORIGINS
-            status = 302
+        if (user.is_authenticated and 'redirect' in request.GET): # TODO: ALLOWED_ORIGINS
+            return render(request, "portal/login_redirect.html", {"REDIRECT_URL": request.GET['redirect'], "REFRESH_DELAY": 3 })
+
 
         return Response(
             data,
