@@ -62,13 +62,15 @@ class ProjectSerializer(G3WRequestSerializer, serializers.ModelSerializer):
         # Set thumbnail
         # -----------------------------------------------------------
         thumbnail = instance.thumbnail
-        try:
-            if instance.group.use_logo_client:
-                thumbnail = instance.group.header_logo_img
-            else:
-                thumbnail = instance.group.macrogroups.get(use_logo_client=True).logo_img
-        except:
-            pass
+
+        if (not instance.thumbnail):
+            try:
+                if instance.group.use_logo_client:
+                    thumbnail = instance.group.header_logo_img
+                else:
+                    thumbnail = instance.group.macrogroups.get(use_logo_client=True).logo_img
+            except:
+                pass
 
         feature['thumbnail'] = '%s%s' % (media_url, thumbnail)
 
