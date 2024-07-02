@@ -3,7 +3,7 @@ import { EBoxType } from '@/types/EBoxType';
 export class SuperGroup {
 
   public title: string;
-  public order: number;
+  public order: string;
 
   /**
    * Random key to be used within v-for loops
@@ -12,7 +12,7 @@ export class SuperGroup {
 
   constructor() {
     this.title = '';
-    this.order = 0;
+    this.order = '';
   }
 
   get InstanceOf() {
