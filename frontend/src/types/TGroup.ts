@@ -27,7 +27,7 @@ export class Group extends SuperGroup {
       this.title = this.name;
     }
 
-    this.order = parseFloat("1000." + order);
+    this.order = "group_" + order;
   }
 
   get Key() {

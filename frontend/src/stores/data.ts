@@ -14,6 +14,9 @@ import { defineStore } from 'pinia';
 
 import { useRootStore } from './root';
 
+// natural sort
+const compare = new Intl.Collator('en', { numeric: true, sensitivity: 'accent' }).compare;
+
 interface IDataState {
   projects: Project[];
   macroGroups: { [key: number]: MacroGroup; };
@@ -52,7 +55,7 @@ export const useDataStore = defineStore('data', {
     superGroups: (state): SuperGroup[] => [
       ...Object.values(state.macroGroups),
       ...Object.values(state.groupsWithNoMacroGroup),
-    ].sort((a, b) => a.order - b.order),
+    ].sort((a, b) => compare(a.order, b.order)),
 
     filteredProjects: (state): Project[] => {
       const s = state.search.toLowerCase();
