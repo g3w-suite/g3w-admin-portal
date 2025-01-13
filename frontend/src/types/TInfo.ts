@@ -16,6 +16,7 @@ export class Info {
   public readonly login_description: string;
   public readonly login_title: string;
   public readonly login_url: string;
+  public readonly social_auth_providers: { [key:string]: string };
   public readonly logout_url: string;
   public readonly suite_logo: string;
   public readonly url_suite_logo: string;
@@ -58,6 +59,7 @@ export class Info {
     this.login_title            = data?.login_title            ?? '';
     this.login_url              = data?.login_url              ?? '';
     this.logout_url             = data?.logout_url             ?? '';
+    this.social_auth_providers  = data?.social_auth_providers  ?? {};
     this.suite_logo             = data?.suite_logo             ?? '';
     this.url_suite_logo         = data?.url_suite_logo         ?? '';
     this.credits                = data?.credits                ?? '';

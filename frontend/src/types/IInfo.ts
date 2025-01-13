@@ -14,6 +14,7 @@ export interface IInfo {
   login_description: string;
   login_title: string;
   login_url: string;
+  social_auth_providers?: { [key:string]: string },
   logout_url: string;
   suite_logo: string;
   url_suite_logo: string;
