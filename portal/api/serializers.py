@@ -17,6 +17,9 @@ from rest_framework import serializers
 
 from core.models import *
 from core.mixins.api.serializers import G3WRequestSerializer
+
+from allauth.socialaccount.templatetags.socialaccount import provider_login_url, get_providers
+
 from qdjango.models import Project
 
 from portal.models import Picture
@@ -191,7 +194,7 @@ class GetUnlanguageFieldsMixin(object):
         return super(GetUnlanguageFieldsMixin, self).get_field_names(declared_fields, info)
 
 
-class GenericSuiteDataSerializer(GetUnlanguageFieldsMixin, serializers.ModelSerializer):
+class GenericSuiteDataSerializer(G3WRequestSerializer, GetUnlanguageFieldsMixin, serializers.ModelSerializer):
     """
     Generic suite data
     """
@@ -213,6 +216,16 @@ class GenericSuiteDataSerializer(GetUnlanguageFieldsMixin, serializers.ModelSeri
         if login_url:
             ret['login_url'] = settings.LOGIN_URL
             ret['logout_url'] = reverse('logout')
+
+        # Add social auth login urls
+        ctx = {
+            'request': self.request
+        }
+        providers = get_providers(ctx)
+        if len(providers):
+            ret['social_auth_providers'] = {}
+            for provider in get_providers(ctx):
+                ret['social_auth_providers'][provider.id] = provider_login_url(ctx, provider)
 
         return ret
 
