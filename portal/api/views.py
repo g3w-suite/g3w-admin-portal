@@ -17,6 +17,7 @@ from rest_framework.views            import APIView
 from rest_framework.response         import Response
 from rest_framework.authtoken.models import Token
 
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
@@ -35,8 +36,17 @@ class PortalApiViewMixin(object):
     # remove pagination for portal api
     pagination_class = None
 
+class PortalApiViewRequestMixin(object):
 
-class ProjectsApiView(PortalApiViewMixin, generics.ListAPIView):
+    def get_serializer(self, *args, **kwargs):
+
+        # Add request instance
+        kwargs.update({
+            'request': self.request
+        })
+        return super().get_serializer(*args, **kwargs)
+
+class ProjectsApiView(PortalApiViewRequestMixin, PortalApiViewMixin, generics.ListAPIView):
     """
     API list view for map projects
     """
@@ -48,14 +58,6 @@ class ProjectsApiView(PortalApiViewMixin, generics.ListAPIView):
     filter_backends = (
         ProjectsAPIFilter,
     )
-
-    def get_serializer(self, *args, **kwargs):
-
-        # Add request instance
-        kwargs.update({
-            'request': self.request
-        })
-        return super().get_serializer(*args, **kwargs)
 
 
 class GroupsApiView(PortalApiViewMixin, generics.ListAPIView):
@@ -84,7 +86,7 @@ class MacroGroupsApiView(PortalApiViewMixin, generics.ListAPIView):
     )
 
 
-class InfoDataApiView(generics.RetrieveAPIView):
+class InfoDataApiView(PortalApiViewRequestMixin, generics.RetrieveAPIView):
     """
     API for Generic suite data
     """
@@ -94,6 +96,8 @@ class InfoDataApiView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.get_queryset()[0]
+
+
 
 class WhoamiApiView(APIView):
     """
