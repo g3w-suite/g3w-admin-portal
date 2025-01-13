@@ -40,7 +40,7 @@
 
         <!-- DJANGO-ALLAUTH: since g3w-admin@3.9 (see: https://g3w-suite.readthedocs.io/en/v3.9.x/social_authentication.html) -->
         <template v-for="(url, provider) in settings.social_auth_providers">
-          <a :href="(url as string)" role="button" class="contrast outline" style="display: block; margin-bottom: var(--spacing);">
+          <a :href="url" role="button" class="contrast outline" style="display: block; margin-bottom: var(--spacing);">
             <svg v-if="'google' === provider" viewBox="0 0 48 48" style="width: 24px; vertical-align: sub;">
               <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85A23.09 23.09 0 0 0 24 0 23.99 23.99 0 0 0 2.56 13.22l7.98 6.19A14.33 14.33 0 0 1 24 9.5z"/>
               <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94a11.16 11.16 0 0 1-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
