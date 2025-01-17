@@ -13,7 +13,7 @@ __license__   = "MPL 2.0"
 
 
 from django.forms             import ModelForm, ValidationError, Form, CharField, DateField
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from crispy_forms.helper      import FormHelper
 from crispy_forms.layout      import Layout, Div, HTML, Row, Field
 from crispy_forms.bootstrap   import AppendedText

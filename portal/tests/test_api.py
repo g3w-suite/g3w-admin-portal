@@ -9,8 +9,8 @@ __date__      = '2019-09-04'
 __copyright__ = 'Copyright 2019, GIS3W'
 __license__   = "MPL 2.0"
 
-# from django.conf import settings
-from django.urls import reverse
+from django.conf import settings
+from django.urls import reverse, get_resolver
 from rest_framework.test import APIClient
 import json
 
@@ -250,6 +250,10 @@ class PortalTestAPI(PortalTestsBase):
 
         # instance API client
         client = APIClient()
+
+        for k in get_resolver().reverse_dict:
+            if isinstance(k, str):
+                print(k)
 
         # user not logged(anonymoususer)
         url = reverse('portal-infodata-api-list')

@@ -10,7 +10,7 @@ __copyright__ = 'Copyright 2020, GIS3W'
 __license__   = "MPL 2.0"
 
 from django.db                import models
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.utils.translation import gettext, gettext_lazy as _
 from ordered_model.models     import OrderedModel
 
 

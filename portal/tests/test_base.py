@@ -9,12 +9,12 @@ from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup
 
 import os
 
-CURRENT_PATH    = os.path.dirname(os.path.realpath(__file__))
-TEST_BASE_PATH  = '/data/'
+CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
+TEST_BASE_PATH = '/data/'
 DATASOURCE_PATH = '{}{}'.format(CURRENT_PATH, TEST_BASE_PATH)
-QGS_DB          = 'portal_test_project.sqlite'
-QGS_FILE        = 'portal_test_project.qgs'
-QGS_FILE_2      = 'portal_test_project2.qgs'
+QGS_DB = 'portal_test_project.sqlite'
+QGS_FILE = 'portal_test_project.qgs'
+QGS_FILE_2 = 'portal_test_project2.qgs'
 
 @override_settings(
     CACHES = {
