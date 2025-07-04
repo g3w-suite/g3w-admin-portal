@@ -49,7 +49,7 @@
         window.PORTAL_LANG_BUTTON       = {{ SETTINGS.PORTAL_LANG_BUTTON | yesno:"true,false" }};
         window.PORTAL_THEME             = '{% if SETTINGS.PORTAL_THEME %}{{ SETTINGS.PORTAL_THEME }}{% else %}light{% endif %}';
         window.PORTAL_AUTH_MODE         = '{% if SETTINGS.PORTAL_AUTH_MODE %}{{ SETTINGS.PORTAL_AUTH_MODE }}{% else %}cookie{% endif %}'; {# 'cookie' | 'Bearer' | 'JWT' #}
-        window.PORTAL_MAX_HOME_ARTICLES = {% if SETTINGS.PORTAL_MAX_HOME_ARTICLES is None %}10{% else %}{{ SETTINGS.PORTAL_MAX_HOME_ARTICLES }}{% endif %};
+        window.PORTAL_MAX_HOME_ARTICLES = {% if SETTINGS.PORTAL_MAX_HOME_ARTICLES is None %}9{% else %}{{ SETTINGS.PORTAL_MAX_HOME_ARTICLES }}{% endif %};
         window.PORTAL_HOME_ARTICLES     = {{ SETTINGS.PORTAL_HOME_ARTICLES | yesno:"true,false" }};
         window.PORTAL_HISTORY_MODE      = '{% if SETTINGS.PORTAL_HISTORY_MODE %}{{ SETTINGS.PORTAL_HISTORY_MODE }}{% else %}hash{% endif %}';           {# 'hash' | 'history' | 'abstract' #}
     </script>
