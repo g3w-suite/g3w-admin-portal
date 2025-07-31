@@ -25,6 +25,17 @@
     <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
     {% endif %}
 
+    <style>
+        body:not(:has(> main))::before,
+        body:not(:has(> main))::after  { content: ''; height: 10em; border-radius: 50%; background-color: #f39c12; opacity: 0.6; position: fixed; inset: 0;  animation: bounce 2.0s infinite ease-in-out; aspect-ratio: 1; margin: auto; }
+        body:not(:has(> main))::after  { animation-delay: -1.0s; }
+        @keyframes bounce              { 0%, 100% { transform: scale(0); } 50% { transform: scale(1); } }
+        @media (prefers-reduced-motion: reduce) {
+            :root body:not(:has(> main))::before,
+            :root body:not(:has(> main))::after { animation: bounce 2.0s infinite ease-in-out !important; }
+        }
+    </style>
+
     {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}
         {% for css in SETTINGS.G3WSUITE_CUSTOM_CSS %}
             <link rel="stylesheet" href="{{ css }}" />
