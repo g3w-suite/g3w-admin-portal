@@ -27,7 +27,7 @@
 
     <style>
         body:not(:has(> main))::before,
-        body:not(:has(> main))::after  { content: ''; height: 10em; border-radius: 50%; background-color: #f39c12; opacity: 0.6; position: fixed; inset: 0;  animation: bounce 2.0s infinite ease-in-out; aspect-ratio: 1; margin: auto; }
+        body:not(:has(> main))::after  { content: ''; height: 10em; border-radius: 50%; background-color: var(--primary); opacity: 0.6; position: fixed; inset: 0;  animation: bounce 2.0s infinite ease-in-out; aspect-ratio: 1; margin: auto; }
         body:not(:has(> main))::after  { animation-delay: -1.0s; }
         @keyframes bounce              { 0%, 100% { transform: scale(0); } 50% { transform: scale(1); } }
         @media (prefers-reduced-motion: reduce) {
