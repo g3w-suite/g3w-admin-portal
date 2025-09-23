@@ -10,21 +10,12 @@ logger = logging.getLogger('g3wadmin.debug')
 class PortalConfig(AppConfig):
     name = 'portal'
 
-    # DEPRECATED: since chrome 115
-    # see: https://developer.chrome.com/blog/bounce-tracking-mitigations-dev-trial
-    # see: https://github.com/privacycg/nav-tracking-mitigations/blob/main/bounce-tracking-explainer.md
-
-    # settings.MIDDLEWARE = [ 'portal.middleware.PartitionedCookieMiddleware' ] + settings.MIDDLEWARE
-
     # OPTIONAL packages from "requirements_authjwt.txt"
     try:
         from corsheaders.middleware import CorsMiddleware
-        from django_samesite_none.middleware import SameSiteNoneMiddleware
-        logger.info('[PORTAL] setup optional packages: "corsheaders", "django_samesite_none"')
+        logger.info('[PORTAL] setup optional packages: "corsheaders"')
 
-        # TODO: uninstall "django-samesite-none" in Django >= v3.1
         settings.MIDDLEWARE = [
-            'django_samesite_none.middleware.SameSiteNoneMiddleware',
             'corsheaders.middleware.CorsMiddleware',
         ] + settings.MIDDLEWARE
 

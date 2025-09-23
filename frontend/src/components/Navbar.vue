@@ -271,6 +271,7 @@ import { useRootStore, useAuthStore, useDataStore } from '@/stores';
 import flag_en_src from '@/assets/img/flags/en_GB.png';
 import flag_it_src from '@/assets/img/flags/it_IT.png';
 import g3w_logo_src from '@/assets/img/logo_g3wsuite-bw.png';
+import { router } from '@/plugins';
 
 
 @Component
@@ -323,8 +324,16 @@ export default class Navbar extends Vue {
     return useAuthStore().maybe_redirect({ name: 'logout' });
   }
 
-  public mounted() {
-    useAuthStore().fetchWhoAmI();
+  public async mounted() {
+    await useAuthStore().fetchWhoAmI();
+    // handle server redirect
+    const url         = new URL(location.href);
+    const redirect_to = url.searchParams.get('next');
+    if (redirect_to) {
+      url.searchParams.delete('next');
+      history.replaceState({}, '', url);
+      this.$router.push({ path: redirect_to });
+    }
   }
 
   public toggleSecondaryMenu() {
