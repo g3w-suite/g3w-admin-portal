@@ -271,7 +271,6 @@ import { useRootStore, useAuthStore, useDataStore } from '@/stores';
 import flag_en_src from '@/assets/img/flags/en_GB.png';
 import flag_it_src from '@/assets/img/flags/it_IT.png';
 import g3w_logo_src from '@/assets/img/logo_g3wsuite-bw.png';
-import { router } from '@/plugins';
 
 
 @Component
@@ -326,7 +325,7 @@ export default class Navbar extends Vue {
 
   public async mounted() {
     await useAuthStore().fetchWhoAmI();
-    // handle server redirect
+    // handle restricted content (redirected from server)
     const url         = new URL(location.href);
     const redirect_to = url.searchParams.get('next');
     if (redirect_to) {
