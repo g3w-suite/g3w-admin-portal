@@ -323,8 +323,8 @@ export default class Navbar extends Vue {
     return useAuthStore().maybe_redirect({ name: 'logout' });
   }
 
-  public mounted() {
-    useAuthStore().fetchWhoAmI();
+  public async mounted() {
+    await useAuthStore().fetchWhoAmI();
   }
 
   public toggleSecondaryMenu() {

@@ -13,6 +13,7 @@ import { get_from_portal } from '@/utils';
 import { defineStore } from 'pinia';
 
 import { useRootStore } from './root';
+import { useAuthStore } from './auth';
 
 // natural sort
 const compare = new Intl.Collator('en', { numeric: true, sensitivity: 'accent' }).compare;
@@ -93,11 +94,17 @@ export const useDataStore = defineStore('data', {
           break;
       }
       
-      // Redirect users to 404 page when they to visit an inexistent
-      // group URL (also applies to unauthenticated user sessions)
-      if (false === sg) {
+      // inexistent group URL → redirect authenticated users to 404 page
+      if (false === sg && useAuthStore().isLoggedIn) {
         this.router.push({ name: '404', params: useRootStore().currentPage.params /*this.router.currentRoute.value.params*/ });
-      } else {
+      }
+
+      // inexistent group URL → redirect unauthenticated users to login page
+      if (false === sg && !useAuthStore().isLoggedIn) {
+        this.router.push({ name: 'login', params: useRootStore().currentPage.params, query: { 'next': useRootStore().currentPage.path } });
+      }
+
+      if (false !== sg) {
         this.activeGroup = sg;
       }
     },

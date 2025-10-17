@@ -141,7 +141,7 @@ export default class Article extends Vue {
 
   public showMetadata() {
     const modal = (this.$refs.modal as any).$refs.dialog;
-    modal.innerHTML = `
+    modal.innerHTML = /* html */`
     <article style="background-color: #fff; max-width: min(90%, 960px); min-width: 70vw; margin: 0;">
       <header style="margin-bottom: 1rem;">
         <form method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form>
@@ -158,7 +158,7 @@ export default class Article extends Vue {
 
   public showModal() {
     const modal = (this.$refs.modal as any).$refs.dialog;
-    modal.innerHTML = `
+    modal.innerHTML = /* html */`
     <article style="background-color: #fff; max-width: min(90%, 960px); margin: 0;">
       <header style="margin-bottom: 1rem;">
         <form data-method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form>
