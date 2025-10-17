@@ -138,7 +138,10 @@ export default class Login extends Vue {
   })
   public onDrfTokenChange(drf_token: string) {
     if (drf_token) {
-      location.href = get_admin_url(`/${this.$i18n.locale}/portal/api/whoami/?__drftk=${drf_token}&redirect=` + location.origin);
+      const redirect = new URL(location.origin);
+      const next     = (this.$router.currentRoute.value.query.next as string) ?? '';
+      redirect.search = next ? `next=${next}` : '';
+      location.href  = get_admin_url(`/${this.$i18n.locale}/portal/api/whoami/?__drftk=${drf_token}&redirect=` + redirect.toString());
     }
   }
 

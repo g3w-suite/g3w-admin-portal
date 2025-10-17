@@ -48,8 +48,18 @@ export const useAuthStore = defineStore('auth', {
       // if (drf_token) {
       //   location.href = get_admin_url(`/${useRootStore().locale}/portal/api/whoami/?__drftk=${drf_token}&redirect=` + location.origin);
       // }
+
       // fetch again data from server on user Login / Logout 
-      useRootStore().fetchData(true);
+      useRootStore().fetchData(true).then(() => {
+        // handle restricted content (redirected from server)
+        const url         = new URL(location.href);
+        const redirect_to = url.searchParams.get('next');
+        if (redirect_to) {
+          url.searchParams.delete('next');
+          history.replaceState({}, '', url);
+          this.router.push({ path: redirect_to });
+        }
+      });
     },
 
     setTokens(newToken: { access: string, refresh: string }) {
