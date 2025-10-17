@@ -325,14 +325,6 @@ export default class Navbar extends Vue {
 
   public async mounted() {
     await useAuthStore().fetchWhoAmI();
-    // handle restricted content (redirected from server)
-    const url         = new URL(location.href);
-    const redirect_to = url.searchParams.get('next');
-    if (redirect_to) {
-      url.searchParams.delete('next');
-      history.replaceState({}, '', url);
-      this.$router.push({ path: redirect_to });
-    }
   }
 
   public toggleSecondaryMenu() {
