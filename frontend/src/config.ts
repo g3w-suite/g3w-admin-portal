@@ -6,7 +6,7 @@ const config  =  {
 
   theme:      window.PORTAL_THEME || process.env.VUE_APP_CSS_THEME,
 
-  languages:  (process.env.VUE_APP_LANGUAGES ?? '').split(', '),
+  languages:  window.LANGUAGES ?? ['en', 'it'],
 
   admin_root: process.env.VUE_APP_ADMIN_ROOT ?? '',
 

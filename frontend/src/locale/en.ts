@@ -45,8 +45,15 @@ export const en: any = {
   },
 
   language: {
-    it: 'Italiano',
     en: 'English',
+    bg: 'Bulgarian',
+    de: 'Deutsch',
+    fi: 'Finnish',
+    fr: 'French',
+    it: 'Italian',
+    pt: 'Portuguese',
+    ro: 'Romanian',
+    se: 'Swedish',
   },
 
   maps: {
