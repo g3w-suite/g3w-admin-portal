@@ -41,6 +41,13 @@
       "assets/index.css"
     ],
     "dynamicImports": [
+      "src/locale/bg.ts",
+      "src/locale/de.ts",
+      "src/locale/fi.ts",
+      "src/locale/fr.ts",
+      "src/locale/pt.ts",
+      "src/locale/ro.ts",
+      "src/locale/se.ts",
       "src/components/Main.vue",
       "src/views/Home.vue",
       "src/views/HomeHeader.vue",
@@ -181,6 +188,41 @@
     ],
     "isDynamicEntry": true,
     "src": "src/components/Projects.vue"
+  },
+  "src/locale/bg.ts": {
+    "file": "portal-bg.js",
+    "isDynamicEntry": true,
+    "src": "src/locale/bg.ts"
+  },
+  "src/locale/de.ts": {
+    "file": "portal-de.js",
+    "isDynamicEntry": true,
+    "src": "src/locale/de.ts"
+  },
+  "src/locale/fi.ts": {
+    "file": "portal-fi.js",
+    "isDynamicEntry": true,
+    "src": "src/locale/fi.ts"
+  },
+  "src/locale/fr.ts": {
+    "file": "portal-fr.js",
+    "isDynamicEntry": true,
+    "src": "src/locale/fr.ts"
+  },
+  "src/locale/pt.ts": {
+    "file": "portal-pt.js",
+    "isDynamicEntry": true,
+    "src": "src/locale/pt.ts"
+  },
+  "src/locale/ro.ts": {
+    "file": "portal-ro.js",
+    "isDynamicEntry": true,
+    "src": "src/locale/ro.ts"
+  },
+  "src/locale/se.ts": {
+    "file": "portal-se.js",
+    "isDynamicEntry": true,
+    "src": "src/locale/se.ts"
   },
   "src/views/Group.vue": {
     "file": "portal-Group.js",

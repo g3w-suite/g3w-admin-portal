@@ -1,0 +1,73 @@
+export const en: any = {
+
+  home: {
+    show_all_button: 'Näytä kaikki',
+  },
+
+  footer: {
+    contacts: 'Yhteystiedot',
+  },
+
+  tooltip: {
+    choose_language: 'Valitse kieli',
+    home: 'Siirry kotiin',
+    logout: 'Kirjaudu ulos',
+    login: 'Kirjaudu sisään',
+    admin: 'Ylläpitoalue',
+    menu: 'Vaihda valikko',
+  },
+
+  menu: {
+    search: 'Haku',
+    search_placeholder: 'Etsi karttaa luettelosta',
+    home: 'Koti',
+    maps: 'kartat',
+    info: 'tietoja',
+    login: 'Kirjaudu',
+    logout: 'Kirjaudu ulos',
+    admin: 'Admin',
+    data: 'Tietoa',
+    group: 'Ryhmät',
+    organization: 'Organisaatiot',
+    toggle: 'VALIKKO',
+    catalog: 'Luettelo',
+    404: 'Sivua ei löytynyt',
+  },
+
+  login: {
+    username: 'Käyttäjätunnus',
+    password: 'Salasana',
+    submit: 'Kirjaudu',
+    title: 'Kirjaudu sisään hallintajärjestelmään',
+    reset_password_url: 'Unohtuiko salasana?',
+    requiredField: 'Tämä kenttä on pakollinen',
+    erroreLogin: 'Kirjautumisvirhe',
+  },
+
+  language: {
+    en: 'English',
+    bg: 'Bulgarian',
+    de: 'Deutsch',
+    fi: 'Finnish',
+    fr: 'French',
+    it: 'Italian',
+    pt: 'Portuguese',
+    ro: 'Romanian',
+    se: 'Swedish',
+  },
+
+  maps: {
+    services: 'Palvelut',
+    group: 'Ryhmä',
+    edit: 'Muokkaa',
+    view: 'Näytä',
+  },
+
+  readmore: 'Lue lisää »',
+  readless: '« Lue vähemmän',
+
+  ogc_services: 'Verkkopalvelut - OGC',
+
+};
+
+export default en;

@@ -56,20 +56,26 @@
       <li class="nav-lang">
         <details role="list" dir="ltr" :title="$t('tooltip.choose_language')">
           <summary aria-haspopup="listbox" role="link" class="secondary">
-            <img :alt="$t('tooltip.choose_language')" :title="$t('language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
+            <img
+              :alt="$t('tooltip.choose_language')"
+              :title="$t('language.' + $i18n.locale)"
+              width="18" height="12"
+              style="margin: 1ch 1ch 1ch 0;"
+              :src="flagForLang($i18n.locale)"
+            />
             <span class="hide-on-mobile">{{$t('language.' + $i18n.locale)}}</span>
           </summary>
           <ul role="listbox">
-            <li>
-              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary" @click="closeLangNav">
-                <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
-                <span>{{$t('language.it')}}</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary" @click="closeLangNav">
-                <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
-                <span>{{$t('language.en')}}</span>
+            <li v-for="lang in languages" :key="lang">
+              <router-link :to="switchLangLink(lang)" :hreflang="lang" class="secondary" @click="closeLangNav">
+                <img
+                  :alt="lang"
+                  :title="$t('language.' + lang)"
+                  width="18" height="12"
+                  style="margin: 1ch 1ch 1ch 0;"
+                  :src="flagForLang(lang)"
+                />
+                <span>{{$t('language.' + lang)}}</span>
               </router-link>
             </li>
           </ul>
@@ -148,20 +154,26 @@
       <li v-if="!hasNavBarTop" class="nav-lang" :class="{'hide-on-mobile': hasMenuButton && !hasNavBarTop }">
         <details role="list" dir="ltr" :title="$t('tooltip.choose_language')" @click="switchLang">
           <summary aria-haspopup="listbox" role="link" class="secondary">
-            <img :alt="$t('tooltip.choose_language')" :title="$t('language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
+            <img
+              :alt="$t('tooltip.choose_language')"
+              :title="$t('language.' + $i18n.locale)"
+              width="18" height="12"
+              style="margin: 1ch 1ch 1ch 0;"
+              :src="flagForLang($i18n.locale)"
+            />
             <span class="hide-on-mobile">{{$t('language.' + $i18n.locale)}}</span>
           </summary>
           <ul role="listbox">
-            <li>
-              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary" @click="closeLangNav">
-                <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
-                <span>{{$t('language.it')}}</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary" @click="closeLangNav">
-                <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
-                <span>{{$t('language.en')}}</span>
+            <li v-for="lang in languages" :key="lang">
+              <router-link :to="switchLangLink(lang)" :hreflang="lang" class="secondary" @click="closeLangNav">
+                <img
+                  :alt="lang"
+                  :title="$t('language.' + lang)"
+                  width="18" height="12"
+                  style="margin: 1ch 1ch 1ch 0;"
+                  :src="flagForLang(lang)"
+                />
+                <span>{{$t('language.' + lang)}}</span>
               </router-link>
             </li>
           </ul>
@@ -233,20 +245,26 @@
       <li :hidden="!(hasMenuButton && !hasNavBarTop)" class="nav-lang">
         <details role="list" dir="ltr" :title="$t('tooltip.choose_language')" @click="switchLang">
           <summary aria-haspopup="listbox" role="link" class="secondary">
-            <img :alt="$t('tooltip.choose_language')" :title="$t('language.' + $i18n.locale)" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="$i18n.locale === 'it' ? flag_it : flag_en" />
+            <img
+              :alt="$t('tooltip.choose_language')"
+              :title="$t('language.' + $i18n.locale)"
+              width="18" height="12"
+              style="margin: 1ch 1ch 1ch 0;"
+              :src="flagForLang($i18n.locale)"
+            />
             <span>{{$t('language.' + $i18n.locale)}}</span>
           </summary>
           <ul role="listbox">
-            <li>
-              <router-link :to="switchLangLink('it')" hreflang="it" class="secondary" @click="closeLangNav">
-                <img alt="it_IT" title="Italiano" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_it" />
-                <span>{{$t('language.it')}}</span>
-              </router-link>
-            </li>
-            <li>
-              <router-link :to="switchLangLink('en')" hreflang="en" class="secondary" @click="closeLangNav">
-                <img alt="en_GB" title="English" width="18" height="12" style="margin: 1ch 1ch 1ch 0;" :src="flag_en" />
-                <span>{{$t('language.en')}}</span>
+            <li v-for="lang in languages" :key="lang">
+              <router-link :to="switchLangLink(lang)" :hreflang="lang" class="secondary" @click="closeLangNav">
+                <img
+                  :alt="lang"
+                  :title="$t('language.' + lang)"
+                  width="18" height="12"
+                  style="margin: 1ch 1ch 1ch 0;"
+                  :src="flagForLang(lang)"
+                />
+                <span>{{$t('language.' + lang)}}</span>
               </router-link>
             </li>
           </ul>
@@ -270,6 +288,14 @@ import { useRootStore, useAuthStore, useDataStore } from '@/stores';
 
 import flag_en_src from '@/assets/img/flags/en_GB.png';
 import flag_it_src from '@/assets/img/flags/it_IT.png';
+import flag_fr_src from '@/assets/img/flags/fr_FR.png';
+import flag_fi_src from '@/assets/img/flags/fi_FI.png';
+import flag_se_src from '@/assets/img/flags/se_SE.png';
+import flag_ro_src from '@/assets/img/flags/ro_RO.png';
+import flag_de_src from '@/assets/img/flags/de_DE.png';
+import flag_bg_src from '@/assets/img/flags/bg_BG.png';
+import flag_pt_src from '@/assets/img/flags/pt_PT.png';
+
 import g3w_logo_src from '@/assets/img/logo_g3wsuite-bw.png';
 
 
@@ -279,6 +305,13 @@ export default class Navbar extends Vue {
   public g3w_logo: string = g3w_logo_src;
   public flag_it: string  =  flag_it_src;
   public flag_en: string  =  flag_en_src;
+  public flag_fr: string  =  flag_fr_src;
+  public flag_fi: string  =  flag_fi_src;
+  public flag_se: string  =  flag_se_src;
+  public flag_ro: string  =  flag_ro_src;
+  public flag_de: string  =  flag_de_src;
+  public flag_bg: string  =  flag_bg_src;
+  public flag_pt: string  =  flag_pt_src;
 
   public secondaryMenuVisible: boolean | null = true;
 
@@ -312,6 +345,14 @@ export default class Navbar extends Vue {
 
   get hasMenuButton(): boolean {
     return this.hasNavBarTop || false !== (window as any).PORTAL_MENU_BUTTON;
+  }
+
+  /**
+   * Return the flag image URL for a language code. Fallback to english if
+   * we don't recognise the code (avoids broken image links).
+   */
+  public flagForLang(lang: string): string {
+    return (this as any)[`flag_${lang}`] || this.flag_en;
   }
 
   get drf_token(): string {
