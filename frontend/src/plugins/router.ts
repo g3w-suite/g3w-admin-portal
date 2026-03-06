@@ -14,6 +14,12 @@ import { App } from 'vue';
 
 const { t: $t } = i18n.global;
 
+const FALLBACK_LANG = [
+  navigator.language?.split('-')[0],             // 1. browser language
+  'en',                                          // 2. english 
+  config.languages[0]                            // 3. first available language
+].find(lang => config.languages.includes(lang));
+
 const modes = {
   "history": createWebHistory,
   "hash": createWebHashHistory,
@@ -128,11 +134,11 @@ export const router = createRouter({
         },
       ],
     },
-    /* Redirect root path to fallback language (it) */
+    /* Redirect root path to fallback language */
     {
       path: '/',
       redirect(to) {
-        return { path: `/it${to.path}` };
+        return { path: `/${FALLBACK_LANG}${to.path}` };
       }
     },
   ],
@@ -157,7 +163,7 @@ export const router = createRouter({
  */
 router.beforeEach(async (to, from, next) => {
   if (!config.languages.includes(to.params.lang as string)) {
-    return next(`/it${to.path}`);                   // redirect to fallback language (it)
+    return next(`/${FALLBACK_LANG}${to.path}`);     // redirect to fallback language
   } else {
     await useRootStore().setupPage(to, from);       // show current route content (view)
   }
