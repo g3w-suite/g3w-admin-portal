@@ -217,7 +217,7 @@ class GenericSuiteDataSerializer(G3WRequestSerializer, GetUnlanguageFieldsMixin,
 
         if portal_login_url:
             ret['login_url'] = f"{settings.PORTAL_LOGIN_URL}"
-            ret['logout_url'] = f"{settings.PORTAL_LOGOUT_URL}" or f"{reverse('logout')}?next=/"
+            ret['logout_url'] = f"{getattr(settings, 'PORTAL_LOGOUT_URL', False) or f"{reverse('logout')}?next=/"}"
         elif login_url:
             ret['login_url'] = settings.LOGIN_URL
             ret['logout_url'] = reverse('logout')
