@@ -154,6 +154,12 @@ PORTAL_FAVICON  = '/static/img/favicon.ico'
 # PORTAL_MAGROGROUPS_FILTER = { 'pk': -9999 }
 ```
 
+### Authentication
+
+By default portal use the G3W-ADMIN login page, if you want use login REST API:
+
+PORTAL_LOGIN_BY_API = True (False by default)
+
 ### Cross domain authentication
 
 
