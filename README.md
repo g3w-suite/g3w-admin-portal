@@ -154,11 +154,20 @@ PORTAL_FAVICON  = '/static/img/favicon.ico'
 # PORTAL_MAGROGROUPS_FILTER = { 'pk': -9999 }
 ```
 
-### Authentication
+### Custom LOGIN/LOGOUT URLs
 
-By default portal use the G3W-ADMIN login page, if you want use login REST API:
+Use same G3W-ADMIN and G3W-PORTAL login/logout pages:
 
-PORTAL_LOGIN_BY_API = True (False by default)
+```python
+LOGIN_URL = 'https://www.example.com/login'
+LOGOUT_URL = 'https://www.example.com/logout'
+```
+
+Use a different G3W-PORTAL login page:
+
+```python
+PORTAL_LOGIN_URL = 'login'
+```
 
 ### Cross domain authentication
 
