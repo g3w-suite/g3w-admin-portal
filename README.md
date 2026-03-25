@@ -163,10 +163,11 @@ LOGIN_URL = 'https://www.example.com/login'
 LOGOUT_URL = 'https://www.example.com/logout'
 ```
 
-Use a different G3W-PORTAL login page:
+Use a different G3W-PORTAL login/logut page:
 
 ```python
-PORTAL_LOGIN_URL = 'login'
+PORTAL_LOGIN_URL = '/login/?next=/'
+PORTAL_LOGOUT_URL = '/logout/?next=/'
 ```
 
 ### Cross domain authentication
