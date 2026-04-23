@@ -54,9 +54,9 @@ export const useDataStore = defineStore('data', {
     projectsInGroup: (state): (id: number) => Project[] => (id: number) => state.ProjectsInGroups[id],
 
     superGroups: (state): SuperGroup[] => [
-      ...Object.values(state.macroGroups),
-      ...Object.values(state.groupsWithNoMacroGroup),
-    ].sort((a, b) => compare(a.order, b.order)),
+      ...Object.values(state.macroGroups)           .sort((a, b) => compare(a.order, b.order)),
+      ...Object.values(state.groupsWithNoMacroGroup).sort((a, b) => compare(a.order, b.order)),
+    ],
 
     filteredProjects: (state): Project[] => {
       const s = state.search.toLowerCase();
