@@ -1,4 +1,4 @@
-# G3W-ADMIN-PORTAL v4.1.1
+# G3W-ADMIN-PORTAL v4.1.2
 
 G3W-ADMIN fronted portal for G3W-SUITE.
 
