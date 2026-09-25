@@ -1,0 +1,69 @@
+name: PORTAL CI tests
+
+on: [push, pull_request]
+
+jobs:
+
+  ci_tests:
+
+    runs-on: ubuntu-24.04
+
+    steps:
+
+    - uses: actions/checkout@v4
+      with:
+        repository: 'g3w-suite/g3w-admin'
+
+    - uses: actions/checkout@v4
+      with:
+        path: 'portal'
+
+    - name: Move PORTAL inside G3W-ADMIN
+      run: mv portal/portal g3w-admin/ && mv portal/requirements.txt g3w-admin/portal/ && echo "$(ls -lh g3w-admin/portal)"
+
+    - name: Starting Docker compose
+      run: docker compose -f docker-compose.ltr.yml up -d
+
+    - name: Copying code into the container
+      run: |
+        docker cp ./ "$(docker compose -f docker-compose.ltr.yml ps -q g3w-suite)":/code
+
+    - name: Installing G3W-ADMIN Python requirements
+      run: |
+        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "cd /code/ && pip3 install -r requirements_docker.txt --break-system-packages && pip3 install -r requirements_huey.txt --break-system-packages"
+
+    - name: Activate PORTAL module
+      run: |
+        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "printf '\nG3WADMIN_LOCAL_MORE_APPS = [\"portal\"]\n' >> /code/settings_docker.py"
+
+    - name: Install PORTAL python requirements
+      run: |
+        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "cd /code/ && pip3 install -r g3w-admin/portal/requirements.txt --break-system-packages"
+
+    - name: Building g3w-suite
+      run: |
+        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "/code/ci_scripts/build_suite.sh"
+
+    - name: Setting up g3w-suite
+      run: |
+        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "/code/ci_scripts/setup_suite.sh"
+
+    - name: Starting Django
+      run: |
+        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "cd /code/g3w-admin && python3 manage.py runserver 0.0.0.0:8000" &
+
+    - name: Waiting for Django
+      run: |
+        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "wait-for-it -h localhost -p 8000 -t 240"
+
+    - name:  Running PORTAL tests
+      run: |
+        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "cd /code/g3w-admin && python3 manage.py test portal"
+
+
+    - name: Setup tmate session
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 15
+      with:
+        limit-access-to-actor: true
