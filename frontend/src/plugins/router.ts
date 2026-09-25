@@ -106,10 +106,10 @@ export const router = createRouter({
           component: () => import('@/views/MacroGroup.vue'),
           meta: {
             breadcrumb(route: RouteLocationNormalized, app: App) {
-              if (route.params.id) {
-                if (route.params.group) {
-                  return useDataStore().groups[parseInt(route.params.id  as string)]?.title;
-                }
+              if (route.params.id && route.params.group) {
+                return useDataStore().groups[parseInt(route.params.group as string)]?.title;
+              }
+              if (route.params.id && !route.params.group) {
                 return useDataStore().macroGroups[parseInt(route.params.id as string)]?.title;
               }
               return $t('menu.organization');

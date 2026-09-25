@@ -1,4 +1,7 @@
-# G3W-ADMIN-PORTAL v4.1.1
+# G3W-ADMIN-PORTAL v4.1.2
+
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/g3w-suite/g3w-admin-portal)
 
 G3W-ADMIN fronted portal for G3W-SUITE.
 
@@ -163,10 +166,11 @@ LOGIN_URL = 'https://www.example.com/login'
 LOGOUT_URL = 'https://www.example.com/logout'
 ```
 
-Use a different G3W-PORTAL login page:
+Use a different G3W-PORTAL login/logut page:
 
 ```python
-PORTAL_LOGIN_URL = 'login'
+PORTAL_LOGIN_URL = '/login/?next=/'
+PORTAL_LOGOUT_URL = '/logout/?next=/'
 ```
 
 ### Cross domain authentication

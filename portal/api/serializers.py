@@ -212,12 +212,12 @@ class GenericSuiteDataSerializer(G3WRequestSerializer, GetUnlanguageFieldsMixin,
             ret['reset_password_url'] = reverse('password_reset')
 
         # add login_url and logout_url to view
-        portal_login_url = getattr(settings, 'PORTAL_LOGIN_URL')
-        login_url = getattr(settings, 'LOGIN_URL')
+        portal_login_url = getattr(settings, 'PORTAL_LOGIN_URL', None)
+        login_url = getattr(settings, 'LOGIN_URL', None)
 
         if portal_login_url:
-            ret['login_url'] = f"{reverse(settings.PORTAL_LOGIN_URL)}?next={reverse('frontend')}"
-            ret['logout_url'] = f"{reverse('logout')}?next=/"
+            ret['login_url'] = f"{settings.PORTAL_LOGIN_URL}"
+            ret['logout_url'] = f"{getattr(settings, 'PORTAL_LOGOUT_URL', False) or f"{reverse('logout')}?next=/"}"
         elif login_url:
             ret['login_url'] = settings.LOGIN_URL
             ret['logout_url'] = reverse('logout')
