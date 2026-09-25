@@ -1,4 +1,4 @@
-name: QPDND CI tests
+name: PORTAL CI tests
 
 on: [push, pull_request]
 
