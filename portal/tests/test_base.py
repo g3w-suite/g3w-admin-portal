@@ -1,5 +1,8 @@
 from django.conf import settings
 from django.test import TestCase, override_settings
+from django.test.signals import setting_changed
+from django.dispatch import receiver
+from django.urls import clear_url_caches
 from django.core.files import File
 from django.utils import translation
 from qdjango.utils.data import QgisProject
@@ -7,6 +10,8 @@ from guardian.compat import get_user_model
 from usersmanage.models import User, Group as UserGroup
 from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup
 
+import base.urls as base_urls
+import importlib
 import os
 
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -15,6 +20,14 @@ DATASOURCE_PATH = '{}{}'.format(CURRENT_PATH, TEST_BASE_PATH)
 QGS_DB = 'portal_test_project.sqlite'
 QGS_FILE = 'portal_test_project.qgs'
 QGS_FILE_2 = 'portal_test_project2.qgs'
+
+
+@receiver(setting_changed)
+def _reload_root_urlconf_on_frontend_change(sender, setting, **kwargs):
+    """base.urls builds urlpatterns at import time from FRONTEND/FRONTEND_APP, so it must be reloaded when they're overridden."""
+    if setting in ('FRONTEND', 'FRONTEND_APP'):
+        importlib.reload(base_urls)
+        clear_url_caches()
 
 @override_settings(
     CACHES = {

@@ -251,10 +251,6 @@ class PortalTestAPI(PortalTestsBase):
         # instance API client
         client = APIClient()
 
-        for k in get_resolver().reverse_dict:
-            if isinstance(k, str):
-                print(k)
-
         # user not logged(anonymoususer)
         url = reverse('portal-infodata-api-list')
         response = client.get(url)
