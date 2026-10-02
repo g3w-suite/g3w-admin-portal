@@ -77,7 +77,7 @@ class PortalView(TemplateView):
 
     def get_context_data(self, **kwargs):
 
-        return {
+        toret =  {
 
             # OPTIONAL: setting for API_BASE_URL (cross domain API) 
             'API_BASE_URL': getattr(settings, 'PORTAL_API_BASE_URL', self.request.build_absolute_uri('/')),
@@ -96,9 +96,14 @@ class PortalView(TemplateView):
             # DEPRECATED since v1.0.0
             'PORTAL_COLOR': getattr(settings, 'PORTAL_COLOR', 'violet'),
 
-            'PORTAL_VERSION': 'g3w-portal v' + get_version('portal'),
-
         }
+
+        try:
+            toret['PORTAL_VERSION'] = 'g3w-portal v' + get_version('portal')
+        except Exception:
+            toret['PORTAL_VERSION'] = 'unknown'
+
+        return toret
 
 
 class PictureListView(ListView):

@@ -21,6 +21,7 @@ from rest_framework.authtoken.models import Token
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
+from django.db.models import Count
 
 import logging
 
@@ -78,7 +79,8 @@ class MacroGroupsApiView(PortalApiViewMixin, generics.ListAPIView):
     API list view for map macrogroups
     """
 
-    queryset = MacroGroup.objects.all().order_by('order')
+    # Send only Macrogroup not empty ones
+    queryset = MacroGroup.objects.annotate(num_groups=Count('group')).filter(num_groups__gt=0).order_by('order')
     serializer_class = MacroGroupSerializer
 
     filter_backends = (

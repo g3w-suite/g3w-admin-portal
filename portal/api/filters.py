@@ -60,22 +60,40 @@ class ProjectsAPIFilter(BaseFilterBackend):
         return queryset.filter(is_active=True)
 
 
-class GroupsAPIFilter(BaseFilterBackend):
+class VisibleProjectsMixin(object):
+    """Resolves the projects visible to the request user or to anonymous/public access"""
+
+    def get_visible_projects(self, request):
+        user_projects   = get_objects_for_user(request.user, 'qdjango.view_project', Project)
+        public_projects = get_objects_for_user(AnonymousUser(), 'qdjango.view_project', Project)
+        return (user_projects | public_projects).filter(is_active=True)
+
+
+class VisibleGroupsMixin(VisibleProjectsMixin):
+    """Resolves the groups visible to the request user or to anonymous/public access, with visible projects inside"""
+
+    def get_visible_groups(self, request):
+        user_groups   = get_objects_for_user(request.user, 'core.view_group', Group)
+        public_groups = get_objects_for_user(AnonymousUser(), 'core.view_group', Group)
+        return (user_groups | public_groups).filter(is_active=True) \
+            .filter(qdjango_project__in=self.get_visible_projects(request))
+
+
+class GroupsAPIFilter(VisibleGroupsMixin, BaseFilterBackend):
     """A filter backend for portal module"""
 
     def filter_queryset(self, request, queryset, view):
 
-        url_name      = resolve(request.path_info).url_name
+        url_name = resolve(request.path_info).url_name
 
-        user_groups   = get_objects_for_user(request.user, 'core.view_group', Group)
-        public_groups = get_objects_for_user(AnonymousUser(), 'core.view_group', Group)
-
-        # filter by user role
-        queryset = (user_groups | public_groups).order_by('order')
+        # filter by user role and visible projects
+        queryset = self.get_visible_groups(request).order_by('order')
 
         # filter by "macrogroup_id"
         if 'macrogroup_id' in view.kwargs:
             queryset = queryset.filter(macrogroups__pk=view.kwargs['macrogroup_id'])
+
+        queryset = queryset.distinct()
 
         ##
         # Example:
@@ -95,13 +113,16 @@ class GroupsAPIFilter(BaseFilterBackend):
         elif (url_name == 'portal-group-without-macrogroup-api-list'):
              queryset = queryset.filter(macrogroups__pk=None)
 
-        # filter by active groups
-        return queryset.filter(is_active=True)
+        # groups queryset is already restricted to active/visible ones
+        return queryset
 
-class MacroGroupsAPIFilter(BaseFilterBackend):
+class MacroGroupsAPIFilter(VisibleGroupsMixin, BaseFilterBackend):
     """A filter backend for portal module"""
 
     def filter_queryset(self, request, queryset, view):
+
+        # keep only macrogroups with at least one visible, active group that has visible projects
+        queryset = queryset.filter(group__in=self.get_visible_groups(request)).distinct()
 
         ##
         # Example:
