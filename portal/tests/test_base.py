@@ -15,7 +15,7 @@ import importlib
 import os
 
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
-TEST_BASE_PATH = '/data/'
+TEST_BASE_PATH = '/pdata/'
 DATASOURCE_PATH = '{}{}'.format(CURRENT_PATH, TEST_BASE_PATH)
 QGS_DB = 'portal_test_project.sqlite'
 QGS_FILE = 'portal_test_project.qgs'
@@ -118,19 +118,25 @@ class PortalTestsBase(TestCase):
 
         # projects
         qgis_project_file = File(open('{}{}{}'.format(CURRENT_PATH, TEST_BASE_PATH, QGS_FILE), 'r'))
-        cls.project = QgisProject(qgis_project_file)
-        cls.project.title = 'A project'
-        cls.project.group = cls.project_group
-        cls.project.save()
+        # Keep only the Django instance: QgisProject holds QGIS objects that TestCase can't deepcopy.
+        qgis_project = QgisProject(qgis_project_file)
+        qgis_project.title = 'A project'
+        qgis_project.group = cls.project_group
+        qgis_project.save()
+        cls.project = qgis_project.instance
 
         # projects
         qgis_project_file = File(open('{}{}{}'.format(CURRENT_PATH, TEST_BASE_PATH, QGS_FILE_2), 'r'))
-        cls.project2 = QgisProject(qgis_project_file)
-        cls.project2.group = cls.project_group
-        cls.project2.save()
+        qgis_project2 = QgisProject(qgis_project_file)
+        qgis_project2.group = cls.project_group
+        qgis_project2.save()
+        cls.project2 = qgis_project2.instance
 
         # add permission to anonymous and viewer
-        cls.project.instance.addPermissionsToViewers([cls.test_user3.pk])
+        cls.project.addPermissionsToViewers([cls.test_user3.pk])
+
+        # viewer sees Group1 (it contains the visible project)
+        cls.project_group.addPermissionsToViewers(users_id=[cls.test_user3.pk])
 
     @classmethod
     def tearDownClass(cls):
