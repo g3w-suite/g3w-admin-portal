@@ -75,7 +75,13 @@ class ProjectSerializer(G3WRequestSerializer, serializers.ModelSerializer):
             except:
                 pass
 
-        feature['thumbnail'] = '%s%s' % (media_url, thumbnail)
+        thumbnail = '%s%s' % (media_url, thumbnail)
+
+        # prevent using folder as img url
+        if thumbnail.endswith('/'):
+            thumbnail = 'https://placehold.co/80x60?text=MAP'
+
+        feature['thumbnail'] = thumbnail
 
         # Set ogc links
         # -----------------------------------------------------------

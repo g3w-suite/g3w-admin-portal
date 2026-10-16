@@ -25,11 +25,6 @@ export class Project extends SuperGroup {
 
     this.logo_img    = this.thumbnail;
     this.logo_link   = this.map_url;
-
-    // prevent using folder as img url
-    if (this.logo_img.endsWith('/')) {
-      this.logo_img = 'https://via.placeholder.com/80x60';
-    }
   }
 
   get Key() {

@@ -13,11 +13,15 @@ from django.conf import settings
 from django.urls import reverse, get_resolver
 from rest_framework.test import APIClient
 import json
+import os
+
+from django.core.files import File
+from qdjango.utils.data import QgisProject
 
 from core.models import Group as CoreGroup, G3WSpatialRefSys, MacroGroup, GroupProjectPanoramic
 
 from portal.models import Picture
-from .test_base import PortalTestsBase
+from .test_base import PortalTestsBase, DATASOURCE_PATH, QGS_FILE_2
 
 class PortalTestAPI(PortalTestsBase):
     """ Main portal test API class"""
@@ -57,35 +61,35 @@ class PortalTestAPI(PortalTestsBase):
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 1)
-        self.assertNotIn('edit_url', jcontent[0])
+        # Group2 is public but has no projects: not listed
+        self.assertEqual(len(jcontent), 0)
 
-        # user logged as viewer
+        # user logged as viewer: Group1 has a visible project
         self.assertTrue(client.login(username=self.test_user3, password=self.test_user3))
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
         self.assertEqual(len(jcontent), 1)
+        self.assertEqual(jcontent[0]['id'], self.project_group.pk)
+        self.assertNotIn('edit_url', jcontent[0])
 
         client.logout()
 
-        # user logged as editor_level_2
+        # user logged as editor_level_2: sees Group1 but none of its projects
         self.assertTrue(client.login(username=self.test_user2, password=self.test_user2))
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 2)
-        feature = jcontent[0]
-        self.assertNotIn('edit_url', feature)
+        self.assertEqual(len(jcontent), 0)
 
         client.logout()
 
-        # user logged as admin
+        # user logged as admin: only groups with projects
         self.assertTrue(client.login(username=self.test_user_admin1, password=self.test_user_admin1))
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 2)
+        self.assertEqual(len(jcontent), 1)
         feature = jcontent[0]
         self.assertIn('edit_url', feature)
         group = CoreGroup.objects.filter(pk=feature['id'])[0]
@@ -115,17 +119,17 @@ class PortalTestAPI(PortalTestsBase):
 
         # check for project data
         result = jcontent[0]
-        self.assertEqual(self.project.instance.pk, result['id'])
-        self.assertEqual(self.project.instance.title, result['title'])
+        self.assertEqual(self.project.pk, result['id'])
+        self.assertEqual(self.project.title, result['title'])
         map_url = reverse('group-project-map', kwargs={
-            'group_slug': self.project.instance.group.slug,
+            'group_slug': self.project.group.slug,
             'project_type': 'qdjango',
-            'project_id': self.project.instance.pk
+            'project_id': self.project.pk
         })
         self.assertEqual(map_url, result['map_url'])
         edit_url = reverse('qdjango-project-update', kwargs={
-            'group_slug': self.project.instance.group.slug,
-            'slug': self.project.instance.slug
+            'group_slug': self.project.group.slug,
+            'slug': self.project.slug
         })
         self.assertEqual(edit_url, result['edit_url'])
 
@@ -165,13 +169,12 @@ class PortalTestAPI(PortalTestsBase):
         # instance API client
         client = APIClient()
 
-        # user not logged(anonymoususer)
+        # user not logged: the only public group has no projects, so no macrogroup
         url = reverse('portal-macrogroup-api-list')
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 2)
-        self.assertNotIn('edit_url', jcontent[0])
+        self.assertEqual(len(jcontent), 0)
 
         # user logged as admin
         self.assertTrue(client.login(username=self.test_user_admin1.username, password=self.test_user_admin1.username))
@@ -190,14 +193,12 @@ class PortalTestAPI(PortalTestsBase):
         client.logout()
 
         # get group by macrogroup id
-        # user not logged: Macrogroup1 1 group, Macrogroup2 0 group
+        # user not logged: no visible groups in any macrogroup
         url = reverse('portal-group-by-macrogroup-api-list', kwargs={'macrogroup_id': self.macrogroup.pk})
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 1)
-        self.assertEqual(jcontent[0]['id'], self.project_group2.pk)
-        self.assertNotIn('edit_url', jcontent[0])
+        self.assertEqual(len(jcontent), 0)
 
         url = reverse('portal-group-by-macrogroup-api-list', kwargs={'macrogroup_id': self.macrogroup2.pk})
         response = client.get(url)
@@ -205,14 +206,15 @@ class PortalTestAPI(PortalTestsBase):
         jcontent = json.loads(response.content)
         self.assertEqual(len(jcontent), 0)
 
-        # user logged as admin: Macrogroup1 2 group, Macrogroup2 1 group
+        # user logged as admin: Macrogroup1 1 group, Macrogroup2 1 group (Group2 has no projects)
         self.assertTrue(client.login(username=self.test_user_admin1.username, password=self.test_user_admin1.username))
         url = reverse('portal-group-by-macrogroup-api-list', kwargs={'macrogroup_id': self.macrogroup.pk})
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
         jcontent = json.loads(response.content)
-        self.assertEqual(len(jcontent), 2)
+        self.assertEqual(len(jcontent), 1)
         feature = jcontent[0]
+        self.assertEqual(feature['id'], self.project_group.pk)
         group = CoreGroup.objects.filter(pk=feature['id'])[0]
         edit_url = reverse('group-update', kwargs={
             'slug': group.slug
@@ -232,10 +234,21 @@ class PortalTestAPI(PortalTestsBase):
         jcontent = json.loads(response.content)
         self.assertEqual(len(jcontent), 0)
 
-        # ad new group without macrogroup
+        # a new group without macrogroup and without projects is not listed
         new_group = CoreGroup(name='Group33', title='Group33', header_logo_img='',
                   srid=G3WSpatialRefSys.objects.get(auth_srid=4326))
         new_group.save()
+
+        response = client.get(url)
+        self.assertEqual(response.status_code, 200)
+        jcontent = json.loads(response.content)
+        self.assertEqual(len(jcontent), 0)
+
+        # ... until it gets a project
+        with open(os.path.join(DATASOURCE_PATH, QGS_FILE_2), 'r') as f:
+            qgis_project = QgisProject(File(f))
+            qgis_project.group = new_group
+            qgis_project.save()
 
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -250,10 +263,6 @@ class PortalTestAPI(PortalTestsBase):
 
         # instance API client
         client = APIClient()
-
-        for k in get_resolver().reverse_dict:
-            if isinstance(k, str):
-                print(k)
 
         # user not logged(anonymoususer)
         url = reverse('portal-infodata-api-list')
@@ -288,7 +297,7 @@ class PortalTestAPI(PortalTestsBase):
         media_url = getattr(self.settings, 'MEDIA_URL', '/media/')
         self.assertEqual('%s%s' % (media_url, p.image), jp['image'])
 
-    def test_panorami_project_filter(self):
+    def test_panoramic_project_filter(self):
         """Test filter remove panoramic project"""
 
         # instance API client
@@ -304,8 +313,8 @@ class PortalTestAPI(PortalTestsBase):
         self.assertEqual(len(jcontent), 2)
 
         # set project as panoramic
-        gpp = GroupProjectPanoramic.objects.create(group_id=self.group.pk, project_type='qdjango',
-                                             project_id=self.project.instance.pk)
+        gpp = GroupProjectPanoramic.objects.create(group_id=self.project_group.pk, project_type='qdjango',
+                                             project_id=self.project.pk)
 
         response = client.get(url)
         self.assertEqual(response.status_code, 200)
