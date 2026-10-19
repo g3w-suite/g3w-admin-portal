@@ -251,28 +251,6 @@ To load default portal pictures:
 ```sh
 ./manage.py loaddata_picture
 ```
-
-## DEPRECATED SETTINGS (< v0.1.0)
-
-```python
-# Enable/disable menu sections
-# PORTAL_SECTIONS = [
-#    'maps',
-#    'info',
-#    # 'news',
-#    # 'archives'
-#]
-
-# Activate Public Administration template
-# PORTAL_IS_PA = True #(False, default)
-
-# Activate Link to Admin 
-# PORTAL_ADMIN_BTN = True #(False, default)
-
-# Set default portal palette color (chose from 'yellow' 'violet' or 'blue')
-# PORTAL_COLOR = 'yellow' #(violet, default) 
-```
-
 ## Running tests
 
 Backend tests are located within the [`portal/tests`](./portal/tests) folder, to run them use django management command:

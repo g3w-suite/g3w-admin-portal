@@ -83,19 +83,6 @@ class PortalView(TemplateView):
             'API_BASE_URL': getattr(settings, 'PORTAL_API_BASE_URL', self.request.build_absolute_uri('/')),
 
             'LANGUAGES': [l[0] for l in settings.LANGUAGES],
-
-            # DEPRECATED since v1.0.0
-            'IS_PA': getattr(settings, 'PORTAL_IS_PA', False),
-            
-            # DEPRECATED since v1.0.0
-            'PORTAL_SECTIONS': json.dumps(getattr(settings, 'PORTAL_SECTIONS', [])),
-            
-            # DEPRECATED since v1.0.0
-            'ADMIN_BTN': json.dumps(getattr(settings, 'PORTAL_ADMIN_BTN', False)),
-            
-            # DEPRECATED since v1.0.0
-            'PORTAL_COLOR': getattr(settings, 'PORTAL_COLOR', 'violet'),
-
         }
 
         try:
