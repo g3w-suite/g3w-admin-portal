@@ -11,7 +11,7 @@ G3W-ADMIN fronted portal for G3W-SUITE.
 # Install module from github (v1.0.0)
 pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@v1.0.0
 
-# Install module from bitbucket (dev branch)
+# Install module from github (dev branch)
 # pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@dev
 
 # Install module from local folder (git development)
