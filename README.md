@@ -7,41 +7,15 @@ G3W-ADMIN fronted portal for G3W-SUITE.
 
 ## Installation
 
-### Legacy install (git only)
-
-Installing via git is not recommended and should only be considered in edge cases:
-
 ```sh
-# Git clone "portal" subfolder into "g3w-admin/portal" (works with git v2.37.1+)
+# Install module from github (v1.0.0)
+pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@v1.0.0
 
-mkdir g3w-admin/portal
-cd portal
-
-git clone --filter=blob:none --no-checkout --depth 1 --sparse <project-url> .
-git sparse-checkout add portal
-git checkout
-```
-
-### PIP install (recommended)
-
-**NB** whatever your final purpose is (deploying or contributing), make sure to download this repository outside of the [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.8.x/g3w-admin) applications folder (that's why here we are using the python [flat-layout](https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#flat-layout) packaging structure). If in doubt the `/shared-volume/plugins/g3w-admin-portal` folder is a great place to start:
-
-```sh
-# Install module from bitbucket (v1.0.0)
-pip3 install git+https://bitbucket.org/gis3w/g3w-admin-portal.git@v1.0.0
-
-# Install module from bitbucket (master branch)
-# pip3 install git+https://bitbucket.org/gis3w/g3w-admin-portal.git@master
-
-# Install module from bitbucket (as wlorenzetti user)
-# pip3 install git+https://wlorenzetti@bitbucket.org/gis3w/g3w-admin-portal.git
-
-# Install module from bitbucket (with a private token)
-# export BITBUCKET_TOKEN=<bitbucket_username>:<private_access_token>
-# pip3 install git+https://$BITBUCKET_TOKEN@bitbucket.org/gis3w/g3w-admin-portal.git
+# Install module from bitbucket (dev branch)
+# pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@dev
 
 # Install module from local folder (git development)
-# pip3 install -e /shared-volume/g3w-admin-portal
+# pip3 install -e /shared-volume/plugins/g3w-admin-portal
 
 # Install module from PyPi (not yet available)
 # pip3 install g3w-admin-portal
@@ -82,9 +56,6 @@ Here are some reccomended local_settings.py (same site installation, alongside a
 if ('portal' in G3WADMIN_LOCAL_MORE_APPS):
     FRONTEND_APP = 'portal'
     FRONTEND     = True
-    # If you have installed the package in the `/shared-volume/plugins/` folder or elsewhere, add this path to where Python search for modules
-    import sys
-    sys.path.append('/shared-volume/plugins/')
 
 # CSS OVERRIDES based on Pico.css v1.5.6 (https://picocss.com)
 PORTAL_CUSTOM_CSS = """
