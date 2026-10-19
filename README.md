@@ -8,8 +8,8 @@ G3W-ADMIN fronted portal for G3W-SUITE.
 ## Installation
 
 ```sh
-# Install module from github (v1.0.0)
-pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@v1.0.0
+# Install module from github (@v4.1.0)
+pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@v4.1.0
 
 # Install module from github (dev branch)
 # pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@dev
@@ -47,7 +47,7 @@ pip3 install ...
 
 # Configuration
 
-Here are some reccomended local_settings.py (same site installation, alongside a [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.8.x/g3w-admin) instance):
+Here are some reccomended local_settings.py (same site installation, alongside a [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.11.x/g3w-admin) instance):
 
 ```python
 ...
@@ -153,7 +153,7 @@ PORTAL_LOGOUT_URL = '/logout/?next=/'
 Install [g3w-admin-authjwt](https://github.com/g3w-suite/g3w-admin-authjwt) module on your remote server:
 
 ```sh
-pip install "portal[authjwt] @ git+https://bitbucket.org/gis3w/g3w-admin-portal.git@v4.0.0"
+pip install "portal[authjwt] @ git+https://github.com/g3w-suite/g3w-admin-portal.git@v4.1.0"
 ```
 
 And then update your CORS settings accordingly within local_settings.py file:
@@ -290,8 +290,8 @@ make push-tags         # update remote git tags (local --> remote)
 ---
 
 **Compatibile with:**
-[![g3w-admin version](https://img.shields.io/badge/g3w--admin-3.9-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-admin/tree/v.3.9.x)
-[![g3w-suite-docker version](https://img.shields.io/badge/g3w--suite--docker-3.9-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-suite-docker/tree/v3.9.x)
+[![g3w-admin version](https://img.shields.io/badge/g3w--admin-3.11-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-admin/tree/v.3.11.x)
+[![g3w-suite-docker version](https://img.shields.io/badge/g3w--suite--docker-3.11-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-suite-docker/tree/v3.11.x)
 
 ---
 
