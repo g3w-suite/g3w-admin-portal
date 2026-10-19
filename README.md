@@ -82,6 +82,9 @@ Here are some reccomended local_settings.py (same site installation, alongside a
 if ('portal' in G3WADMIN_LOCAL_MORE_APPS):
     FRONTEND_APP = 'portal'
     FRONTEND     = True
+    # If you have installed the package in the `/shared-volume/plugins/` folder or elsewhere, add this path to where Python search for modules
+    import sys
+    sys.path.append('/shared-volume/plugins/')
 
 # CSS OVERRIDES based on Pico.css v1.5.6 (https://picocss.com)
 PORTAL_CUSTOM_CSS = """
