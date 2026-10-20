@@ -7,41 +7,15 @@ G3W-ADMIN fronted portal for G3W-SUITE.
 
 ## Installation
 
-### Legacy install (git only)
-
-Installing via git is not recommended and should only be considered in edge cases:
-
 ```sh
-# Git clone "portal" subfolder into "g3w-admin/portal" (works with git v2.37.1+)
+# Install module from github (@v4.1.0)
+pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@v4.1.0
 
-mkdir g3w-admin/portal
-cd portal
-
-git clone --filter=blob:none --no-checkout --depth 1 --sparse <project-url> .
-git sparse-checkout add portal
-git checkout
-```
-
-### PIP install (recommended)
-
-**NB** whatever your final purpose is (deploying or contributing), make sure to download this repository outside of the [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.8.x/g3w-admin) applications folder (that's why here we are using the python [flat-layout](https://setuptools.pypa.io/en/latest/userguide/package_discovery.html#flat-layout) packaging structure). If in doubt the `/shared-volume/plugins/g3w-admin-portal` folder is a great place to start:
-
-```sh
-# Install module from bitbucket (v1.0.0)
-pip3 install git+https://bitbucket.org/gis3w/g3w-admin-portal.git@v1.0.0
-
-# Install module from bitbucket (master branch)
-# pip3 install git+https://bitbucket.org/gis3w/g3w-admin-portal.git@master
-
-# Install module from bitbucket (as wlorenzetti user)
-# pip3 install git+https://wlorenzetti@bitbucket.org/gis3w/g3w-admin-portal.git
-
-# Install module from bitbucket (with a private token)
-# export BITBUCKET_TOKEN=<bitbucket_username>:<private_access_token>
-# pip3 install git+https://$BITBUCKET_TOKEN@bitbucket.org/gis3w/g3w-admin-portal.git
+# Install module from github (dev branch)
+# pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@dev
 
 # Install module from local folder (git development)
-# pip3 install -e /shared-volume/g3w-admin-portal
+# pip3 install -e /shared-volume/plugins/g3w-admin-portal
 
 # Install module from PyPi (not yet available)
 # pip3 install g3w-admin-portal
@@ -73,7 +47,7 @@ pip3 install ...
 
 # Configuration
 
-Here are some reccomended local_settings.py (same site installation, alongside a [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.8.x/g3w-admin) instance):
+Here are some reccomended local_settings.py (same site installation, alongside a [`g3w-admin`](https://github.com/g3w-suite/g3w-admin/tree/v.3.11.x/g3w-admin) instance):
 
 ```python
 ...
@@ -179,7 +153,7 @@ PORTAL_LOGOUT_URL = '/logout/?next=/'
 Install [g3w-admin-authjwt](https://github.com/g3w-suite/g3w-admin-authjwt) module on your remote server:
 
 ```sh
-pip install "portal[authjwt] @ git+https://bitbucket.org/gis3w/g3w-admin-portal.git@v4.0.0"
+pip install "portal[authjwt] @ git+https://github.com/g3w-suite/g3w-admin-portal.git@v4.1.0"
 ```
 
 And then update your CORS settings accordingly within local_settings.py file:
@@ -277,28 +251,6 @@ To load default portal pictures:
 ```sh
 ./manage.py loaddata_picture
 ```
-
-## DEPRECATED SETTINGS (< v0.1.0)
-
-```python
-# Enable/disable menu sections
-# PORTAL_SECTIONS = [
-#    'maps',
-#    'info',
-#    # 'news',
-#    # 'archives'
-#]
-
-# Activate Public Administration template
-# PORTAL_IS_PA = True #(False, default)
-
-# Activate Link to Admin 
-# PORTAL_ADMIN_BTN = True #(False, default)
-
-# Set default portal palette color (chose from 'yellow' 'violet' or 'blue')
-# PORTAL_COLOR = 'yellow' #(violet, default) 
-```
-
 ## Running tests
 
 Backend tests are located within the [`portal/tests`](./portal/tests) folder, to run them use django management command:
@@ -338,8 +290,8 @@ make push-tags         # update remote git tags (local --> remote)
 ---
 
 **Compatibile with:**
-[![g3w-admin version](https://img.shields.io/badge/g3w--admin-3.9-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-admin/tree/v.3.9.x)
-[![g3w-suite-docker version](https://img.shields.io/badge/g3w--suite--docker-3.9-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-suite-docker/tree/v3.9.x)
+[![g3w-admin version](https://img.shields.io/badge/g3w--admin-3.11-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-admin/tree/v.3.11.x)
+[![g3w-suite-docker version](https://img.shields.io/badge/g3w--suite--docker-3.11-1EB300.svg?style=flat)](https://github.com/g3w-suite/g3w-suite-docker/tree/v3.11.x)
 
 ---
 
