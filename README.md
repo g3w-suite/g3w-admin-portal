@@ -1,4 +1,4 @@
-# G3W-ADMIN-PORTAL v4.1.3
+# G3W-ADMIN-PORTAL v4.1.4
 
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/g3w-suite/g3w-admin-portal)
