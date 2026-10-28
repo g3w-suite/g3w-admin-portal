@@ -4,6 +4,28 @@ on: [push, pull_request]
 
 jobs:
 
+  frontend_tests:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+        cache: pip
+        cache-dependency-path: requirements-test.txt
+    - run: python -m pip install -r requirements-test.txt
+    - run: python -m playwright install --with-deps ${{ matrix.browser }}
+    - run: python -m behave --tags=browser -D browser=${{ matrix.browser }} --junit --junit-directory portal/tests/results
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: frontend-bdd-${{ matrix.browser }}
+        path: portal/tests/results
+
   ci_tests:
 
     runs-on: ubuntu-24.04
@@ -19,7 +41,10 @@ jobs:
         path: 'portal'
 
     - name: Move PORTAL inside G3W-ADMIN
-      run: mv portal/portal g3w-admin/ && mv portal/requirements.txt g3w-admin/portal/ && echo "$(ls -lh g3w-admin/portal)"
+      run: |
+        mv portal/portal g3w-admin/
+        mv portal/requirements.txt portal/requirements-test.txt g3w-admin/portal/
+        echo "$(ls -lh g3w-admin/portal)"
 
     - name: Starting Docker compose
       run: docker compose -f docker-compose.ltr.yml up -d
@@ -38,7 +63,7 @@ jobs:
 
     - name: Install PORTAL python requirements
       run: |
-        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "cd /code/ && pip3 install -r g3w-admin/portal/requirements.txt --break-system-packages"
+        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "cd /code/ && pip3 install -r g3w-admin/portal/requirements.txt -r g3w-admin/portal/requirements-test.txt --break-system-packages"
 
     - name: Building g3w-suite
       run: |
@@ -48,17 +73,20 @@ jobs:
       run: |
         docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "/code/ci_scripts/setup_suite.sh"
 
-    - name: Starting Django
-      run: |
-        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "cd /code/g3w-admin && python3 manage.py runserver 0.0.0.0:8000" &
-
-    - name: Waiting for Django
-      run: |
-        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "wait-for-it -h localhost -p 8000 -t 240"
-
     - name:  Running PORTAL tests
       run: |
-        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "cd /code/g3w-admin && python3 manage.py test portal"
+        docker compose -f docker-compose.ltr.yml exec -T g3w-suite sh -c "cd /code/g3w-admin && DJANGO_SETTINGS_MODULE=base.settings python3 -m behave portal/tests/features --tags=backend --format progress --junit --junit-directory /tmp/portal-bdd-results"
+
+    - name: Collect backend BDD reports
+      if: always()
+      run: |
+        docker compose -f docker-compose.ltr.yml cp g3w-suite:/tmp/portal-bdd-results ./backend-bdd-results
+
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: backend-bdd-report
+        path: backend-bdd-results
 
 
     - name: Setup tmate session

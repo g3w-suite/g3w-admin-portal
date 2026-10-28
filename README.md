@@ -57,7 +57,7 @@ if ('portal' in G3WADMIN_LOCAL_MORE_APPS):
     FRONTEND_APP = 'portal'
     FRONTEND     = True
 
-# CSS OVERRIDES based on Pico.css v1.5.6 (https://picocss.com)
+# CSS OVERRIDES based on the self-hosted Pico.css v1.5.10 (https://picocss.com)
 PORTAL_CUSTOM_CSS = """
 /* Navigation Menu colors */
 nav#top-menu  { --nav-background-color: #c30c26; }
@@ -253,39 +253,38 @@ To load default portal pictures:
 ```
 ## Running tests
 
-Backend tests are located within the [`portal/tests`](./portal/tests) folder, to run them use django management command:
+Tests use Behave / Gherkin: [features](./portal/tests/features) and [steps](./portal/tests/steps).
+
+Browser tests, from the repository root:
 
 ```sh
-cd /code/g3w-admin
-
-python3 manage.py test portal
+python -m pip install -r requirements-test.txt
+python -m playwright install chromium
+python -m behave --tags=browser
 ```
 
-Frontend tests are located within the [`frontend/e2e`](./frontend/e2e) folder, to run them use npm commands:
+Browser tests start their own Django test server with mocked APIs.
+Backend tests require the configured G3W-ADMIN/QGIS environment and create a
+test database. Run from the G3W-ADMIN directory:
 
 ```sh
-cd frontend
-
-npm i                  # install dependencies
-npx playwright install # init playwright (once)
-npm run test           # test all "*.spec.ts" files (headless mode)
-npm run test:ui        # test all "*.spec.ts" files (interactive mode)
+DJANGO_SETTINGS_MODULE=base.settings python3 -m behave portal/tests/features --tags=backend
 ```
+
+## Frontend development
+
+Develop through G3W-ADMIN in Docker or with `pip install -e .`.
+Edit [portal/static/frontend](./portal/static/frontend) directly: native JS/CSS,
+no Node/npm or build step. Configuration uses Django's `PORTAL_*` settings.
+Deploy static assets using Django's `collectstatic`.
 
 ## Release a new version
 
 ```sh
-cd frontend
-
-npm run build          # build frontend files
-
-cd ..
-
 make install           # init makefiles (once)
 make version v=X.Y.Z   # add new git version
 make push-tags         # update remote git tags (local --> remote)
 ```
-
 
 ---
 
