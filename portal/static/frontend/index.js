@@ -212,9 +212,11 @@ const portal = {
         Object.assign(portal, data, { user, locale: page.locale });
       }
       const url = new URL(location.href);
-      if (portal.user && url.searchParams.get('next')) {
-        const next = url.searchParams.get('next');
-        if (!next.startsWith('/') || new URL(next, location.origin).origin !== location.origin) throw new Error('Invalid return path');
+      const next = portal.user && url?.searchParams?.get?.('next');
+      if (next && (!next.startsWith('/') || new URL(next, location.origin).origin !== location.origin)) {
+        throw new Error('Invalid return path');
+      }
+      if (next) {
         url.searchParams.delete('next');
         history.replaceState({}, '', url);
         portal.memoryPath = next;
@@ -456,10 +458,17 @@ const portal = {
         portal.search = event.target.value;
         document.querySelector('#search-results').innerHTML = portal.projects.filter(item => `${item.title || ''} ${item.description || ''}`.toLowerCase().includes(portal.search.toLowerCase())).map(item => /* html */`
           <article class="grid item-P P-${portal.escape(item.id)}">
-            <div><figure><img loading="lazy" src="${portal.escape(portal.safeURL(item.thumbnail) || new URL('assets/logo_g3wsuite.png', portal.scriptURL).href)}" alt="${portal.escape(item.title)}"></figure>
-              <p><a href="${portal.escape(portal.safeURL(item.map_url))}" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 9V3h6m6 0h6v6m0 6v6h-6M9 21H3v-6M3 3l6 6m6 6 6 6M21 3l-6 6M9 15l-6 6"/></svg><span>${portal.escape(portal.t('View'))}</span></a>
-                ${item.ogc_urls && Object.keys(item.ogc_urls).length ? `<a href="#services" data-services="${portal.escape(item.id)}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m2 8 10-6 10 6-10 6Zm0 5 10 6 10-6M2 18l10 6 10-6"/></svg><span>${portal.escape(portal.t('Services'))}</span></a>` : ''}
-                ${portal.user && item.edit_url ? `<a href="${portal.escape(portal.safeURL(item.edit_url))}" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 3 5 5-12 12-6 1 1-6Zm-2 2 5 5"/></svg><span>${portal.escape(portal.t('Edit'))}</span></a>` : ''}
+            <div>
+              <figure>
+                <img loading="lazy" src="${portal.escape(portal.safeURL(item.thumbnail) || new URL('assets/logo_g3wsuite.png', portal.scriptURL).href)}" alt="${portal.escape(item.title)}">
+              </figure>
+              <p>
+                <a href="${portal.escape(portal.safeURL(item.map_url))}" target="_blank" rel="noopener noreferrer">
+                  <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 9V3h6m6 0h6v6m0 6v6h-6M9 21H3v-6M3 3l6 6m6 6 6 6M21 3l-6 6M9 15l-6 6"/></svg>
+                  <span>${portal.escape(portal.t('View'))}</span>
+                </a>
+                ${item.ogc_urls && Object.keys(item.ogc_urls).length ? /* html */`<a href="#services" data-services="${portal.escape(item.id)}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m2 8 10-6 10 6-10 6Zm0 5 10 6 10-6M2 18l10 6 10-6"/></svg><span>${portal.escape(portal.t('Services'))}</span></a>` : ''}
+                ${portal.user && item.edit_url ? /* html */`<a href="${portal.escape(portal.safeURL(item.edit_url))}" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 3 5 5-12 12-6 1 1-6Zm-2 2 5 5"/></svg><span>${portal.escape(portal.t('Edit'))}</span></a>` : ''}
               </p>
             </div><hgroup><h3>${portal.escape(item.title)}</h3><div>${item.description}</div></hgroup>
           </article>`).join('');
