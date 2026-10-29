@@ -12,6 +12,41 @@ Feature: Native portal behavior without a JavaScript test runner
     When I request the complete catalog
     Then the archive contains both catalog entries
 
+  Scenario: Clicking a group loads projects from the group API
+    When I open "/#/en/"
+    And I open the featured group
+    Then the map and its network services remain available
+    And projects were requested from the group API
+
+  Scenario Outline: Missing organization or nested group for a visitor
+    Given the visitor is "<session>"
+    When I open "/#/en/<path>"
+    Then the missing group shows "<outcome>"
+
+    Examples:
+      | session       | path               | outcome   |
+      | anonymous     | organization/999   | login     |
+      | authenticated | organization/999   | not found |
+      | anonymous     | organization/1/999 | login     |
+      | authenticated | organization/1/999 | not found |
+
+  Scenario Outline: External return destinations are rejected
+    When I request the return destination "<destination>" after "<stage>"
+    Then the invalid return destination is reported without leaving the portal
+
+    Examples:
+      | stage | destination          |
+      | login | https://other.test/  |
+      | login | //other.test/        |
+      | login | /\other.test/        |
+      | login | en/                  |
+      | login | javascript:alert(1)  |
+      | load  | https://other.test/  |
+      | load  | //other.test/        |
+      | load  | /\other.test/        |
+      | load  | en/                  |
+      | load  | javascript:alert(1)  |
+
   Scenario: Remote media URLs work with a local API
     Given the API is local and its media is remote
     When I open "/#/en/"
@@ -194,6 +229,8 @@ Feature: Native portal behavior without a JavaScript test runner
       | -1    | 2     | absent   |
       | 1     | 1     | visible  |
       | 9     | 2     | absent   |
+      | 1.5   | 1     | visible  |
+      | invalid | 2   | absent   |
 
   Scenario Outline: Existing translations work without compilation
     When I open "/#/<locale>/search"

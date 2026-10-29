@@ -1,7 +1,7 @@
 import asyncio
 import json
 import re
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import parse_qs, quote, urlparse
 
 from behave import given, then, when
 from playwright.async_api import expect
@@ -151,6 +151,38 @@ async def home(context):
 @when("I request the complete catalog")
 async def complete_catalog(context):
     await role(context, "button", "Show all").click()
+
+
+@when("I open the featured group")
+async def open_featured_group(context):
+    await context.page.locator("#content .item-G a").first.click()
+
+
+@then("projects were requested from the group API")
+async def group_api_requested(context):
+    assert "/en/portal/api/group/2/projects/" in context.calls, context.calls
+    await expect(role(context, "heading", "Page Not Found")).to_have_count(0)
+    await expect(context.page.locator("#portal-error")).to_have_count(0)
+
+
+@when('I request the return destination "{destination}" after "{stage}"')
+async def invalid_return_destination(context, destination, stage):
+    assert stage in {"login", "load"}, stage
+    destination = quote(destination, safe="")
+    if stage == "load":
+        context.authenticated = True
+        await context.page.goto(f"/?next={destination}#/en/")
+    else:
+        await context.page.goto(f"/#/en/login?next={destination}")
+        await context.page.get_by_label("Username", exact=True).fill("admin")
+        await context.page.get_by_label("Password", exact=True).fill("correct")
+        await role(context, "button", "Login").click()
+
+
+@then("the invalid return destination is reported without leaving the portal")
+async def invalid_return_reported(context):
+    await expect(context.page.get_by_role("alert")).to_contain_text("Invalid return path")
+    assert urlparse(context.page.url).netloc == urlparse(context.base_url).netloc
 
 
 @then("the default navigation colors and card layout are applied")
@@ -645,9 +677,9 @@ async def missing_group(context, outcome):
         await expect(context.page.get_by_label("Username", exact=True)).to_be_visible()
 
 
-@given("the home article limit is {limit:d}")
+@given("the home article limit is {limit}")
 def article_limit(context, limit):
-    context.settings["PORTAL_MAX_HOME_ARTICLES"] = limit
+    context.settings["PORTAL_MAX_HOME_ARTICLES"] = json.loads(limit) if limit != "invalid" else limit
 
 
 @then('there are {cards:d} home cards and the show-all control is "{visibility}"')
@@ -663,7 +695,7 @@ async def translation(context, locale):
     await expect(context.page.locator("html")).to_have_attribute("lang", locale)
     await expect(role(context, "heading", "Rivers")).to_be_visible()
     placeholder = await context.page.evaluate(
-        "async locale => (await import(`/static/frontend/locale/${locale}.js`)).default.menu.search_placeholder",
+        "async locale => (await import(`/static/frontend/locale/${locale}.js`)).default['Find a map in the catalog']",
         locale,
     )
     await expect(context.page.get_by_role("searchbox")).to_have_attribute("placeholder", placeholder)

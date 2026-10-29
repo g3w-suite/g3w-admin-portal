@@ -1,73 +1,35 @@
-export const en = {
-
-  home: {
-    show_all_button: 'Afficher tout',
-  },
-
-  footer: {
-    contacts: 'Contacts',
-  },
-
-  tooltip: {
-    choose_language: 'Choisir une langue',
-    home: 'Aller à l\'accueil',
-    logout: 'Déconnexion',
-    login: 'Connexion',
-    admin: 'Section admin',
-    menu: 'Basculer le menu',
-  },
-
-  menu: {
-    search: 'Recherche',
-    search_placeholder: 'Trouver une carte dans le catalogue',
-    home: 'Accueil',
-    maps: 'cartes',
-    info: 'info',
-    login: 'Connexion',
-    logout: 'Déconnexion',
-    admin: 'Admin',
-    data: 'Données',
-    group: 'Groupes',
-    organization: 'Organisations',
-    toggle: 'MENU',
-    catalog: 'Catalogue',
-    404: 'Page non trouvée',
-  },
-
-  login: {
-    username: 'Nom d\'utilisateur',
-    password: 'Mot de passe',
-    submit: 'Connexion',
-    title: 'Connexion au système d\'administration',
-    reset_password_url: 'Mot de passe oublié ?',
-    requiredField: 'Ce champ est requis',
-    erroreLogin: 'Erreur de connexion',
-  },
-
-  language: {
-    en: 'English',
-    bg: 'Bulgarian',
-    de: 'Deutsch',
-    fi: 'Finnish',
-    fr: 'French',
-    it: 'Italian',
-    pt: 'Portuguese',
-    ro: 'Romanian',
-    se: 'Swedish',
-  },
-
-  maps: {
-    services: 'Services',
-    group: 'Groupe',
-    edit: 'Modifier',
-    view: 'Voir',
-  },
-
-  readmore: 'Lire la suite »',
-  readless: '« Lire moins',
-
-  ogc_services: 'Services réseau - OGC',
-
+export default {
+  'Show all': 'Afficher tout',
+  Contacts: 'Contacts',
+  'Choose a language': 'Choisir une langue',
+  'Go to home': "Aller à l'accueil",
+  Logout: 'Déconnexion',
+  Login: 'Connexion',
+  'Admin section': 'Section admin',
+  'Toggle menu': 'Basculer le menu',
+  Search: 'Recherche',
+  'Find a map in the catalog': 'Trouver une carte dans le catalogue',
+  Home: 'Accueil',
+  maps: 'cartes',
+  info: 'info',
+  Admin: 'Admin',
+  Data: 'Données',
+  Groups: 'Groupes',
+  Organizations: 'Organisations',
+  MENU: 'MENU',
+  Catalog: 'Catalogue',
+  'Page Not Found': 'Page non trouvée',
+  Username: "Nom d'utilisateur",
+  Password: 'Mot de passe',
+  'Login to the admin system': "Connexion au système d'administration",
+  'Forgot your password?': 'Mot de passe oublié ?',
+  'This field is required': 'Ce champ est requis',
+  'Login error': 'Erreur de connexion',
+  Services: 'Services',
+  Group: 'Groupe',
+  Edit: 'Modifier',
+  View: 'Voir',
+  'Read more »': 'Lire la suite »',
+  '« Read less': '« Lire moins',
+  'Network services - OGC': 'Services réseau - OGC',
 };
-
-export default en;

@@ -1,73 +1,35 @@
-export const en = {
-
-  home: {
-    show_all_button: 'Näytä kaikki',
-  },
-
-  footer: {
-    contacts: 'Yhteystiedot',
-  },
-
-  tooltip: {
-    choose_language: 'Valitse kieli',
-    home: 'Siirry kotiin',
-    logout: 'Kirjaudu ulos',
-    login: 'Kirjaudu sisään',
-    admin: 'Ylläpitoalue',
-    menu: 'Vaihda valikko',
-  },
-
-  menu: {
-    search: 'Haku',
-    search_placeholder: 'Etsi karttaa luettelosta',
-    home: 'Koti',
-    maps: 'kartat',
-    info: 'tietoja',
-    login: 'Kirjaudu',
-    logout: 'Kirjaudu ulos',
-    admin: 'Admin',
-    data: 'Tietoa',
-    group: 'Ryhmät',
-    organization: 'Organisaatiot',
-    toggle: 'VALIKKO',
-    catalog: 'Luettelo',
-    404: 'Sivua ei löytynyt',
-  },
-
-  login: {
-    username: 'Käyttäjätunnus',
-    password: 'Salasana',
-    submit: 'Kirjaudu',
-    title: 'Kirjaudu sisään hallintajärjestelmään',
-    reset_password_url: 'Unohtuiko salasana?',
-    requiredField: 'Tämä kenttä on pakollinen',
-    erroreLogin: 'Kirjautumisvirhe',
-  },
-
-  language: {
-    en: 'English',
-    bg: 'Bulgarian',
-    de: 'Deutsch',
-    fi: 'Finnish',
-    fr: 'French',
-    it: 'Italian',
-    pt: 'Portuguese',
-    ro: 'Romanian',
-    se: 'Swedish',
-  },
-
-  maps: {
-    services: 'Palvelut',
-    group: 'Ryhmä',
-    edit: 'Muokkaa',
-    view: 'Näytä',
-  },
-
-  readmore: 'Lue lisää »',
-  readless: '« Lue vähemmän',
-
-  ogc_services: 'Verkkopalvelut - OGC',
-
+export default {
+  'Show all': 'Näytä kaikki',
+  Contacts: 'Yhteystiedot',
+  'Choose a language': 'Valitse kieli',
+  'Go to home': 'Siirry kotiin',
+  Logout: 'Kirjaudu ulos',
+  Login: 'Kirjaudu',
+  'Admin section': 'Ylläpitoalue',
+  'Toggle menu': 'Vaihda valikko',
+  Search: 'Haku',
+  'Find a map in the catalog': 'Etsi karttaa luettelosta',
+  Home: 'Koti',
+  maps: 'kartat',
+  info: 'tietoja',
+  Admin: 'Admin',
+  Data: 'Tietoa',
+  Groups: 'Ryhmät',
+  Organizations: 'Organisaatiot',
+  MENU: 'VALIKKO',
+  Catalog: 'Luettelo',
+  'Page Not Found': 'Sivua ei löytynyt',
+  Username: 'Käyttäjätunnus',
+  Password: 'Salasana',
+  'Login to the admin system': 'Kirjaudu sisään hallintajärjestelmään',
+  'Forgot your password?': 'Unohtuiko salasana?',
+  'This field is required': 'Tämä kenttä on pakollinen',
+  'Login error': 'Kirjautumisvirhe',
+  Services: 'Palvelut',
+  Group: 'Ryhmä',
+  Edit: 'Muokkaa',
+  View: 'Näytä',
+  'Read more »': 'Lue lisää »',
+  '« Read less': '« Lue vähemmän',
+  'Network services - OGC': 'Verkkopalvelut - OGC',
 };
-
-export default en;

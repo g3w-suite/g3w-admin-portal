@@ -1,73 +1,35 @@
-export const en = {
-
-  home: {
-    show_all_button: 'Visa alla',
-  },
-
-  footer: {
-    contacts: 'Kontakter',
-  },
-
-  tooltip: {
-    choose_language: 'Välj ett språk',
-    home: 'Gå till startsidan',
-    logout: 'Logga ut',
-    login: 'Logga in',
-    admin: 'Administrationsavsnitt',
-    menu: 'Växla meny',
-  },
-
-  menu: {
-    search: 'Sök',
-    search_placeholder: 'Hitta en karta i katalogen',
-    home: 'Hem',
-    maps: 'kartor',
-    info: 'info',
-    login: 'Logga in',
-    logout: 'Logga ut',
-    admin: 'Admin',
-    data: 'Data',
-    group: 'Grupper',
-    organization: 'Organisationer',
-    toggle: 'MENY',
-    catalog: 'Katalog',
-    404: 'Sidan hittades inte',
-  },
-
-  login: {
-    username: 'Användarnamn',
-    password: 'Lösenord',
-    submit: 'Logga in',
-    title: 'Logga in på administrationssystemet',
-    reset_password_url: 'Glömt ditt lösenord?',
-    requiredField: 'Detta fält är obligatoriskt',
-    erroreLogin: 'Inloggningsfel',
-  },
-
-  language: {
-    en: 'English',
-    bg: 'Bulgarian',
-    de: 'Deutsch',
-    fi: 'Finnish',
-    fr: 'French',
-    it: 'Italian',
-    pt: 'Portuguese',
-    ro: 'Romanian',
-    se: 'Swedish',
-  },
-
-  maps: {
-    services: 'Tjänster',
-    group: 'Grupp',
-    edit: 'Redigera',
-    view: 'Visa',
-  },
-
-  readmore: 'Läs mer »',
-  readless: '« Läs mindre',
-
-  ogc_services: 'Nätverkstjänster - OGC',
-
+export default {
+  'Show all': 'Visa alla',
+  Contacts: 'Kontakter',
+  'Choose a language': 'Välj ett språk',
+  'Go to home': 'Gå till startsidan',
+  Logout: 'Logga ut',
+  Login: 'Logga in',
+  'Admin section': 'Administrationsavsnitt',
+  'Toggle menu': 'Växla meny',
+  Search: 'Sök',
+  'Find a map in the catalog': 'Hitta en karta i katalogen',
+  Home: 'Hem',
+  maps: 'kartor',
+  info: 'info',
+  Admin: 'Admin',
+  Data: 'Data',
+  Groups: 'Grupper',
+  Organizations: 'Organisationer',
+  MENU: 'MENY',
+  Catalog: 'Katalog',
+  'Page Not Found': 'Sidan hittades inte',
+  Username: 'Användarnamn',
+  Password: 'Lösenord',
+  'Login to the admin system': 'Logga in på administrationssystemet',
+  'Forgot your password?': 'Glömt ditt lösenord?',
+  'This field is required': 'Detta fält är obligatoriskt',
+  'Login error': 'Inloggningsfel',
+  Services: 'Tjänster',
+  Group: 'Grupp',
+  Edit: 'Redigera',
+  View: 'Visa',
+  'Read more »': 'Läs mer »',
+  '« Read less': '« Läs mindre',
+  'Network services - OGC': 'Nätverkstjänster - OGC',
 };
-
-export default en;

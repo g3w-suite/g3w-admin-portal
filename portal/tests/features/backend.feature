@@ -6,6 +6,19 @@ Feature: Django portal API contracts and permissions
   Background:
     Given the Django portal catalog
 
+  Scenario: Local API proxy forwards and scopes remote session cookies
+    When a proxy request from "localhost:8000" targets "it/portal/api/infodata/"
+    Then the proxy forwards only remote session cookies and scopes the response cookies
+
+  Scenario Outline: API proxy rejects non-local hosts and unapproved paths
+    When a proxy request from "<host>" targets "<target>"
+    Then the proxy rejects the request without contacting upstream
+
+    Examples:
+      | host           | target                  |
+      | example.com    | it/portal/api/infodata/ |
+      | localhost:8000 | admin/                 |
+
   Scenario Outline: Current session identity
     Given a backend "<visitor>" session
     When the backend endpoint "portal-whoami-api" is requested

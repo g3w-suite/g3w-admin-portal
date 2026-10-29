@@ -1,73 +1,35 @@
-export const en = {
-
-  home: {
-    show_all_button: 'Afișează tot',
-  },
-
-  footer: {
-    contacts: 'Contacte',
-  },
-
-  tooltip: {
-    choose_language: 'Alege o limbă',
-    home: 'Mergi la pagină principală',
-    logout: 'Ieșire',
-    login: 'Autentificare',
-    admin: 'Secțiune admin',
-    menu: 'Comută meniul',
-  },
-
-  menu: {
-    search: 'Caută',
-    search_placeholder: 'Găsește o hartă în catalog',
-    home: 'Acasă',
-    maps: 'hărți',
-    info: 'informații',
-    login: 'Autentificare',
-    logout: 'Ieșire',
-    admin: 'Admin',
-    data: 'Date',
-    group: 'Grupuri',
-    organization: 'Organizații',
-    toggle: 'MENIU',
-    catalog: 'Catalog',
-    404: 'Pagina nu a fost găsită',
-  },
-
-  login: {
-    username: 'Nume utilizator',
-    password: 'Parolă',
-    submit: 'Autentificare',
-    title: 'Autentificare în sistemul de administrare',
-    reset_password_url: 'Ai uitat parola?',
-    requiredField: 'Acest câmp este obligatoriu',
-    erroreLogin: 'Eroare de autentificare',
-  },
-
-  language: {
-    en: 'English',
-    bg: 'Bulgarian',
-    de: 'Deutsch',
-    fi: 'Finnish',
-    fr: 'French',
-    it: 'Italian',
-    pt: 'Portuguese',
-    ro: 'Romanian',
-    se: 'Swedish',
-  },
-
-  maps: {
-    services: 'Servicii',
-    group: 'Grup',
-    edit: 'Editare',
-    view: 'Vizualizare',
-  },
-
-  readmore: 'Citește mai mult »',
-  readless: '« Citește mai puțin',
-
-  ogc_services: 'Servicii de rețea - OGC',
-
+export default {
+  'Show all': 'Afișează tot',
+  Contacts: 'Contacte',
+  'Choose a language': 'Alege o limbă',
+  'Go to home': 'Mergi la pagină principală',
+  Logout: 'Ieșire',
+  Login: 'Autentificare',
+  'Admin section': 'Secțiune admin',
+  'Toggle menu': 'Comută meniul',
+  Search: 'Caută',
+  'Find a map in the catalog': 'Găsește o hartă în catalog',
+  Home: 'Acasă',
+  maps: 'hărți',
+  info: 'informații',
+  Admin: 'Admin',
+  Data: 'Date',
+  Groups: 'Grupuri',
+  Organizations: 'Organizații',
+  MENU: 'MENIU',
+  Catalog: 'Catalog',
+  'Page Not Found': 'Pagina nu a fost găsită',
+  Username: 'Nume utilizator',
+  Password: 'Parolă',
+  'Login to the admin system': 'Autentificare în sistemul de administrare',
+  'Forgot your password?': 'Ai uitat parola?',
+  'This field is required': 'Acest câmp este obligatoriu',
+  'Login error': 'Eroare de autentificare',
+  Services: 'Servicii',
+  Group: 'Grup',
+  Edit: 'Editare',
+  View: 'Vizualizare',
+  'Read more »': 'Citește mai mult »',
+  '« Read less': '« Citește mai puțin',
+  'Network services - OGC': 'Servicii de rețea - OGC',
 };
-
-export default en;

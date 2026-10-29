@@ -1,73 +1,35 @@
-export const en = {
-
-  home: {
-    show_all_button: 'Alle anzeigen',
-  },
-
-  footer: {
-    contacts: 'Kontakte',
-  },
-
-  tooltip: {
-    choose_language: 'Sprache wählen',
-    home: 'Zur Startseite gehen',
-    logout: 'Abmelden',
-    login: 'Anmelden',
-    admin: 'Admin-Bereich',
-    menu: 'Menü umschalten',
-  },
-
-  menu: {
-    search: 'Suche',
-    search_placeholder: 'Finde eine Karte im Katalog',
-    home: 'Startseite',
-    maps: 'Karten',
-    info: 'Info',
-    login: 'Login',
-    logout: 'Abmelden',
-    admin: 'Admin',
-    data: 'Daten',
-    group: 'Gruppen',
-    organization: 'Organisationen',
-    toggle: 'MENÜ',
-    catalog: 'Katalog',
-    404: 'Seite nicht gefunden',
-  },
-
-  login: {
-    username: 'Benutzername',
-    password: 'Passwort',
-    submit: 'Anmelden',
-    title: 'Anmeldung zum Verwaltungssystem',
-    reset_password_url: 'Passwort vergessen?',
-    requiredField: 'Dieses Feld ist erforderlich',
-    erroreLogin: 'Login-Fehler',
-  },
-
-  language: {
-    en: 'English',
-    bg: 'Bulgarian',
-    de: 'Deutsch',
-    fi: 'Finnish',
-    fr: 'French',
-    it: 'Italian',
-    pt: 'Portuguese',
-    ro: 'Romanian',
-    se: 'Swedish',
-  },
-
-  maps: {
-    services: 'Dienste',
-    group: 'Gruppe',
-    edit: 'Bearbeiten',
-    view: 'Ansehen',
-  },
-
-  readmore: 'Mehr lesen »',
-  readless: '« Weniger lesen',
-
-  ogc_services: 'Netzwerkdienste – OGC',
-
+export default {
+  'Show all': 'Alle anzeigen',
+  Contacts: 'Kontakte',
+  'Choose a language': 'Sprache wählen',
+  'Go to home': 'Zur Startseite gehen',
+  Logout: 'Abmelden',
+  Login: 'Anmelden',
+  'Admin section': 'Admin-Bereich',
+  'Toggle menu': 'Menü umschalten',
+  Search: 'Suche',
+  'Find a map in the catalog': 'Finde eine Karte im Katalog',
+  Home: 'Startseite',
+  maps: 'Karten',
+  info: 'Info',
+  Admin: 'Admin',
+  Data: 'Daten',
+  Groups: 'Gruppen',
+  Organizations: 'Organisationen',
+  MENU: 'MENÜ',
+  Catalog: 'Katalog',
+  'Page Not Found': 'Seite nicht gefunden',
+  Username: 'Benutzername',
+  Password: 'Passwort',
+  'Login to the admin system': 'Anmeldung zum Verwaltungssystem',
+  'Forgot your password?': 'Passwort vergessen?',
+  'This field is required': 'Dieses Feld ist erforderlich',
+  'Login error': 'Login-Fehler',
+  Services: 'Dienste',
+  Group: 'Gruppe',
+  Edit: 'Bearbeiten',
+  View: 'Ansehen',
+  'Read more »': 'Mehr lesen »',
+  '« Read less': '« Weniger lesen',
+  'Network services - OGC': 'Netzwerkdienste – OGC',
 };
-
-export default en;
