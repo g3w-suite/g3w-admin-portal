@@ -12,6 +12,38 @@ Feature: Native portal behavior without a JavaScript test runner
     When I request the complete catalog
     Then the archive contains both catalog entries
 
+  Scenario: Default navigation colors and catalog card layout
+    When I open "/#/en/"
+    Then the default navigation colors and card layout are applied
+
+  Scenario: Compact navigation respects disabled menu settings
+    Given the top navbar and menu button are disabled
+    When I open "/#/en/"
+    Then navigation stays compact without a secondary menu
+
+  Scenario: Desktop identity remains visible when menu controls are disabled
+    Given the top navbar and menu button are disabled
+    When I open "/#/en/"
+    Then the desktop navbar retains the portal title and subtitle
+    And language flags retain their original proportions
+    And the home breadcrumb does not repeat the current page label
+
+  Scenario: Footer policies use a full-width contrasting bar
+    Given the footer contains policy and social links
+    When I open "/#/en/"
+    Then the footer policy bar spans the viewport with contrasting links
+    And social links use accessible icons instead of text labels
+
+  Scenario: Tablet footer retains three columns before stacking on phones
+    Given a tablet viewport
+    When I open "/#/en/"
+    Then footer contacts occupy the third column
+
+  Scenario: Home description remains readable without carousel pictures
+    Given the home has no carousel pictures
+    When I open "/#/en/"
+    Then the home description and footer use readable dark theme colors
+
   Scenario: Navigate organization, group, map and services
     When I open an organization and its group
     Then the map and its network services remain available
@@ -30,6 +62,104 @@ Feature: Native portal behavior without a JavaScript test runner
     Then I am authenticated and the catalog has been refreshed
     When I log out from search
     Then I stay on search without authenticated controls
+
+  Scenario Outline: Internal login ignores the Django logout page
+    Given the visitor is "authenticated"
+    And internal login advertises the Django logout URL
+    When I open "<path>"
+    And I use internal logout
+    Then logout uses the portal API without leaving the application
+
+    Examples:
+      | path         |
+      | /#/en/search |
+      | /#/en/logout |
+
+  Scenario: Breadcrumbs retain the organization and group hierarchy
+    When I open an organization and its group
+    Then breadcrumbs link to every parent without duplicate separators
+    When I return to the organization using breadcrumbs
+    Then the organization catalog and its breadcrumb are restored
+
+  Scenario: A group inside an organization can be opened directly
+    When I open "/#/en/group/3"
+    Then the map and its network services remain available
+    And the current breadcrumb is "City maps"
+
+  Scenario: Project image and description share the same desktop row
+    When I open "/#/en/group/2"
+    Then project details sit beside the image with illustrated actions
+
+  Scenario: Project details fit a phone screen
+    Given a narrow viewport without the top navbar
+    When I open "/#/en/group/2"
+    Then project details follow the image without horizontal overflow
+
+  Scenario: Group services use the displayed project rather than search data
+    Given the group project has its own network service
+    When I open "/#/en/group/2"
+    And I open the project services
+    Then the displayed project service and documentation are in the dialog
+    And the dialog locks scrolling until closed with Escape
+
+  Scenario: Language changes preserve the requested login destination
+    When I open "/#/en/login?next=%2Fen%2Fgroup%2F2"
+    And I choose Italian from the language list
+    Then the login destination is retained after changing language
+
+  Scenario: Navigation from the footer returns to the top
+    When I open "/#/en/group/2"
+    And I navigate to search after scrolling to the footer
+    Then search opens at the top of the page
+
+  Scenario: Mobile menu contains search and authentication controls
+    Given a narrow viewport without the top navbar
+    When I open "/#/en/"
+    Then mobile navigation shows a menu button instead of crowded actions
+    When I expand the menu
+    Then search and login are available inside the expanded menu
+
+  Scenario: Authenticated mobile menu provides administration and logout
+    Given a narrow viewport without the top navbar
+    And the visitor is "authenticated"
+    When I open "/#/en/search"
+    And I expand the menu
+    Then administration and logout are usable in the mobile menu
+
+  Scenario: Language list fits a small viewport
+    Given a narrow viewport without the top navbar
+    And the menu button is disabled
+    When I open "/#/en/"
+    And I expand the language list
+    Then every language is reachable without horizontal overflow
+    And compact mobile actions retain accessible names without crowded labels
+
+  Scenario: Additional configured languages have readable names
+    Given Polish and Spanish are configured
+    When I open "/#/en/search"
+    And I expand the language list
+    Then additional languages have their own names without incorrect flags
+
+  Scenario: Carousel without an author does not show an empty credit badge
+    Given the carousel author is unspecified
+    When I open "/#/en/"
+    Then no empty photo credit badge is drawn
+
+  Scenario: Credits retain the original presentation and contacts
+    When I open "/#/en/"
+    And I open credits
+    Then credits show their branded header, logos and contact details
+    And the dialog locks scrolling until closed with Escape
+
+  Scenario Outline: Invalid route parameters do not render unrelated pages
+    When I open "/#/en/<path>"
+    Then the missing group shows "not found"
+
+    Examples:
+      | path             |
+      | search/extra     |
+      | group/2/extra    |
+      | login/extra      |
 
   Scenario: Invalid credentials are reported without authenticating
     When I open "/#/en/login"

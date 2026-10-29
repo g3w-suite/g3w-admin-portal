@@ -87,11 +87,11 @@ async def mock_api(context, route):
     elif re.search(r"/api/group/1$", path):
         data = [NESTED_GROUP]
     elif re.search(r"/api/group/\d+/projects/$", path):
-        data = [PROJECT]
+        data = [{**PROJECT, **getattr(context, "group_project", {})}]
     elif path.endswith("/api/group/nomacrogroup/"):
         data = [] if getattr(context, "restricted_group", False) and not context.authenticated else [GROUP]
     elif path.endswith("/api/group/"):
-        data = [GROUP, NESTED_GROUP]
+        data = [NESTED_GROUP] if getattr(context, "restricted_group", False) and not context.authenticated else [GROUP, NESTED_GROUP]
     elif path.endswith("/api/project/"):
         if getattr(context, "catalog_unavailable", False) or (
             getattr(context, "public_catalog_failure", False) and not context.authenticated
@@ -145,6 +145,7 @@ async def home(context):
     await expect(role(context, "heading", "Welcome")).to_be_visible()
     await expect(context.page.get_by_text("Photo by Cartographer")).to_be_visible()
     await expect(context.page.locator("#content article")).to_have_count(1)
+    await expect(context.page.locator("#content article h3")).to_have_text("Water maps")
 
 
 @when("I request the complete catalog")
@@ -152,17 +153,387 @@ async def complete_catalog(context):
     await role(context, "button", "Show all").click()
 
 
+@then("the default navigation colors and card layout are applied")
+async def default_styles(context):
+    await expect(context.page.locator("#content article")).to_have_count(1)
+    for selector, color in [
+        ("#top-menu", "rgb(195, 12, 38)"),
+        ("#main-menu", "rgb(175, 11, 34)"),
+    ]:
+        await expect(context.page.locator(selector)).to_have_css("background-color", color)
+        await expect(context.page.locator(selector)).to_have_css("color", "rgb(255, 255, 255)")
+    card = context.page.locator("#content article").first
+    await expect(card.locator("figure > img")).to_have_css("aspect-ratio", "16 / 9")
+    await expect(card.locator("figure > img")).to_have_css("object-fit", "contain")
+    await expect(card.locator("figure > figcaption")).to_have_css("grid-row-start", "1")
+    await expect(card.locator("figure > figcaption")).to_have_css("background-color", "rgb(175, 11, 34)")
+    await expect(card.locator("figure > figcaption h3")).to_have_css("font-weight", "400")
+    await expect(card.locator("figure > figcaption h3 b")).to_have_css("font-weight", "700")
+    await expect(card.locator("> a")).to_have_css("display", "flex")
+    header_height = await context.page.evaluate(
+        "parseFloat(getComputedStyle(document.documentElement).fontSize) * 3.5"
+    )
+    await expect(card.locator("figure > figcaption")).to_have_css("grid-template-rows", f"{header_height:g}px")
+    caption = await card.locator("figure > figcaption").bounding_box()
+    image = await card.locator("figure > img").bounding_box()
+    assert caption and image
+    assert image["y"] >= caption["y"] + caption["height"] - 1
+
+
+@given("the top navbar and menu button are disabled")
+def compact_navigation(context):
+    context.settings.update(PORTAL_NAVBAR_TOP=False, PORTAL_MENU_BUTTON=False)
+    context.info["sub_title"] = "Public map catalog"
+
+
+@then("navigation stays compact without a secondary menu")
+async def compact_layout(context):
+    await expect(context.page.locator("#content article")).to_have_count(1)
+    await expect(context.page.locator("#top-menu")).to_have_count(0)
+    await expect(context.page.locator("#secondary-menu")).to_be_hidden()
+    await expect(context.page.locator("[data-menu]")).to_have_count(0)
+    await expect(role(context, "link", "Search")).to_be_visible()
+    await expect(role(context, "link", "Login")).to_be_visible()
+    navbar = await context.page.locator("#main-menu").bounding_box()
+    assert navbar and navbar["height"] < 120, navbar
+
+
+@then("the desktop navbar retains the portal title and subtitle")
+async def desktop_identity(context):
+    title = context.page.locator("#main-menu .nav-title")
+    await expect(title).to_be_visible()
+    await expect(title.locator(".h1")).to_have_text("G3W-SUITE")
+    await expect(title.locator("span").last).to_have_text("Public map catalog")
+
+
+@then("language flags retain their original proportions")
+async def flag_dimensions(context):
+    await expect(context.page.locator(".nav-lang summary img")).to_have_css("width", "18px")
+    await expect(context.page.locator(".nav-lang summary img")).to_have_css("height", "12px")
+
+
+@then("the home breadcrumb does not repeat the current page label")
+async def home_breadcrumb(context):
+    await expect(context.page.locator("#breadcrumb")).to_have_text("")
+    await expect(context.page.locator('#breadcrumb [aria-current="page"]')).to_have_count(1)
+    await expect(context.page.locator("#breadcrumb")).to_have_css("border-bottom-width", "0px")
+    await expect(context.page.locator("#header h1")).to_have_css("margin-bottom", "20px")
+
+
+@given("the footer contains policy and social links")
+def footer_links(context):
+    context.info.update(
+        cookie_policy_url="/cookie/", privacy_policy_url="/privacy/",
+        facebook_url="https://www.facebook.com/gis3w.sas/",
+        twitter_url="https://twitter.com/_gis3w_", youtube_url="https://www.youtube.com/",
+    )
+
+
+@then("the footer policy bar spans the viewport with contrasting links")
+async def footer_bar(context):
+    bar = context.page.locator("#footer > nav")
+    await expect(bar).to_have_css("background-color", "rgb(0, 0, 0)")
+    bounds = await bar.bounding_box()
+    width = await context.page.evaluate("document.documentElement.clientWidth")
+    assert bounds and abs(bounds["x"]) < 1 and abs(bounds["width"] - width) < 1, bounds
+    for label in ["Cookie", "Privacy", "Credits"]:
+        await expect(bar.get_by_role("link", name=label, exact=True)).to_have_css("color", "rgb(237, 240, 243)")
+
+
+@then("social links use accessible icons instead of text labels")
+async def social_icons(context):
+    for label in ["Facebook", "Twitter", "Youtube"]:
+        anchor = context.page.locator(".social-icons").get_by_role("link", name=label, exact=True)
+        await expect(anchor).to_have_text("")
+        await expect(anchor.locator("svg")).to_be_visible()
+        await expect(anchor).to_have_attribute("rel", "noopener noreferrer")
+
+
+@given("a tablet viewport")
+async def tablet_viewport(context):
+    await context.page.set_viewport_size({"width": 800, "height": 1024})
+
+
+@then("footer contacts occupy the third column")
+async def footer_columns(context):
+    columns = context.page.locator("#footer .grid")
+    about = await columns.locator("> div").first.bounding_box()
+    contacts = await columns.locator("> address").bounding_box()
+    grid = await columns.bounding_box()
+    assert about and contacts and grid
+    assert abs(about["y"] - contacts["y"]) < 1, (about, contacts)
+    assert contacts["x"] > grid["x"] + grid["width"] * .6, (grid, contacts)
+
+
+@given("the home has no carousel pictures")
+def no_carousel(context):
+    context.pictures = []
+    context.info["home_description"] = "A readable home description"
+
+
+@then("the home description and footer use readable dark theme colors")
+async def themed_text(context):
+    await expect(context.page.locator("#header > .container")).to_have_text("A readable home description")
+    await expect(context.page.locator("#carousel")).to_have_count(0)
+    for selector in ["#header > .container", "#footer"]:
+        colors = await context.page.locator(selector).evaluate(
+            "element => { const css = getComputedStyle(element); "
+            "return { color: css.color, expected: css.getPropertyValue('--color').trim() }; }"
+        )
+        expected = await context.page.evaluate(
+            "color => { const probe = document.createElement('span'); probe.style.color = color; "
+            "document.body.append(probe); const result = getComputedStyle(probe).color; "
+            "probe.remove(); return result; }", colors["expected"],
+        )
+        assert colors["color"] == expected, (selector, colors)
+
+
 @then("the archive contains both catalog entries")
 async def archive(context):
     await expect(context.page.locator("#content article")).to_have_count(2)
-    await expect(role(context, "heading", "Water maps")).to_be_visible()
+    await expect(context.page.locator("#content article h3")).to_have_text(["Water maps", "Municipality"])
 
 
 @when("I open an organization and its group")
 async def organization(context):
-    await context.page.goto("/#/en/")
+    await context.page.goto("/#/en/group")
     await role(context, "link", "Municipality").click()
     await role(context, "link", "City maps").click()
+
+
+@given("internal login advertises the Django logout URL")
+def django_logout_destination(context):
+    context.info.update(login_url="login", logout_url="/en/logout/")
+
+
+@when("I use internal logout")
+async def internal_logout(context):
+    if "/logout" not in context.page.url.split("#")[-1]:
+        await role(context, "link", "Logout").click()
+
+
+@then("logout uses the portal API without leaving the application")
+async def internal_logout_completed(context):
+    await expect(role(context, "link", "Login")).to_be_visible()
+    assert "/en/portal/jx/logout/" in context.calls
+    assert not context.authenticated
+    assert "#" in context.page.url
+    assert not urlparse(context.page.url).path.endswith("/logout/")
+
+
+@then("breadcrumbs link to every parent without duplicate separators")
+async def breadcrumb_hierarchy(context):
+    crumbs = context.page.locator("#breadcrumb")
+    await expect(crumbs.locator("li")).to_have_text(["Home", "Organizations", "Municipality", "City maps"])
+    for label, path in [
+        ("Home", "/en/"), ("Organizations", "/en/organization"),
+        ("Municipality", "/en/organization/1"),
+    ]:
+        await expect(crumbs.get_by_role("link", name=label, exact=True)).to_have_attribute("href", f"#{path}")
+    await expect(crumbs.locator('[aria-current="page"]')).to_have_text("City maps")
+    separators = await crumbs.locator("li").evaluate_all(
+        "items => items.slice(1).map(item => getComputedStyle(item, '::before').content)"
+    )
+    assert all(value in {"none", "normal", '""', '"\u200b"'} for value in separators), separators
+
+
+@when("I return to the organization using breadcrumbs")
+async def breadcrumb_parent(context):
+    await context.page.locator("#breadcrumb").get_by_role("link", name="Municipality", exact=True).click()
+
+
+@then("the organization catalog and its breadcrumb are restored")
+async def breadcrumb_parent_restored(context):
+    await expect(role(context, "link", "City maps")).to_be_visible()
+    await expect(context.page.locator('#breadcrumb [aria-current="page"]')).to_have_text("Municipality")
+    await expect(context.page.locator("#breadcrumb li")).to_have_count(3)
+
+
+@then('the current breadcrumb is "{title}"')
+async def current_breadcrumb(context, title):
+    await expect(context.page.locator('#breadcrumb [aria-current="page"]')).to_have_text(title)
+
+
+@then("project details sit beside the image with illustrated actions")
+async def project_layout(context):
+    card = context.page.locator(".item-P").first
+    await expect(card.get_by_role("heading", name="Rivers")).to_be_visible()
+    image = await card.locator("> div").bounding_box()
+    description = await card.locator("> hgroup").bounding_box()
+    assert image and description
+    assert abs(image["y"] - description["y"]) < 1, (image, description)
+    assert description["x"] >= image["x"] + image["width"] - 1
+    assert description["width"] > image["width"] * 1.5
+    heading = await context.page.locator("#content > hgroup").bounding_box()
+    article = await card.bounding_box()
+    assert heading and article
+    expected_gap = await context.page.evaluate(
+        "parseFloat(getComputedStyle(document.documentElement).fontSize) * 1.5"
+    )
+    assert abs(article["y"] - heading["y"] - heading["height"] - expected_gap) < 1, (heading, article)
+    await expect(card.get_by_role("link", name="View").locator("svg")).to_have_count(1)
+    await expect(card.get_by_role("link", name="Services").locator("svg")).to_have_count(1)
+
+
+@given("the group project has its own network service")
+def group_service(context):
+    context.group_project = {"ogc_urls": {"WMS": "/ows/group-only/4/"}}
+
+
+@then("project details follow the image without horizontal overflow")
+async def mobile_project_layout(context):
+    card = context.page.locator(".item-P").first
+    await expect(card.get_by_role("heading", name="Rivers")).to_be_visible()
+    image = await card.locator("> div").bounding_box()
+    description = await card.locator("> hgroup").bounding_box()
+    assert image and description
+    assert description["y"] >= image["y"] + image["height"] - 1
+    assert await context.page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+
+
+@when("I open the project services")
+async def open_project_services(context):
+    await role(context, "link", "Services").click()
+
+
+@then("the displayed project service and documentation are in the dialog")
+async def project_service(context):
+    dialog = context.page.get_by_role("dialog")
+    await expect(dialog.get_by_role("link", name=context.base_url + "/ows/group-only/4/", exact=True)).to_be_visible()
+    await expect(dialog.locator('a[href*="docs.qgis.org"]')).to_have_attribute(
+        "href", "https://docs.qgis.org/3.34/en/docs/server_manual/services.html"
+    )
+
+
+@then("the dialog locks scrolling until closed with Escape")
+async def modal_scroll(context):
+    await expect(context.page.get_by_role("dialog")).to_be_visible()
+    overflow = await context.page.evaluate("getComputedStyle(document.documentElement).overflowY")
+    assert overflow == "hidden", f"Open dialog: overflowY={overflow}"
+    await context.page.keyboard.press("Escape")
+    await expect(context.page.get_by_role("dialog")).to_be_hidden()
+    await context.page.wait_for_function("getComputedStyle(document.documentElement).overflowY !== 'hidden'")
+
+
+@when("I choose Italian from the language list")
+async def choose_italian(context):
+    await context.page.locator(".nav-lang summary").click()
+    await context.page.locator('.nav-lang a[hreflang="it"]').click()
+
+
+@then("the login destination is retained after changing language")
+async def translated_login_destination(context):
+    await expect(context.page.locator("html")).to_have_attribute("lang", "it")
+    query = context.page.url.split("#", 1)[1].split("?", 1)[-1]
+    assert parse_qs(query).get("next") == ["/en/group/2"]
+
+
+@when("I navigate to search after scrolling to the footer")
+async def navigate_scrolled(context):
+    await context.page.locator("#footer").scroll_into_view_if_needed()
+    assert await context.page.evaluate("scrollY") > 0
+    await role(context, "link", "Search").click()
+
+
+@then("search opens at the top of the page")
+async def navigation_top(context):
+    await expect(context.page.get_by_role("searchbox")).to_be_visible()
+    await context.page.wait_for_function("scrollY < 2")
+
+
+@then("mobile navigation shows a menu button instead of crowded actions")
+async def mobile_actions(context):
+    await expect(role(context, "button", "MENU")).to_be_visible()
+    await expect(context.page.locator("#main-menu > ul:nth-child(2) .nav-search")).to_be_hidden()
+    await expect(context.page.locator("#main-menu > ul:nth-child(2) .nav-login")).to_be_hidden()
+
+
+@then("search and login are available inside the expanded menu")
+async def mobile_menu_actions(context):
+    menu = context.page.locator("#secondary-menu")
+    await expect(menu.get_by_role("link", name="Search", exact=True)).to_be_visible()
+    await expect(menu.get_by_role("link", name="Login", exact=True)).to_be_visible()
+    await menu.get_by_role("link", name="Search", exact=True).click()
+    await expect(context.page.get_by_role("searchbox")).to_be_visible()
+    await expect(context.page.locator("#secondary-menu")).to_be_hidden()
+
+
+@then("administration and logout are usable in the mobile menu")
+async def authenticated_mobile_menu(context):
+    menu = context.page.locator("#secondary-menu")
+    await expect(menu.get_by_role("link", name="Admin", exact=True)).to_be_visible()
+    await menu.get_by_role("link", name="Logout", exact=True).click()
+    await expect(context.page.locator("#main-menu .nav-admin")).to_have_count(0)
+    await context.page.get_by_role("button", name="MENU", exact=True).click()
+    await expect(menu.get_by_role("link", name="Login", exact=True)).to_be_visible()
+
+
+@given("Polish and Spanish are configured")
+def additional_languages(context):
+    context.settings["LANGUAGES"] = ["en", "it", "pl", "es"]
+
+
+@then("compact mobile actions retain accessible names without crowded labels")
+async def compact_mobile_labels(context):
+    await expect(role(context, "link", "Login")).to_be_visible()
+    await expect(context.page.locator("#main-menu .nav-login span")).to_be_hidden()
+    await expect(context.page.locator("#main-menu .nav-lang summary span")).to_be_hidden()
+
+
+@then("additional languages have their own names without incorrect flags")
+async def additional_language_labels(context):
+    menu = context.page.locator(".nav-lang")
+    for locale, name in [("pl", "polski"), ("es", "español")]:
+        option = menu.locator(f'a[hreflang="{locale}"]')
+        await expect(option).to_have_text(re.compile(f"^{name}$", re.IGNORECASE))
+        await expect(option.locator("img")).to_have_count(0)
+    await menu.locator('a[hreflang="pl"]').click()
+    await expect(context.page.locator("html")).to_have_attribute("lang", "pl")
+    await expect(context.page.get_by_role("searchbox", name="Find a map in the catalog")).to_be_visible()
+
+
+@given("the carousel author is unspecified")
+def anonymous_picture(context):
+    context.pictures[0]["author"] = ""
+
+
+@then("no empty photo credit badge is drawn")
+async def empty_photo_credit(context):
+    credit = context.page.locator("#carousel > figcaption")
+    await expect(credit).to_be_empty()
+    await expect(credit).to_have_css("background-color", "rgba(0, 0, 0, 0)")
+    await expect(credit).to_have_css("padding", "0px")
+
+
+@given("the menu button is disabled")
+def disable_menu(context):
+    context.settings["PORTAL_MENU_BUTTON"] = False
+
+
+@when("I expand the language list")
+async def expand_languages(context):
+    await context.page.locator(".nav-lang summary").click()
+
+
+@then("every language is reachable without horizontal overflow")
+async def language_bounds(context):
+    languages = context.page.locator(".nav-lang ul")
+    await expect(languages).to_be_visible()
+    bounds = await languages.bounding_box()
+    viewport = context.page.viewport_size
+    assert bounds and viewport
+    assert bounds["x"] >= 0 and bounds["x"] + bounds["width"] <= viewport["width"]
+    await languages.locator("li").last.scroll_into_view_if_needed()
+    assert await context.page.evaluate("document.documentElement.scrollWidth <= innerWidth")
+
+
+@then("credits show their branded header, logos and contact details")
+async def credits_presentation(context):
+    dialog = context.page.get_by_role("dialog")
+    await expect(dialog.locator("article > header")).to_have_css("background-color", "rgb(149, 173, 54)")
+    await expect(dialog.get_by_role("img", name="G3W SUITE", exact=True)).to_be_visible()
+    await expect(dialog.get_by_role("img", name="Gis3w", exact=True)).to_be_visible()
+    await expect(dialog.get_by_role("link", name="info@gis3w.it")).to_have_attribute("href", "mailto:info@gis3w.it")
 
 
 @then("the map and its network services remain available")

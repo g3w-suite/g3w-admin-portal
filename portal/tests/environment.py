@@ -188,7 +188,7 @@ def start_browser(context):
         }
         return render(request, "portal/index.html", {
             "API_BASE_URL": portal_settings.get("API_BASE_URL", request.build_absolute_uri("/")),
-            "LANGUAGES": ["en", "it", "fr", "de", "bg", "fi", "pt", "ro", "se"],
+            "LANGUAGES": portal_settings.get("LANGUAGES", ["en", "it", "fr", "de", "bg", "fi", "pt", "ro", "se"]),
             "PORTAL_VERSION": "test", "admin_page_title": "G3W-SUITE",
             "SETTINGS": portal_settings,
         })
