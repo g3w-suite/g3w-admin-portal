@@ -57,7 +57,7 @@ const portal = {
   get locales() {
     return this.languages.map(locale => ({
       locale,
-      name: new Intl.DisplayNames(['en'], { type: 'language' }).of(locale === 'se' ? 'sv' : locale),
+      name: new Intl.DisplayNames([locale], { type: 'language' }).of(locale === 'se' ? 'sv' : locale)?.replace(/^./, str => str.toUpperCase()),
       flag: `<img class="flag" src="${new URL(`../img/flags/${locale}.png`, this.scriptURL).href}" alt="" width="18" height="12"> `,
     }));
   },
