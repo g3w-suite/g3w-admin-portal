@@ -3,15 +3,8 @@ const portal = {
   base: new URL(window.API_BASE_URL || '/', location.href),
   languages: window.LANGUAGES || ['en', 'it'],
   auth: window.PORTAL_AUTH_MODE || 'cookie',
-  get tokenAuth() { return ['JWT', 'Bearer'].includes(this.auth); },
   refreshRequest: undefined,
   mode: window.PORTAL_HISTORY_MODE || 'hash',
-  get routePrefix() { return this.mode === 'hash' ? '#' : ''; },
-  get top() { return window.PORTAL_NAVBAR_TOP !== false; },
-  get menu() { return this.top || window.PORTAL_MENU_BUTTON !== false; },
-  get orgName() { return window.PORTAL_ORG_NAME || this.info.suite_org_name || ''; },
-  get orgImage() { return window.PORTAL_ORG_IMAGE || this.info.suite_org_image; },
-  get orgURL() { return window.PORTAL_ORG_URL || this.info.suite_org_url; },
   locale: '',
   info: {},
   pictures: [],
@@ -21,11 +14,77 @@ const portal = {
   projects: [],
   user: null,
   search: '',
-  route: null,
+  view: { page: {} },
   navigation: 0,
   carousel: undefined,
   memoryPath: '/',
   messages: {},
+  get tokenAuth() {
+    return ['JWT', 'Bearer'].includes(this.auth);
+  },
+  get routePrefix() {
+    return this.mode === 'hash' ? '#' : '';
+  },
+  get top() {
+    return window.PORTAL_NAVBAR_TOP !== false;
+  },
+  get menu() {
+    return this.top || window.PORTAL_MENU_BUTTON !== false;
+  },
+  get orgName() {
+    return window.PORTAL_ORG_NAME || this.info.suite_org_name || '';
+  },
+  get orgImage() {
+    return window.PORTAL_ORG_IMAGE || this.info.suite_org_image;
+  },
+  get orgURL() {
+    return window.PORTAL_ORG_URL || this.info.suite_org_url;
+  },
+  get route() {
+    const url = new URL({ abstract: this.memoryPath, hash: location.hash.slice(1) || '/' }[this.mode] ?? location.pathname + location.search, location.origin);
+    const parts = url.pathname.split('/').filter(Boolean);
+    const locale = this.languages.includes(parts[0]) ? parts.shift() : [navigator.language.split('-')[0], 'en', this.languages[0]].find(lang => this.languages.includes(lang));
+    const [name = 'home', id, group, ...extra] = parts;
+    const valid = ['home', 'login', 'logout', 'admin', 'search', 'group', 'organization', 'map'].includes(name) && !extra.length && (name === 'organization' || !group) && (['organization', 'group', 'map'].includes(name) || !id);
+    return { locale, name: valid ? name : '404', id, group, path: `/${locale}/${parts.join('/')}${url.search}`, query: url.searchParams };
+  },
+  get logo() {
+    return `<img class="logo" src="${this.escape(this.info.suite_logo && !this.info.suite_logo.endsWith('/') ? this.safeURL(this.info.suite_logo) : new URL('assets/logo_g3wsuite-bw.png', this.scriptURL).href)}" alt="${this.escape(this.info.title)}">`;
+  },
+  get org() {
+    return this.orgImage ? `<img class="logo" src="${this.escape(this.safeURL(this.orgImage))}" alt="${this.escape(this.orgName)}">` : this.escape(this.orgName);
+  },
+  get locales() {
+    return this.languages.map(locale => ({
+      locale,
+      name: new Intl.DisplayNames(['en'], { type: 'language' }).of(locale === 'se' ? 'sv' : locale),
+      flag: `<img class="flag" src="${new URL(`../img/flags/${locale}.png`, this.scriptURL).href}" alt="" width="18" height="12"> `,
+    }));
+  },
+  get language() {
+    return this.locales.find(item => item.locale === this.route.locale);
+  },
+  get title() {
+    return {
+      home:         'Home',
+      login:        this.t('Login'),
+      search:       this.t('Search'),
+      map:          this.t('Search'),
+      group:        this.view.page.id ? this.view.group?.title || this.view.group?.name : this.t('Groups'),
+      organization: this.view.page.id ? (this.view.macro && !this.view.page.group ? this.view.macro.title : this.view.group?.title || this.view.group?.name) : this.t('Organizations'),
+    }[this.view.page.name] || this.t('Page Not Found');
+  },
+  get cards() {
+    return {
+      home:         [...this.groups.map(item => [item, false]), ...this.macros.map(item => [item, true])],
+      group:        !this.view.page.id && [...this.groups.map(item => [item, false]), ...this.macros.map(item => [item, true])],
+      organization: this.view.page.id ? this.view.macro && !this.view.page.group && this.view.groups.map(item => [item, false]) : this.macros.map(item => [item, true]),
+    }[this.view.page.name];
+  },
+  get max() {
+    const limit = Number(window.PORTAL_MAX_HOME_ARTICLES ?? 6);
+    return this.view.page.name === 'home' && Number.isFinite(limit) && limit >= 0 ? limit : this.cards?.length;
+  },
   async fetch(path, { method = 'GET', body, retry = true } = {}) {
     const headers = { Accept: 'application/json' };
     if (body !== undefined) {
@@ -130,22 +189,7 @@ const portal = {
 
   async render() {
     const version = ++portal.navigation;
-    const path = { abstract: portal.memoryPath, hash: location.hash.slice(1) || '/' }[portal.mode] ?? location.pathname + location.search;
-    const url = new URL(path, location.origin);
-    const parts = url.pathname.split('/').filter(Boolean);
-    const locale = portal.languages.includes(parts[0]) ? parts.shift() : [navigator.language.split('-')[0], 'en', portal.languages[0]].find(lang => portal.languages.includes(lang));
-    const [name = 'home', id, group, ...extra] = parts;
-    const known = ['home', 'login', 'logout', 'admin', 'search', 'group', 'organization', 'map'];
-    const valid = known.includes(name) && !extra.length && (name === 'organization' || !group) && (['organization', 'group', 'map'].includes(name) || !id);
-    const page = {
-      locale,
-      name: valid ? name : '404',
-      id,
-      group,
-      path: `/${locale}/${parts.join('/')}${url.search}`,
-      query: url.searchParams,
-    };
-    portal.route = page;
+    const page = portal.route;
     try {
       if (portal.locale !== page.locale) {
         const locale = ['en', 'it', 'fr', 'de', 'bg', 'fi', 'pt', 'ro', 'se'].includes(page.locale) ? page.locale : 'en';
@@ -220,48 +264,22 @@ const portal = {
       document.documentElement.dataset.theme = window.PORTAL_THEME || 'light';
       document.body.classList.remove('home', 'login', 'search', 'group', 'organization', 'map', '404');
       document.body.classList.add(page.name);
-      const title = {
-        home: 'Home',
-        login: portal.t('Login'),
-        search: portal.t('Search'),
-        map: portal.t('Search'),
-        group: page.id ? group?.title || group?.name : portal.t('Groups'),
-        organization: page.id ? (macro && !page.group ? macro.title : group?.title || group?.name) : portal.t('Organizations'),
-      }[page.name] || portal.t('Page Not Found');
-      document.title = `${title} - ${portal.info.title || 'G3W-SUITE'}`;
+      portal.view = { page, macro, groups, group };
+      document.title = `${portal.title} - ${portal.info.title || 'G3W-SUITE'}`;
       if (portal.mode === 'hash' && !location.hash) history.replaceState({}, '', portal.routePrefix + page.path);
 
-      const logo = `<img class="logo" src="${portal.escape(portal.info.suite_logo && !portal.info.suite_logo.endsWith('/') ? portal.safeURL(portal.info.suite_logo) : new URL('assets/logo_g3wsuite-bw.png', portal.scriptURL).href)}" alt="${portal.escape(portal.info.title)}">`;
-      const org = portal.orgImage ? `<img class="logo" src="${portal.escape(portal.safeURL(portal.orgImage))}" alt="${portal.escape(portal.orgName)}">` : portal.escape(portal.orgName);
       const picture = portal.pictures[0];
-      const cards = {
-        home: [...portal.groups.map(item => [item, false]), ...portal.macros.map(item => [item, true])],
-        group: !page.id && [...portal.groups.map(item => [item, false]), ...portal.macros.map(item => [item, true])],
-        organization: page.id ? macro && !page.group && groups.map(item => [item, false]) : portal.macros.map(item => [item, true]),
-      }[page.name];
-      const limit = Number(window.PORTAL_MAX_HOME_ARTICLES ?? 6);
-      let max = cards?.length;
-      if (page.name === 'home' && Number.isFinite(limit) && limit >= 0) max = limit;
-      const languages = portal.languages.map(locale => {
-        const known = ['en', 'it', 'fr', 'de', 'bg', 'fi', 'pt', 'ro', 'se'].includes(locale);
-        return {
-          locale,
-          name: new Intl.DisplayNames(known ? ['en'] : [locale], { type: 'language' }).of(locale === 'se' ? 'sv' : locale),
-          flag: `<img class="flag" src="${new URL(`../img/flags/${locale}.png`, portal.scriptURL).href}" alt="" width="18" height="12"> `,
-        };
-      });
-      const language = languages.find(item => item.locale === page.locale);
       const template = document.createElement('template');
       template.innerHTML = /* html */`
         <button type="button" class="skip-link" data-skip-content>Skip to content</button>
         ${portal.top ? '<nav id="top-menu" class="container-fluid top-menu"><ul><li class="nav-org">' : ''}
-        ${portal.top && portal.orgURL ? `<a href="${portal.escape(portal.safeURL(portal.orgURL))}" title="${portal.escape(window.PORTAL_ORG_TITLE || '')}">${org}</a>` : ''}
-        ${portal.top && !portal.orgURL ? org : ''}
-        ${portal.top ? `</li></ul><ul>${portal.user ? `<li class="nav-admin"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/admin`)}" data-route="${portal.escape(`/${page.locale}/admin`)}" aria-label="${portal.escape(portal.t('Admin'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Admin'))}</span></a></li><li class="nav-logout"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/logout`)}" data-logout aria-label="${portal.escape(portal.t('Logout'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 3H3v18h6M9 12h13m-5-5 5 5-5 5"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Logout'))}</span></a></li>` : `<li class="nav-login"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/login`)}" data-route="${portal.escape(`/${page.locale}/login`)}" aria-label="${portal.escape(portal.t('Login'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="currentColor" stroke="none"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Login'))}</span></a></li>`}<li class="nav-lang"><a href="#language" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : 'data-languages aria-haspopup="dialog"'} aria-label="${portal.escape(portal.t('Choose a language'))}">${language.flag}<span${language.flag ? ' class="hide-on-mobile"' : ''}>${portal.escape(language.name)}</span></a></li></ul></nav>` : ''}
+        ${portal.top && portal.orgURL ? `<a href="${portal.escape(portal.safeURL(portal.orgURL))}" title="${portal.escape(window.PORTAL_ORG_TITLE || '')}">${portal.org}</a>` : ''}
+        ${portal.top && !portal.orgURL ? portal.org : ''}
+        ${portal.top ? `</li></ul><ul>${portal.user ? `<li class="nav-admin"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/admin`)}" data-route="${portal.escape(`/${page.locale}/admin`)}" aria-label="${portal.escape(portal.t('Admin'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Admin'))}</span></a></li><li class="nav-logout"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/logout`)}" data-logout aria-label="${portal.escape(portal.t('Logout'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 3H3v18h6M9 12h13m-5-5 5 5-5 5"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Logout'))}</span></a></li>` : `<li class="nav-login"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/login`)}" data-route="${portal.escape(`/${page.locale}/login`)}" aria-label="${portal.escape(portal.t('Login'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="currentColor" stroke="none"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Login'))}</span></a></li>`}<li class="nav-lang"><a href="#language" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : 'data-languages aria-haspopup="dialog"'} aria-label="${portal.escape(portal.t('Choose a language'))}">${portal.language.flag}<span${portal.language.flag ? ' class="hide-on-mobile"' : ''}>${portal.escape(portal.language.name)}</span></a></li></ul></nav>` : ''}
         <nav id="main-menu" class="container-fluid main-menu${!portal.top && !portal.menu ? ' compact' : ''}${!portal.top && portal.menu ? ' mobile-menu' : ''}">
           <ul>
             <li class="nav-logo">
-              ${portal.info.url_suite_logo ? `<a href="${portal.escape(portal.safeURL(portal.info.url_suite_logo))}" aria-label="Back home">${logo}</a>` : `<a href="${portal.escape(portal.routePrefix + `/${page.locale}/`)}" data-route="${portal.escape(`/${page.locale}/`)}" aria-label="Back home">${logo}</a>`}
+              ${portal.info.url_suite_logo ? `<a href="${portal.escape(portal.safeURL(portal.info.url_suite_logo))}" aria-label="Back home">${portal.logo}</a>` : `<a href="${portal.escape(portal.routePrefix + `/${page.locale}/`)}" data-route="${portal.escape(`/${page.locale}/`)}" aria-label="Back home">${portal.logo}</a>`}
             </li>
             <li class="nav-title hide-on-mobile">
               <span class="h1">${portal.escape(portal.info.title)}</span><span>${portal.escape(portal.info.sub_title)}</span>
@@ -269,7 +287,7 @@ const portal = {
           </ul>
           <ul>
             <li class="nav-search"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/search`)}" data-route="${portal.escape(`/${page.locale}/search`)}" title="${portal.escape(portal.t('Find a map in the catalog'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="m15 15 7 7"/></svg>${portal.escape(portal.t('Search'))}</a></li>
-            ${!portal.top ? `${portal.user ? `<li class="nav-admin"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/admin`)}" data-route="${portal.escape(`/${page.locale}/admin`)}" aria-label="${portal.escape(portal.t('Admin'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Admin'))}</span></a></li><li class="nav-logout"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/logout`)}" data-logout aria-label="${portal.escape(portal.t('Logout'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 3H3v18h6M9 12h13m-5-5 5 5-5 5"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Logout'))}</span></a></li>` : `<li class="nav-login"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/login`)}" data-route="${portal.escape(`/${page.locale}/login`)}" aria-label="${portal.escape(portal.t('Login'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="currentColor" stroke="none"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Login'))}</span></a></li>`}<li class="nav-lang"><a href="#language" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : 'data-languages aria-haspopup="dialog"'} aria-label="${portal.escape(portal.t('Choose a language'))}">${language.flag}<span${language.flag ? ' class="hide-on-mobile"' : ''}>${portal.escape(language.name)}</span></a></li>` : ''}
+            ${!portal.top ? `${portal.user ? `<li class="nav-admin"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/admin`)}" data-route="${portal.escape(`/${page.locale}/admin`)}" aria-label="${portal.escape(portal.t('Admin'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Admin'))}</span></a></li><li class="nav-logout"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/logout`)}" data-logout aria-label="${portal.escape(portal.t('Logout'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 3H3v18h6M9 12h13m-5-5 5 5-5 5"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Logout'))}</span></a></li>` : `<li class="nav-login"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/login`)}" data-route="${portal.escape(`/${page.locale}/login`)}" aria-label="${portal.escape(portal.t('Login'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="currentColor" stroke="none"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Login'))}</span></a></li>`}<li class="nav-lang"><a href="#language" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : 'data-languages aria-haspopup="dialog"'} aria-label="${portal.escape(portal.t('Choose a language'))}">${portal.language.flag}<span${portal.language.flag ? ' class="hide-on-mobile"' : ''}>${portal.escape(portal.language.name)}</span></a></li>` : ''}
             ${portal.menu && !portal.top ? '<li class="nav-toggle show-on-mobile">' : ''}
             ${portal.menu && portal.top ? '<li class="nav-toggle">' : ''}
             ${portal.menu ? `<button type="button" class="outline contrast" data-menu aria-controls="secondary-menu" aria-expanded="false">${portal.escape(portal.t('MENU'))}</button></li>` : ''}
@@ -279,7 +297,7 @@ const portal = {
             <li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/group`)}" data-route="${portal.escape(`/${page.locale}/group`)}">${portal.escape(portal.t('Groups'))}</a></li>
             ${!portal.top && portal.menu ? /* html */`<li class="show-on-mobile"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/search`)}" data-route="${portal.escape(`/${page.locale}/search`)}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="m15 15 7 7"/></svg>${portal.escape(portal.t('Search'))}</a></li>
               ${portal.user ? `<li class="nav-admin show-on-mobile"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/admin`)}" data-route="${portal.escape(`/${page.locale}/admin`)}" aria-label="${portal.escape(portal.t('Admin'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><span>${portal.escape(portal.t('Admin'))}</span></a></li><li class="nav-logout show-on-mobile"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/logout`)}" data-logout aria-label="${portal.escape(portal.t('Logout'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 3H3v18h6M9 12h13m-5-5 5 5-5 5"/></svg><span>${portal.escape(portal.t('Logout'))}</span></a></li>` : `<li class="nav-login show-on-mobile"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/login`)}" data-route="${portal.escape(`/${page.locale}/login`)}" aria-label="${portal.escape(portal.t('Login'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="currentColor" stroke="none"/></svg><span>${portal.escape(portal.t('Login'))}</span></a></li>`}
-              <li class="nav-lang show-on-mobile"><a href="#language" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : 'data-languages aria-haspopup="dialog"'} aria-label="${portal.escape(portal.t('Choose a language'))}">${language.flag}<span${language.flag ? ' class="hide-on-mobile"' : ''}>${portal.escape(language.name)}</span></a></li>` : ''}
+              <li class="nav-lang show-on-mobile"><a href="#language" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : 'data-languages aria-haspopup="dialog"'} aria-label="${portal.escape(portal.t('Choose a language'))}">${portal.language.flag}<span${portal.language.flag ? ' class="hide-on-mobile"' : ''}>${portal.escape(portal.language.name)}</span></a></li>` : ''}
           </ul>
         </nav>
         ${page.name === 'home' ? '<header id="header">' : ''}
@@ -297,7 +315,7 @@ const portal = {
             <li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/`)}" data-route="${portal.escape(`/${page.locale}/`)}" ${page.name === 'home' ? `aria-current="page" aria-label="${portal.escape(portal.t('Home'))}"` : ''}>${page.name === 'home' ? '' : 'Home'}</a></li>
             ${['group', 'organization'].includes(page.name) && page.id ? `<li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/${page.name}`)}" data-route="${portal.escape(`/${page.locale}/${page.name}`)}">${portal.escape(portal.t(page.name === 'group' ? 'Groups' : 'Organizations'))}</a></li>` : ''}
             ${page.name === 'organization' && page.group ? `<li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/organization/${page.id}`)}" data-route="${portal.escape(`/${page.locale}/organization/${page.id}`)}">${portal.escape(portal.macros.find(item => String(item.id) === page.id)?.title)}</a></li>` : ''}
-            ${page.name !== 'home' ? `<li aria-current="page">${portal.escape(title)}</li>` : ''}
+            ${page.name !== 'home' ? `<li aria-current="page">${portal.escape(portal.title)}</li>` : ''}
           </ul>
         </nav>
         <main id="content" class="container" tabindex="-1">
@@ -352,8 +370,8 @@ const portal = {
                 </hgroup>
                 `
               : ''}
-            ${cards ? '<div class="grid catalog">' : ''}
-            ${(cards || []).slice(0, max).map(([item, isMacro]) => {
+            ${portal.cards ? '<div class="grid catalog">' : ''}
+            ${(portal.cards || []).slice(0, portal.max).map(([item, isMacro]) => {
               const path = macro ? `organization/${page.id}/${item.id}` : `${isMacro ? 'organization' : 'group'}/${item.id}`;
               const title = item.title || item.name || portal.t('Group');
               return /* html */`
@@ -364,8 +382,8 @@ const portal = {
                   </figure></a>
                 </article>`;
             }).join('')}
-            ${cards ? '</div>' : ''}
-            ${page.name === 'home' && max > 0 && cards.length > max ? `<div id="load-more"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/group`)}" data-route="${portal.escape(`/${page.locale}/group`)}" role="button">${portal.escape(portal.t('Show all'))}</a></div>` : ''}
+            ${portal.cards ? '</div>' : ''}
+            ${page.name === 'home' && portal.max > 0 && portal.cards.length > portal.max ? `<div id="load-more"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/group`)}" data-route="${portal.escape(`/${page.locale}/group`)}" role="button">${portal.escape(portal.t('Show all'))}</a></div>` : ''}
             ${['search', 'map'].includes(page.name) ? '<div id="search-results">' : ''}
             ${(items || portal.projects).filter(item => group || ['search', 'map'].includes(page.name) && `${item.title || ''} ${item.description || ''}`.toLowerCase().includes(portal.search.toLowerCase())).map(item => /* html */`
               <article class="grid item-P P-${portal.escape(item.id)}">
@@ -397,16 +415,13 @@ const portal = {
                 ${portal.info.about_email ?   /* html */ `<p><a href="${portal.escape(portal.safeURL(`mailto:${portal.info.about_email}`))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 5 10 8L22 5"/></svg>${portal.escape(portal.info.about_email)}</a></p>` : ''}
                 ${portal.info.about_address ? /* html */ `<p><a href="${portal.escape(portal.safeURL(`https://maps.google.com/?q=${encodeURIComponent(portal.info.about_address)}`))}" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 9c0 6-8 13-8 13S4 15 4 9a8 8 0 1 1 16 0Z"/><circle cx="12" cy="9" r="3"/></svg>${portal.escape(portal.info.about_address)}</a></p>` : ''}
                 <p class="social-icons">
-                  ${['facebook', 'twitter', 'googleplus', 'youtube', 'instagram', 'flickr', 'tripadvisor']
-                    .filter(name => portal.info[`${name}_url`])
-                    .map(name => `<a href="${portal.escape(portal.safeURL(portal.info[`${name}_url`]))}" target="_blank" rel="noopener noreferrer" aria-label="${portal.escape(name[0].toUpperCase() + name.slice(1))}">
-                      <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-                        ${name === 'facebook' ? '<path d="M15 22v-8h3l.5-4H15V8c0-1.2.4-2 2-2h1.7V2.4C18 2.2 16.8 2 15.5 2 12.5 2 10.5 3.8 10.5 7v3H7v4h3.5v8Z"/>' : ''}
-                        ${name === 'twitter' ? '<path d="M4 4 20 20M20 4 4 20"/><path d="M4 4h4l12 16h-4z"/>' : ''}
-                        ${name === 'youtube' ? '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/>' : ''}
-                        ${!['facebook', 'twitter', 'youtube'].includes(name) ? '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-4.2m-6.8 7 6.8 4.2"/>' : ''}
-                      </svg></a>`
-                    ).join(' ')}
+                  ${portal.info.facebook_url ?    /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.facebook_url))}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 22v-8h3l.5-4H15V8c0-1.2.4-2 2-2h1.7V2.4C18 2.2 16.8 2 15.5 2 12.5 2 10.5 3.8 10.5 7v3H7v4h3.5v8Z"/></svg></a>` : ''}
+                  ${portal.info.twitter_url ?     /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.twitter_url))}" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 4 20 20M20 4 4 20"/><path d="M4 4h4l12 16h-4z"/></svg></a>` : ''}
+                  ${portal.info.googleplus_url ?  /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.googleplus_url))}" target="_blank" rel="noopener noreferrer" aria-label="Googleplus"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-4.2m-6.8 7 6.8 4.2"/></svg></a>` : ''}
+                  ${portal.info.youtube_url ?     /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.youtube_url))}" target="_blank" rel="noopener noreferrer" aria-label="Youtube"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/></svg></a>` : ''}
+                  ${portal.info.instagram_url ?   /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.instagram_url))}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-4.2m-6.8 7 6.8 4.2"/></svg></a>` : ''}
+                  ${portal.info.flickr_url ?      /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.flickr_url))}" target="_blank" rel="noopener noreferrer" aria-label="Flickr"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-4.2m-6.8 7 6.8 4.2"/></svg></a>` : ''}
+                  ${portal.info.tripadvisor_url ? /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.tripadvisor_url))}" target="_blank" rel="noopener noreferrer" aria-label="Tripadvisor"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-4.2m-6.8 7 6.8 4.2"/></svg></a>` : ''}
                 </p>
               </address>
             </div>
@@ -431,7 +446,7 @@ const portal = {
         <dialog id="language-dialog" aria-labelledby="language-dialog-title" data-theme="light">
           <article>
             <header><form method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form><h3 id="language-dialog-title">${portal.escape(portal.t('Choose a language'))}</h3></header>
-            <fieldset>${languages.map(({ locale, name, flag }) => `<label><input type="radio" name="language" value="${portal.escape(locale)}" data-route="${portal.escape(page.path.replace(`/${page.locale}/`, `/${locale}/`))}"${locale === page.locale ? ' checked' : ''}>${flag}<span>${portal.escape(name)}</span></label>`).join('')}</fieldset>
+            <fieldset>${portal.locales.map(({ locale, name, flag }) => `<label><input type="radio" name="language" value="${portal.escape(locale)}" data-route="${portal.escape(page.path.replace(`/${page.locale}/`, `/${locale}/`))}"${locale === page.locale ? ' checked' : ''}>${flag}<span>${portal.escape(name)}</span></label>`).join('')}</fieldset>
           </article>
         </dialog>
 
@@ -646,10 +661,7 @@ document.addEventListener('click', async event => {
   }
   if (target.hasAttribute('data-scroll-top')) {
     event.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
     return;
   }
   if (target.hasAttribute('data-skip-content')) {
