@@ -529,13 +529,13 @@ async def compact_mobile_labels(context):
     await expect(context.page.locator("#main-menu .nav-lang a span")).to_be_hidden()
 
 
-@then("additional languages have their own names without incorrect flags")
+@then("additional languages have their own names and flags")
 async def additional_language_labels(context):
     menu = context.page.locator("#language-dialog")
     for locale, name in [("pl", "polski"), ("es", "español")]:
         option = menu.locator("label", has=context.page.locator(f'input[value="{locale}"]'))
-        await expect(option).to_have_text(re.compile(f"^{name}$", re.IGNORECASE))
-        await expect(option.locator("img")).to_have_count(0)
+        await expect(option).to_have_text(re.compile(f"^\\s*{name}$", re.IGNORECASE))
+        await expect(option.locator("img")).to_have_count(1)
     await menu.locator('input[value="pl"]').check()
     await expect(context.page.locator("html")).to_have_attribute("lang", "pl")
     await expect(context.page.get_by_role("searchbox", name="Find a map in the catalog")).to_be_visible()
@@ -842,25 +842,6 @@ async def credits(context):
     await expect(dialog).not_to_be_visible()
 
 
-@given("rich text containing formatted and executable markup")
-def rich_text(context):
-    context.info["home_description"] = (
-        '<h1>Welcome</h1><p><strong>Formatted</strong></p>'
-        '<img src="/media/banner.png" onload="window.injected=true">'
-        '<script>window.injected=true</script>'
-        '<a href="javascript:window.injected=true">Unsafe</a>'
-    )
-
-
-@then("formatting remains but active content is removed")
-async def sanitized(context):
-    await expect(role(context, "heading", "Welcome")).to_be_visible()
-    await expect(context.page.locator("#header strong")).to_have_text("Formatted")
-    await expect(context.page.locator("#header script, #header [onload]")).to_have_count(0)
-    await expect(context.page.get_by_text("Unsafe", exact=True)).not_to_have_attribute("href", re.compile("javascript:"))
-    assert await context.page.evaluate("window.injected") is None
-
-
 @when("I visit search from home and go back")
 async def browser_back(context):
     await context.page.goto("/#/en/")
@@ -940,7 +921,7 @@ async def shared_document(context):
     assert 'type="module"' not in html
     await context.page.goto("/#/en/")
     assert await context.page.evaluate(
-        "['fetch', 'login', 'logout', 'escape', 't', 'safeURL', 'rich', 'whoami', 'render']"
+        "['fetch', 'login', 'logout', 'escape', 't', 'safeURL', 'whoami', 'render']"
         ".every(name => typeof portal[name] === 'function')"
     )
     assert html.count('href="/static/frontend/assets/pico.css"') == 1

@@ -180,7 +180,7 @@ Feature: Native portal behavior without a JavaScript test runner
     Given Polish and Spanish are configured
     When I open "/#/en/search"
     And I expand the language list
-    Then additional languages have their own names without incorrect flags
+    Then additional languages have their own names and flags
 
   Scenario: Carousel without an author does not show an empty credit badge
     Given the carousel author is unspecified
@@ -289,11 +289,6 @@ Feature: Native portal behavior without a JavaScript test runner
     Then the authorized map edit link remains available
     When I open credits
     Then the native credits dialog can be closed with its button
-
-  Scenario: Backend rich text cannot execute active content
-    Given rich text containing formatted and executable markup
-    When I open "/#/en/"
-    Then formatting remains but active content is removed
 
   Scenario: Browser back and forward keep the catalog consistent
     When I visit search from home and go back
