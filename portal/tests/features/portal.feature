@@ -12,6 +12,11 @@ Feature: Native portal behavior without a JavaScript test runner
     When I request the complete catalog
     Then the archive contains both catalog entries
 
+  Scenario: Remote media URLs work with a local API
+    Given the API is local and its media is remote
+    When I open "/#/en/"
+    Then group images load from the remote media host
+
   Scenario: Default navigation colors and catalog card layout
     When I open "/#/en/"
     Then the default navigation colors and card layout are applied
@@ -21,10 +26,11 @@ Feature: Native portal behavior without a JavaScript test runner
     When I open "/#/en/"
     Then navigation stays compact without a secondary menu
 
-  Scenario: Desktop identity remains visible when menu controls are disabled
+  Scenario: Desktop navigation matches the reference at tablet width
     Given the top navbar and menu button are disabled
     When I open "/#/en/"
-    Then the desktop navbar retains the portal title and subtitle
+    Then the desktop navbar hides the title at the reference breakpoint
+    And the login icon uses the filled reference style
     And language flags retain their original proportions
     And the home breadcrumb does not repeat the current page label
 
@@ -95,8 +101,9 @@ Feature: Native portal behavior without a JavaScript test runner
     When I open "/#/en/group/2"
     Then project details follow the image without horizontal overflow
 
-  Scenario: Group services use the displayed project rather than search data
+  Scenario: Group services use the displayed project and remote asset origin
     Given the group project has its own network service
+    And the API is local and its OGC services are remote
     When I open "/#/en/group/2"
     And I open the project services
     Then the displayed project service and documentation are in the dialog

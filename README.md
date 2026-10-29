@@ -149,6 +149,11 @@ PORTAL_LOGOUT_URL = '/logout/?next=/'
 
 ### Cross domain authentication
 
+When developing locally with `PORTAL_API_BASE_URL` pointing to a remote server,
+the portal automatically routes API calls through a backend proxy on
+`localhost`/`127.0.0.1`. This avoids browser CORS restrictions without changing
+the remote server. The local backend must be able to reach the configured API;
+the proxy is unavailable on non-local hosts.
 
 Install [g3w-admin-authjwt](https://github.com/g3w-suite/g3w-admin-authjwt) module on your remote server:
 

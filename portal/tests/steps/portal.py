@@ -198,12 +198,23 @@ async def compact_layout(context):
     assert navbar and navbar["height"] < 120, navbar
 
 
-@then("the desktop navbar retains the portal title and subtitle")
+@then("the desktop navbar hides the title at the reference breakpoint")
 async def desktop_identity(context):
+    await context.page.set_viewport_size({"width": 1024, "height": 768})
     title = context.page.locator("#main-menu .nav-title")
-    await expect(title).to_be_visible()
-    await expect(title.locator(".h1")).to_have_text("G3W-SUITE")
-    await expect(title.locator("span").last).to_have_text("Public map catalog")
+    await expect(title).to_be_hidden()
+    await expect(context.page.locator("#main-menu .nav-logo img")).to_be_visible()
+    await expect(role(context, "link", "Search")).to_be_visible()
+    await expect(role(context, "link", "Login")).to_be_visible()
+    navbar = await context.page.locator("#main-menu").bounding_box()
+    assert navbar and navbar["height"] < 90, navbar
+
+
+@then("the login icon uses the filled reference style")
+async def filled_login_icon(context):
+    icon = context.page.locator("#main-menu .nav-login svg path")
+    await expect(icon).to_have_attribute("fill", "currentColor")
+    await expect(icon).to_have_attribute("stroke", "none")
 
 
 @then("language flags retain their original proportions")
@@ -217,7 +228,6 @@ async def home_breadcrumb(context):
     await expect(context.page.locator("#breadcrumb")).to_have_text("")
     await expect(context.page.locator('#breadcrumb [aria-current="page"]')).to_have_count(1)
     await expect(context.page.locator("#breadcrumb")).to_have_css("border-bottom-width", "0px")
-    await expect(context.page.locator("#header h1")).to_have_css("margin-bottom", "20px")
 
 
 @given("the footer contains policy and social links")
@@ -233,11 +243,15 @@ def footer_links(context):
 async def footer_bar(context):
     bar = context.page.locator("#footer > nav")
     await expect(bar).to_have_css("background-color", "rgb(0, 0, 0)")
+    await expect(bar.locator(":scope > div.container")).to_be_visible()
+    await expect(bar.locator(":scope > div.container")).to_have_css("max-width", "1130px")
     bounds = await bar.bounding_box()
     width = await context.page.evaluate("document.documentElement.clientWidth")
     assert bounds and abs(bounds["x"]) < 1 and abs(bounds["width"] - width) < 1, bounds
     for label in ["Cookie", "Privacy", "Credits"]:
-        await expect(bar.get_by_role("link", name=label, exact=True)).to_have_css("color", "rgb(237, 240, 243)")
+        link = bar.get_by_role("link", name=label, exact=True)
+        await expect(link).to_have_css("color", "rgb(237, 240, 243)")
+        await expect(link).to_have_class("contrast")
 
 
 @then("social links use accessible icons instead of text labels")
@@ -399,7 +413,12 @@ async def open_project_services(context):
 @then("the displayed project service and documentation are in the dialog")
 async def project_service(context):
     dialog = context.page.get_by_role("dialog")
-    await expect(dialog.get_by_role("link", name=context.base_url + "/ows/group-only/4/", exact=True)).to_be_visible()
+    await expect(dialog.locator("input.close")).to_be_visible()
+    service_url = "https://dev.g3wsuite.it/ows/group-only/4/"
+    service = dialog.get_by_role("link", name=service_url, exact=True)
+    await expect(service).to_be_visible()
+    await expect(service).to_have_attribute("href", service_url)
+    await expect(service).to_have_css("color", "rgb(175, 11, 34)")
     await expect(dialog.locator('a[href*="docs.qgis.org"]')).to_have_attribute(
         "href", "https://docs.qgis.org/3.34/en/docs/server_manual/services.html"
     )
@@ -432,6 +451,7 @@ async def translated_login_destination(context):
 async def navigate_scrolled(context):
     await context.page.locator("#footer").scroll_into_view_if_needed()
     assert await context.page.evaluate("scrollY") > 0
+    await expect(context.page.locator(".bottom-right svg")).to_be_visible()
     await role(context, "link", "Search").click()
 
 
@@ -943,6 +963,7 @@ async def french_wins(context):
 @given("the portal is hosted separately from its API")
 async def cross_origin(context):
     context.settings["API_BASE_URL"] = "https://api.example.test/"
+    context.settings["API_ASSET_BASE_URL"] = "https://api.example.test/"
     await context.page.add_init_script("""
         const original = window.fetch;
         window.fetch = (input, options) => {
@@ -958,6 +979,29 @@ async def remote_credentials(context):
     assert await context.page.evaluate("window.portalCredentials") == "include"
     await context.page.goto("/#/en/search")
     await expect(role(context, "link", "View").first).to_have_attribute("href", "https://api.example.test/maps/4/")
+
+
+@given("the API is local and its media is remote")
+async def remote_media(context):
+    context.settings["API_ASSET_BASE_URL"] = "https://dev.g3wsuite.it/"
+    await context.page.route("https://dev.g3wsuite.it/media/**", lambda route: route.fulfill(
+        content_type="image/svg+xml",
+        body='<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">'
+             '<rect width="600" height="400" fill="#326789"/></svg>',
+    ))
+
+
+@given("the API is local and its OGC services are remote")
+def remote_services(context):
+    context.settings["API_ASSET_BASE_URL"] = "https://dev.g3wsuite.it/"
+
+
+@then("group images load from the remote media host")
+async def group_images_remote(context):
+    image = context.page.locator("#content article img").first
+    await expect(image).to_have_attribute("src", re.compile(r"^https://dev\.g3wsuite\.it/media/"))
+    await expect(image).to_have_js_property("complete", True)
+    await expect(image).not_to_have_js_property("naturalWidth", 0)
 
 
 @given('"{mode}" routing')
