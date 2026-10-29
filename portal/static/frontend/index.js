@@ -148,20 +148,29 @@ const portal = {
     if (data.status !== 'ok') throw new Error(Object.values(data.errors_form || data.error_form || {}).flat().join(' ') || 'Login failed');
   },
   async logout(locale, user) {
-    if (!portal.tokenAuth) {
-      const data = await portal.fetch(`${locale}/portal/jx/logout/`);
-      if (data.status !== 'ok') throw new Error(data.message || 'Logout failed');
-      return;
-    }
-    await portal.fetch('/authjwt/api/token/blacklist/', {
-      method: 'POST', body: { refresh: localStorage.getItem('refresh_token') }, retry: false,
-    });
+    const data = portal.tokenAuth
+      ? await portal.fetch('/authjwt/api/token/blacklist/', { method: 'POST', body: { refresh: localStorage.getItem('refresh_token') }, retry: false })
+      : await portal.fetch(`${locale}/portal/jx/logout/`);
+    if (!portal.tokenAuth && data.status !== 'ok') throw new Error(data.message || 'Logout failed');
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    if (!user?.drf_token) return;
-    const url = new URL(`${locale}/portal/jx/logout/`, portal.base);
-    url.search = new URLSearchParams({ __drftk: user.drf_token, redirect: location.href });
-    location.assign(url.href);
+    if (portal.tokenAuth && user?.drf_token) {
+      const url = new URL(`${locale}/portal/jx/logout/`, portal.base);
+      url.search = new URLSearchParams({ __drftk: user.drf_token, redirect: location.href });
+      location.assign(url.href);
+    }
+    portal.user = null;
+    portal.locale = '';
+    portal.projects = [];
+    portal.groups = [];
+    portal.allGroups = [];
+    portal.macros = [];
+    portal.visibleProjects = [];
+    clearInterval(portal.carousel);
+    document.documentElement.classList.remove('modal-is-open');
+    document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+    document.body.insertAdjacentHTML('beforeend', '<main id="content" class="container" data-portal-ui><progress aria-label="Loading"></progress></main>');
+    Object.assign(portal, await portal.fetch(`${locale}/portal/api/catalog/`), { locale });
   },
 
   escape(value) {
@@ -222,23 +231,6 @@ const portal = {
       }
       if (page.name === 'logout') {
         await portal.logout(portal.route.locale, portal.user);
-        Object.assign(portal, {
-          user: null,
-          locale: '',
-          projects: [],
-          groups: [],
-          allGroups: [],
-          macros: [],
-          visibleProjects: []
-        });
-        clearInterval(portal.carousel);
-        document.documentElement.classList.remove('modal-is-open');
-        document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
-        const template = document.createElement('template');
-        template.innerHTML = '<main id="content" class="container"><progress aria-label="Loading"></progress></main>';
-        for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
-        document.body.append(template.content);
-        Object.assign(portal, await portal.fetch(`${portal.route.locale}/portal/api/catalog/`), { locale: portal.route.locale });
         portal.memoryPath = `/${portal.route.locale}/`;
         if (portal.mode !== 'abstract') history.replaceState({}, '', portal.routePrefix + portal.memoryPath);
         await portal.render();
@@ -491,10 +483,7 @@ const portal = {
             const url = new URL(`${portal.route.locale}/portal/api/whoami/`, portal.base);
             const redirect = new URL(portal.routePrefix + next, location.href);
             redirect.searchParams.delete('next');
-            url.search = new URLSearchParams({
-              __drftk: portal.user.drf_token,
-              redirect: redirect.href
-            });
+            url.search = new URLSearchParams({ __drftk: portal.user.drf_token, redirect: redirect.href });
             location.assign(url.href);
             return;
           }
@@ -512,10 +501,7 @@ const portal = {
           button.disabled = false;
         }
       });
-      if (page.name !== 'home') window.scrollTo({
-        top: 0,
-        behavior: 'instant'
-      });
+      if (page.name !== 'home') window.scrollTo({ top: 0, behavior: 'instant' });
       if (page.name === 'home' && portal.pictures.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
         let index = 0;
         portal.carousel = setInterval(() => {
@@ -534,10 +520,7 @@ const portal = {
         clearInterval(portal.carousel);
         document.documentElement.classList.remove('modal-is-open');
         document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
-        const template = document.createElement('template');
-        template.innerHTML = '<main id="content" class="container"></main>';
-        for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
-        document.body.append(template.content);
+        document.body.insertAdjacentHTML('beforeend', '<main id="content" class="container" data-portal-ui></main>');
       }
       const alert = document.querySelector('#portal-error') ?? document.querySelector('#content').appendChild(Object.assign(document.createElement('p'), { id: 'portal-error' }));
       alert.setAttribute('role', 'alert');
@@ -573,23 +556,6 @@ document.addEventListener('click', async event => {
     event.preventDefault();
     try {
       await portal.logout(portal.route.locale, portal.user);
-      Object.assign(portal, {
-        user: null,
-        locale: '',
-        projects: [],
-        groups: [],
-        allGroups: [],
-        macros: [],
-        visibleProjects: []
-      });
-      clearInterval(portal.carousel);
-      document.documentElement.classList.remove('modal-is-open');
-      document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
-      const template = document.createElement('template');
-      template.innerHTML = '<main id="content" class="container"><progress aria-label="Loading"></progress></main>';
-      for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
-      document.body.append(template.content);
-      Object.assign(portal, await portal.fetch(`${portal.route.locale}/portal/api/catalog/`), { locale: portal.route.locale });
       const path = portal.route.name === 'logout' && `/${portal.route.locale}/`;
       if (path) portal.memoryPath = path;
       if (path && portal.mode !== 'abstract') history.replaceState({}, '', portal.routePrefix + path);
@@ -601,10 +567,7 @@ document.addEventListener('click', async event => {
         clearInterval(portal.carousel);
         document.documentElement.classList.remove('modal-is-open');
         document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
-        const template = document.createElement('template');
-        template.innerHTML = '<main id="content" class="container"></main>';
-        for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
-        document.body.append(template.content);
+        document.body.insertAdjacentHTML('beforeend', '<main id="content" class="container" data-portal-ui></main>');
       }
       const alert = document.querySelector('#portal-error') ?? document.querySelector('#content').appendChild(Object.assign(document.createElement('p'), { id: 'portal-error' }));
       alert.setAttribute('role', 'alert');

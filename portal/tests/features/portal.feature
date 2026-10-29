@@ -176,11 +176,11 @@ Feature: Native portal behavior without a JavaScript test runner
     Then every language is reachable without horizontal overflow
     And compact mobile actions retain accessible names without crowded labels
 
-  Scenario: Additional configured languages have readable names
+  Scenario: Additional configured languages use English names
     Given Polish and Spanish are configured
-    When I open "/#/en/search"
+    When I open "/#/it/search"
     And I expand the language list
-    Then additional languages have their own names and flags
+    Then additional languages have their English names and flags
 
   Scenario: Carousel without an author does not show an empty credit badge
     Given the carousel author is unspecified

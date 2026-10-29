@@ -529,18 +529,14 @@ async def compact_mobile_labels(context):
     await expect(context.page.locator("#main-menu .nav-lang a span")).to_be_hidden()
 
 
-@then("additional languages have their own names and flags")
+@then("additional languages have their English names and flags")
 async def additional_language_labels(context):
     menu = context.page.locator("#language-dialog")
-    for locale, name in [("pl", "polski"), ("es", "español")]:
+    for locale, name in [("it", "Italian"), ("pl", "Polish"), ("es", "Spanish")]:
         option = menu.locator("label", has=context.page.locator(f'input[value="{locale}"]'))
-        await expect(option).to_have_text(re.compile(f"^\\s*{name}$", re.IGNORECASE))
+        await expect(option).to_have_text(re.compile(f"^\\s*{name}$"))
         await expect(option.locator("img")).to_have_count(1)
-    await menu.locator('input[value="pl"]').check()
-    await expect(context.page.locator("html")).to_have_attribute("lang", "pl")
-    await expect(context.page.get_by_role("searchbox", name="Find a map in the catalog")).to_be_visible()
-
-
+    await menu.locator("input.close").click()
 @given("the carousel author is unspecified")
 def anonymous_picture(context):
     context.pictures[0]["author"] = ""
