@@ -32,7 +32,8 @@ from portal.api.views import (
     WhoamiApiView,
     MacroGroupsApiView,
     ProjectsApiView,
-    PicuresApiView
+    PicuresApiView,
+    CatalogApiView,
 )
 
 # For API urls:
@@ -72,6 +73,13 @@ urlpatterns = [
         f'{pre_api_url}api/infodata/',
         InfoDataApiView.as_view(),
         name='portal-infodata-api-list'
+    ),
+
+    # All the home data (infodata, pictures, macrogroups, groups, projects)
+    path(
+        f'{pre_api_url}api/catalog/',
+        CatalogApiView.as_view(),
+        name='portal-catalog-api'
     ),
 
     # Return logged user info

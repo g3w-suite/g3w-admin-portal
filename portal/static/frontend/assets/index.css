@@ -111,7 +111,11 @@ body > nav.main-menu > ul:last-child { flex-basis: 100%; justify-content: space-
 nav .logo { max-height: 4rem; max-width: 10rem; }
 .ui-icon { width: 1.2em; height: 1.2em; margin-right: .4em; vertical-align: -.2em; flex-shrink: 0; }
 nav .h1 { display: block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color); }
-nav details[role="list"] summary + ul { min-width: max-content; max-width: calc(100vw - 2rem); max-height: 60vh; overflow-y: auto; right: 0; left: auto; }
+#language-dialog article { width: auto; }
+#language-dialog fieldset { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: .5rem 2rem; margin: 0; }
+#language-dialog label { display: flex; align-items: center; margin: 0; font-weight: 700; }
+.nav-lang a[data-languages]::after { content: ""; display: inline-block; width: 1rem; height: 1rem; margin-inline-start: .5rem; vertical-align: middle; background: var(--icon-chevron) right center / 1rem auto no-repeat; }
+#language-dialog .flag { width: 30px; height: 20px; margin: 0 1ch; }
 .flag { width: 18px; height: 12px; align-self: center; margin: 1ch 1ch 1ch 0; }
 #breadcrumb ul { flex-wrap: wrap; }
 #breadcrumb li:not(:last-child) a::after { content: "/" / ""; }
@@ -194,7 +198,16 @@ dialog header form { float: right; margin: 0; }
   #secondary-menu:not([hidden]) { gap: .5rem; }
   .item-P > hgroup { grid-column: auto !important; }
 }
+
+body:not(:has(> main))::before,
+body:not(:has(> main))::after  { content: ''; height: 10em; border-radius: 50%; background-color: var(--primary); opacity: 0.6; position: fixed; inset: 0;  animation: bounce 2.0s infinite ease-in-out; aspect-ratio: 1; margin: auto; }
+body:not(:has(> main))::after  { animation-delay: -1.0s; }
+
+@keyframes bounce              { 0%, 100% { transform: scale(0); } 50% { transform: scale(1); } }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
+  :root body:not(:has(> main))::before,
+  :root body:not(:has(> main))::after { animation: bounce 2.0s infinite ease-in-out !important; }
 }

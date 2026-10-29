@@ -25,9 +25,14 @@ def proxy_request(context, host, target):
         upstream.headers = Message()
         upstream.headers["Content-Type"] = "application/json"
         upstream.headers.add_header("Set-Cookie", "sessionid=remote; HttpOnly; Secure; SameSite=None")
-        upstream.read.return_value = (
+        body = (
             b'{"map_url": "/it/map/g/qdjango/97/", "ogc_urls": {"WMS": "/ows/97/"},'
             b' "description": "<img src=\\"/media/a.png\\"><a href=\\"//cdn.test/x\\">x</a>"}'
+        )
+        open_ = opener.return_value.open
+        upstream.read.side_effect = lambda: (
+            body if "/infodata/" in open_.call_args.args[0].full_url
+            else b'[{"order": 2, "image": "/media/b.png"}, {"order": 1, "image": "/media/a.png"}]'
         )
         context.response = PortalApiProxyView.as_view()(request, proxy_path=target)
         context.proxy_open = opener.return_value.open
@@ -51,6 +56,22 @@ def proxy_urls(context):
         "ogc_urls": {"WMS": "https://dev.g3wsuite.it/ows/97/"},
         "description": '<img src="https://dev.g3wsuite.it/media/a.png"><a href="//cdn.test/x">x</a>',
     }
+
+
+@then("the proxy aggregates the remote catalog endpoints")
+def proxy_catalog(context):
+    urls = [call.args[0].full_url for call in context.proxy_open.call_args_list]
+    assert urls == [
+        f"https://dev.g3wsuite.it/it/portal/api/{path}?lang=it"
+        for path in ["infodata/", "pictures/", "macrogroup/", "group/nomacrogroup/", "group/", "project/"]
+    ], urls
+    data = json.loads(context.response.content)
+    assert list(data) == ["info", "pictures", "macros", "groups", "allGroups", "projects"], data
+    assert data["info"]["map_url"] == "https://dev.g3wsuite.it/it/map/g/qdjango/97/"
+    assert [picture["image"] for picture in data["pictures"]] == [
+        "https://dev.g3wsuite.it/media/a.png", "https://dev.g3wsuite.it/media/b.png",
+    ]
+    assert "portal_proxy_sessionid" in context.response.cookies
 
 
 @then("the proxy rejects the request without contacting upstream")

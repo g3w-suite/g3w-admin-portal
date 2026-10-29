@@ -22,7 +22,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.db.models import Count
+from django.urls import reverse, get_script_prefix
 
+from copy import copy
 import logging
 
 from portal.api.serializers          import *
@@ -174,8 +176,35 @@ class PicuresApiView(PortalApiViewMixin, generics.ListAPIView):
     API list view for portal pictures
     """
 
-    queryset = Picture.objects.order_by('id').all()
+    queryset = Picture.objects.order_by('order').all()
     serializer_class = PictureSerializer
+
+
+class CatalogApiView(APIView):
+    """
+    API for all the portal home data in a single request
+    """
+
+    views = {
+        'info':      (InfoDataApiView,    'portal-infodata-api-list'),
+        'pictures':  (PicuresApiView,     'portal-picture-api-list'),
+        'macros':    (MacroGroupsApiView, 'portal-macrogroup-api-list'),
+        'groups':    (GroupsApiView,      'portal-group-without-macrogroup-api-list'),
+        'allGroups': (GroupsApiView,      'portal-group-api-list'),
+        'projects':  (ProjectsApiView,    'portal-project-api-list'),
+    }
+
+    def get(self, request):
+        data = {}
+        for key, (view, name) in self.views.items():
+            # filters pick their behavior from the resolved url name
+            sub = copy(request._request)
+            sub.path_info = '/' + reverse(name)[len(get_script_prefix()):]
+            response = view.as_view()(sub)
+            if response.status_code != 200:
+                return response
+            data[key] = response.data
+        return Response(data)
 
 
 

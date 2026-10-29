@@ -128,6 +128,24 @@ class PortalApiProxyView(View):
         if not _is_localhost(request):
             return HttpResponse(status=404)
 
+        # ponytail: remote portals may lack api/catalog/, so build it here; drop once all remotes expose it
+        catalog_path = re.fullmatch(r'([a-z]{2}/(?:portal/)?api/)catalog/?', proxy_path)
+        if catalog_path and request.method == 'GET':
+            data, cookies = {}, {}
+            for key, path in (
+                ('info', 'infodata/'), ('pictures', 'pictures/'), ('macros', 'macrogroup/'),
+                ('groups', 'group/nomacrogroup/'), ('allGroups', 'group/'), ('projects', 'project/'),
+            ):
+                response = self.dispatch(request, proxy_path=catalog_path[1] + path)
+                if response.status_code != 200:
+                    return response
+                data[key] = json.loads(response.content)
+                cookies.update(response.cookies)
+            data['pictures'].sort(key=lambda picture: picture.get('order') or 0)
+            catalog = JsonResponse(data)
+            catalog.cookies.update(cookies)
+            return catalog
+
         allowed_path = (
             re.fullmatch(
                 r'[a-z]{2}/(?:portal/)?api/(?:pictures|infodata|whoami|macrogroup|project|group'

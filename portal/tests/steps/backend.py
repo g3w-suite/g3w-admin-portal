@@ -49,6 +49,16 @@ def entry_count(context, count):
     assert len(data) == count, data
 
 
+@then("the catalog matches the individual endpoints")
+def catalog_matches(context):
+    from portal.api.views import CatalogApiView
+    catalog = response_json(context)
+    assert set(catalog) == set(CatalogApiView.views), catalog
+    for key, (_, name) in CatalogApiView.views.items():
+        request_endpoint(context, name)
+        assert catalog[key] == response_json(context), key
+
+
 @then('{kind} edit links are "{editing}"')
 def edit_links(context, kind, editing):
     from django.urls import reverse
@@ -136,7 +146,7 @@ def suite_metadata(context):
 def picture_metadata(context):
     from django.conf import settings
     from portal.models import Picture
-    pictures = list(Picture.objects.order_by("id"))
+    pictures = list(Picture.objects.order_by("order"))
     data = response_json(context)
     assert len(data) == len(pictures)
     assert pictures, "The portal_picture fixture must contain pictures"

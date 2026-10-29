@@ -34,7 +34,7 @@ async def token_value(context, name):
 async def mock_api(context, route):
     path = urlparse(route.request.url).path
     context.calls.append(path)
-    if getattr(context, "slow_italian", False) and path == "/it/portal/api/infodata/":
+    if getattr(context, "slow_italian", False) and path == "/it/portal/api/catalog/":
         context.italian_started.set()
         await context.italian_release.wait()
 
@@ -59,18 +59,30 @@ async def mock_api(context, route):
 
     authorization = route.request.headers.get("authorization", "")
     if jwt_case in {"concurrent", "late", "login"} and authorization.endswith(" expired"):
-        if jwt_case == "late" and path.endswith("/api/project/"):
+        if jwt_case == "late" and path.endswith("/api/catalog/"):
             await asyncio.sleep(0.3)
         await route.fulfill(status=401, json={"detail": "Expired"})
         return
-    if path.endswith("/api/infodata/"):
-        data = {
+    if path.endswith("/api/catalog/"):
+        if getattr(context, "catalog_unavailable", False) or (
+            getattr(context, "public_catalog_failure", False) and not context.authenticated
+        ):
+            await route.fulfill(status=503, body="Service unavailable")
+            return
+        restricted = getattr(context, "restricted_group", False) and not context.authenticated
+        data = {"info": {
             "title": "G3W-SUITE", "groups_title": "Catalog",
             "home_description": "<h1>Welcome</h1>", "about_title": "About",
             "about_description": "<p>Public maps</p>", "about_email": "maps@example.test",
             "login_url": "login", "logout_url": "logout", "credits": "Portal credits",
             "social_auth_providers": {"google": "/accounts/google/login/"},
             "reset_password_url": "/password/reset/", **context.info,
+        },
+            "pictures": sorted(context.pictures, key=lambda picture: picture["order"]),
+            "macros": [ORGANIZATION],
+            "groups": [] if restricted else [GROUP],
+            "allGroups": [NESTED_GROUP] if restricted else [GROUP, NESTED_GROUP],
+            "projects": [PROJECT, {**PROJECT, "id": 5, "title": "Roads", "description": "<p>Transport</p>", "ogc_urls": None}],
         }
     elif path.endswith("/api/whoami/"):
         if jwt_case == "revoked":
@@ -80,25 +92,10 @@ async def mock_api(context, route):
         if jwt_case == "login":
             authenticated = not context.blacklisted and authorization == "JWT renewed-access"
         data = {"is_authenticated": authenticated, "username": "admin"}
-    elif path.endswith("/api/pictures/"):
-        data = context.pictures
-    elif path.endswith("/api/macrogroup/"):
-        data = [ORGANIZATION]
     elif re.search(r"/api/group/1$", path):
         data = [NESTED_GROUP]
     elif re.search(r"/api/group/\d+/projects/$", path):
         data = [{**PROJECT, **getattr(context, "group_project", {})}]
-    elif path.endswith("/api/group/nomacrogroup/"):
-        data = [] if getattr(context, "restricted_group", False) and not context.authenticated else [GROUP]
-    elif path.endswith("/api/group/"):
-        data = [NESTED_GROUP] if getattr(context, "restricted_group", False) and not context.authenticated else [GROUP, NESTED_GROUP]
-    elif path.endswith("/api/project/"):
-        if getattr(context, "catalog_unavailable", False) or (
-            getattr(context, "public_catalog_failure", False) and not context.authenticated
-        ):
-            await route.fulfill(status=503, body="Service unavailable")
-            return
-        data = [PROJECT, {**PROJECT, "id": 5, "title": "Roads", "description": "<p>Transport</p>", "ogc_urls": None}]
     elif path.endswith("/jx/login/"):
         credentials = parse_qs(route.request.post_data)
         context.authenticated = credentials.get("password") == ["correct"]
@@ -251,8 +248,8 @@ async def filled_login_icon(context):
 
 @then("language flags retain their original proportions")
 async def flag_dimensions(context):
-    await expect(context.page.locator(".nav-lang summary img")).to_have_css("width", "18px")
-    await expect(context.page.locator(".nav-lang summary img")).to_have_css("height", "12px")
+    await expect(context.page.locator(".nav-lang a:visible img")).to_have_css("width", "18px")
+    await expect(context.page.locator(".nav-lang a:visible img")).to_have_css("height", "12px")
 
 
 @then("the home breadcrumb does not repeat the current page label")
@@ -468,8 +465,8 @@ async def modal_scroll(context):
 
 @when("I choose Italian from the language list")
 async def choose_italian(context):
-    await context.page.locator(".nav-lang summary").click()
-    await context.page.locator('.nav-lang a[hreflang="it"]').click()
+    await context.page.locator(".nav-lang a:visible").first.click()
+    await context.page.locator('#language-dialog input[value="it"]').check()
 
 
 @then("the login destination is retained after changing language")
@@ -529,17 +526,17 @@ def additional_languages(context):
 async def compact_mobile_labels(context):
     await expect(role(context, "link", "Login")).to_be_visible()
     await expect(context.page.locator("#main-menu .nav-login span")).to_be_hidden()
-    await expect(context.page.locator("#main-menu .nav-lang summary span")).to_be_hidden()
+    await expect(context.page.locator("#main-menu .nav-lang a span")).to_be_hidden()
 
 
 @then("additional languages have their own names without incorrect flags")
 async def additional_language_labels(context):
-    menu = context.page.locator(".nav-lang")
+    menu = context.page.locator("#language-dialog")
     for locale, name in [("pl", "polski"), ("es", "español")]:
-        option = menu.locator(f'a[hreflang="{locale}"]')
+        option = menu.locator("label", has=context.page.locator(f'input[value="{locale}"]'))
         await expect(option).to_have_text(re.compile(f"^{name}$", re.IGNORECASE))
         await expect(option.locator("img")).to_have_count(0)
-    await menu.locator('a[hreflang="pl"]').click()
+    await menu.locator('input[value="pl"]').check()
     await expect(context.page.locator("html")).to_have_attribute("lang", "pl")
     await expect(context.page.get_by_role("searchbox", name="Find a map in the catalog")).to_be_visible()
 
@@ -564,18 +561,18 @@ def disable_menu(context):
 
 @when("I expand the language list")
 async def expand_languages(context):
-    await context.page.locator(".nav-lang summary").click()
+    await context.page.locator(".nav-lang a:visible").first.click()
 
 
 @then("every language is reachable without horizontal overflow")
 async def language_bounds(context):
-    languages = context.page.locator(".nav-lang ul")
+    languages = context.page.locator("#language-dialog article")
     await expect(languages).to_be_visible()
     bounds = await languages.bounding_box()
     viewport = context.page.viewport_size
     assert bounds and viewport
     assert bounds["x"] >= 0 and bounds["x"] + bounds["width"] <= viewport["width"]
-    await languages.locator("li").last.scroll_into_view_if_needed()
+    await languages.locator("label").last.scroll_into_view_if_needed()
     assert await context.page.evaluate("document.documentElement.scrollWidth <= innerWidth")
 
 
@@ -620,7 +617,7 @@ async def search_results(context):
 async def switch_language(context):
     await context.page.goto("/#/en/search")
     await role(context, "link", "Choose a language").click()
-    await context.page.locator('a[hreflang="it"]:visible').click()
+    await context.page.locator('#language-dialog input[value="it"]').check()
 
 
 @then("the route, document and search label are Italian")
@@ -642,7 +639,7 @@ async def submit_credentials(context, password):
 @then("I am authenticated and the catalog has been refreshed")
 async def authenticated(context):
     await expect(role(context, "link", "Logout").first).to_be_visible()
-    assert sum(path.endswith("/api/project/") for path in context.calls) > 1
+    assert sum(path.endswith("/api/catalog/") for path in context.calls) > 1
 
 
 @when("I log out from search")
@@ -943,7 +940,7 @@ async def shared_document(context):
     assert 'type="module"' not in html
     await context.page.goto("/#/en/")
     assert await context.page.evaluate(
-        "['request', 'login', 'logout', 'escape', 't', 'safeURL', 'rich', 'load', 'whoami', 'render']"
+        "['fetch', 'login', 'logout', 'escape', 't', 'safeURL', 'rich', 'whoami', 'render']"
         ".every(name => typeof portal[name] === 'function')"
     )
     assert html.count('href="/static/frontend/assets/pico.css"') == 1
@@ -985,7 +982,7 @@ async def race_languages(context):
     await asyncio.wait_for(context.italian_started.wait(), timeout=10)
     await context.page.evaluate("location.hash = '/fr/search'")
     await expect(context.page.locator("html")).to_have_attribute("lang", "fr")
-    async with context.page.expect_response("**/it/portal/api/infodata/"):
+    async with context.page.expect_response("**/it/portal/api/catalog/"):
         context.italian_release.set()
 
 

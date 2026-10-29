@@ -11,6 +11,10 @@ Feature: Django portal API contracts and permissions
     Then the proxy forwards only remote session cookies and scopes the response cookies
     And the proxy makes relative URLs point to the remote host
 
+  Scenario: Local API proxy builds the catalog from the remote endpoints
+    When a proxy request from "localhost:8000" targets "it/portal/api/catalog/"
+    Then the proxy aggregates the remote catalog endpoints
+
   Scenario Outline: API proxy rejects non-local hosts and unapproved paths
     When a proxy request from "<host>" targets "<target>"
     Then the proxy rejects the request without contacting upstream
@@ -111,6 +115,18 @@ Feature: Django portal API contracts and permissions
     When a QGIS project is added to the independent group
     And the backend endpoint "portal-group-without-macrogroup-api-list" is requested
     Then only the independent group is returned
+
+  Scenario Outline: The catalog bundles the home endpoints
+    Given a backend "<visitor>" session
+    When the backend endpoint "portal-catalog-api" is requested
+    Then the backend responds with status 200
+    And the catalog matches the individual endpoints
+
+    Examples:
+      | visitor   |
+      | anonymous |
+      | viewer    |
+      | admin     |
 
   Scenario: Public suite metadata
     When the backend endpoint "portal-infodata-api-list" is requested

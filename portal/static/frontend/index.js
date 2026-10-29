@@ -26,7 +26,7 @@ const portal = {
   carousel: undefined,
   memoryPath: '/',
   messages: {},
-  async request(path, { method = 'GET', body, retry = true } = {}) {
+  async fetch(path, { method = 'GET', body, retry = true } = {}) {
     const headers = { Accept: 'application/json' };
     if (body !== undefined) {
       headers['Content-Type'] = body instanceof URLSearchParams ? 'application/x-www-form-urlencoded' : 'application/json';
@@ -141,27 +141,6 @@ const portal = {
     return template.innerHTML;
   },
 
-  async load(locale) {
-    const [info, pictures, macros, groups, allGroups, projects] = await Promise.all([
-      portal.fetch(`${locale}/portal/api/infodata/`),
-      portal.fetch(`${locale}/portal/api/pictures/`),
-      portal.fetch(`${locale}/portal/api/macrogroup/`),
-      portal.fetch(`${locale}/portal/api/group/nomacrogroup/`),
-      portal.fetch(`${locale}/portal/api/group/`),
-      portal.fetch(`${locale}/portal/api/project/`),
-    ]);
-    if (![pictures, macros, groups, allGroups, projects].every(Array.isArray)) throw new Error('Invalid catalog response');
-    return {
-      info,
-      pictures: pictures.sort((a, b) => a.order - b.order),
-      macros,
-      groups,
-      allGroups,
-      projects,
-      locale
-    };
-  },
-
   async whoami(locale) {
     const user = await portal.fetch(`${locale}/portal/api/whoami/`);
     if (portal.auth === 'cookie' || !user.is_authenticated) {
@@ -196,12 +175,12 @@ const portal = {
         const locale = ['en', 'it', 'fr', 'de', 'bg', 'fi', 'pt', 'ro', 'se'].includes(page.locale) ? page.locale : 'en';
         const [translation, data, user] = await Promise.all([
           locale === 'en' ? {} : import(`./locale/${locale}.js`),
-          portal.load(page.locale),
+          portal.fetch(`${page.locale}/portal/api/catalog/`),
           portal.whoami(page.locale),
         ]);
         if (version !== portal.navigation) return;
         portal.messages = translation.default || {};
-        Object.assign(portal, data, { user });
+        Object.assign(portal, data, { user, locale: page.locale });
       }
       const url = new URL(location.href);
       if (portal.user && url.searchParams.get('next')) {
@@ -239,7 +218,7 @@ const portal = {
         template.innerHTML = '<main id="content" class="container"><progress aria-label="Loading"></progress></main>';
         for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
         document.body.append(template.content);
-        Object.assign(portal, await portal.load(portal.route.locale));
+        Object.assign(portal, await portal.fetch(`${portal.route.locale}/portal/api/catalog/`), { locale: portal.route.locale });
         const path = `/${portal.route.locale}/`;
         if (portal.mode === 'abstract') portal.memoryPath = path;
         else history.replaceState({}, '', portal.routePrefix + path);
@@ -324,15 +303,15 @@ const portal = {
         };
       });
       const language = languages.find(item => item.locale === page.locale);
-      const languageMenu = /* html */`<details role="list">
-        <summary role="link" aria-label="${portal.escape(portal.t('Choose a language'))}" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : ''}>
+      const languageMenu = /* html */`<a href="#language" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : 'data-languages aria-haspopup="dialog"'} aria-label="${portal.escape(portal.t('Choose a language'))}">
           ${language.flag}<span${language.flag ? ' class="hide-on-mobile"' : ''}>${portal.escape(language.name)}</span>
-        </summary>
-        <ul role="listbox">${languages.map(({ locale, name, flag }) => {
-          const path = page.path.replace(`/${page.locale}/`, `/${locale}/`);
-          return `<li><a href="${portal.escape(portal.routePrefix + path)}" data-route="${portal.escape(path)}" hreflang="${portal.escape(locale)}">${flag}<span>${portal.escape(name)}</span></a></li>`;
-        }).join('')}</ul>
-      </details>`;
+        </a>`;
+      const languageDialog = /* html */`<dialog id="language-dialog" aria-labelledby="language-dialog-title" data-theme="light">
+        <article>
+          <header><form method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form><h3 id="language-dialog-title">${portal.escape(portal.t('Choose a language'))}</h3></header>
+          <fieldset>${languages.map(({ locale, name, flag }) => `<label><input type="radio" name="language" value="${portal.escape(locale)}" data-route="${portal.escape(page.path.replace(`/${page.locale}/`, `/${locale}/`))}"${locale === page.locale ? ' checked' : ''}>${flag}<span>${portal.escape(name)}</span></label>`).join('')}</fieldset>
+        </article>
+      </dialog>`;
       const [authLinks, mobileAuthLinks] = ['', 'show-on-mobile'].map(className => {
         const labelClass = className ? '' : ' class="hide-on-mobile"';
         if (portal.user) {
@@ -530,6 +509,7 @@ const portal = {
         </footer>
 
         <dialog id="portal-dialog" aria-labelledby="dialog-title" data-theme="light"></dialog>
+        ${languageDialog}
 
         <a class="bottom-right" href="#" data-scroll-top title="Back to top" aria-label="Back to top" hidden>
           <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 15 12 6l9 9Z" fill="currentColor" stroke="none"/></svg>
@@ -565,7 +545,7 @@ const portal = {
           await portal.login(portal.route.locale, data.get('username'), data.get('password'));
           portal.user = await portal.whoami(portal.route.locale);
           if (!portal.user) throw new Error('Authentication was not established');
-          Object.assign(portal, await portal.load(portal.route.locale));
+          Object.assign(portal, await portal.fetch(`${portal.route.locale}/portal/api/catalog/`), { locale: portal.route.locale });
           const next = portal.route.query.get('next') || new URL(location.href).searchParams.get('next') || `/${portal.route.locale}/`;
           if (!next.startsWith('/') || new URL(next, location.origin).origin !== location.origin) throw new Error('Invalid return path');
           if (['Bearer', 'JWT'].includes(portal.auth) && portal.user.drf_token) {
@@ -673,7 +653,7 @@ document.addEventListener('click', async event => {
       template.innerHTML = '<main id="content" class="container"><progress aria-label="Loading"></progress></main>';
       for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
       document.body.append(template.content);
-      Object.assign(portal, await portal.load(portal.route.locale));
+      Object.assign(portal, await portal.fetch(`${portal.route.locale}/portal/api/catalog/`), { locale: portal.route.locale });
       if (portal.route.name === 'logout') {
         const path = `/${portal.route.locale}/`;
         if (portal.mode === 'abstract') portal.memoryPath = path;
@@ -722,6 +702,12 @@ document.addEventListener('click', async event => {
       else history.pushState({}, '', portal.routePrefix + path);
       portal.render();
     }
+  } else if (target.hasAttribute('data-languages')) {
+    event.preventDefault();
+    const dialog = document.querySelector('#language-dialog');
+    dialog.addEventListener('close', () => document.documentElement.classList.remove('modal-is-open'), { once: true });
+    document.documentElement.classList.add('modal-is-open');
+    dialog.showModal();
   } else if (target.hasAttribute('data-services') || target.hasAttribute('data-credits')) {
     event.preventDefault();
     const dialog = document.querySelector('#portal-dialog');
@@ -754,6 +740,14 @@ document.addEventListener('click', async event => {
   }
 });
 
+document.addEventListener('change', event => {
+  const input = event.target.closest('#language-dialog input[name="language"]');
+  if (!input) return;
+  input.closest('dialog').close();
+  if (portal.mode === 'abstract') portal.memoryPath = input.dataset.route;
+  else history.pushState({}, '', portal.routePrefix + input.dataset.route);
+  portal.render();
+});
 window.addEventListener('popstate', () => portal.render());
 window.addEventListener('hashchange', () => portal.render());
 window.addEventListener('scroll', () => {
