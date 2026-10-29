@@ -147,11 +147,18 @@ const portal = {
     });
     if (data.status !== 'ok') throw new Error(Object.values(data.errors_form || data.error_form || {}).flat().join(' ') || 'Login failed');
   },
-  async logout(locale, user) {
+  async logout() {
+    const { locale, name } = portal.route;
+    const user = portal.user;
+    if (portal.info.login_url && portal.info.login_url !== 'login' && portal.info.logout_url && !['logout', 'login'].includes(portal.info.logout_url)) {
+      return location.assign(portal.safeURL(portal.info.logout_url));
+    }
     const data = portal.tokenAuth
       ? await portal.fetch('/authjwt/api/token/blacklist/', { method: 'POST', body: { refresh: localStorage.getItem('refresh_token') }, retry: false })
       : await portal.fetch(`${locale}/portal/jx/logout/`);
-    if (!portal.tokenAuth && data.status !== 'ok') throw new Error(data.message || 'Logout failed');
+    if (!portal.tokenAuth && data.status !== 'ok') {
+      throw new Error(data.message || 'Logout failed');
+    }
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     if (portal.tokenAuth && user?.drf_token) {
@@ -171,6 +178,13 @@ const portal = {
     document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
     document.body.insertAdjacentHTML('beforeend', '<main id="content" class="container" data-portal-ui><progress aria-label="Loading"></progress></main>');
     Object.assign(portal, await portal.fetch(`${locale}/portal/api/catalog/`), { locale });
+    if (name === 'logout') {
+      portal.memoryPath = `/${locale}/`;
+    }
+    if (name === 'logout' && portal.mode !== 'abstract') {
+      history.replaceState({}, '', portal.routePrefix + portal.memoryPath);
+    }
+    await portal.render();
   },
 
   escape(value) {
@@ -227,17 +241,7 @@ const portal = {
         location.assign(new URL(window.PORTAL_ADMIN_ROOT ?? '/admin', portal.base).href);
         return;
       }
-      if (page.name === 'logout' && portal.info.login_url && portal.info.login_url !== 'login' && portal.info.logout_url && !['logout', 'login'].includes(portal.info.logout_url)) {
-        location.assign(portal.safeURL(portal.info.logout_url));
-        return;
-      }
-      if (page.name === 'logout') {
-        await portal.logout(portal.route.locale, portal.user);
-        portal.memoryPath = `/${portal.route.locale}/`;
-        if (portal.mode !== 'abstract') history.replaceState({}, '', portal.routePrefix + portal.memoryPath);
-        await portal.render();
-        return;
-      }
+      if (page.name === 'logout') return portal.logout();
       if (page.name === 'login' && portal.info.login_url && portal.info.login_url !== 'login') {
         location.assign(portal.safeURL(portal.info.login_url));
         return;
@@ -556,19 +560,10 @@ document.addEventListener('click', async event => {
     portal.render();
     return;
   }
-  if (target.hasAttribute('data-logout') && portal.info.login_url && portal.info.login_url !== 'login' && portal.info.logout_url && !['logout', 'login'].includes(portal.info.logout_url)) {
-    event.preventDefault();
-    location.assign(portal.safeURL(portal.info.logout_url));
-    return;
-  }
   if (target.hasAttribute('data-logout')) {
     event.preventDefault();
     try {
-      await portal.logout(portal.route.locale, portal.user);
-      const path = portal.route.name === 'logout' && `/${portal.route.locale}/`;
-      if (path) portal.memoryPath = path;
-      if (path && portal.mode !== 'abstract') history.replaceState({}, '', portal.routePrefix + path);
-      await portal.render();
+      await portal.logout();
     } catch (error) {
       console.error('Portal:', error);
       document.querySelector('#content progress')?.remove();
