@@ -940,6 +940,12 @@ async def shared_document(context):
     assert "window.API_BASE_URL" in html
     assert f"'{context.base_url}/'" in html
     assert html.count('src="/static/frontend/index.js"') == 1
+    assert 'type="module"' not in html
+    await context.page.goto("/#/en/")
+    assert await context.page.evaluate(
+        "['request', 'login', 'logout', 'escape', 't', 'safeURL', 'rich', 'load', 'whoami', 'render']"
+        ".every(name => typeof portal[name] === 'function')"
+    )
     assert html.count('href="/static/frontend/assets/pico.css"') == 1
     assert html.count('href="/static/frontend/assets/index.css"') == 1
     assert html.index("window.API_BASE_URL") < html.index('<div id="app">')
@@ -995,7 +1001,6 @@ async def french_wins(context):
 @given("the portal is hosted separately from its API")
 async def cross_origin(context):
     context.settings["API_BASE_URL"] = "https://api.example.test/"
-    context.settings["API_ASSET_BASE_URL"] = "https://api.example.test/"
     await context.page.add_init_script("""
         const original = window.fetch;
         window.fetch = (input, options) => {
@@ -1015,7 +1020,7 @@ async def remote_credentials(context):
 
 @given("the API is local and its media is remote")
 async def remote_media(context):
-    context.settings["API_ASSET_BASE_URL"] = "https://dev.g3wsuite.it/"
+    context.settings["API_BASE_URL"] = "https://dev.g3wsuite.it/"
     await context.page.route("https://dev.g3wsuite.it/media/**", lambda route: route.fulfill(
         content_type="image/svg+xml",
         body='<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">'
@@ -1025,11 +1030,12 @@ async def remote_media(context):
 
 @given("the API is local and its OGC services are remote")
 def remote_services(context):
-    context.settings["API_ASSET_BASE_URL"] = "https://dev.g3wsuite.it/"
+    context.settings["API_BASE_URL"] = "https://dev.g3wsuite.it/"
 
 
 @then("group images load from the remote media host")
 async def group_images_remote(context):
+    assert await context.page.evaluate("Object.hasOwn(window, 'API_ASSET_BASE_URL')") is False
     image = context.page.locator("#content article img").first
     await expect(image).to_have_attribute("src", re.compile(r"^https://dev\.g3wsuite\.it/media/"))
     await expect(image).to_have_js_property("complete", True)

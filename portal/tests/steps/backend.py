@@ -163,7 +163,7 @@ def remove_panorama(context):
 @then("the Django document contains the native portal entry point")
 def portal_document(context):
     html = context.response.content.decode()
-    assert 'type="module"' in html and "frontend/index.js" in html
+    assert 'type="module"' not in html and "<script defer" in html and "frontend/index.js" in html
     assert '<div id="app">' in html
 
 

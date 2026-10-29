@@ -59,9 +59,9 @@ urlpatterns = [
         name='portal-ajax-logout'
     ),
     path(
-        f'{pre_api_url}api-proxy/<path:proxy_path>',
+        f'{pre_api_url}proxy/<path:proxy_path>',
         PortalApiProxyView.as_view(),
-        name='portal-api-proxy'
+        name='portal-proxy'
     ),
 
     # INCLUDE API URLS HERE TO USE I18N

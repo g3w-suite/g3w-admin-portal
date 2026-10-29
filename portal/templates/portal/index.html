@@ -27,7 +27,7 @@
 
     <link rel="icon" href="{{ PORTAL_FAVICON_URL }}">
 
-    <script type="module" crossorigin src="{{ PORTAL_SCRIPT_URL }}"></script>
+    <script defer crossorigin src="{{ PORTAL_SCRIPT_URL }}"></script>
     <link rel="stylesheet" href="{{ PORTAL_PICO_URL }}">
     <link rel="stylesheet" href="{{ PORTAL_STYLE_URL }}">
 
@@ -55,7 +55,6 @@
     <noscript><strong>You must enable JavaScript to continue.</strong></noscript>
     <script>
         window.API_BASE_URL             = '{{ API_BASE_URL | escapejs }}';
-        window.API_ASSET_BASE_URL       = '{{ API_ASSET_BASE_URL | escapejs }}';
         window.LANGUAGES                = {{ LANGUAGES | safe }};
         window.PORTAL_ORG_NAME          = '{{ SETTINGS.PORTAL_ORG_NAME | escapejs }}';
         window.PORTAL_ORG_IMAGE         = '{{ SETTINGS.PORTAL_ORG_IMAGE | escapejs }}';

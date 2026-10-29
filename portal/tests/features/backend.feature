@@ -9,6 +9,7 @@ Feature: Django portal API contracts and permissions
   Scenario: Local API proxy forwards and scopes remote session cookies
     When a proxy request from "localhost:8000" targets "it/portal/api/infodata/"
     Then the proxy forwards only remote session cookies and scopes the response cookies
+    And the proxy makes relative URLs point to the remote host
 
   Scenario Outline: API proxy rejects non-local hosts and unapproved paths
     When a proxy request from "<host>" targets "<target>"

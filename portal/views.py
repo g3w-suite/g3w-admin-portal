@@ -97,14 +97,13 @@ class PortalView(TemplateView):
         if _is_localhost(self.request) and (
             api_origin.scheme, api_origin.netloc
         ) != (request_origin.scheme, request_origin.netloc):
-            proxy_url = reverse('portal-api-proxy', kwargs={'proxy_path': '__proxy_path__'})
+            proxy_url = reverse('portal-proxy', kwargs={'proxy_path': '__proxy_path__'})
             api_base_url = self.request.build_absolute_uri(proxy_url.rsplit('__proxy_path__', 1)[0])
 
         toret =  {
 
             # OPTIONAL: setting for API_BASE_URL (cross domain API) 
             'API_BASE_URL': api_base_url,
-            'API_ASSET_BASE_URL': asset_base_url,
 
             'LANGUAGES': [l[0] for l in settings.LANGUAGES],
         }
@@ -195,6 +194,13 @@ class PortalApiProxyView(View):
             logger.exception('Local portal API proxy could not reach %s', upstream.netloc)
             return HttpResponse('Remote portal API is unavailable', status=502)
 
+        if (content_type or '').startswith('application/json'):
+            try:
+                # Remote media, map and OGC links must not resolve against the local proxy.
+                body = json.dumps(_absolute_urls(json.loads(body), f'{upstream.scheme}://{upstream.netloc}'))
+            except ValueError:
+                pass
+
         proxied_response = HttpResponse(body, status=status, content_type=content_type)
         if cache_control:
             proxied_response['Cache-Control'] = cache_control
@@ -213,6 +219,18 @@ class PortalApiProxyView(View):
                     samesite=morsel['samesite'] or None,
                 )
         return proxied_response
+
+
+def _absolute_urls(value, origin):
+    if isinstance(value, dict):
+        return {key: _absolute_urls(item, origin) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_absolute_urls(item, origin) for item in value]
+    if not isinstance(value, str):
+        return value
+    if value.startswith('/') and not value.startswith('//'):
+        return origin + value
+    return re.sub(r'''(\b(?:href|src)=["'])(?=/(?!/))''', lambda match: match.group(1) + origin, value)
 
 
 class _NoRedirect(HTTPRedirectHandler):

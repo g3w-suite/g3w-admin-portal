@@ -1,3 +1,4 @@
+import json
 from email.message import Message
 from unittest.mock import patch
 
@@ -10,7 +11,7 @@ def proxy_request(context, host, target):
     from portal.views import PortalApiProxyView
 
     request = RequestFactory().get(
-        f"/it/portal/api-proxy/{target}?lang=it", HTTP_HOST=host,
+        f"/it/portal/proxy/{target}?lang=it", HTTP_HOST=host,
     )
     request.COOKIES = {
         "portal_proxy_sessionid": "remote-session", "sessionid": "local-session",
@@ -24,7 +25,10 @@ def proxy_request(context, host, target):
         upstream.headers = Message()
         upstream.headers["Content-Type"] = "application/json"
         upstream.headers.add_header("Set-Cookie", "sessionid=remote; HttpOnly; Secure; SameSite=None")
-        upstream.read.return_value = b'{"ok":true}'
+        upstream.read.return_value = (
+            b'{"map_url": "/it/map/g/qdjango/97/", "ogc_urls": {"WMS": "/ows/97/"},'
+            b' "description": "<img src=\\"/media/a.png\\"><a href=\\"//cdn.test/x\\">x</a>"}'
+        )
         context.response = PortalApiProxyView.as_view()(request, proxy_path=target)
         context.proxy_open = opener.return_value.open
         context.proxy_opener = opener
@@ -38,6 +42,15 @@ def proxy_cookies(context):
     assert context.response.status_code == 200
     assert "portal_proxy_sessionid" in context.response.cookies
     assert "sessionid" not in context.response.cookies
+
+
+@then("the proxy makes relative URLs point to the remote host")
+def proxy_urls(context):
+    assert json.loads(context.response.content) == {
+        "map_url": "https://dev.g3wsuite.it/it/map/g/qdjango/97/",
+        "ogc_urls": {"WMS": "https://dev.g3wsuite.it/ows/97/"},
+        "description": '<img src="https://dev.g3wsuite.it/media/a.png"><a href="//cdn.test/x">x</a>',
+    }
 
 
 @then("the proxy rejects the request without contacting upstream")

@@ -183,15 +183,12 @@ def start_browser(context):
     def document(request):
         portal_settings = {
             "PORTAL_AUTH_MODE": "cookie", "PORTAL_MAX_HOME_ARTICLES": 1,
-            "PORTAL_NAVBAR_TOP": True, "PORTAL_MENU_BUTTON": True,
+            "PORTAL_NAVBAR_TOP": True,
+            "PORTAL_MENU_BUTTON": True,
             **getattr(context, "settings", {}),
         }
         return render(request, "portal/index.html", {
             "API_BASE_URL": portal_settings.get("API_BASE_URL", request.build_absolute_uri("/")),
-            "API_ASSET_BASE_URL": portal_settings.get(
-                "API_ASSET_BASE_URL",
-                portal_settings.get("API_BASE_URL", request.build_absolute_uri("/")),
-            ),
             "LANGUAGES": portal_settings.get("LANGUAGES", ["en", "it", "fr", "de", "bg", "fi", "pt", "ro", "se"]),
             "PORTAL_VERSION": "test", "admin_page_title": "G3W-SUITE",
             "SETTINGS": portal_settings,
