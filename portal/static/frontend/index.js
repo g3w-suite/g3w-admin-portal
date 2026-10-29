@@ -5,6 +5,7 @@ const state = {
   get tokenAuth() { return ['JWT', 'Bearer'].includes(this.auth); },
   refreshRequest: undefined,
   mode: window.PORTAL_HISTORY_MODE || 'hash',
+  get routePrefix() { return this.mode === 'hash' ? '#' : ''; },
   get top() { return window.PORTAL_NAVBAR_TOP !== false; },
   get menu() { return this.top || window.PORTAL_MENU_BUTTON !== false; },
   get orgName() { return window.PORTAL_ORG_NAME || this.info.suite_org_name || ''; },
@@ -20,10 +21,11 @@ const state = {
   user: null,
   search: '',
   route: null,
+  navigation: 0,
+  carousel: undefined,
+  memoryPath: '/',
   messages: {},
 };
-
-const routePrefix = state.mode === 'hash' ? '#' : '';
 
 async function request(path, { method = 'GET', body, retry = true } = {}) {
   const headers = { Accept: 'application/json' };
@@ -141,11 +143,6 @@ function rich(value) {
   return template.innerHTML;
 }
 
-let route;
-let navigation = 0;
-let carousel;
-let memoryPath = '/';
-
 async function load(locale) {
   const [info, pictures, macros, groups, allGroups, projects] = await Promise.all([
     request(`${locale}/portal/api/infodata/`),
@@ -175,20 +172,11 @@ async function whoami(locale) {
   return user.is_authenticated ? user : null;
 }
 
-function mount(html) {
-  clearInterval(carousel);
-  document.documentElement.classList.remove('modal-is-open');
-  document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
-  const template = document.createElement('template');
-  template.innerHTML = html;
-  for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
-  document.body.append(template.content);
-}
 
 async function render() {
-  const version = ++navigation;
+  const version = ++state.navigation;
   let path = location.pathname + location.search;
-  if (state.mode === 'abstract') path = memoryPath;
+  if (state.mode === 'abstract') path = state.memoryPath;
   else if (state.mode === 'hash') path = location.hash.slice(1) || '/';
   const url = new URL(path, location.origin);
   const parts = url.pathname.split('/').filter(Boolean);
@@ -204,13 +192,12 @@ async function render() {
     path: `/${locale}/${parts.join('/')}${url.search}`,
     query: url.searchParams,
   };
-  route = current;
   state.route = current;
   try {
     if (state.locale !== current.locale) {
       const locale = ['en', 'it', 'fr', 'de', 'bg', 'fi', 'pt', 'ro', 'se'].includes(current.locale) ? current.locale : 'en';
       const [translation, data, user] = await Promise.all([locale === 'en' ? {} : import(`./locale/${locale}.js`), load(current.locale), whoami(current.locale),]);
-      if (version !== navigation) return;
+      if (version !== state.navigation) return;
       state.messages = translation.default || {};
       Object.assign(state, data, { user });
     }
@@ -220,8 +207,8 @@ async function render() {
       if (!next.startsWith('/') || new URL(next, location.origin).origin !== location.origin) throw new Error('Invalid return path');
       url.searchParams.delete('next');
       history.replaceState({}, '', url);
-      if (state.mode === 'abstract') memoryPath = next;
-      else history.replaceState({}, '', routePrefix + next);
+      if (state.mode === 'abstract') state.memoryPath = next;
+      else history.replaceState({}, '', state.routePrefix + next);
       return render();
     }
     if (current.name === 'admin') {
@@ -233,7 +220,7 @@ async function render() {
         location.assign(safeURL(state.info.logout_url));
         return;
       }
-      await logout(route.locale, state.user);
+      await logout(state.route.locale, state.user);
       Object.assign(state, {
         user: null,
         locale: '',
@@ -243,11 +230,17 @@ async function render() {
         macros: [],
         visibleProjects: []
       });
-      mount('<main id="content" class="container"><progress aria-label="Loading"></progress></main>');
-      Object.assign(state, await load(route.locale));
-      const path = `/${route.locale}/`;
-      if (state.mode === 'abstract') memoryPath = path;
-      else history.replaceState({}, '', routePrefix + path);
+      clearInterval(state.carousel);
+      document.documentElement.classList.remove('modal-is-open');
+      document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+      const template = document.createElement('template');
+      template.innerHTML = '<main id="content" class="container"><progress aria-label="Loading"></progress></main>';
+      for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
+      document.body.append(template.content);
+      Object.assign(state, await load(state.route.locale));
+      const path = `/${state.route.locale}/`;
+      if (state.mode === 'abstract') state.memoryPath = path;
+      else history.replaceState({}, '', state.routePrefix + path);
       await render();
       return;
     }
@@ -272,15 +265,15 @@ async function render() {
           }
         }
       }
-      if (version !== navigation) return;
+      if (version !== state.navigation) return;
       if (!state.user && !(macro && !current.group) && !group) {
         const path = `/${current.locale}/login?${new URLSearchParams({ next: current.path })}`;
-        if (state.mode === 'abstract') memoryPath = path;
-        else history.replaceState({}, '', routePrefix + path);
+        if (state.mode === 'abstract') state.memoryPath = path;
+        else history.replaceState({}, '', state.routePrefix + path);
         return render();
       }
     }
-    if (version !== navigation) return;
+    if (version !== state.navigation) return;
     document.documentElement.lang = current.locale;
     document.documentElement.dataset.theme = window.PORTAL_THEME || 'light';
     document.body.classList.remove('home', 'login', 'search', 'group', 'organization', 'map', '404');
@@ -293,7 +286,7 @@ async function render() {
     else if (macro && !current.group) title = macro.title;
     else if (group) title = group.title || group.name;
     document.title = `${title} - ${info.title || 'G3W-SUITE'}`;
-    if (state.mode === 'hash' && !location.hash) history.replaceState({}, '', routePrefix + current.path);
+    if (state.mode === 'hash' && !location.hash) history.replaceState({}, '', state.routePrefix + current.path);
 
     const logo = `<img class="logo" src="${escape(info.suite_logo && !info.suite_logo.endsWith('/') ? safeURL(info.suite_logo) : new URL('assets/logo_g3wsuite-bw.png', import.meta.url).href)}" alt="${escape(info.title)}">`;
     const org = state.orgImage ? `<img class="logo" src="${escape(safeURL(state.orgImage))}" alt="${escape(state.orgName)}">` : escape(state.orgName);
@@ -335,24 +328,25 @@ async function render() {
       </summary>
       <ul role="listbox">${languages.map(({ locale, name, flag }) => {
         const path = current.path.replace(`/${current.locale}/`, `/${locale}/`);
-        return `<li><a href="${escape(routePrefix + path)}" data-route="${escape(path)}" hreflang="${escape(locale)}">${flag}<span>${escape(name)}</span></a></li>`;
+        return `<li><a href="${escape(state.routePrefix + path)}" data-route="${escape(path)}" hreflang="${escape(locale)}">${flag}<span>${escape(name)}</span></a></li>`;
       }).join('')}</ul>
     </details>`;
     const [authLinks, mobileAuthLinks] = ['', 'show-on-mobile'].map(className => {
       const labelClass = className ? '' : ' class="hide-on-mobile"';
       if (state.user) {
         return /* html */`<li class="nav-admin ${className}">
-          <a href="${escape(routePrefix + `/${current.locale}/admin`)}" data-route="${escape(`/${current.locale}/admin`)}" aria-label="${escape(t('Admin'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><span${labelClass}>${escape(t('Admin'))}</span></a>
+          <a href="${escape(state.routePrefix + `/${current.locale}/admin`)}" data-route="${escape(`/${current.locale}/admin`)}" aria-label="${escape(t('Admin'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><span${labelClass}>${escape(t('Admin'))}</span></a>
         </li>
         <li class="nav-logout ${className}">
-          <a href="${escape(routePrefix + `/${current.locale}/logout`)}" data-logout aria-label="${escape(t('Logout'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 3H3v18h6M9 12h13m-5-5 5 5-5 5"/></svg><span${labelClass}>${escape(t('Logout'))}</span></a>
+          <a href="${escape(state.routePrefix + `/${current.locale}/logout`)}" data-logout aria-label="${escape(t('Logout'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 3H3v18h6M9 12h13m-5-5 5 5-5 5"/></svg><span${labelClass}>${escape(t('Logout'))}</span></a>
         </li>`;
       }
       return /* html */`<li class="nav-login ${className}">
-        <a href="${escape(routePrefix + `/${current.locale}/login`)}" data-route="${escape(`/${current.locale}/login`)}" aria-label="${escape(t('Login'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="currentColor" stroke="none"/></svg><span${labelClass}>${escape(t('Login'))}</span></a>
+        <a href="${escape(state.routePrefix + `/${current.locale}/login`)}" data-route="${escape(`/${current.locale}/login`)}" aria-label="${escape(t('Login'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="currentColor" stroke="none"/></svg><span${labelClass}>${escape(t('Login'))}</span></a>
       </li>`;
     });
-    mount(/* html */`
+    const template = document.createElement('template');
+    template.innerHTML = /* html */`
       <button type="button" class="skip-link" data-skip-content>Skip to content</button>
       ${state.top ? '<nav id="top-menu" class="container-fluid top-menu"><ul><li class="nav-org">' : ''}
       ${state.top && state.orgURL ? `<a href="${escape(safeURL(state.orgURL))}" title="${escape(window.PORTAL_ORG_TITLE || '')}">${org}</a>` : ''}
@@ -361,23 +355,23 @@ async function render() {
       <nav id="main-menu" class="container-fluid main-menu${!state.top && !state.menu ? ' compact' : ''}${!state.top && state.menu ? ' mobile-menu' : ''}">
         <ul>
           <li class="nav-logo">
-            ${info.url_suite_logo ? `<a href="${escape(safeURL(info.url_suite_logo))}" aria-label="Back home">${logo}</a>` : `<a href="${escape(routePrefix + `/${current.locale}/`)}" data-route="${escape(`/${current.locale}/`)}" aria-label="Back home">${logo}</a>`}
+            ${info.url_suite_logo ? `<a href="${escape(safeURL(info.url_suite_logo))}" aria-label="Back home">${logo}</a>` : `<a href="${escape(state.routePrefix + `/${current.locale}/`)}" data-route="${escape(`/${current.locale}/`)}" aria-label="Back home">${logo}</a>`}
           </li>
           <li class="nav-title hide-on-mobile">
             <span class="h1">${escape(info.title)}</span><span>${escape(info.sub_title)}</span>
           </li>
         </ul>
         <ul>
-          <li class="nav-search"><a href="${escape(routePrefix + `/${current.locale}/search`)}" data-route="${escape(`/${current.locale}/search`)}" title="${escape(t('Find a map in the catalog'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="m15 15 7 7"/></svg>${escape(t('Search'))}</a></li>
+          <li class="nav-search"><a href="${escape(state.routePrefix + `/${current.locale}/search`)}" data-route="${escape(`/${current.locale}/search`)}" title="${escape(t('Find a map in the catalog'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="m15 15 7 7"/></svg>${escape(t('Search'))}</a></li>
           ${!state.top ? `${authLinks}<li class="nav-lang">${languageMenu}</li>` : ''}
           ${state.menu && !state.top ? '<li class="nav-toggle show-on-mobile">' : ''}
           ${state.menu && state.top ? '<li class="nav-toggle">' : ''}
           ${state.menu ? `<button type="button" class="outline contrast" data-menu aria-controls="secondary-menu" aria-expanded="false">${escape(t('MENU'))}</button></li>` : ''}
         </ul>
         <ul id="secondary-menu" hidden>
-          <li><a href="${escape(routePrefix + `/${current.locale}/`)}" data-route="${escape(`/${current.locale}/`)}">${escape(t('Home'))}</a></li>
-          <li><a href="${escape(routePrefix + `/${current.locale}/group`)}" data-route="${escape(`/${current.locale}/group`)}">${escape(t('Groups'))}</a></li>
-          ${!state.top && state.menu ? /* html */`<li class="show-on-mobile"><a href="${escape(routePrefix + `/${current.locale}/search`)}" data-route="${escape(`/${current.locale}/search`)}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="m15 15 7 7"/></svg>${escape(t('Search'))}</a></li>
+          <li><a href="${escape(state.routePrefix + `/${current.locale}/`)}" data-route="${escape(`/${current.locale}/`)}">${escape(t('Home'))}</a></li>
+          <li><a href="${escape(state.routePrefix + `/${current.locale}/group`)}" data-route="${escape(`/${current.locale}/group`)}">${escape(t('Groups'))}</a></li>
+          ${!state.top && state.menu ? /* html */`<li class="show-on-mobile"><a href="${escape(state.routePrefix + `/${current.locale}/search`)}" data-route="${escape(`/${current.locale}/search`)}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="m15 15 7 7"/></svg>${escape(t('Search'))}</a></li>
             ${mobileAuthLinks}
             <li class="nav-lang show-on-mobile">${languageMenu}</li>` : ''}
         </ul>
@@ -394,9 +388,9 @@ async function render() {
       ${current.name === 'home' ? '</header>' : ''}
       <nav id="breadcrumb" class="container" aria-label="breadcrumb">
         <ul>
-          <li><a href="${escape(routePrefix + `/${current.locale}/`)}" data-route="${escape(`/${current.locale}/`)}" ${current.name === 'home' ? `aria-current="page" aria-label="${escape(t('Home'))}"` : ''}>${current.name === 'home' ? '' : 'Home'}</a></li>
-          ${['group', 'organization'].includes(current.name) && current.id ? `<li><a href="${escape(routePrefix + `/${current.locale}/${current.name}`)}" data-route="${escape(`/${current.locale}/${current.name}`)}">${escape(t(current.name === 'group' ? 'Groups' : 'Organizations'))}</a></li>` : ''}
-          ${current.name === 'organization' && current.group ? `<li><a href="${escape(routePrefix + `/${current.locale}/organization/${current.id}`)}" data-route="${escape(`/${current.locale}/organization/${current.id}`)}">${escape(state.macros.find(item => String(item.id) === current.id)?.title)}</a></li>` : ''}
+          <li><a href="${escape(state.routePrefix + `/${current.locale}/`)}" data-route="${escape(`/${current.locale}/`)}" ${current.name === 'home' ? `aria-current="page" aria-label="${escape(t('Home'))}"` : ''}>${current.name === 'home' ? '' : 'Home'}</a></li>
+          ${['group', 'organization'].includes(current.name) && current.id ? `<li><a href="${escape(state.routePrefix + `/${current.locale}/${current.name}`)}" data-route="${escape(`/${current.locale}/${current.name}`)}">${escape(t(current.name === 'group' ? 'Groups' : 'Organizations'))}</a></li>` : ''}
+          ${current.name === 'organization' && current.group ? `<li><a href="${escape(state.routePrefix + `/${current.locale}/organization/${current.id}`)}" data-route="${escape(`/${current.locale}/organization/${current.id}`)}">${escape(state.macros.find(item => String(item.id) === current.id)?.title)}</a></li>` : ''}
           ${current.name !== 'home' ? `<li aria-current="page">${escape(title)}</li>` : ''}
         </ul>
       </nav>
@@ -460,14 +454,14 @@ async function render() {
             const title = item.title || item.name || t('Group');
             return /* html */`
               <article class="${isMacro ? 'MG' : 'G'}-${escape(item.id)} item-${isMacro ? 'MG' : 'G'}">
-                <a href="${escape(routePrefix + `/${current.locale}/${path}`)}" data-route="${escape(`/${current.locale}/${path}`)}"><figure>
+                <a href="${escape(state.routePrefix + `/${current.locale}/${path}`)}" data-route="${escape(`/${current.locale}/${path}`)}"><figure>
                   <img loading="lazy" src="${escape(safeURL(item.logo_img || item.header_logo_img) || new URL('assets/logo_g3wsuite.png', import.meta.url).href)}" alt="${escape(title)}">
                   <figcaption><h3><b>${escape(title)}</b></h3></figcaption>
                 </figure></a>
               </article>`;
           }).join('')}
           ${cards ? '</div>' : ''}
-          ${current.name === 'home' && max > 0 && cards.length > max ? `<div id="load-more"><a href="${escape(routePrefix + `/${current.locale}/group`)}" data-route="${escape(`/${current.locale}/group`)}" role="button">${escape(t('Show all'))}</a></div>` : ''}
+          ${current.name === 'home' && max > 0 && cards.length > max ? `<div id="load-more"><a href="${escape(state.routePrefix + `/${current.locale}/group`)}" data-route="${escape(`/${current.locale}/group`)}" role="button">${escape(t('Show all'))}</a></div>` : ''}
           ${['search', 'map'].includes(current.name) ? '<div id="search-results">' : ''}
           ${(items || state.projects).filter(item => {
             if (group) return true;
@@ -538,7 +532,12 @@ async function render() {
       <a class="bottom-right" href="#" data-scroll-top title="Back to top" aria-label="Back to top" hidden>
         <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 15 12 6l9 9Z" fill="currentColor" stroke="none"/></svg>
       </a>
-    `);
+    `;
+    clearInterval(state.carousel);
+    document.documentElement.classList.remove('modal-is-open');
+    document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+    for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
+    document.body.append(template.content);
     
     document.querySelector('#search')?.addEventListener('input', event => {
       state.search = event.target.value;
@@ -561,15 +560,15 @@ async function render() {
       errorLabel.hidden = true;
       try {
         const data = new FormData(form);
-        await login(route.locale, data.get('username'), data.get('password'));
-        state.user = await whoami(route.locale);
+        await login(state.route.locale, data.get('username'), data.get('password'));
+        state.user = await whoami(state.route.locale);
         if (!state.user) throw new Error('Authentication was not established');
-        Object.assign(state, await load(route.locale));
-        const next = route.query.get('next') || new URL(location.href).searchParams.get('next') || `/${route.locale}/`;
+        Object.assign(state, await load(state.route.locale));
+        const next = state.route.query.get('next') || new URL(location.href).searchParams.get('next') || `/${state.route.locale}/`;
         if (!next.startsWith('/') || new URL(next, location.origin).origin !== location.origin) throw new Error('Invalid return path');
         if (['Bearer', 'JWT'].includes(state.auth) && state.user.drf_token) {
-          const url = new URL(`${route.locale}/portal/api/whoami/`, state.base);
-          const redirect = new URL(routePrefix + next, location.href);
+          const url = new URL(`${state.route.locale}/portal/api/whoami/`, state.base);
+          const redirect = new URL(state.routePrefix + next, location.href);
           redirect.searchParams.delete('next');
           url.search = new URLSearchParams({
             __drftk: state.user.drf_token,
@@ -581,8 +580,8 @@ async function render() {
         const url = new URL(location.href);
         url.searchParams.delete('next');
         history.replaceState({}, '', url);
-        if (state.mode === 'abstract') memoryPath = next;
-        else history.pushState({}, '', routePrefix + next);
+        if (state.mode === 'abstract') state.memoryPath = next;
+        else history.pushState({}, '', state.routePrefix + next);
         await render();
       } catch (error) {
         console.error('Portal login:', error);
@@ -598,7 +597,7 @@ async function render() {
     });
     if (current.name === 'home' && state.pictures.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
       let index = 0;
-      carousel = setInterval(() => {
+      state.carousel = setInterval(() => {
         const picture = state.pictures[++index % state.pictures.length];
         document.querySelector('#carousel img').src = safeURL(picture.image);
         document.querySelector('#carousel figcaption').innerHTML = `
@@ -607,7 +606,7 @@ async function render() {
       }, 5000);
     }
   } catch (error) {
-    if (version === navigation) {
+    if (version === state.navigation) {
       console.error('Portal:', error);
       document.querySelector('#content progress')?.remove();
       let alert = document.querySelector('#portal-error');
@@ -616,7 +615,15 @@ async function render() {
         alert.id = 'portal-error';
         alert.setAttribute('role', 'alert');
         alert.setAttribute('data-portal-ui', '');
-        if (!document.querySelector('#content')) mount('<main id="content" class="container"></main>');
+        if (!document.querySelector('#content')) {
+          clearInterval(state.carousel);
+          document.documentElement.classList.remove('modal-is-open');
+          document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+          const template = document.createElement('template');
+          template.innerHTML = '<main id="content" class="container"></main>';
+          for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
+          document.body.append(template.content);
+        }
         document.querySelector('#content').append(alert);
       }
       alert.replaceChildren(document.createTextNode(error.message + ' '));
@@ -635,8 +642,8 @@ document.addEventListener('click', async event => {
   if (!target || event.defaultPrevented || event.button > 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
   if (target.hasAttribute('data-route')) {
     event.preventDefault();
-    if (state.mode === 'abstract') memoryPath = target.dataset.route;
-    else history.pushState({}, '', routePrefix + target.dataset.route);
+    if (state.mode === 'abstract') state.memoryPath = target.dataset.route;
+    else history.pushState({}, '', state.routePrefix + target.dataset.route);
     render();
   } else if (target.hasAttribute('data-logout')) {
     event.preventDefault();
@@ -645,7 +652,7 @@ document.addEventListener('click', async event => {
       return;
     }
     try {
-      await logout(route.locale, state.user);
+      await logout(state.route.locale, state.user);
       Object.assign(state, {
         user: null,
         locale: '',
@@ -655,12 +662,18 @@ document.addEventListener('click', async event => {
         macros: [],
         visibleProjects: []
       });
-      mount('<main id="content" class="container"><progress aria-label="Loading"></progress></main>');
-      Object.assign(state, await load(route.locale));
-      if (route.name === 'logout') {
-        const path = `/${route.locale}/`;
-        if (state.mode === 'abstract') memoryPath = path;
-        else history.replaceState({}, '', routePrefix + path);
+      clearInterval(state.carousel);
+      document.documentElement.classList.remove('modal-is-open');
+      document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+      const template = document.createElement('template');
+      template.innerHTML = '<main id="content" class="container"><progress aria-label="Loading"></progress></main>';
+      for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
+      document.body.append(template.content);
+      Object.assign(state, await load(state.route.locale));
+      if (state.route.name === 'logout') {
+        const path = `/${state.route.locale}/`;
+        if (state.mode === 'abstract') state.memoryPath = path;
+        else history.replaceState({}, '', state.routePrefix + path);
       }
       await render();
     } catch (error) {
@@ -672,7 +685,15 @@ document.addEventListener('click', async event => {
         alert.id = 'portal-error';
         alert.setAttribute('role', 'alert');
         alert.setAttribute('data-portal-ui', '');
-        if (!document.querySelector('#content')) mount('<main id="content" class="container"></main>');
+        if (!document.querySelector('#content')) {
+          clearInterval(state.carousel);
+          document.documentElement.classList.remove('modal-is-open');
+          document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+          const template = document.createElement('template');
+          template.innerHTML = '<main id="content" class="container"></main>';
+          for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
+          document.body.append(template.content);
+        }
         document.querySelector('#content').append(alert);
       }
       alert.replaceChildren(document.createTextNode(error.message + ' '));
@@ -690,11 +711,11 @@ document.addEventListener('click', async event => {
     target.setAttribute('aria-expanded', String(!menu.hidden));
   } else if (target.hasAttribute('data-language-toggle')) {
     event.preventDefault();
-    const locale = route.locale === 'it' ? 'en' : 'it';
+    const locale = state.route.locale === 'it' ? 'en' : 'it';
     if (state.languages.includes(locale)) {
-      const path = route.path.replace(`/${route.locale}/`, `/${locale}/`);
-      if (state.mode === 'abstract') memoryPath = path;
-      else history.pushState({}, '', routePrefix + path);
+      const path = state.route.path.replace(`/${state.route.locale}/`, `/${locale}/`);
+      if (state.mode === 'abstract') state.memoryPath = path;
+      else history.pushState({}, '', state.routePrefix + path);
       render();
     }
   } else if (target.hasAttribute('data-services') || target.hasAttribute('data-credits')) {
@@ -703,10 +724,10 @@ document.addEventListener('click', async event => {
     let title;
     let html;
     if (target.hasAttribute('data-services')) {
-      const items = ['group', 'organization'].includes(route.name) ? state.visibleProjects : state.projects;
+      const items = ['group', 'organization'].includes(state.route.name) ? state.visibleProjects : state.projects;
       const item = items.find(item => String(item.id) === target.dataset.services);
       title = item.title;
-      html = `<h4>${escape(t('Network services - OGC'))}      <a href="${escape(safeURL(`https://docs.qgis.org/3.34/${route.locale}/docs/server_manual/services.html`))}" target="_blank" rel="noopener noreferrer" aria-label="QGIS documentation">&#x2139;</a></h4><ul>${Object.entries(item.ogc_urls).map(([name, url]) => `<li><b>${escape(name)}:</b> <a href="${escape(safeURL(url))}" target="_blank" rel="noopener noreferrer">${escape(safeURL(url))}</a></li>`).join('')}</ul>`;
+      html = `<h4>${escape(t('Network services - OGC'))}      <a href="${escape(safeURL(`https://docs.qgis.org/3.34/${state.route.locale}/docs/server_manual/services.html`))}" target="_blank" rel="noopener noreferrer" aria-label="QGIS documentation">&#x2139;</a></h4><ul>${Object.entries(item.ogc_urls).map(([name, url]) => `<li><b>${escape(name)}:</b> <a href="${escape(safeURL(url))}" target="_blank" rel="noopener noreferrer">${escape(safeURL(url))}</a></li>`).join('')}</ul>`;
     } else {
       title = 'Applicativo realizzato con il framework Open Source';
       html = `<section class="credits-content"><p><a href="${escape(safeURL('https://g3wsuite.it/'))}" target="_blank" rel="noopener noreferrer"><img src="${new URL('assets/logo_g3wsuite.png', import.meta.url).href}" alt="G3W SUITE" width="250"></a></p>      <p>Pubblica e gestisci i tuoi progetti QGIS sul Web</p>      <address><a href="${escape(safeURL('https://maps.google.com/?q=Montecatini%20Terme%2C%20Italy'))}" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 9c0 6-8 13-8 13S4 15 4 9a8 8 0 1 1 16 0Z"/><circle cx="12" cy="9" r="3"/></svg>Montecatini Terme - Italy</a>        <a href="${escape(safeURL('tel:+393938534336'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 3 4 5-3 3a16 16 0 0 0 7 7l3-3 5 4c-2 7-10 2-14-2S-2 5 5 3Z"/></svg>+39 393 8534336</a><a href="${escape(safeURL('mailto:info@gis3w.it'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 5 10 8L22 5"/></svg>info@gis3w.it</a></address>      ${rich(state.info.credits)}</section><footer>Framework sviluppato da <a href="${escape(safeURL('https://www.gis3w.it'))}" target="_blank" rel="noopener noreferrer"><img src="${new URL('assets/logo_gis3w_156_85.png', import.meta.url).href}" alt="Gis3w" width="60"></a></footer>`;
