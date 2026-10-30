@@ -151,7 +151,7 @@ body > header { padding: 0; display: grid; grid-template-areas: "box"; }
 #search { margin-bottom: var(--block-spacing-vertical); }
 #content .login-form { padding: 0; }
 .login-form > div { padding: 1.5rem; }
-.login-form > div:nth-child(2) { background: linear-gradient(rgba(255, 255, 255, .75), rgba(255, 255, 255, .75)), url("./sfondo.jpg") center/cover; }
+.login-form > div:nth-child(2) { background: linear-gradient(rgba(255, 255, 255, .75), rgba(255, 255, 255, .75)), url("./sfondo.jpg") center/cover; display: flex; flex-direction: column; justify-content: center; }
 .social-login { display: block; margin-bottom: var(--spacing); text-transform: capitalize; }
 [role="alert"] { color: #c62828; }
 #footer { padding-bottom: 0; background: var(--background-color); }
