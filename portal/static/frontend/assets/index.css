@@ -113,7 +113,7 @@ nav .logo { max-height: 4rem; max-width: 10rem; }
 nav .h1 { display: block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color); }
 #language-dialog fieldset { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: .5rem 2rem; margin: 0; }
 #language-dialog header { padding-top: 0; padding-bottom: 0; }
-#language-dialog label { display: flex; align-items: center; margin: 0; font-weight: 700; }
+#language-dialog label { display: flex; align-items: center; margin: 0; font-weight: 700; cursor: pointer; }
 #main-menu a {--color: var(--contrast-hover); }
 .nav-lang a[data-languages]::after { content: ""; display: inline-block; width: 1rem; height: 1rem; margin-inline-start: .5rem; vertical-align: middle; background: var(--icon-chevron) right center / 1rem auto no-repeat; }
 #language-dialog .flag { width: 30px; height: 20px; margin: 0 1ch; }
