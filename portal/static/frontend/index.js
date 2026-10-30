@@ -136,7 +136,6 @@
       return response.json();
     },
     async login(username, password) {
-      document.querySelector('#main-menu')?.insertAdjacentHTML('afterend', '<progress aria-label="Loading"></progress>');
       const { locale, query } = portal.route;
       const next = query.get('next') || new URL(location.href).searchParams.get('next') || `/${locale}/`;
       if (!next.startsWith('/') || new URL(next, location.origin).origin !== location.origin) {
@@ -172,7 +171,6 @@
       history.replaceState({}, '', url);
       portal.memoryPath = next;
       if (portal.mode !== 'abstract') history.pushState({}, '', portal.routePrefix + next);
-      document.querySelector('#main-menu + progress')?.remove();
       await portal.render();
     },
     async logout() {
@@ -521,7 +519,6 @@
             errorLabel.textContent = `${portal.t('Login error')}: ${error.message}`;
             errorLabel.hidden = false;
           } finally {
-            document.querySelector('#main-menu + progress')?.remove();
             button.disabled = false;
           }
         });
@@ -559,6 +556,18 @@
         alert.append(retry);
       }
     },
+  };
+
+  // show a loading bar while any fetch request is pending
+  const nativeFetch = window.fetch;
+  window.fetch = async (...args) => {
+    portal.pending = (portal.pending ?? 0) + 1;
+    if (!document.querySelector('#portal-progress')) document.querySelector('#main-menu')?.insertAdjacentHTML('afterend', '<progress id="portal-progress" aria-label="Loading"></progress>');
+    try {
+      return await nativeFetch(...args);
+    } finally {
+      if (!--portal.pending) document.querySelector('#portal-progress')?.remove();
+    }
   };
 
   document.addEventListener('click', async event => {
