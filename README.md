@@ -4,6 +4,8 @@
 
 A public home page (portal) for [G3W-SUITE](https://github.com/g3w-suite): it lists the maps, groups and macrogroups published with [G3W-ADMIN](https://github.com/g3w-suite/g3w-admin).
 
+---
+
 **Contents**
 
 1. [Quick start](#1-quick-start)
@@ -11,6 +13,12 @@ A public home page (portal) for [G3W-SUITE](https://github.com/g3w-suite): it li
 3. [Using a remote G3W-ADMIN server](#3-using-a-remote-g3w-admin-server)
 4. [Troubleshooting](#4-troubleshooting)
 5. [Development](#5-development)
+
+---
+
+**Preview** 👉 [dev.g3wsuite.it](https://dev.g3wsuite.it)
+
+[![preview](https://github.com/user-attachments/assets/08a67c6c-3a39-41e3-a231-c586a3b8ec68)](https://dev.g3wsuite.it)
 
 ---
 
