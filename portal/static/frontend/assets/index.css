@@ -132,7 +132,7 @@ body > header { padding: 0; display: grid; grid-template-areas: "box"; }
 #content article { padding: var(--block-spacing-horizontal); }
 #content article figure > img { aspect-ratio: 16/9; min-height: 200px; object-fit: contain; width: 100%; }
 #content article > a { display: flex; }
-#content article > a > figure > figcaption { display: grid; grid-template-rows: 3.5rem; align-items: center; padding: 0 .5rem; }
+#content article > a > figure > figcaption { display: grid; grid-template-rows: unset !important; align-items: center; padding: .5rem; }
 #content .item-P > hgroup { grid-column: span 2; }
 #content article.item-P { margin: var(--block-spacing-vertical) 0; }
 #content article.item-P:first-of-type { margin-top: 0; }
