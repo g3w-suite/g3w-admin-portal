@@ -78,3 +78,35 @@ def proxy_catalog(context):
 def proxy_rejected(context):
     assert context.response.status_code == 404
     context.proxy_opener.assert_not_called()
+
+
+@when('a JWT token request from "{host}" targets "{path}"')
+def jwt_token_request(context, host, path):
+    from django.http import HttpResponse
+    from django.test import RequestFactory, override_settings
+    from portal.middleware import PortalProxyMiddleware
+
+    request = RequestFactory().post(path, b'{"refresh": "r"}', content_type="application/json", HTTP_HOST=host)
+    with override_settings(
+        PORTAL_API_BASE_URL="https://dev.g3wsuite.it/",
+        ALLOWED_HOSTS=["localhost", "example.com"],
+    ), patch("portal.views.build_opener") as opener:
+        upstream = opener.return_value.open.return_value
+        upstream.code = 200
+        upstream.headers = Message()
+        upstream.headers["Content-Type"] = "application/json"
+        upstream.read.return_value = b'{"access": "a"}'
+        context.response = PortalProxyMiddleware(lambda request: HttpResponse(status=418))(request)
+        context.proxy_open = opener.return_value.open
+
+
+@then('the token request is handled by "{handler}"')
+def jwt_token_handler(context, handler):
+    if handler == "the server":
+        assert context.response.status_code == 418
+        context.proxy_open.assert_not_called()
+        return
+    upstream = context.proxy_open.call_args.args[0]
+    assert upstream.full_url == "https://dev.g3wsuite.it/authjwt/api/token/refresh/"
+    assert upstream.data == b'{"refresh": "r"}'
+    assert json.loads(context.response.content) == {"access": "a"}

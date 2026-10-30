@@ -24,6 +24,15 @@ Feature: Django portal API contracts and permissions
       | example.com    | it/portal/api/infodata/ |
       | localhost:8000 | admin/                 |
 
+  Scenario Outline: Root JWT token endpoints are proxied only on localhost
+    When a JWT token request from "<host>" targets "/authjwt/api/token/refresh/"
+    Then the token request is handled by "<handler>"
+
+    Examples:
+      | host           | handler    |
+      | localhost:8000 | the proxy  |
+      | example.com    | the server |
+
   Scenario Outline: Current session identity
     Given a backend "<visitor>" session
     When the backend endpoint "portal-whoami-api" is requested

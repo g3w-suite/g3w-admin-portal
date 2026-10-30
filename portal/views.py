@@ -45,6 +45,13 @@ def _is_localhost(request):
     return hostname in {'localhost', '127.0.0.1', '::1'}
 
 
+def _proxy_enabled(request):
+    root = request.build_absolute_uri('/')
+    api = urlsplit(urljoin(root, getattr(settings, 'PORTAL_API_BASE_URL', root)))
+    local = urlsplit(root)
+    return _is_localhost(request) and (api.scheme, api.netloc) != (local.scheme, local.netloc)
+
+
 @method_decorator(csrf_exempt, name='dispatch')
 class LoginAjaxView(BaseFormView):
     """
@@ -91,12 +98,7 @@ class PortalView(TemplateView):
 
     def get_context_data(self, **kwargs):
         api_base_url = getattr(settings, 'PORTAL_API_BASE_URL', self.request.build_absolute_uri('/'))
-        asset_base_url = urljoin(self.request.build_absolute_uri('/'), api_base_url)
-        api_origin = urlsplit(asset_base_url)
-        request_origin = urlsplit(self.request.build_absolute_uri('/'))
-        if _is_localhost(self.request) and (
-            api_origin.scheme, api_origin.netloc
-        ) != (request_origin.scheme, request_origin.netloc):
+        if _proxy_enabled(self.request):
             proxy_url = reverse('portal-proxy', kwargs={'proxy_path': '__proxy_path__'})
             api_base_url = self.request.build_absolute_uri(proxy_url.rsplit('__proxy_path__', 1)[0])
 
