@@ -72,13 +72,13 @@
         search:       this.t('Search'),
         map:          this.t('Search'),
         group:        this.view.page.id ? this.view.group?.title || this.view.group?.name : this.t('Groups'),
-        organization: this.view.page.id ? (this.view.macro && !this.view.page.group ? this.view.macro.title : this.view.group?.title || this.view.group?.name) : this.t('Organizations'),
+        organization: this.view.page.id ? (this.view.macro && !this.view.page.group ? this.view.macro.title || this.view.macro.name : this.view.group?.title || this.view.group?.name) : this.t('Organizations'),
       }[this.view.page.name] || this.t('Page Not Found');
     },
     get cards() {
       return {
-        home:         [...this.groups.map(item => [item, false]), ...this.macros.map(item => [item, true])],
-        group:        !this.view.page.id && [...this.groups.map(item => [item, false]), ...this.macros.map(item => [item, true])],
+        home:         [...this.macros.map(item => [item, true]), ...this.groups.map(item => [item, false])],
+        group:        !this.view.page.id && [...this.macros.map(item => [item, true]), ...this.groups.map(item => [item, false])],
         organization: this.view.page.id ? this.view.macro && !this.view.page.group && this.view.groups.map(item => [item, false]) : this.macros.map(item => [item, true]),
       }[this.view.page.name];
     },
@@ -313,7 +313,7 @@
             <ul>
               <li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/`)}" data-route="${portal.escape(`/${page.locale}/`)}" ${page.name === 'home' ? `aria-current="page" aria-label="${portal.escape(portal.t('Home'))}"` : ''}>${page.name === 'home' ? '' : 'Home'}</a></li>
               ${['group', 'organization'].includes(page.name) && page.id ? `<li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/${page.name}`)}" data-route="${portal.escape(`/${page.locale}/${page.name}`)}">${portal.escape(portal.t(page.name === 'group' ? 'Groups' : 'Organizations'))}</a></li>` : ''}
-              ${page.name === 'organization' && page.group ? `<li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/organization/${page.id}`)}" data-route="${portal.escape(`/${page.locale}/organization/${page.id}`)}">${portal.escape(portal.macros.find(item => String(item.id) === page.id)?.title)}</a></li>` : ''}
+              ${page.name === 'organization' && page.group ? `<li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/organization/${page.id}`)}" data-route="${portal.escape(`/${page.locale}/organization/${page.id}`)}">${portal.escape(macro?.title || macro?.name)}</a></li>` : ''}
               ${page.name !== 'home' ? `<li aria-current="page">${portal.escape(portal.title)}</li>` : ''}
             </ul>
           </nav>

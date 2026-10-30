@@ -78,7 +78,7 @@ async def mock_api(context, route):
             "reset_password_url": "/password/reset/", **context.info,
         },
             "pictures": sorted(context.pictures, key=lambda picture: picture["order"]),
-            "macros": [ORGANIZATION],
+            "macros": [{**ORGANIZATION, **getattr(context, "organization", {})}],
             "groups": [] if restricted else [GROUP],
             "allGroups": [NESTED_GROUP] if restricted else [GROUP, NESTED_GROUP],
             "projects": [PROJECT, {**PROJECT, "id": 5, "title": "Roads", "description": "<p>Transport</p>", "ogc_urls": None}],

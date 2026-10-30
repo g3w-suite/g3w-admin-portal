@@ -9,6 +9,7 @@ Feature: Languages and translations
     When I switch the English search page to Italian
     Then the route, document and search label are Italian
 
+  @issue-17
   Scenario: Language changes preserve the requested login destination
     When I open "/#/en/login?next=%2Fen%2Fgroup%2F2"
     And I choose Italian from the language list
@@ -28,6 +29,7 @@ Feature: Languages and translations
     And I expand the language list
     Then additional languages have their own names and flags
 
+  @issue-18
   Scenario Outline: Existing translations work without compilation
     When I open "/#/<locale>/search"
     Then the catalog and search label use "<locale>"
@@ -47,3 +49,15 @@ Feature: Languages and translations
     Given a slow Italian catalog response
     When Italian is superseded by French before loading finishes
     Then the French document and catalog remain consistent
+
+  @issue-19
+  Scenario Outline: Missing locales fall back to the browser, English or the first language
+    Given the configured languages are "<languages>"
+    When I open "/"
+    Then the portal falls back to "<locale>"
+
+    Examples:
+      | languages | locale |
+      | pt, en    | en     |
+      | it, pt    | it     |
+      | pt, it    | pt     |

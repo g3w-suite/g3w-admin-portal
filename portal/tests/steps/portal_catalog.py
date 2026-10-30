@@ -13,7 +13,7 @@ async def home(context):
     await expect(role(context, "heading", "Welcome")).to_be_visible()
     await expect(context.page.get_by_text("Photo by Cartographer")).to_be_visible()
     await expect(context.page.locator("#content article")).to_have_count(1)
-    await expect(context.page.locator("#content article h3")).to_have_text("Water maps")
+    await expect(context.page.locator("#content article h3")).to_have_text("Municipality")
 
 
 @when("I request the complete catalog")
@@ -24,6 +24,31 @@ async def complete_catalog(context):
 @when("I open the featured group")
 async def open_featured_group(context):
     await context.page.locator("#content .item-G a").first.click()
+
+
+@then('the catalog cards are "{titles}"')
+async def catalog_cards(context, titles):
+    await expect(context.page.locator("#content article h3")).to_have_text(titles.split(", "))
+
+
+@given('the theme primary color is "{color}"')
+def theme_primary(context, color):
+    context.settings["PORTAL_CUSTOM_CSS"] = f":root {{ --primary: {color}; }}"
+
+
+@given("the portal script is unavailable")
+async def missing_script(context):
+    await context.page.route("**/frontend/index.js", lambda route: route.abort())
+
+
+@then('the loading spinner uses "{color}"')
+async def spinner_color(context, color):
+    await expect(context.page.locator("#app")).to_be_attached()
+    for pseudo in ["::before", "::after"]:
+        background = await context.page.evaluate(
+            "pseudo => getComputedStyle(document.body, pseudo).backgroundColor", pseudo,
+        )
+        assert background == color, (pseudo, background)
 
 
 @then("projects were requested from the group API")
@@ -59,7 +84,7 @@ async def themed_text(context):
 @then("the archive contains both catalog entries")
 async def archive(context):
     await expect(context.page.locator("#content article")).to_have_count(2)
-    await expect(context.page.locator("#content article h3")).to_have_text(["Water maps", "Municipality"])
+    await expect(context.page.locator("#content article h3")).to_have_text(["Municipality", "Water maps"])
 
 
 @given("the carousel author is unspecified")

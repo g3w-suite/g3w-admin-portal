@@ -14,6 +14,7 @@ Feature: Project cards, services and credits
     When I open "/#/en/group/2"
     Then project details follow the image without horizontal overflow
 
+  @issue-3 @issue-4
   Scenario: Group services use the displayed project and remote asset origin
     Given the group project has its own network service
     And the API is local and its OGC services are remote

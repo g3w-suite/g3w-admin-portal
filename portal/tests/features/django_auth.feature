@@ -10,6 +10,34 @@ Feature: Django portal sessions and administration
     Then the backend responds with status 200
     And the Django document contains the native portal entry point
 
+  @issue-9
+  Scenario: The portal document advertises the portal version
+    When the backend endpoint "frontend" is requested
+    Then the Django document advertises the installed portal version
+
+  @issue-23
+  Scenario: The portal document no longer exposes deprecated settings
+    When the backend endpoint "frontend" is requested
+    Then the Django document context has no deprecated portal settings
+
+  @issue-10
+  Scenario Outline: Login redirects use a splash page instead of an HTTP bounce
+    Given a backend "<visitor>" session
+    When the identity is requested with the redirect "https://portal.example.test/#/en/group/2"
+    Then the backend responds with status 200
+    And the identity response is "<response>"
+
+    Examples:
+      | visitor   | response                |
+      | anonymous | anonymous json          |
+      | viewer    | redirect splash page    |
+
+  @issue-10
+  Scenario: Ajax login does not issue partitioned cookies
+    When valid backend credentials are submitted
+    Then the backend operation reports "ok"
+    And the session cookie is not partitioned
+
   Scenario Outline: Current session identity
     Given a backend "<visitor>" session
     When the backend endpoint "portal-whoami-api" is requested

@@ -26,6 +26,19 @@ def additional_languages(context):
     context.settings["LANGUAGES"] = ["en", "it", "pl", "es"]
 
 
+@given('the configured languages are "{languages}"')
+def configured_languages(context, languages):
+    context.settings["LANGUAGES"] = languages.split(", ")
+
+
+@then('the portal falls back to "{locale}"')
+async def fallback_language(context, locale):
+    await expect(context.page).to_have_url(re.compile(f"/#/{locale}/$"))
+    await expect(context.page.locator("html")).to_have_attribute("lang", locale)
+    await expect(role(context, "heading", "Catalog")).to_be_visible()
+    assert [path for path in context.calls if path.endswith("/api/catalog/")] == [f"/{locale}/portal/api/catalog/"], context.calls
+
+
 @then("compact mobile actions retain accessible names without crowded labels")
 async def compact_mobile_labels(context):
     await expect(role(context, "link", "Login")).to_be_visible()

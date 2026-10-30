@@ -46,6 +46,27 @@ async def current_breadcrumb(context, title):
     await expect(context.page.locator('#breadcrumb [aria-current="page"]')).to_have_text(title)
 
 
+@when("I reload the page")
+async def reload(context):
+    await context.page.reload()
+
+
+@given('the organization is untranslated and named "{name}"')
+def untranslated_organization(context, name):
+    context.organization = {"title": None, "name": name}
+
+
+@then('the organization page is titled "{name}"')
+async def organization_title(context, name):
+    await expect(role(context, "heading", name)).to_be_visible()
+    await expect(context.page).to_have_title(f"{name} - G3W-SUITE")
+
+
+@then('the breadcrumbs are "{labels}"')
+async def breadcrumbs(context, labels):
+    await expect(context.page.locator("#breadcrumb li")).to_have_text(labels.split(", "))
+
+
 @when("I navigate to search after scrolling to the footer")
 async def navigate_scrolled(context):
     await context.page.locator("#footer").scroll_into_view_if_needed()

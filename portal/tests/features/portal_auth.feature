@@ -12,6 +12,7 @@ Feature: Cookie authentication and return destinations
     When I log out from search
     Then I stay on search without authenticated controls
 
+  @issue-17
   Scenario Outline: External return destinations are rejected
     When I request the return destination "<destination>" after "<stage>"
     Then the invalid return destination is reported without leaving the portal
@@ -40,6 +41,7 @@ Feature: Cookie authentication and return destinations
       | /#/en/search |
       | /#/en/logout |
 
+  @issue-13 @issue-14
   Scenario: Invalid credentials are reported without authenticating
     When I open "/#/en/login"
     And I submit "incorrect" credentials
@@ -56,6 +58,7 @@ Feature: Cookie authentication and return destinations
       | logout |
       | admin  |
 
+  @issue-17
   Scenario: Login returns to a previously restricted group
     Given the group is available only after authentication
     When I open "/#/en/group/2"
@@ -74,6 +77,7 @@ Feature: Cookie authentication and return destinations
     And I log out
     Then logout failure is visible and authenticated controls remain
 
+  @issue-17
   Scenario: An authenticated return URL restores the requested portal page
     Given the visitor is "authenticated"
     When I open "/?next=%2Fen%2Fgroup%2F2#/en/"
