@@ -441,7 +441,7 @@ async def open_project_services(context):
     await role(context, "link", "Services").click()
 
 
-@then("the displayed project service and documentation are in the dialog")
+@then("the displayed project service is in the dialog without a documentation link")
 async def project_service(context):
     dialog = context.page.get_by_role("dialog")
     await expect(dialog.locator("input.close")).to_be_visible()
@@ -450,9 +450,7 @@ async def project_service(context):
     await expect(service).to_be_visible()
     await expect(service).to_have_attribute("href", service_url)
     await expect(service).to_have_css("color", "rgb(175, 11, 34)")
-    await expect(dialog.locator('a[href*="docs.qgis.org"]')).to_have_attribute(
-        "href", "https://docs.qgis.org/3.34/en/docs/server_manual/services.html"
-    )
+    await expect(dialog.locator('a[href*="docs.qgis.org"]')).to_have_count(0)
 
 
 @then("the dialog locks scrolling until closed with Escape")

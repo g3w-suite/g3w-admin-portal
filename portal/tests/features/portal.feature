@@ -140,7 +140,7 @@ Feature: Native portal behavior without a JavaScript test runner
     And the API is local and its OGC services are remote
     When I open "/#/en/group/2"
     And I open the project services
-    Then the displayed project service and documentation are in the dialog
+    Then the displayed project service is in the dialog without a documentation link
     And the dialog locks scrolling until closed with Escape
 
   Scenario: Language changes preserve the requested login destination
