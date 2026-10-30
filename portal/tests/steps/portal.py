@@ -1,7 +1,7 @@
 import asyncio
 import json
 import re
-from urllib.parse import parse_qs, quote, urlparse
+from urllib.parse import parse_qs, quote, urljoin, urlparse
 
 from behave import given, then, when
 from playwright.async_api import expect
@@ -763,6 +763,18 @@ async def setup_jwt(context, case, auth="JWT", refresh=None):
 @given("JWT login issues an expired access token")
 async def jwt_login(context):
     await setup_jwt(context, "login")
+
+
+@given('the token API base is "{base}"')
+def token_api_base(context, base):
+    context.settings["API_BASE_URL"] = base
+
+
+@then('token requests target "{base}"')
+def token_request_urls(context, base):
+    prefix = urljoin(context.base_url, base) + "authjwt/api/token/"
+    requests = [url for url in context.requests if "/authjwt/api/token/" in url]
+    assert requests == [prefix, prefix + "refresh/", prefix + "blacklist/"], requests
 
 
 @then("the access token has been refreshed once")

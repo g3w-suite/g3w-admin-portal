@@ -87,6 +87,9 @@
       return this.view.page.name === 'home' && Number.isFinite(limit) && limit >= 0 ? limit : this.cards?.length;
     },
     async fetch(path, { method = 'GET', body, retry = true } = {}) {
+      if (path.startsWith('/authjwt/') && portal.base.origin === location.origin && portal.base.pathname.endsWith('/proxy/')) {
+        path = path.slice(1);
+      }
       const headers = { Accept: 'application/json' };
       if (body !== undefined) {
         headers['Content-Type'] = body instanceof URLSearchParams ? 'application/x-www-form-urlencoded' : 'application/json';

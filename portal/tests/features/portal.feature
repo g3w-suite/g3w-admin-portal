@@ -264,13 +264,23 @@ Feature: Native portal behavior without a JavaScript test runner
     When the catalog API recovers and I retry
     Then the catalog is usable again
 
-  Scenario: JWT login, single refresh and blacklist logout
+  Scenario Outline: JWT login, single refresh and blacklist logout
     Given JWT login issues an expired access token
+    And the token API base is "<base>"
     When I open "/#/en/login"
     And I submit "correct" credentials
     Then the access token has been refreshed once
     When I log out
     Then the refresh token is blacklisted and stored tokens are removed
+    And token requests target "<token_base>"
+
+    Examples:
+      | base                                | token_base                |
+      | /                                   | /                         |
+      | /en/portal/proxy/                    | /en/portal/proxy/         |
+      | /en/proxy/                           | /en/proxy/                |
+      | /deployment/                        | /                         |
+      | https://api.example.test/deployment/ | https://api.example.test/ |
 
   Scenario: Expired JWT requests share one bounded refresh attempt
     Given stored expired Bearer credentials
