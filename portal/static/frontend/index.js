@@ -562,7 +562,7 @@
   const nativeFetch = window.fetch;
   window.fetch = async (...args) => {
     portal.pending = (portal.pending ?? 0) + 1;
-    if (!document.querySelector('#portal-progress')) document.querySelector('#main-menu')?.insertAdjacentHTML('afterend', '<progress id="portal-progress" aria-label="Loading"></progress>');
+    if (!document.querySelector('#portal-progress')) document.querySelector('main')?.insertAdjacentHTML('afterbegin', '<progress id="portal-progress" aria-label="Loading"></progress>');
     try {
       return await nativeFetch(...args);
     } finally {
