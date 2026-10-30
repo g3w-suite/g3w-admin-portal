@@ -123,6 +123,11 @@ async def mocked_portal(context):
         body='<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">'
              '<rect width="600" height="400" fill="#326789"/></svg>',
     ))
+    # G3W-ADMIN serves the flags; WebKit collapses a missing image with an empty alt to 0x0.
+    await context.page.route("**/static/img/flags/*.png", lambda route: route.fulfill(
+        content_type="image/svg+xml",
+        body='<svg xmlns="http://www.w3.org/2000/svg" width="18" height="12"/>',
+    ))
 
 
 @given('the visitor is "{session}"')
