@@ -177,7 +177,6 @@
       clearInterval(portal.carousel);
       document.documentElement.classList.remove('modal-is-open');
       document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
-      document.body.insertAdjacentHTML('beforeend', '<main id="content" class="container" data-portal-ui><progress aria-label="Loading"></progress></main>');
       Object.assign(portal, await portal.fetch(`${locale}/portal/api/catalog/`), { locale });
       if (name === 'logout') {
         portal.memoryPath = `/${locale}/`;
