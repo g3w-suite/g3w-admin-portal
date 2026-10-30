@@ -20,7 +20,7 @@ def proxy_request(context, host, target):
         PORTAL_API_BASE_URL="https://dev.g3wsuite.it/",
         ALLOWED_HOSTS=["localhost", "example.com"],
     ), patch("portal.views.build_opener") as opener:
-        upstream = opener.return_value.open.return_value.__enter__.return_value
+        upstream = opener.return_value.open.return_value
         upstream.code = 200
         upstream.headers = Message()
         upstream.headers["Content-Type"] = "application/json"

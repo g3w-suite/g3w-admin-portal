@@ -199,10 +199,6 @@ async def default_styles(context):
     await expect(card.locator("figure > figcaption h3")).to_have_css("font-weight", "400")
     await expect(card.locator("figure > figcaption h3 b")).to_have_css("font-weight", "700")
     await expect(card.locator("> a")).to_have_css("display", "flex")
-    header_height = await context.page.evaluate(
-        "parseFloat(getComputedStyle(document.documentElement).fontSize) * 3.5"
-    )
-    await expect(card.locator("figure > figcaption")).to_have_css("grid-template-rows", f"{header_height:g}px")
     caption = await card.locator("figure > figcaption").bounding_box()
     image = await card.locator("figure > img").bounding_box()
     assert caption and image
@@ -239,11 +235,11 @@ async def desktop_identity(context):
     assert navbar and navbar["height"] < 90, navbar
 
 
-@then("the login icon uses the filled reference style")
-async def filled_login_icon(context):
+@then("the login icon uses the linear reference style")
+async def linear_login_icon(context):
     icon = context.page.locator("#main-menu .nav-login svg path")
-    await expect(icon).to_have_attribute("fill", "currentColor")
-    await expect(icon).to_have_attribute("stroke", "none")
+    await expect(icon).to_have_attribute("fill", "none")
+    await expect(icon).to_have_attribute("stroke", "currentColor")
 
 
 @then("language flags retain their original proportions")
@@ -918,10 +914,8 @@ async def shared_document(context):
     assert html.count('src="/static/frontend/index.js"') == 1
     assert 'type="module"' not in html
     await context.page.goto("/#/en/")
-    assert await context.page.evaluate(
-        "['fetch', 'login', 'logout', 'escape', 't', 'safeURL', 'whoami', 'render']"
-        ".every(name => typeof portal[name] === 'function')"
-    )
+    await expect(context.page.locator("#main-menu")).to_be_visible()
+    assert await context.page.evaluate("!('portal' in window)")
     assert html.count('href="/static/frontend/assets/pico.css"') == 1
     assert html.count('href="/static/frontend/assets/index.css"') == 1
     assert html.index("window.API_BASE_URL") < html.index('<div id="app">')

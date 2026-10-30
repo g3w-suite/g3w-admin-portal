@@ -65,7 +65,7 @@ Feature: Native portal behavior without a JavaScript test runner
     Given the top navbar and menu button are disabled
     When I open "/#/en/"
     Then the desktop navbar hides the title at the reference breakpoint
-    And the login icon uses the filled reference style
+    And the login icon uses the linear reference style
     And language flags retain their original proportions
     And the home breadcrumb does not repeat the current page label
 
