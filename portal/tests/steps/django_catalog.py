@@ -306,15 +306,19 @@ def social_login(context, provider):
 @then("the Django document advertises the installed portal version")
 def portal_version(context):
     import re
-    from importlib.metadata import version
+    from importlib.metadata import PackageNotFoundError, version
     html = context.response.content.decode()
-    expected = f'<meta name="generator" content="g3w-portal v{version("portal")}" />'
+    try:
+        portal_version = f'g3w-portal v{version("portal")}'
+    except PackageNotFoundError:
+        portal_version = "unknown"
+    expected = f'<meta name="generator" content="{portal_version}" />'
     assert expected in html, re.findall(r'<meta name="generator"[^>]*>', html)
 
 
 @then("the Django document context has no deprecated portal settings")
 def deprecated_settings(context):
-    keys = set(context.response.context.keys())
+    keys = set(context.response.context.flatten())
     assert "API_BASE_URL" in keys and "LANGUAGES" in keys, keys
     assert not keys & {"IS_PA", "PORTAL_SECTIONS", "ADMIN_BTN", "PORTAL_COLOR"}, keys
 
