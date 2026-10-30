@@ -1,4 +1,4 @@
-import json
+﻿import json
 from email.message import Message
 from unittest.mock import patch
 
@@ -7,19 +7,18 @@ from behave import then, when
 
 @when('a proxy request from "{host}" targets "{target}"')
 def proxy_request(context, host, target):
+    from django.http import HttpResponse
     from django.test import RequestFactory, override_settings
-    from portal.views import PortalApiProxyView
+    from portal.middleware import PortalProxyMiddleware
 
-    request = RequestFactory().get(
-        f"/it/portal/proxy/{target}?lang=it", HTTP_HOST=host,
-    )
+    request = RequestFactory().get(f"/{target}?lang=it", HTTP_HOST=host)
     request.COOKIES = {
         "portal_proxy_sessionid": "remote-session", "sessionid": "local-session",
     }
     with override_settings(
         PORTAL_API_BASE_URL="https://dev.g3wsuite.it/",
         ALLOWED_HOSTS=["localhost", "example.com"],
-    ), patch("portal.views.build_opener") as opener:
+    ), patch("portal.middleware.build_opener") as opener:
         upstream = opener.return_value.open.return_value
         upstream.code = 200
         upstream.headers = Message()
@@ -34,7 +33,7 @@ def proxy_request(context, host, target):
             body if "/infodata/" in open_.call_args.args[0].full_url
             else b'[{"order": 2, "image": "/media/b.png"}, {"order": 1, "image": "/media/a.png"}]'
         )
-        context.response = PortalApiProxyView.as_view()(request, proxy_path=target)
+        context.response = PortalProxyMiddleware(lambda request: HttpResponse(status=418))(request)
         context.proxy_open = opener.return_value.open
         context.proxy_opener = opener
 
@@ -74,9 +73,9 @@ def proxy_catalog(context):
     assert "portal_proxy_sessionid" in context.response.cookies
 
 
-@then("the proxy rejects the request without contacting upstream")
-def proxy_rejected(context):
-    assert context.response.status_code == 404
+@then("the local server handles the request without contacting upstream")
+def proxy_skipped(context):
+    assert context.response.status_code == 418
     context.proxy_opener.assert_not_called()
 
 
@@ -90,7 +89,7 @@ def jwt_token_request(context, host, path):
     with override_settings(
         PORTAL_API_BASE_URL="https://dev.g3wsuite.it/",
         ALLOWED_HOSTS=["localhost", "example.com"],
-    ), patch("portal.views.build_opener") as opener:
+    ), patch("portal.middleware.build_opener") as opener:
         upstream = opener.return_value.open.return_value
         upstream.code = 200
         upstream.headers = Message()

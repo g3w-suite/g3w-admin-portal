@@ -15,9 +15,9 @@ Feature: Django portal API contracts and permissions
     When a proxy request from "localhost:8000" targets "it/portal/api/catalog/"
     Then the proxy aggregates the remote catalog endpoints
 
-  Scenario Outline: API proxy rejects non-local hosts and unapproved paths
+  Scenario Outline: API proxy ignores non-local hosts and unapproved paths
     When a proxy request from "<host>" targets "<target>"
-    Then the proxy rejects the request without contacting upstream
+    Then the local server handles the request without contacting upstream
 
     Examples:
       | host           | target                  |

@@ -277,8 +277,6 @@ Feature: Native portal behavior without a JavaScript test runner
     Examples:
       | base                                | token_base                |
       | /                                   | /                         |
-      | /en/portal/proxy/                    | /                         |
-      | /en/proxy/                           | /                         |
       | /deployment/                        | /                         |
       | https://api.example.test/deployment/ | https://api.example.test/ |
 

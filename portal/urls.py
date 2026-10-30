@@ -24,7 +24,6 @@ from portal.views import (
     PictureCreateView,
     PictureUpdateView,
     PictureDeleteView,
-    PortalApiProxyView,
 )
 from portal.api.views import (
     InfoDataApiView,
@@ -58,11 +57,6 @@ urlpatterns = [
         f'{pre_api_url}jx/logout/',
         LogoutAjaxView.as_view(),
         name='portal-ajax-logout'
-    ),
-    path(
-        f'{pre_api_url}proxy/<path:proxy_path>',
-        PortalApiProxyView.as_view(),
-        name='portal-proxy'
     ),
 
     # INCLUDE API URLS HERE TO USE I18N
