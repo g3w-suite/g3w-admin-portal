@@ -216,6 +216,8 @@
       try {
         if (portal.locale !== page.locale) {
           const locale = ['en', 'it', 'fr', 'de', 'bg', 'fi', 'pt', 'ro', 'se'].includes(page.locale) ? page.locale : 'en';
+          document.documentElement.classList.remove('modal-is-open');
+          document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
           const [translation, data, user] = await Promise.all([
             locale === 'en' ? {} : import(`./locale/${locale}.js`),
             portal.fetch(`${page.locale}/portal/api/catalog/`),
