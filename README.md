@@ -27,7 +27,7 @@ A public home page (portal) for [G3W-SUITE](https://github.com/g3w-suite): it li
 **Step 1 — Install the module**
 
 ```sh
-pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@v4.1.0
+pip3 install git+https://github.com/g3w-suite/g3w-admin-portal.git@v5.0.0
 ```
 
 <details>
@@ -177,7 +177,7 @@ Use this when the portal and the G3W-ADMIN API live on **different domains**.
 **Step 1 — On the remote server**, install the portal with JWT support ([g3w-admin-authjwt](https://github.com/g3w-suite/g3w-admin-authjwt)):
 
 ```sh
-pip install "portal[authjwt] @ git+https://github.com/g3w-suite/g3w-admin-portal.git@v4.1.0"
+pip install "portal[authjwt] @ git+https://github.com/g3w-suite/g3w-admin-portal.git@v5.0.0"
 ```
 
 **Step 2 — On the portal**, point it to the remote server:
