@@ -135,18 +135,45 @@
       if (response.status === 204) return null;
       return response.json();
     },
-    async login(locale, username, password) {
+    async login(username, password) {
+      document.querySelector('#main-menu')?.insertAdjacentHTML('afterend', '<progress aria-label="Loading"></progress>');
+      const { locale, query } = portal.route;
+      const next = query.get('next') || new URL(location.href).searchParams.get('next') || `/${locale}/`;
+      if (!next.startsWith('/') || new URL(next, location.origin).origin !== location.origin) {
+        throw new Error('Invalid return path');
+      }
+      let data = portal.tokenAuth
+        ? await portal.fetch('/authjwt/api/token/', { method: 'POST', body: { username, password }, retry: false })
+        : await portal.fetch(`${locale}/portal/jx/login/`, { method: 'POST', body: new URLSearchParams({ username, password }) });
+      if (portal.tokenAuth && (typeof data.access !== 'string' || !data.access || typeof data.refresh !== 'string' || !data.refresh)) {
+        throw new Error('Invalid authentication response');
+      } 
       if (portal.tokenAuth) {
-        const data = await portal.fetch('/authjwt/api/token/', { method: 'POST', body: { username, password }, retry: false });
-        if (typeof data.access !== 'string' || !data.access || typeof data.refresh !== 'string' || !data.refresh) throw new Error('Invalid authentication response');
         localStorage.setItem('access_token', data.access);
         localStorage.setItem('refresh_token', data.refresh);
-        return;
       }
-      const data = await portal.fetch(`${locale}/portal/jx/login/`, {
-        method: 'POST', body: new URLSearchParams({ username, password }),
-      });
-      if (data.status !== 'ok') throw new Error(Object.values(data.errors_form || data.error_form || {}).flat().join(' ') || 'Login failed');
+      if (!portal.tokenAuth && data.status !== 'ok') {
+        throw new Error(Object.values(data.errors_form || data.error_form || {}).flat().join(' ') || 'Login failed');
+      }
+      portal.user = await portal.whoami(locale);
+      if (!portal.user) {
+        throw new Error('Authentication was not established');
+      }
+      Object.assign(portal, await portal.fetch(`${locale}/portal/api/catalog/`), { locale });
+      if (['Bearer', 'JWT'].includes(portal.auth) && portal.user.drf_token) {
+        const url = new URL(`${locale}/portal/api/whoami/`, portal.base);
+        const redirect = new URL(portal.routePrefix + next, location.href);
+        redirect.searchParams.delete('next');
+        url.search = new URLSearchParams({ __drftk: portal.user.drf_token, redirect: redirect.href });
+        return location.assign(url.href);
+      }
+      const url = new URL(location.href);
+      url.searchParams.delete('next');
+      history.replaceState({}, '', url);
+      portal.memoryPath = next;
+      if (portal.mode !== 'abstract') history.pushState({}, '', portal.routePrefix + next);
+      document.querySelector('#main-menu + progress')?.remove();
+      await portal.render();
     },
     async logout() {
       const { locale, name } = portal.route;
@@ -488,31 +515,13 @@
           errorLabel.hidden = true;
           try {
             const data = new FormData(form);
-            await portal.login(portal.route.locale, data.get('username'), data.get('password'));
-            portal.user = await portal.whoami(portal.route.locale);
-            if (!portal.user) throw new Error('Authentication was not established');
-            Object.assign(portal, await portal.fetch(`${portal.route.locale}/portal/api/catalog/`), { locale: portal.route.locale });
-            const next = portal.route.query.get('next') || new URL(location.href).searchParams.get('next') || `/${portal.route.locale}/`;
-            if (!next.startsWith('/') || new URL(next, location.origin).origin !== location.origin) throw new Error('Invalid return path');
-            if (['Bearer', 'JWT'].includes(portal.auth) && portal.user.drf_token) {
-              const url = new URL(`${portal.route.locale}/portal/api/whoami/`, portal.base);
-              const redirect = new URL(portal.routePrefix + next, location.href);
-              redirect.searchParams.delete('next');
-              url.search = new URLSearchParams({ __drftk: portal.user.drf_token, redirect: redirect.href });
-              location.assign(url.href);
-              return;
-            }
-            const url = new URL(location.href);
-            url.searchParams.delete('next');
-            history.replaceState({}, '', url);
-            portal.memoryPath = next;
-            if (portal.mode !== 'abstract') history.pushState({}, '', portal.routePrefix + next);
-            await portal.render();
+            await portal.login(data.get('username'), data.get('password'));
           } catch (error) {
             console.error('Portal login:', error);
             errorLabel.textContent = `${portal.t('Login error')}: ${error.message}`;
             errorLabel.hidden = false;
           } finally {
+            document.querySelector('#main-menu + progress')?.remove();
             button.disabled = false;
           }
         });
