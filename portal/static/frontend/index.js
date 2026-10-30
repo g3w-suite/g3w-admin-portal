@@ -450,7 +450,7 @@
           </dialog>
 
           <a class="bottom-right" href="#" data-scroll-top title="Back to top" aria-label="Back to top" hidden>
-            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 15 12 6l9 9Z" fill="currentColor" stroke="none"/></svg>
+            <svg class="ui-icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" focusable="false"><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"/></svg>
           </a>
         `;
         clearInterval(portal.carousel);
