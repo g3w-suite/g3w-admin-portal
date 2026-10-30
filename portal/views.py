@@ -9,12 +9,12 @@ __date__      = '2019-09-10'
 __copyright__ = 'Copyright 2019, GIS3W'
 __license__   = "MPL 2.0"
 
-import json
+import logging
 
 from django.conf                  import settings
 from django.views.generic.edit    import BaseFormView, SingleObjectMixin
 from django.views.generic         import TemplateView, View, ListView, CreateView, UpdateView
-from django.http                  import JsonResponse
+from django.http                  import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators      import method_decorator
 from django.urls                  import reverse
@@ -25,11 +25,15 @@ from usersmanage.decorators       import user_passes_test_or_403
 from core.mixins.views            import G3WAjaxDeleteViewMixin
 from base                         import __version__ as version
 
+from portal.middleware            import _proxy_enabled
 from portal.models                import Picture
 from portal.forms                 import PictureForm
 from portal.utils                 import get_response_headers
 
 from importlib.metadata           import version as get_version
+
+logger = logging.getLogger('g3wadmin.debug')
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LoginAjaxView(BaseFormView):
@@ -76,11 +80,15 @@ class PortalView(TemplateView):
     template_name = 'portal/index.html'
 
     def get_context_data(self, **kwargs):
+        api_base_url = getattr(settings, 'PORTAL_API_BASE_URL', self.request.build_absolute_uri('/'))
+        if _proxy_enabled(self.request):
+            # PortalProxyMiddleware forwards same-origin API calls to PORTAL_API_BASE_URL
+            api_base_url = self.request.build_absolute_uri('/')
 
         toret =  {
 
             # OPTIONAL: setting for API_BASE_URL (cross domain API) 
-            'API_BASE_URL': getattr(settings, 'PORTAL_API_BASE_URL', self.request.build_absolute_uri('/')),
+            'API_BASE_URL': api_base_url,
 
             'LANGUAGES': [l[0] for l in settings.LANGUAGES],
         }
@@ -91,6 +99,7 @@ class PortalView(TemplateView):
             toret['PORTAL_VERSION'] = 'unknown'
 
         return toret
+
 
 
 class PictureListView(ListView):

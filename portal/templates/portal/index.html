@@ -1,38 +1,44 @@
 {% load static %}
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
+{% if SETTINGS.PORTAL_STATIC_URL %}
+{% firstof SETTINGS.PORTAL_STATIC_URL|add:"frontend/index.js" as PORTAL_SCRIPT_URL %}
+{% firstof SETTINGS.PORTAL_STATIC_URL|add:"frontend/assets/pico.css" as PORTAL_PICO_URL %}
+{% firstof SETTINGS.PORTAL_STATIC_URL|add:"frontend/assets/index.css" as PORTAL_STYLE_URL %}
+{% else %}
+{% static 'frontend/index.js' as PORTAL_SCRIPT_URL %}
+{% static 'frontend/assets/pico.css' as PORTAL_PICO_URL %}
+{% static 'frontend/assets/index.css' as PORTAL_STYLE_URL %}
+{% endif %}
+{% if SETTINGS.PORTAL_FAVICON %}
+{% firstof SETTINGS.PORTAL_FAVICON as PORTAL_FAVICON_URL %}
+{% else %}
+{% static '/img/favicon.ico' as PORTAL_FAVICON_URL %}
+{% endif %}
 
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}">
+<html lang="{{ LANGUAGE_CODE }}" data-theme="{{ SETTINGS.PORTAL_THEME | default:"light" | escapejs }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="generator" content="{{ PORTAL_VERSION }}" />
-    {# Fix relative URLs (eg. relative links and images within text) when we are working with an external API server  #}
-    {# <base href="{{ API_BASE_URL }}" /> #}
     <title>{{ admin_page_title }}</title>
 
-    <link rel="icon" href="{% if SETTINGS.PORTAL_FAVICON %}{{ SETTINGS.PORTAL_FAVICON }}{% else %}{% static '/img/favicon.ico' %}{% endif %}">
+    <link rel="icon" href="{{ PORTAL_FAVICON_URL }}">
 
-    {% if SETTINGS.PORTAL_STATIC_URL %}
-    <script type="module" crossorigin src="{{ SETTINGS.PORTAL_STATIC_URL }}frontend/portal-vendor.js"></script>
-    <script type="module" crossorigin src="{{ SETTINGS.PORTAL_STATIC_URL }}frontend/index.js"></script>
-    <link rel="stylesheet" href="{{ SETTINGS.PORTAL_STATIC_URL }}frontend/assets/index.css">
-    {% else %}
-    <script type="module" crossorigin src="{% static 'frontend/portal-vendor.js' %}"></script>
-    <script type="module" crossorigin src="{% static 'frontend/index.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'frontend/assets/index.css' %}">
-    {% endif %}
+    <script defer crossorigin src="{{ PORTAL_SCRIPT_URL }}"></script>
+    <link rel="stylesheet" href="{{ PORTAL_PICO_URL }}">
+    <link rel="stylesheet" href="{{ PORTAL_STYLE_URL }}">
 
     <style>
-        body:not(:has(> main))::before,
-        body:not(:has(> main))::after  { content: ''; height: 10em; border-radius: 50%; background-color: var(--primary); opacity: 0.6; position: fixed; inset: 0;  animation: bounce 2.0s infinite ease-in-out; aspect-ratio: 1; margin: auto; }
-        body:not(:has(> main))::after  { animation-delay: -1.0s; }
+        body:has(#app)::before,
+        body:has(#app)::after  { content: ''; height: 10em; border-radius: 50%; background-color: var(--primary); opacity: 0.6; position: fixed; inset: 0;  animation: bounce 2.0s infinite ease-in-out; aspect-ratio: 1; margin: auto; }
+        body:has(#app)::after  { animation-delay: -1.0s; }
         @keyframes bounce              { 0%, 100% { transform: scale(0); } 50% { transform: scale(1); } }
         @media (prefers-reduced-motion: reduce) {
-            :root body:not(:has(> main))::before,
-            :root body:not(:has(> main))::after { animation: bounce 2.0s infinite ease-in-out !important; }
+            :root body:has(#app)::before,
+            :root body:has(#app)::after { animation: none; }
         }
     </style>
 
@@ -48,21 +54,25 @@
 <body>
     <noscript><strong>You must enable JavaScript to continue.</strong></noscript>
     <script>
-        window.API_BASE_URL             = '{{ API_BASE_URL }}';
+        window.API_BASE_URL             = '{{ API_BASE_URL | escapejs }}';
         window.LANGUAGES                = {{ LANGUAGES | safe }};
-        window.PORTAL_ORG_NAME          = '{{ SETTINGS.PORTAL_ORG_NAME }}';
-        window.PORTAL_ORG_IMAGE         = '{{ SETTINGS.PORTAL_ORG_IMAGE }}';
-        window.PORTAL_ORG_TITLE         = '{{ SETTINGS.PORTAL_ORG_TITLE }}';
-        window.PORTAL_ORG_URL           = '{{ SETTINGS.PORTAL_ORG_URL }}';
-        window.PORTAL_FAVICON           = `{{ SETTINGS.PORTAL_FAVICON | safe }}`;
+        window.PORTAL_ORG_NAME          = '{{ SETTINGS.PORTAL_ORG_NAME | escapejs }}';
+        window.PORTAL_ORG_IMAGE         = '{{ SETTINGS.PORTAL_ORG_IMAGE | escapejs }}';
+        window.PORTAL_ORG_TITLE         = '{{ SETTINGS.PORTAL_ORG_TITLE | escapejs }}';
+        window.PORTAL_ORG_URL           = '{{ SETTINGS.PORTAL_ORG_URL | escapejs }}';
+        window.PORTAL_FAVICON           = '{{ SETTINGS.PORTAL_FAVICON | escapejs }}';
         window.PORTAL_NAVBAR_TOP        = {{ SETTINGS.PORTAL_NAVBAR_TOP | yesno:"true,false" }};
         window.PORTAL_MENU_BUTTON       = {{ SETTINGS.PORTAL_MENU_BUTTON | yesno:"true,false" }};
         window.PORTAL_LANG_BUTTON       = {{ SETTINGS.PORTAL_LANG_BUTTON | yesno:"true,false" }};
-        window.PORTAL_THEME             = '{% if SETTINGS.PORTAL_THEME %}{{ SETTINGS.PORTAL_THEME }}{% else %}light{% endif %}';
-        window.PORTAL_AUTH_MODE         = '{% if SETTINGS.PORTAL_AUTH_MODE %}{{ SETTINGS.PORTAL_AUTH_MODE }}{% else %}cookie{% endif %}'; {# 'cookie' | 'Bearer' | 'JWT' #}
+        window.PORTAL_THEME             = '{{ SETTINGS.PORTAL_THEME | default:"light" | escapejs }}';
+        window.PORTAL_AUTH_MODE         = '{{ SETTINGS.PORTAL_AUTH_MODE | default:"cookie" | escapejs }}'; {# 'cookie' | 'Bearer' | 'JWT' #}
         window.PORTAL_MAX_HOME_ARTICLES = {% if SETTINGS.PORTAL_MAX_HOME_ARTICLES is None %}9{% else %}{{ SETTINGS.PORTAL_MAX_HOME_ARTICLES }}{% endif %};
         window.PORTAL_HOME_ARTICLES     = {{ SETTINGS.PORTAL_HOME_ARTICLES | yesno:"true,false" }};
-        window.PORTAL_HISTORY_MODE      = '{% if SETTINGS.PORTAL_HISTORY_MODE %}{{ SETTINGS.PORTAL_HISTORY_MODE }}{% else %}hash{% endif %}';           {# 'hash' | 'history' | 'abstract' #}
+        window.PORTAL_HISTORY_MODE      = '{{ SETTINGS.PORTAL_HISTORY_MODE | default:"hash" | escapejs }}'; {# 'hash' | 'history' | 'abstract' #}
+        window.PORTAL_ADMIN_ROOT        = '{{ SETTINGS.PORTAL_ADMIN_ROOT | default:"/admin" | escapejs }}';
+        window.PORTAL_COOKIE_POLICY_URL = '{{ SETTINGS.PORTAL_COOKIE_POLICY_URL | escapejs }}';
+        window.PORTAL_PRIVACY_POLICY_URL = '{{ SETTINGS.PORTAL_PRIVACY_POLICY_URL | escapejs }}';
+        window.PORTAL_CREDITS_URL       = '{{ SETTINGS.PORTAL_CREDITS_URL | default:"#" | escapejs }}';
     </script>
     <div id="app"></div>
     {% if SETTINGS.G3WSUITE_CUSTOM_STATIC_URL %}

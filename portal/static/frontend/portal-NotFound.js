@@ -1,2 +1,0 @@
-import{V as _,C as c}from"./portal-index.js";import{_ as f}from"./index.js";import{O as l,U as u,_ as m}from"./portal-vendor.js";var i=Object.defineProperty,d=Object.getOwnPropertyDescriptor,v=(o,r,s,t)=>{for(var e=t>1?void 0:t?d(r,s):r,n=o.length-1,p;n>=0;n--)(p=o[n])&&(e=(t?p(r,s,e):p(e))||e);return t&&e&&i(r,s,e),e};let a=class extends _{};a=v([c],a);function $(o,r,s,t,e,n){return l(),u("h1",null,m(o.$t("menu.404")),1)}const C=f(a,[["render",$]]);export{C as default};
-//# sourceMappingURL=portal-NotFound.js.map

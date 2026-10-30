@@ -10,6 +10,8 @@ logger = logging.getLogger('g3wadmin.debug')
 class PortalConfig(AppConfig):
     name = 'portal'
 
+    settings.MIDDLEWARE = ['portal.middleware.PortalProxyMiddleware'] + settings.MIDDLEWARE
+
     # OPTIONAL packages from "requirements_authjwt.txt"
     try:
         from corsheaders.middleware import CorsMiddleware

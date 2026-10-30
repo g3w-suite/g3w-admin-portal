@@ -1,2 +1,681 @@
-var W=Object.defineProperty;var x=(r,e,t)=>e in r?W(r,e,{enumerable:!0,configurable:!0,writable:!0,value:t}):r[e]=t;var o=(r,e,t)=>(x(r,typeof e!="symbol"?e+"":e,t),t),U=(r,e,t)=>{if(!e.has(r))throw TypeError("Cannot "+t)};var y=(r,e,t)=>(U(r,e,"read from private field"),t?t.call(r):e.get(r)),A=(r,e,t)=>{if(e.has(r))throw TypeError("Cannot add the same private member more than once");e instanceof WeakSet?e.add(r):e.set(r,t)},d=(r,e,t,i)=>(U(r,e,"write to private field"),i?i.call(r,t):e.set(r,t),t);import{l as K,f as Y,a as J,b as X,c as Q,d as Z,e as ee,g as re,h as te,i as oe,j as se,k as ie,m as ne,n as le,o as ue,p as ce,q as ae,r as he,s as _e,t as pe,u as me,v as ge,w as fe,x as we,y as be,z as Pe,A as Le,B as ve,C as Ee,D as Ie,E as Ge,F as ye,G as Ae,H as S,I as de,J as Oe,K as ke,L as Re,M as Se,N as Te,O as Me,P as Ue,Q as je,T as Ce,R as De,S as Ve}from"./portal-vendor.js";(function(){const e=document.createElement("link").relList;if(e&&e.supports&&e.supports("modulepreload"))return;for(const s of document.querySelectorAll('link[rel="modulepreload"]'))i(s);new MutationObserver(s=>{for(const n of s)if(n.type==="childList")for(const h of n.addedNodes)h.tagName==="LINK"&&h.rel==="modulepreload"&&i(h)}).observe(document,{childList:!0,subtree:!0});function t(s){const n={};return s.integrity&&(n.integrity=s.integrity),s.referrerPolicy&&(n.referrerPolicy=s.referrerPolicy),s.crossOrigin==="use-credentials"?n.credentials="include":s.crossOrigin==="anonymous"?n.credentials="omit":n.credentials="same-origin",n}function i(s){if(s.ep)return;s.ep=!0;const n=t(s);fetch(s.href,n)}})();const L=globalThis,m={favicon:{}.VUE_APP_FAVICON||L.PORTAL_FAVICON,theme:L.PORTAL_THEME||"light",languages:L.LANGUAGES??["en","it"],admin_root:"/admin",api_base_url:L.API_BASE_URL||"http://localhost:8000",auth_mode:L.PORTAL_AUTH_MODE||"Bearer",router_mode:L.PORTAL_HISTORY_MODE??{}.VUE_APP_HISTORY_MODE,max_home_articles:L.PORTAL_MAX_HOME_ARTICLES??{}.VUE_APP_MAX_HOME_ARTICLES??6,portal_sections:["maps","info"],admin_btn:!0};K.add(Y,J,X,Q,Z,ee,re,te,oe,se,ie,ne,le,ue,ce,ae,he,_e,pe,me,ge,fe,we,be,Pe,Le,ve,Ee,Ie,Ge,ye);const k={home:{show_all_button:"Show all"},footer:{contacts:"Contacts"},tooltip:{choose_language:"Choose a language",home:"Go to home",logout:"Logout",login:"Login",admin:"Admin section",menu:"Toggle menu"},menu:{search:"Search",search_placeholder:"Find a map in the catalog",home:"Home",maps:"maps",info:"info",login:"Login",logout:"Logout",admin:"Admin",data:"Data",group:"Groups",organization:"Organizations",toggle:"MENU",catalog:"Catalog",404:"Page Not Found"},login:{username:"Username",password:"Password",submit:"Login",title:"Login to the admin system",reset_password_url:"Forgot your password?",requiredField:"This field is required",erroreLogin:"Login error"},language:{en:"English",bg:"Bulgarian",de:"Deutsch",fi:"Finnish",fr:"French",it:"Italian",pt:"Portuguese",ro:"Romanian",se:"Swedish"},maps:{services:"Services",group:"Group",edit:"Edit",view:"View"},readmore:"Read more »",readless:"« Read less",ogc_services:"Network services - OGC"},Ne=Object.freeze(Object.defineProperty({__proto__:null,default:k,en:k},Symbol.toStringTag,{value:"Module"})),R={home:{show_all_button:"Mostra tutti"},footer:{contacts:"Contatti"},tooltip:{choose_language:"Seleziona una lingua",home:"Vai alla home",logout:"Logout",login:"Entra",admin:"Sezione admin",menu:"Attiva o disattiva il menu"},menu:{search:"Ricerca",search_placeholder:"Cerca una mappa nel catalogo",home:"Home",maps:"mappe",info:"info",login:"Login",logout:"Logout",admin:"Admin",data:"Dati",group:"Gruppi",organization:"Organizzazioni",map:"Mappa",toggle:"MENU",catalog:"Catalogo",404:"Pagina non trovata"},login:{username:"Username",password:"Password",submit:"Accesso",title:"Accedi al sistema di amministrazione",reset_password_url:"Password dimenticata?",requiredField:"Questo campo è obbligatorio",erroreLogin:"Errore di login"},language:{en:"English",bg:"Bulgarian",de:"Deutsch",fi:"Finnish",fr:"French",it:"Italiano",pt:"Portuguese",ro:"Romanian",se:"Swedish"},maps:{services:"Servizi",group:"Gruppo",edit:"Modifica",view:"Visualizza"},readmore:"Leggi di più »",readless:"« Leggi di meno",ogc_services:"Servizi di rete - OGC"},Be=Object.freeze(Object.defineProperty({__proto__:null,default:R,it:R},Symbol.toStringTag,{value:"Module"})),$e={en:k,it:R},v=Ae({locale:document.documentElement.lang||"en",fallbackLocale:"en",messages:$e,globalInjection:!0}),ze="modulepreload",Fe=function(r,e){return new URL(r,e).href},j={},l=function(e,t,i){if(!t||t.length===0)return e();const s=document.getElementsByTagName("link");return Promise.all(t.map(n=>{if(n=Fe(n,i),n in j)return;j[n]=!0;const h=n.endsWith(".css"),b=h?'[rel="stylesheet"]':"";if(!!i)for(let g=s.length-1;g>=0;g--){const P=s[g];if(P.href===n&&(!h||P.rel==="stylesheet"))return}else if(document.querySelector(`link[href="${n}"]${b}`))return;const p=document.createElement("link");if(p.rel=h?"stylesheet":ze,h||(p.as="script",p.crossOrigin=""),p.href=n,document.head.appendChild(p),h)return new Promise((g,P)=>{p.addEventListener("load",g),p.addEventListener("error",()=>P(new Error(`Unable to preload CSS for ${n}`)))})})).then(()=>e())},qe=(r,e)=>{const t=r[e];return t?typeof t=="function"?t():Promise.resolve(t):new Promise((i,s)=>{(typeof queueMicrotask=="function"?queueMicrotask:setTimeout)(s.bind(null,new Error("Unknown variable dynamic import: "+e)))})};let C=!1,He;const _=S("root",{state:()=>({isLoading:!1,portalSections:[],showAdminButton:!1,locale:"en",loadedLanguages:["en"],currentPage:He}),getters:{currentRoute:r=>r.currentPage.matched[r.currentPage.matched.length-1]},actions:{showLoader(){this.isLoading=!0},hideLoader(){this.isLoading=!1},async setupPage(r,e){this.currentPage=r;const t=!C||v.global.locale!==r.params.lang;await this.loadLanguageAsync(r.params.lang),t&&await this.fetchData(),C=!0,this.setBodyClass(r.name,e.name),await u().setActiveGroup()},async fetchData(r=!1){r&&await u().reset(),this.showLoader(),await Promise.allSettled([u().fetchInfo(),u().fetchPictures(),u().fetchMacroGroups(),u().fetchGroupsWithNoMacroGroup(),u().fetchProjects()]),this.hideLoader(),r&&await u().setActiveGroup()},switchLang(r){return document.documentElement.lang=v.global.locale=r,this.locale=r,r},async loadLanguageAsync(r){return v.global.locale!==r&&!this.loadedLanguages.includes(r)&&(v.global.setLocaleMessage(r,(await qe(Object.assign({"../locale/bg.ts":()=>l(()=>import("./portal-bg.js"),[],import.meta.url),"../locale/de.ts":()=>l(()=>import("./portal-de.js"),[],import.meta.url),"../locale/en.ts":()=>l(()=>Promise.resolve().then(()=>Ne),void 0,import.meta.url),"../locale/fi.ts":()=>l(()=>import("./portal-fi.js"),[],import.meta.url),"../locale/fr.ts":()=>l(()=>import("./portal-fr.js"),[],import.meta.url),"../locale/it.ts":()=>l(()=>Promise.resolve().then(()=>Be),void 0,import.meta.url),"../locale/pt.ts":()=>l(()=>import("./portal-pt.js"),[],import.meta.url),"../locale/ro.ts":()=>l(()=>import("./portal-ro.js"),[],import.meta.url),"../locale/se.ts":()=>l(()=>import("./portal-se.js"),[],import.meta.url)}),`../locale/${r}.ts`)).default),this.loadedLanguages.push(r)),Promise.resolve(this.switchLang(r))},setBodyClass(r,e){r&&document.body.classList.add(r),e&&e!==r&&document.body.classList.remove(e)}}});var w=(r=>(r[r.SUPER=0]="SUPER",r[r.MG=1]="MG",r[r.G=2]="G",r[r.P=3]="P",r))(w||{});class T{constructor(){o(this,"title");o(this,"order");o(this,"_vue_uid",Date.now().toString(36)+Math.random().toString(36).substr(2));this.title="",this.order=""}get InstanceOf(){return w.SUPER}}class O extends T{constructor(t,i=0){super();o(this,"id");o(this,"name");o(this,"description");o(this,"title");o(this,"srid");o(this,"logo_link");o(this,"logo_img");this.id=(t==null?void 0:t.id)??-1,this.name=(t==null?void 0:t.name)??"",this.description=(t==null?void 0:t.description)??"",this.title=(t==null?void 0:t.title)??"",this.srid=(t==null?void 0:t.srid)??-1,this.logo_link=(t==null?void 0:t.header_logo_link)??"",this.logo_img=(t==null?void 0:t.header_logo_img)??"",this.title||(this.title=this.name),this.order="group_"+i}get Key(){return w[this.InstanceOf]+"_"+this.id}get InstanceOf(){return w.G}get Projects(){return u().projectsInGroup(this.id)}fetchProjects(){return u().fetchProjectsByGroupId(this.id.toString())}}class We extends T{constructor(t,i=0){super();o(this,"id");o(this,"title");o(this,"description");o(this,"logo_img");o(this,"logo_link");this.id=(t==null?void 0:t.id)??-1,this.title=(t==null?void 0:t.title)??"",this.description=(t==null?void 0:t.description)??"",this.logo_img=(t==null?void 0:t.logo_img)??"",this.logo_link=(t==null?void 0:t.logo_link)??"",this.order="mgroup_"+i}get Key(){return w[this.InstanceOf]+"_"+this.id}get InstanceOf(){return w.MG}get Groups(){return u().groupsInMacroGroup(this.id)}fetchGroups(){return u().fetchGroupsByMacroGroupId(this.id.toString())}}class D extends T{constructor(t){super();o(this,"id");o(this,"title");o(this,"description");o(this,"thumbnail");o(this,"edit_url");o(this,"map_url");o(this,"ogc_urls");o(this,"logo_img");o(this,"logo_link");this.id=(t==null?void 0:t.id)??-1,this.title=(t==null?void 0:t.title)??"",this.description=(t==null?void 0:t.description)??"",this.thumbnail=(t==null?void 0:t.thumbnail)??"",this.edit_url=(t==null?void 0:t.edit_url)??"",this.map_url=(t==null?void 0:t.map_url)??"",this.ogc_urls=(t==null?void 0:t.ogc_urls)??{},this.logo_img=this.thumbnail,this.logo_link=this.map_url}get Key(){return w[this.InstanceOf]+"_"+this.id}get InstanceOf(){return w.P}}class V{constructor(e){o(this,"id");o(this,"title");o(this,"sub_title");o(this,"home_description");o(this,"about_title");o(this,"about_description");o(this,"about_name");o(this,"about_tel");o(this,"about_email");o(this,"about_address");o(this,"groups_title");o(this,"groups_map_description");o(this,"login_description");o(this,"login_title");o(this,"login_url");o(this,"social_auth_providers");o(this,"logout_url");o(this,"suite_logo");o(this,"url_suite_logo");o(this,"credits");o(this,"main_map_title");o(this,"facebook_url");o(this,"twitter_url");o(this,"googleplus_url");o(this,"youtube_url");o(this,"instagram_url");o(this,"flickr_url");o(this,"tripadvisor_url");o(this,"reset_password_url");o(this,"suite_org_url",{}.VUE_APP_SUITE_ORG_URL||window.PORTAL_ORG_URL);o(this,"suite_org_name",{}.VUE_APP_SUITE_ORG_NAME||window.PORTAL_ORG_NAME);o(this,"suite_org_title",{}.VUE_APP_SUITE_ORG_TITLE||window.PORTAL_ORG_TITLE);o(this,"suite_org_image",{}.VUE_APP_SUITE_ORG_IMAGE||window.PORTAL_ORG_IMAGE);o(this,"cookie_policy_url",{}.VUE_APP_COOKIE_POLICY_URL||"");o(this,"privacy_policy_url",{}.VUE_APP_PRIVACY_POLICY_URL||"");o(this,"credits_url","#");this.id=(e==null?void 0:e.id)??-1,this.title=(e==null?void 0:e.title)??"",this.sub_title=(e==null?void 0:e.sub_title)??"",this.home_description=(e==null?void 0:e.home_description)??"",this.about_title=(e==null?void 0:e.about_title)??"",this.about_description=(e==null?void 0:e.about_description)??"",this.about_name=(e==null?void 0:e.about_name)??"",this.about_tel=(e==null?void 0:e.about_tel)??"",this.about_email=(e==null?void 0:e.about_email)??"",this.about_address=(e==null?void 0:e.about_address)??"",this.groups_title=(e==null?void 0:e.groups_title)??"",this.groups_map_description=(e==null?void 0:e.groups_map_description)??"",this.login_description=(e==null?void 0:e.login_description)??"",this.login_title=(e==null?void 0:e.login_title)??"",this.login_url=(e==null?void 0:e.login_url)??"",this.logout_url=(e==null?void 0:e.logout_url)??"",this.social_auth_providers=(e==null?void 0:e.social_auth_providers)??{},this.suite_logo=(e==null?void 0:e.suite_logo)??"",this.url_suite_logo=(e==null?void 0:e.url_suite_logo)??"",this.credits=(e==null?void 0:e.credits)??"",this.main_map_title=(e==null?void 0:e.main_map_title)??"",this.facebook_url=(e==null?void 0:e.facebook_url)??"",this.twitter_url=(e==null?void 0:e.twitter_url)??"",this.googleplus_url=(e==null?void 0:e.googleplus_url)??"",this.youtube_url=(e==null?void 0:e.youtube_url)??"",this.instagram_url=(e==null?void 0:e.instagram_url)??"",this.flickr_url=(e==null?void 0:e.flickr_url)??"",this.tripadvisor_url=(e==null?void 0:e.tripadvisor_url)??"",this.reset_password_url=(e==null?void 0:e.reset_password_url)??"",this.suite_logo.endsWith("/")&&(this.suite_logo="")}}function z(r){return new URL(r,m.api_base_url).href}function xe(r,e){return new URL(r).origin===new URL(e).origin}async function f(r){return I.get(_().locale+"/portal"+r)}class Ke{async get(e,t){return this.fetch(e,{method:"GET",data:t})}async post(e,t,i,s){return this.fetch(e,{method:"POST",data:t,headers:i,customConfig:s})}async fetch(e,{data:t,method:i,headers:s,...n}){const h=new URL(e,m.api_base_url).toString(),b=this.auth_request({method:i??"GET",body:s&&s["Content-Type"]!=="application/json"?t:JSON.stringify(t),headers:{"Content-Type":"application/json",...s},...n});return window.fetch(h,b).then(async a=>{const p=await this.auth_error(a,e,b);return p!==-1?p:a.ok?await a.json():Promise.reject(await a.json())}).catch(a=>{throw console.warn("HTTP Error",a),a})}auth_request(e){const t=c();return t.crossOrigin&&(e.withCredentials=!0),!t.useCookies&&t.access_token&&(e.headers.Authorization=`${m.auth_mode} ${t.access_token}`,e.timeout=5e3),e}auth_error(e,t,i){const s=c();return!s.useCookies&&s.refresh_token&&[401,403].includes(e.status)?c().refresh().then(()=>this.fetch(t,i)):-1}}const I=new Ke;var F=(r=>(r.OK="ok",r.ERROR="error",r))(F||{});class Ye{constructor(e){o(this,"last_name");o(this,"first_name");o(this,"username");o(this,"email");o(this,"drf_token");var t,i;this.last_name=((t=e==null?void 0:e.data)==null?void 0:t.last_name)??"",this.first_name=((i=e==null?void 0:e.data)==null?void 0:i.first_name)??"",this.username=(e==null?void 0:e.username)??"",this.email=(e==null?void 0:e.email)??"",this.drf_token=(e==null?void 0:e.drf_token)??""}}const c=S("auth",{state:()=>({user:null,access_token:localStorage.getItem("access_token")||"",refresh_token:localStorage.getItem("refresh_token")||"",crossOrigin:!xe(window.location,m.api_base_url),useCookies:!["Bearer","JWT"].includes(m.auth_mode),await_token_refresh:null}),getters:{isLoggedIn:r=>r.user!=null},actions:{setUser(r){this.user=r,(this.useCookies||!this.useCookies&&!this.user)&&this.removeTokens(),_().fetchData(!0).then(()=>{const e=new URL(location.href),t=e.searchParams.get("next");t&&(e.searchParams.delete("next"),history.replaceState({},"",e),this.router.push({path:t}))})},setTokens(r){this.setLocalStorage("access_token",r.access),this.setLocalStorage("refresh_token",r.refresh)},removeTokens(){this.setLocalStorage("access_token"),this.setLocalStorage("refresh_token")},setLocalStorage(r,e=""){e?localStorage.setItem(r,e):localStorage.removeItem(r),this[r]=e},fetchWhoAmI(){return f("/api/whoami/").then(r=>{r.is_authenticated&&this.setUser(new Ye(r))}).catch(r=>{this.setUser(null)})},async login(r,e){await(this.useCookies?Je:Qe)(r,e),this.fetchWhoAmI()},async logout(){await(this.useCookies?Xe:Ze)(),this.setUser(null)},maybe_redirect(r,e,t=()=>{}){switch(r.name){case"login":if(u().info.login_url!=="login")return location.href=u().info.login_url,!1;t();break;case"logout":if(u().info.login_url!=="login")return location.href=u().info.logout_url,!1;this.logout(),t();break;case"admin":return location.href=z(m.admin_root),!1}},refresh(){return this.await_token_refresh||(this.await_token_refresh=er()),this.await_token_refresh}}});function Je(r,e){return I.post(_().locale+"/portal/jx/login/",new URLSearchParams({username:r,password:e}).toString(),{"Content-Type":"application/x-www-form-urlencoded"}).then(t=>{if(t.status!==F.OK)throw c().setUser(null),t.error_form})}function Xe(){return I.get(_().locale+"/portal/jx/logout/")}function Qe(r,e){return I.post("/authjwt/api/token/",{username:r,password:e}).then(t=>c().setTokens({...t}))}function Ze(){return I.post("/authjwt/api/token/blacklist/",{refresh:c().refresh_token}).then(r=>{var t;const e=(t=c().user)==null?void 0:t.drf_token;e&&(location.href=z(`/${_().locale}/portal/jx/logout/?__drftk=${e}&redirect=${location.origin}`))})}function er(){return new Promise((r,e)=>{I.post("/authjwt/api/token/refresh/",{refresh:c().refresh_token}).then(t=>{c().setTokens({access:t.access,refresh:c().refresh_token}),r(t.access)}).catch(t=>{c().removeTokens(),window.location.reload(),e(t)}).finally(()=>{c().await_token_refresh=null})})}const N=new Intl.Collator("en",{numeric:!0,sensitivity:"accent"}).compare,u=S("data",{state:()=>({macroGroups:{},groupsWithNoMacroGroup:{},groups:{},GroupsInMacroGroups:{},ProjectsInGroups:{},projects:[],activeGroup:null,search:"",info:new V,pictures:[]}),getters:{macroGroup:r=>e=>r.macroGroups[e],groupsInMacroGroup:r=>e=>r.GroupsInMacroGroups[e],projectsInGroup:r=>e=>r.ProjectsInGroups[e],superGroups:r=>[...Object.values(r.macroGroups).sort((e,t)=>N(e.order,t.order)),...Object.values(r.groupsWithNoMacroGroup).sort((e,t)=>N(e.order,t.order))],filteredProjects:r=>{const e=r.search.toLowerCase();return r.projects.filter(t=>t.title.toLowerCase().includes(e)||t.description.toLowerCase().includes(e))}},actions:{reset(){this.macroGroups={},this.groupsWithNoMacroGroup={},this.groups={},this.GroupsInMacroGroups={},this.ProjectsInGroups={}},setSearchFilter(r){this.search=r},async setActiveGroup(){let r=null;switch(_().currentRoute.name){case"group":r=await this.fetchGroupData();break;case"organization":r=await this.fetchMacroGroupData();break}r===!1&&c().isLoggedIn&&this.router.push({name:"404",params:_().currentPage.params}),r===!1&&!c().isLoggedIn&&this.router.push({name:"login",params:_().currentPage.params,query:{next:_().currentPage.path}}),r!==!1&&(this.activeGroup=r)},unsetActiveGroup(){this.activeGroup=null},async fetchInfo(){this.info=new V(await f("/api/infodata/"))},async fetchPictures(){this.pictures=(await f("/api/pictures/")).sort((r,e)=>r.order-e.order)},async fetchProjects(){this.projects=(await f("/api/project/")).map(r=>new D(r))},async fetchGroupData(){const{id:r,group:e}=_().currentPage.params;if(!(r===void 0||r==="")){e!==void 0&&this.groups[parseInt(e)]===void 0&&(_().showLoader(),await this.fetchGroupsByMacroGroupId(r),_().hideLoader());const i=this.groups[parseInt(e||r)];return i?(await i.fetchProjects(),i):!1}return null},async fetchMacroGroupData(){const{id:r,group:e}=_().currentPage.params;if(!e&&r){const t=this.macroGroups[parseInt(r)];return t?(await t.fetchGroups(),t):!1}else if(e)return await this.fetchGroupData();return null},async fetchMacroGroups(){(await f("/api/macrogroup/")).forEach((r,e)=>{const t=new We(r,e);this.macroGroups[t.id]=t})},async fetchGroupsWithNoMacroGroup(){(await f("/api/group/nomacrogroup/")).forEach((r,e)=>{const t=new O(r,e);this.groupsWithNoMacroGroup[t.id]=t,this.groups[t.id]=t})},async fetchGroups(){(await f("/api/group/")).forEach((r,e)=>{const t=new O(r,e);this.groups[t.id]=t})},async fetchGroupsByMacroGroupId(r){this.GroupsInMacroGroups[parseInt(r)]=(await f(`/api/group/${r}`)).map((e,t)=>{const i=new O(e,t);return this.groups[i.id]=i,i})},async fetchProjectsByGroupId(r){this.ProjectsInGroups[parseInt(r)]=(await f(`/api/group/${r}/projects/`)).map(e=>new D(e))}}}),{t:B}=v.global;var $;const q=[($=navigator.language)==null?void 0:$.split("-")[0],"en",m.languages[0]].find(r=>m.languages.includes(r)),M=de({history:Oe("./"),routes:[{path:"/:lang/",component:()=>l(()=>import("./portal-Main.js"),["./portal-Main.js","./portal-index.js","./portal-vendor.js","./portal-dialog-polyfill.esm.js","./assets\\Main.css"],import.meta.url),meta:{breadcrumb(r,e){const{currentRoute:t}=e.config.globalProperties.$router;return t.value.name==="home"?{label:"",title:"Home"}:{label:"Home",title:""}}},children:[{path:"",name:"home",components:{default:()=>l(()=>import("./portal-Home.js"),["./portal-Home.js","./portal-index.js","./portal-vendor.js","./portal-Projects.js","./portal-get_img_url.js","./portal-dialog-polyfill.esm.js","./assets\\Projects.css"],import.meta.url),header:()=>l(()=>import("./portal-HomeHeader.js"),["./portal-HomeHeader.js","./portal-index.js","./portal-vendor.js","./portal-get_img_url.js","./assets\\HomeHeader.css"],import.meta.url)},meta:{}},{path:"login",name:"login",component:()=>l(()=>import("./portal-Login.js"),["./portal-Login.js","./portal-index.js","./portal-vendor.js","./assets\\Login.css"],import.meta.url),meta:{breadcrumb:"Login"},beforeEnter:(...r)=>c().maybe_redirect(...r)},{path:"logout",name:"logout",meta:{breadcrumb:"Logout"},component:()=>l(()=>import("./portal-Login.js"),["./portal-Login.js","./portal-index.js","./portal-vendor.js","./assets\\Login.css"],import.meta.url),beforeEnter:(...r)=>c().maybe_redirect(...r)},{path:"admin",name:"admin",beforeEnter:(...r)=>c().maybe_redirect(...r),component:()=>l(()=>import("./portal-NotFound.js"),["./portal-NotFound.js","./portal-index.js","./portal-vendor.js"],import.meta.url)},{path:"search",name:"search",component:()=>l(()=>import("./portal-Search.js"),["./portal-Search.js","./portal-index.js","./portal-vendor.js","./portal-Projects.js","./portal-get_img_url.js","./portal-dialog-polyfill.esm.js","./assets\\Projects.css","./assets\\Search.css"],import.meta.url),meta:{breadcrumb:"Search"}},{path:"group/:id?",name:"group",component:()=>l(()=>import("./portal-Group.js"),["./portal-Group.js","./portal-index.js","./portal-vendor.js","./portal-Projects.js","./portal-get_img_url.js","./portal-dialog-polyfill.esm.js","./assets\\Projects.css"],import.meta.url),meta:{breadcrumb(r,e){var t;return r.params.id?(t=u().groups[parseInt(r.params.id)])==null?void 0:t.title:B("menu.group")}}},{path:"organization/:id?/:group?",name:"organization",component:()=>l(()=>import("./portal-MacroGroup.js"),["./portal-MacroGroup.js","./portal-index.js","./portal-vendor.js","./portal-Projects.js","./portal-get_img_url.js","./portal-dialog-polyfill.esm.js","./assets\\Projects.css","./portal-Group.js"],import.meta.url),meta:{breadcrumb(r,e){var t,i;return r.params.id&&r.params.group?(t=u().groups[parseInt(r.params.group)])==null?void 0:t.title:r.params.id&&!r.params.group?(i=u().macroGroups[parseInt(r.params.id)])==null?void 0:i.title:B("menu.organization")}}},{path:"map/:id?",name:"map",component:()=>l(()=>import("./portal-Projects.js"),["./portal-Projects.js","./portal-index.js","./portal-vendor.js","./portal-get_img_url.js","./portal-dialog-polyfill.esm.js","./assets\\Projects.css"],import.meta.url),meta:{}},{path:":catchAll(.*)*",name:"404",component:()=>l(()=>import("./portal-NotFound.js"),["./portal-NotFound.js","./portal-index.js","./portal-vendor.js"],import.meta.url),meta:{breadcrumb:"404"}}]},{path:"/",redirect(r){return{path:`/${q}${r.path}`}}}],scrollBehavior(r,e,t){if(r.hash)return{selector:r.hash,behavior:"smooth",offset:{x:0,y:100}};if(r.name!=="home")return new Promise(i=>setTimeout(()=>i({left:0,top:0}),500))}});M.beforeEach(async(r,e,t)=>{if(m.languages.includes(r.params.lang))await _().setupPage(r,e);else return t(`/${q}${r.path}`);return t()});const H=ke();H.use(({store:r})=>{r.router=Re(M)});const rr={install:r=>{r.config.globalProperties.$breadcrumbs=new tr(r).init()}};var G,E;class tr{constructor(e){A(this,G,void 0);A(this,E,void 0);o(this,"value");d(this,G,e),d(this,E,e.config.globalProperties.$router),this.value=Se([])}init(){return y(this,E).afterEach((e,t,i)=>{if(i||e.path===t.path&&t.matched.length)return!1;this.setBreadcrumbsByRoute(e)}),this}setBreadcrumbsByRoute(e){if(!e)return!1;let t=e.path.replace(/\/$/,"").split("/"),i="",s=!1;const n=[];t.forEach((b,a)=>{i+=a===1?b:"/"+b;let p=a+1>=t.length;const g=this.value[a];if((g==null?void 0:g._path)===i)return p&&this.value.splice(a+1,this.value.length),g.current=a+1>=t.length,!1;!s&&a<this.value.length&&(this.value.splice(a,this.value.length),s=!0);const P=this.createBreadcrumb(i,p);if(!P)return!1;this.value.push(P)});const h=this.value[this.value.length-1];n.push(h.title??h),n.push(u().info.title||"G3W-SUITE"),window.document.title=n.join(" - ")}createBreadcrumb(e,t=!1){var n;if(!e)return!1;let i=y(this,E).resolve(e),s=(n=i.meta)==null?void 0:n.breadcrumb;return typeof s=="function"&&(s=s.call(null,i,y(this,G))),typeof s=="string"&&(s={label:s,title:s,link:i.path}),s?{label:(s==null?void 0:s.label)??s,title:(s==null?void 0:s.title)??(s==null?void 0:s.label)??s,link:typeof s=="object"&&s.link?s.link:i.path,current:t,_path:e}:!1}}G=new WeakMap,E=new WeakMap;const or=(r,e)=>{const t=r.__vccOpts||r;for(const[i,s]of e)t[i]=s;return t},sr={};function ir(r,e){const t=Te("router-view");return Me(),Ue(Ce,{to:"body"},[je(t)])}const nr=or(sr,[["render",ir]]);m.theme&&document.documentElement.setAttribute("data-theme",m.theme);if(m.favicon){const r=document.querySelector("link[rel~='icon']")||document.createElement("link");r.setAttribute("rel","icon"),r.setAttribute("href",m.favicon)}const lr=De(nr).use(v).use(H).use(M).use(rr).component("font-awesome-icon",Ve);lr.mount("#app");export{w as E,or as _,_ as a,c as b,m as c,z as g,u};
-//# sourceMappingURL=index.js.map
+(() => {
+  const portal = {
+    scriptURL: document.currentScript.src,
+    base: new URL(window.API_BASE_URL || '/', location.href),
+    languages: window.LANGUAGES || ['en', 'it'],
+    auth: window.PORTAL_AUTH_MODE || 'cookie',
+    refreshRequest: undefined,
+    mode: window.PORTAL_HISTORY_MODE || 'hash',
+    locale: '',
+    info: {},
+    pictures: [],
+    macros: [],
+    groups: [],
+    allGroups: [],
+    projects: [],
+    user: null,
+    search: '',
+    view: { page: {} },
+    navigation: 0,
+    carousel: undefined,
+    memoryPath: '/',
+    messages: {},
+    get tokenAuth() {
+      return ['JWT', 'Bearer'].includes(this.auth);
+    },
+    get routePrefix() {
+      return this.mode === 'hash' ? '#' : '';
+    },
+    get top() {
+      return window.PORTAL_NAVBAR_TOP !== false;
+    },
+    get menu() {
+      return this.top || window.PORTAL_MENU_BUTTON !== false;
+    },
+    get orgName() {
+      return window.PORTAL_ORG_NAME || this.info.suite_org_name || '';
+    },
+    get orgImage() {
+      return window.PORTAL_ORG_IMAGE || this.info.suite_org_image;
+    },
+    get orgURL() {
+      return window.PORTAL_ORG_URL || this.info.suite_org_url;
+    },
+    get route() {
+      const url = new URL({ abstract: this.memoryPath, hash: location.hash.slice(1) || '/' }[this.mode] ?? location.pathname + location.search, location.origin);
+      const parts = url.pathname.split('/').filter(Boolean);
+      const locale = this.languages.includes(parts[0]) ? parts.shift() : [navigator.language.split('-')[0], 'en', this.languages[0]].find(lang => this.languages.includes(lang));
+      const [name = 'home', id, group, ...extra] = parts;
+      const valid = ['home', 'login', 'logout', 'admin', 'search', 'group', 'organization', 'map'].includes(name) && !extra.length && (name === 'organization' || !group) && (['organization', 'group', 'map'].includes(name) || !id);
+      return { locale, name: valid ? name : '404', id, group, path: `/${locale}/${parts.join('/')}${url.search}`, query: url.searchParams };
+    },
+    get logo() {
+      return `<img class="logo" src="${this.escape(this.info.suite_logo && !this.info.suite_logo.endsWith('/') ? this.safeURL(this.info.suite_logo) : new URL('assets/logo_g3wsuite-bw.png', this.scriptURL).href)}" alt="${this.escape(this.info.title)}">`;
+    },
+    get org() {
+      return this.orgImage ? `<img class="logo" src="${this.escape(this.safeURL(this.orgImage))}" alt="${this.escape(this.orgName)}">` : this.escape(this.orgName);
+    },
+    get locales() {
+      return this.languages.map(locale => ({
+        locale,
+        name: new Intl.DisplayNames([locale], { type: 'language' }).of(locale === 'se' ? 'sv' : locale)?.replace(/^./, str => str.toUpperCase()),
+        flag: `<img class="flag" src="${new URL(`../img/flags/${locale}.png`, this.scriptURL).href}" alt="" width="18" height="12"> `,
+      }));
+    },
+    get language() {
+      return this.locales.find(item => item.locale === this.route.locale);
+    },
+    get title() {
+      return {
+        home:         'Home',
+        login:        this.t('Login'),
+        search:       this.t('Search'),
+        map:          this.t('Search'),
+        group:        this.view.page.id ? this.view.group?.title || this.view.group?.name : this.t('Groups'),
+        organization: this.view.page.id ? (this.view.macro && !this.view.page.group ? this.view.macro.title || this.view.macro.name : this.view.group?.title || this.view.group?.name) : this.t('Organizations'),
+      }[this.view.page.name] || this.t('Page Not Found');
+    },
+    get cards() {
+      return {
+        home:         [...this.macros.map(item => [item, true]), ...this.groups.map(item => [item, false])],
+        group:        !this.view.page.id && [...this.macros.map(item => [item, true]), ...this.groups.map(item => [item, false])],
+        organization: this.view.page.id ? this.view.macro && !this.view.page.group && this.view.groups.map(item => [item, false]) : this.macros.map(item => [item, true]),
+      }[this.view.page.name];
+    },
+    get max() {
+      const limit = Number(window.PORTAL_MAX_HOME_ARTICLES ?? 6);
+      return this.view.page.name === 'home' && Number.isFinite(limit) && limit >= 0 ? limit : this.cards?.length;
+    },
+    async fetch(path, { method = 'GET', body, retry = true } = {}) {
+      const headers = { Accept: 'application/json' };
+      if (body !== undefined) {
+        headers['Content-Type'] = body instanceof URLSearchParams ? 'application/x-www-form-urlencoded' : 'application/json';
+      }
+      const access = portal.tokenAuth && localStorage.getItem('access_token');
+      if (access) {
+        headers.Authorization = `${portal.auth} ${access}`;
+      }
+      if (method !== 'GET' && new URL(path, portal.base).origin === location.origin) {
+        const cookie = document.cookie.split('; ').find(item => item.startsWith('csrftoken='));
+        if (cookie) headers['X-CSRFToken'] = decodeURIComponent(cookie.slice('csrftoken='.length));
+      }
+      const response = await fetch(new URL(path, portal.base).href, {
+        method,
+        headers,
+        credentials: portal.tokenAuth ? 'same-origin' : 'include',
+        body:        body instanceof URLSearchParams ? body.toString() : JSON.stringify(body),
+      });
+      const expired = portal.tokenAuth && retry && [401, 403].includes(response.status) && !path.includes('/authjwt/') && localStorage.getItem('refresh_token');
+      if (expired && access === localStorage.getItem('access_token')) {
+        await (portal.refreshRequest ??= portal.fetch('/authjwt/api/token/refresh/', {
+          method: 'POST',
+          retry: false,
+          body: {
+            refresh: localStorage.getItem('refresh_token')
+          },
+        }).then(data => {
+          if (typeof data.access !== 'string' || !data.access) throw new Error('Invalid token refresh response');
+          localStorage.setItem('access_token', data.access);
+          const refresh = data.refresh || localStorage.getItem('refresh_token');
+          if (!refresh) {
+            localStorage.removeItem('refresh_token');
+            return;
+          }
+          localStorage.setItem('refresh_token', refresh);
+        }).catch(error => {
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
+          throw error;
+        }).finally(() => { portal.refreshRequest = undefined; }));
+      }
+      if (expired) return portal.fetch(path, { method, body, retry: false });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${path}`);
+      }
+      if (response.status === 204) return null;
+      return response.json();
+    },
+    async login(username, password) {
+      const { locale, query } = portal.route;
+      const next = query.get('next') || new URL(location.href).searchParams.get('next') || `/${locale}/`;
+      if (!next.startsWith('/') || new URL(next, location.origin).origin !== location.origin) {
+        throw new Error('Invalid return path');
+      }
+      let data = portal.tokenAuth
+        ? await portal.fetch('/authjwt/api/token/', { method: 'POST', body: { username, password }, retry: false })
+        : await portal.fetch(`${locale}/portal/jx/login/`, { method: 'POST', body: new URLSearchParams({ username, password }) });
+      if (portal.tokenAuth && (typeof data.access !== 'string' || !data.access || typeof data.refresh !== 'string' || !data.refresh)) {
+        throw new Error('Invalid authentication response');
+      } 
+      if (portal.tokenAuth) {
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+      }
+      if (!portal.tokenAuth && data.status !== 'ok') {
+        throw new Error(Object.values(data.errors_form || data.error_form || {}).flat().join(' ') || 'Login failed');
+      }
+      portal.user = await portal.whoami(locale);
+      if (!portal.user) {
+        throw new Error('Authentication was not established');
+      }
+      Object.assign(portal, await portal.fetch(`${locale}/portal/api/catalog/`), { locale });
+      if (['Bearer', 'JWT'].includes(portal.auth) && portal.user.drf_token) {
+        const url = new URL(`${locale}/portal/api/whoami/`, portal.base);
+        const redirect = new URL(portal.routePrefix + next, location.href);
+        redirect.searchParams.delete('next');
+        url.search = new URLSearchParams({ __drftk: portal.user.drf_token, redirect: redirect.href });
+        return location.assign(url.href);
+      }
+      const url = new URL(location.href);
+      url.searchParams.delete('next');
+      history.replaceState({}, '', url);
+      portal.memoryPath = next;
+      if (portal.mode !== 'abstract') history.pushState({}, '', portal.routePrefix + next);
+      await portal.render();
+    },
+    async logout() {
+      const { locale, name } = portal.route;
+      const user = portal.user;
+      if (portal.info.login_url && portal.info.login_url !== 'login' && portal.info.logout_url && !['logout', 'login'].includes(portal.info.logout_url)) {
+        return location.assign(portal.safeURL(portal.info.logout_url));
+      }
+      const data = portal.tokenAuth
+        ? await portal.fetch('/authjwt/api/token/blacklist/', { method: 'POST', body: { refresh: localStorage.getItem('refresh_token') }, retry: false })
+        : await portal.fetch(`${locale}/portal/jx/logout/`);
+      if (!portal.tokenAuth && data.status !== 'ok') {
+        throw new Error(data.message || 'Logout failed');
+      }
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
+      if (portal.tokenAuth && user?.drf_token) {
+        const url = new URL(`${locale}/portal/jx/logout/`, portal.base);
+        url.search = new URLSearchParams({ __drftk: user.drf_token, redirect: location.href });
+        location.assign(url.href);
+      }
+      portal.user = null;
+      portal.locale = '';
+      portal.projects = [];
+      portal.groups = [];
+      portal.allGroups = [];
+      portal.macros = [];
+      portal.visibleProjects = [];
+      clearInterval(portal.carousel);
+      document.documentElement.classList.remove('modal-is-open');
+      document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+      Object.assign(portal, await portal.fetch(`${locale}/portal/api/catalog/`), { locale });
+      if (name === 'logout') {
+        portal.memoryPath = `/${locale}/`;
+      }
+      if (name === 'logout' && portal.mode !== 'abstract') {
+        history.replaceState({}, '', portal.routePrefix + portal.memoryPath);
+      }
+      await portal.render();
+    },
+
+    escape(value) {
+      return String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char])
+    },
+
+    t(key) {
+      return portal.messages[key] ?? key;
+    },
+
+    safeURL(value, base = portal.base) {
+      if (!value) return '';
+      const url = new URL(value, base);
+      return ['http:', 'https:', 'mailto:', 'tel:'].includes(url.protocol) ? url.href : '';
+    },
+
+    async whoami(locale) {
+      const user = await portal.fetch(`${locale}/portal/api/whoami/`);
+      if (portal.auth === 'cookie' || !user.is_authenticated) {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+      }
+      return user.is_authenticated ? user : null;
+    },
+
+    async render() {
+      const version = ++portal.navigation;
+      const page = portal.route;
+      try {
+        if (portal.locale !== page.locale) {
+          const locale = ['en', 'it', 'fr', 'de', 'bg', 'fi', 'pt', 'ro', 'se'].includes(page.locale) ? page.locale : 'en';
+          document.documentElement.classList.remove('modal-is-open');
+          document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+          const [translation, data, user] = await Promise.all([
+            locale === 'en' ? {} : import(`./locale/${locale}.js`),
+            portal.fetch(`${page.locale}/portal/api/catalog/`),
+            portal.whoami(page.locale),
+          ]);
+          if (version !== portal.navigation) return;
+          portal.messages = translation.default || {};
+          Object.assign(portal, data, { user, locale: page.locale });
+        }
+        const url = new URL(location.href);
+        const next = portal.user && url?.searchParams?.get?.('next');
+        if (next && (!next.startsWith('/') || new URL(next, location.origin).origin !== location.origin)) {
+          throw new Error('Invalid return path');
+        }
+        if (next) {
+          url.searchParams.delete('next');
+          history.replaceState({}, '', url);
+          portal.memoryPath = next;
+          if (portal.mode !== 'abstract') history.replaceState({}, '', portal.routePrefix + next);
+          return portal.render();
+        }
+        if (page.name === 'admin') {
+          location.assign(new URL(window.PORTAL_ADMIN_ROOT ?? '/admin', portal.base).href);
+          return;
+        }
+        if (page.name === 'logout') return portal.logout();
+        if (page.name === 'login' && portal.info.login_url && portal.info.login_url !== 'login') {
+          location.assign(portal.safeURL(portal.info.login_url));
+          return;
+        }
+        const macro = page.name === 'organization' && page.id ? portal.macros.find(item => String(item.id) === page.id) : null;
+        const scoped = ['group', 'organization'].includes(page.name) && page.id;
+        const groups = scoped && (page.name !== 'organization' || macro) ? (macro ? await portal.fetch(`${page.locale}/portal/api/group/${page.id}`) : portal.allGroups) : undefined;
+        const group = (!macro || page.group) && groups?.find(item => String(item.id) === (page.group || page.id));
+        const items = group ? await portal.fetch(`${page.locale}/portal/api/group/${group.id}/projects/`) : undefined;
+        if (items) portal.visibleProjects = items;
+        if (version !== portal.navigation) return;
+        if (scoped && !portal.user && !(macro && !page.group) && !group) {
+          portal.memoryPath = `/${page.locale}/login?${new URLSearchParams({ next: page.path })}`;
+          if (portal.mode !== 'abstract') history.replaceState({}, '', portal.routePrefix + portal.memoryPath);
+          return portal.render();
+        }
+        document.documentElement.lang = page.locale;
+        document.documentElement.dataset.theme = window.PORTAL_THEME || 'light';
+        document.body.classList.remove('home', 'login', 'search', 'group', 'organization', 'map', '404');
+        document.body.classList.add(page.name);
+        portal.view = { page, macro, groups, group };
+        document.title = `${portal.title} - ${portal.info.title || 'G3W-SUITE'}`;
+        if (portal.mode === 'hash' && !location.hash) history.replaceState({}, '', portal.routePrefix + page.path);
+
+        const picture = portal.pictures[0];
+        const template = document.createElement('template');
+        template.innerHTML = /* html */`
+          <button type="button" class="skip-link" data-skip-content>Skip to content</button>
+          ${portal.top ? '<nav id="top-menu" class="container-fluid top-menu"><ul><li class="nav-org">' : ''}
+          ${portal.top && portal.orgURL ? `<a href="${portal.escape(portal.safeURL(portal.orgURL))}" title="${portal.escape(window.PORTAL_ORG_TITLE || '')}">${portal.org}</a>` : ''}
+          ${portal.top && !portal.orgURL ? portal.org : ''}
+          ${portal.top ? `</li></ul><ul>${portal.user ? `<li class="nav-admin"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/admin`)}" data-route="${portal.escape(`/${page.locale}/admin`)}" aria-label="${portal.escape(portal.t('Admin'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Admin'))}</span></a></li><li class="nav-logout"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/logout`)}" data-logout aria-label="${portal.escape(portal.t('Logout'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 3H3v18h6M9 12h13m-5-5 5 5-5 5"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Logout'))}</span></a></li>` : `<li class="nav-login"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/login`)}" data-route="${portal.escape(`/${page.locale}/login`)}" aria-label="${portal.escape(portal.t('Login'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="none" stroke="currentColor"></path></svg><span class="hide-on-mobile">${portal.escape(portal.t('Login'))}</span></a></li>`}<li class="nav-lang"><a href="#language" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : 'data-languages aria-haspopup="dialog"'} aria-label="${portal.escape(portal.t('Choose a language'))}">${portal.language.flag}<span${portal.language.flag ? ' class="hide-on-mobile"' : ''}>${portal.escape(portal.language.name)}</span></a></li></ul></nav>` : ''}
+          <nav id="main-menu" class="container-fluid main-menu${!portal.top && !portal.menu ? ' compact' : ''}${!portal.top && portal.menu ? ' mobile-menu' : ''}">
+            <ul>
+              <li class="nav-logo">
+                ${portal.info.url_suite_logo ? `<a href="${portal.escape(portal.safeURL(portal.info.url_suite_logo))}" aria-label="Back home">${portal.logo}</a>` : `<a href="${portal.escape(portal.routePrefix + `/${page.locale}/`)}" data-route="${portal.escape(`/${page.locale}/`)}" aria-label="Back home">${portal.logo}</a>`}
+              </li>
+              <li class="nav-title hide-on-mobile">
+                <span class="h1">${portal.escape(portal.info.title)}</span><span>${portal.escape(portal.info.sub_title)}</span>
+              </li>
+            </ul>
+            <ul>
+              <li class="nav-search"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/search`)}" data-route="${portal.escape(`/${page.locale}/search`)}" title="${portal.escape(portal.t('Find a map in the catalog'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="m15 15 7 7"/></svg>${portal.escape(portal.t('Search'))}</a></li>
+              ${!portal.top ? `${portal.user ? `<li class="nav-admin"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/admin`)}" data-route="${portal.escape(`/${page.locale}/admin`)}" aria-label="${portal.escape(portal.t('Admin'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Admin'))}</span></a></li><li class="nav-logout"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/logout`)}" data-logout aria-label="${portal.escape(portal.t('Logout'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 3H3v18h6M9 12h13m-5-5 5 5-5 5"/></svg><span class="hide-on-mobile">${portal.escape(portal.t('Logout'))}</span></a></li>` : `<li class="nav-login"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/login`)}" data-route="${portal.escape(`/${page.locale}/login`)}" aria-label="${portal.escape(portal.t('Login'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="none" stroke="currentColor"></path></svg><span class="hide-on-mobile">${portal.escape(portal.t('Login'))}</span></a></li>`}<li class="nav-lang"><a href="#language" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : 'data-languages aria-haspopup="dialog"'} aria-label="${portal.escape(portal.t('Choose a language'))}">${portal.language.flag}<span${portal.language.flag ? ' class="hide-on-mobile"' : ''}>${portal.escape(portal.language.name)}</span></a></li>` : ''}
+              ${portal.menu && !portal.top ? '<li class="nav-toggle show-on-mobile">' : ''}
+              ${portal.menu && portal.top ? '<li class="nav-toggle">' : ''}
+              ${portal.menu ? `<button type="button" class="outline contrast" data-menu aria-controls="secondary-menu" aria-expanded="false">${portal.escape(portal.t('MENU'))}</button></li>` : ''}
+            </ul>
+            <ul id="secondary-menu" hidden>
+              <li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/`)}" data-route="${portal.escape(`/${page.locale}/`)}">${portal.escape(portal.t('Home'))}</a></li>
+              <li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/group`)}" data-route="${portal.escape(`/${page.locale}/group`)}">${portal.escape(portal.t('Groups'))}</a></li>
+              ${!portal.top && portal.menu ? /* html */`<li class="show-on-mobile"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/search`)}" data-route="${portal.escape(`/${page.locale}/search`)}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="7"/><path d="m15 15 7 7"/></svg>${portal.escape(portal.t('Search'))}</a></li>
+                ${portal.user ? `<li class="nav-admin show-on-mobile"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/admin`)}" data-route="${portal.escape(`/${page.locale}/admin`)}" aria-label="${portal.escape(portal.t('Admin'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg><span>${portal.escape(portal.t('Admin'))}</span></a></li><li class="nav-logout show-on-mobile"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/logout`)}" data-logout aria-label="${portal.escape(portal.t('Logout'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 3H3v18h6M9 12h13m-5-5 5 5-5 5"/></svg><span>${portal.escape(portal.t('Logout'))}</span></a></li>` : `<li class="nav-login show-on-mobile"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/login`)}" data-route="${portal.escape(`/${page.locale}/login`)}" aria-label="${portal.escape(portal.t('Login'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="none" stroke="currentColor"></path></svg><span>${portal.escape(portal.t('Login'))}</span></a></li>`}
+                <li class="nav-lang show-on-mobile"><a href="#language" ${window.PORTAL_LANG_BUTTON ? 'data-language-toggle' : 'data-languages aria-haspopup="dialog"'} aria-label="${portal.escape(portal.t('Choose a language'))}">${portal.language.flag}<span${portal.language.flag ? ' class="hide-on-mobile"' : ''}>${portal.escape(portal.language.name)}</span></a></li>` : ''}
+            </ul>
+          </nav>
+          ${page.name === 'home' ? '<header id="header">' : ''}
+          ${page.name === 'home' && picture ? /* html */`
+            <figure id="carousel">
+              <img src="${portal.escape(portal.safeURL(picture.image))}" alt="">
+              <figcaption>` : ''}
+          ${page.name === 'home' && picture?.author && picture.author_url ? `<a href="${portal.escape(portal.safeURL(picture.author_url))}">Photo by ${portal.escape(picture.author)}</a>` : ''}
+          ${page.name === 'home' && picture?.author && !picture.author_url ? `<span>Photo by ${portal.escape(picture.author)}</span>` : ''}
+          ${page.name === 'home' && picture ? '</figcaption></figure>' : ''}
+          ${page.name === 'home' && portal.info.home_description ? `<div class="container" data-theme="dark">${portal.info.home_description}</div>` : ''}
+          ${page.name === 'home' ? '</header>' : ''}
+          <nav id="breadcrumb" class="container" aria-label="breadcrumb">
+            <ul>
+              <li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/`)}" data-route="${portal.escape(`/${page.locale}/`)}" ${page.name === 'home' ? `aria-current="page" aria-label="${portal.escape(portal.t('Home'))}"` : ''}>${page.name === 'home' ? '' : 'Home'}</a></li>
+              ${['group', 'organization'].includes(page.name) && page.id ? `<li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/${page.name}`)}" data-route="${portal.escape(`/${page.locale}/${page.name}`)}">${portal.escape(portal.t(page.name === 'group' ? 'Groups' : 'Organizations'))}</a></li>` : ''}
+              ${page.name === 'organization' && page.group ? `<li><a href="${portal.escape(portal.routePrefix + `/${page.locale}/organization/${page.id}`)}" data-route="${portal.escape(`/${page.locale}/organization/${page.id}`)}">${portal.escape(macro?.title || macro?.name)}</a></li>` : ''}
+              ${page.name !== 'home' ? `<li aria-current="page">${portal.escape(portal.title)}</li>` : ''}
+            </ul>
+          </nav>
+          <main id="content" class="container" tabindex="-1">
+            ${page.name === 'home'
+                ? /* html */`
+                  <div class="show-on-mobile">
+                    <span>${portal.escape(portal.info.sub_title)}</span>
+                    <h1>${portal.escape(portal.info.title)}</h1>
+                  </div>
+                  <hgroup>
+                    <h2>${portal.escape(portal.info.groups_title)}</h2>
+                    <div>${portal.info.groups_map_description}</div>
+                  </hgroup>
+                  `
+                : ''}
+              ${page.name === 'login'
+                ? /* html */`
+                  <article class="grid login-form">
+                    <div>
+                      <h2>${portal.escape(portal.info.login_title || portal.t('Login to the admin system'))}</h2>
+                      <form id="login-form"><label for="username">${portal.escape(portal.t('Username'))}</label>
+                        <input id="username" name="username" placeholder="${portal.escape(portal.t('Username'))}" autocomplete="username" required>
+                        <label for="password">${portal.escape(portal.t('Password'))}</label>
+                        <input id="password" name="password" type="password" placeholder="${portal.escape(portal.t('Password'))}" autocomplete="current-password" required>
+                        <button type="submit" class="contrast">${portal.escape(portal.t('Login'))}</button>
+                        ${Object.entries(portal.info.social_auth_providers || {}).map(([name, url]) => `<a href="${portal.escape(portal.safeURL(url))}" role="button" class="contrast outline social-login">${portal.escape(name)}</a>`).join('')}
+                        <p id="login-error" role="alert" hidden></p>
+                  `
+                : ''}
+              ${page.name === 'login' && portal.info.reset_password_url ? `<a href="${portal.escape(portal.safeURL(portal.info.reset_password_url))}">${portal.escape(portal.t('Forgot your password?'))}</a>` : ''}
+              ${page.name === 'login' ? '</form></div>' : ''}
+              ${page.name === 'login' && portal.info.login_description ? `<div>${portal.info.login_description}</div>` : ''}
+              ${page.name === 'login' ? '</article>' : ''}
+              ${['search', 'map'].includes(page.name)
+                ? /* html */`
+                  <input type="search" id="search" aria-label="${portal.escape(portal.t('Find a map in the catalog'))}" placeholder="${portal.escape(portal.t('Find a map in the catalog'))}" value="${portal.escape(portal.search)}">
+                  `
+                : ''}
+              ${macro && !page.group
+                ? /* html */`
+                  <hgroup>
+                    <h2>${portal.escape(macro.title || macro.name)}</h2>
+                    <div>${macro.description}</div>
+                  </hgroup>
+                  `
+                : ''}
+              ${group
+                ? /* html */`
+                  <hgroup>
+                    <h2>${portal.escape(group.title || group.name)}</h2>
+                    <div>${group.description}</div>
+                  </hgroup>
+                  `
+                : ''}
+              ${portal.cards ? '<div class="grid catalog">' : ''}
+              ${(portal.cards || []).slice(0, portal.max).map(([item, isMacro]) => {
+                const path = macro ? `organization/${page.id}/${item.id}` : `${isMacro ? 'organization' : 'group'}/${item.id}`;
+                const title = item.title || item.name || portal.t('Group');
+                return /* html */`
+                  <article class="${isMacro ? 'MG' : 'G'}-${portal.escape(item.id)} item-${isMacro ? 'MG' : 'G'}">
+                    <a href="${portal.escape(portal.routePrefix + `/${page.locale}/${path}`)}" data-route="${portal.escape(`/${page.locale}/${path}`)}"><figure>
+                      <img loading="lazy" src="${portal.escape(portal.safeURL(item.logo_img || item.header_logo_img) || new URL('assets/logo_g3wsuite.png', portal.scriptURL).href)}" alt="${portal.escape(title)}">
+                      <figcaption><h3><b>${portal.escape(title)}</b></h3></figcaption>
+                    </figure></a>
+                  </article>`;
+              }).join('')}
+              ${portal.cards ? '</div>' : ''}
+              ${page.name === 'home' && portal.max > 0 && portal.cards.length > portal.max ? `<div id="load-more"><a href="${portal.escape(portal.routePrefix + `/${page.locale}/group`)}" data-route="${portal.escape(`/${page.locale}/group`)}" role="button">${portal.escape(portal.t('Show all'))}</a></div>` : ''}
+              ${['search', 'map'].includes(page.name) ? '<div id="search-results">' : ''}
+              ${(items || portal.projects).filter(item => group || ['search', 'map'].includes(page.name) && `${item.title || ''} ${item.description || ''}`.toLowerCase().includes(portal.search.toLowerCase())).map(item => /* html */`
+                <article class="grid item-P P-${portal.escape(item.id)}">
+                  <div><figure><img loading="lazy" src="${portal.escape(portal.safeURL(item.thumbnail) || new URL('assets/logo_g3wsuite.png', portal.scriptURL).href)}" alt="${portal.escape(item.title)}"></figure>
+                    <p><a href="${portal.escape(portal.safeURL(item.map_url))}" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 9V3h6m6 0h6v6m0 6v6h-6M9 21H3v-6M3 3l6 6m6 6 6 6M21 3l-6 6M9 15l-6 6"/></svg><span>${portal.escape(portal.t('View'))}</span></a>
+                      ${item.ogc_urls && Object.keys(item.ogc_urls).length ? `<a href="#services" data-services="${portal.escape(item.id)}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m2 8 10-6 10 6-10 6Zm0 5 10 6 10-6M2 18l10 6 10-6"/></svg><span>${portal.escape(portal.t('Services'))}</span></a>` : ''}
+                      ${portal.user && item.edit_url ? `<a href="${portal.escape(portal.safeURL(item.edit_url))}" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 3 5 5-12 12-6 1 1-6Zm-2 2 5 5"/></svg><span>${portal.escape(portal.t('Edit'))}</span></a>` : ''}
+                    </p>
+                  </div><hgroup><h3>${portal.escape(item.title)}</h3><div>${item.description}</div></hgroup>
+                </article>`).join('')}
+              ${['search', 'map'].includes(page.name) ? '</div>' : ''}
+              ${!['home', 'login', 'search', 'map'].includes(page.name)
+                  && !(['group', 'organization'].includes(page.name) && !page.id)
+                  && !(macro && !page.group) && !group
+                ? `<h1>${portal.escape(portal.t('Page Not Found'))}</h1>`
+                : ''}
+          </main>
+          <footer id="footer" data-theme="dark">
+            <section class="container">
+              <div class="grid">
+                <div class="footer-about">
+                  <h2>${portal.escape(portal.info.about_title)}</h2>
+                  ${portal.info.about_description}
+                </div>
+                <address>
+                  <h3>${portal.escape(portal.t('Contacts'))}</h3>
+                  ${portal.info.about_name ?    /* html */ `<p><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.24-8 5v3h16v-3c0-2.76-3.58-5-8-5Z" fill="none" stroke="currentColor"></path></svg>${portal.escape(portal.info.about_name)}</p>` : ''}
+                  ${portal.info.about_tel ?     /* html */ `<p><a href="${portal.escape(portal.safeURL(`tel:${portal.info.about_tel}`))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 3 4 5-3 3a16 16 0 0 0 7 7l3-3 5 4c-2 7-10 2-14-2S-2 5 5 3Z"/></svg>${portal.escape(portal.info.about_tel)}</a></p>` : ''}
+                  ${portal.info.about_email ?   /* html */ `<p><a href="${portal.escape(portal.safeURL(`mailto:${portal.info.about_email}`))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 5 10 8L22 5"/></svg>${portal.escape(portal.info.about_email)}</a></p>` : ''}
+                  ${portal.info.about_address ? /* html */ `<p><a href="${portal.escape(portal.safeURL(`https://maps.google.com/?q=${encodeURIComponent(portal.info.about_address)}`))}" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 9c0 6-8 13-8 13S4 15 4 9a8 8 0 1 1 16 0Z"/><circle cx="12" cy="9" r="3"/></svg>${portal.escape(portal.info.about_address)}</a></p>` : ''}
+                  <p class="social-icons">
+                    ${portal.info.facebook_url ?    /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.facebook_url))}" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 22v-8h3l.5-4H15V8c0-1.2.4-2 2-2h1.7V2.4C18 2.2 16.8 2 15.5 2 12.5 2 10.5 3.8 10.5 7v3H7v4h3.5v8Z"/></svg></a>` : ''}
+                    ${portal.info.twitter_url ?     /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.twitter_url))}" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 4 20 20M20 4 4 20"/><path d="M4 4h4l12 16h-4z"/></svg></a>` : ''}
+                    ${portal.info.googleplus_url ?  /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.googleplus_url))}" target="_blank" rel="noopener noreferrer" aria-label="Googleplus"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-4.2m-6.8 7 6.8 4.2"/></svg></a>` : ''}
+                    ${portal.info.youtube_url ?     /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.youtube_url))}" target="_blank" rel="noopener noreferrer" aria-label="Youtube"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/></svg></a>` : ''}
+                    ${portal.info.instagram_url ?   /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.instagram_url))}" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-4.2m-6.8 7 6.8 4.2"/></svg></a>` : ''}
+                    ${portal.info.flickr_url ?      /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.flickr_url))}" target="_blank" rel="noopener noreferrer" aria-label="Flickr"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-4.2m-6.8 7 6.8 4.2"/></svg></a>` : ''}
+                    ${portal.info.tripadvisor_url ? /* html */ `<a href="${portal.escape(portal.safeURL(portal.info.tripadvisor_url))}" target="_blank" rel="noopener noreferrer" aria-label="Tripadvisor"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 10.6 6.8-4.2m-6.8 7 6.8 4.2"/></svg></a>` : ''}
+                  </p>
+                </address>
+              </div>
+            </section>
+            <nav>
+              <div class="container">
+                <ul>
+                  ${[
+                      [window.PORTAL_COOKIE_POLICY_URL || portal.info.cookie_policy_url, 'Cookie'],
+                      [window.PORTAL_PRIVACY_POLICY_URL || portal.info.privacy_policy_url, 'Privacy'],
+                    ]
+                    .filter(([url]) => url)
+                    .map(([url, label]) => `<li><a href="${portal.escape(portal.safeURL(url))}" class="contrast">${label}</a></li>`)
+                    .join('')}
+                  ${window.PORTAL_CREDITS_URL || portal.info.credits_url ? '<li><a href="#credits" data-credits class="contrast">Credits</a></li>' : ''}
+                </ul>
+              </div>
+            </nav>
+          </footer>
+
+          <dialog id="portal-dialog" aria-labelledby="dialog-title" data-theme="light"></dialog>
+          <dialog id="language-dialog" aria-labelledby="language-dialog-title" data-theme="light">
+            <article>
+              <header><form method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form><h3 id="language-dialog-title">${portal.escape(portal.t('Choose a language'))}</h3></header>
+              <fieldset>${portal.locales.map(({ locale, name, flag }) => `<label><input type="radio" name="language" value="${portal.escape(locale)}" data-route="${portal.escape(page.path.replace(`/${page.locale}/`, `/${locale}/`))}"${locale === page.locale ? ' checked' : ''}>${flag}<span>${portal.escape(name)}</span></label>`).join('')}</fieldset>
+            </article>
+          </dialog>
+
+          <a class="bottom-right" href="#" data-scroll-top title="Back to top" aria-label="Back to top" hidden>
+            <svg class="ui-icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true" focusable="false"><path d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"/></svg>
+          </a>
+        `;
+        clearInterval(portal.carousel);
+        document.documentElement.classList.remove('modal-is-open');
+        document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+        for (const element of template.content.children) element.setAttribute('data-portal-ui', '');
+        document.body.append(template.content);
+
+        document.querySelector('#search')?.addEventListener('input', event => {
+          portal.search = event.target.value;
+          document.querySelector('#search-results').innerHTML = portal.projects.filter(item => `${item.title || ''} ${item.description || ''}`.toLowerCase().includes(portal.search.toLowerCase())).map(item => /* html */`
+            <article class="grid item-P P-${portal.escape(item.id)}">
+              <div>
+                <figure>
+                  <img loading="lazy" src="${portal.escape(portal.safeURL(item.thumbnail) || new URL('assets/logo_g3wsuite.png', portal.scriptURL).href)}" alt="${portal.escape(item.title)}">
+                </figure>
+                <p>
+                  <a href="${portal.escape(portal.safeURL(item.map_url))}" target="_blank" rel="noopener noreferrer">
+                    <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 9V3h6m6 0h6v6m0 6v6h-6M9 21H3v-6M3 3l6 6m6 6 6 6M21 3l-6 6M9 15l-6 6"/></svg>
+                    <span>${portal.escape(portal.t('View'))}</span>
+                  </a>
+                  ${item.ogc_urls && Object.keys(item.ogc_urls).length ? /* html */`<a href="#services" data-services="${portal.escape(item.id)}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m2 8 10-6 10 6-10 6Zm0 5 10 6 10-6M2 18l10 6 10-6"/></svg><span>${portal.escape(portal.t('Services'))}</span></a>` : ''}
+                  ${portal.user && item.edit_url ? /* html */`<a href="${portal.escape(portal.safeURL(item.edit_url))}" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16 3 5 5-12 12-6 1 1-6Zm-2 2 5 5"/></svg><span>${portal.escape(portal.t('Edit'))}</span></a>` : ''}
+                </p>
+              </div><hgroup><h3>${portal.escape(item.title)}</h3><div>${item.description}</div></hgroup>
+            </article>`).join('');
+        });
+        document.querySelector('#login-form')?.addEventListener('submit', async event => {
+          event.preventDefault();
+          const form = event.target;
+          const button = form.querySelector('button');
+          const errorLabel = form.querySelector('#login-error');
+          button.disabled = true;
+          errorLabel.hidden = true;
+          try {
+            const data = new FormData(form);
+            await portal.login(data.get('username'), data.get('password'));
+          } catch (error) {
+            console.error('Portal login:', error);
+            errorLabel.textContent = `${portal.t('Login error')}: ${error.message}`;
+            errorLabel.hidden = false;
+          } finally {
+            button.disabled = false;
+          }
+        });
+        if (page.name !== 'home') window.scrollTo({ top: 0, behavior: 'instant' });
+        if (page.name === 'home' && portal.pictures.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          let index = 0;
+          portal.carousel = setInterval(() => {
+            const picture = portal.pictures[++index % portal.pictures.length];
+            document.querySelector('#carousel img').src = portal.safeURL(picture.image);
+            document.querySelector('#carousel figcaption').innerHTML = `
+              ${picture.author && picture.author_url ? `<a href="${portal.escape(portal.safeURL(picture.author_url))}">Photo by ${portal.escape(picture.author)}</a>` : ''}
+              ${picture.author && !picture.author_url ? `<span>Photo by ${portal.escape(picture.author)}</span>` : ''}`;
+          }, 5000);
+        }
+      } catch (error) {
+        if (version !== portal.navigation) return;
+        console.error('Portal:', error);
+        document.querySelector('#content progress')?.remove();
+        if (!document.querySelector('#content')) {
+          clearInterval(portal.carousel);
+          document.documentElement.classList.remove('modal-is-open');
+          document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+          document.body.insertAdjacentHTML('beforeend', '<main id="content" class="container" data-portal-ui></main>');
+        }
+        const alert = document.querySelector('#portal-error') ?? document.querySelector('#content').appendChild(Object.assign(document.createElement('p'), { id: 'portal-error' }));
+        alert.setAttribute('role', 'alert');
+        alert.setAttribute('data-portal-ui', '');
+        alert.replaceChildren(document.createTextNode(error.message + ' '));
+        const retry = document.createElement('button');
+        retry.textContent = 'Retry';
+        retry.onclick = () => {
+          portal.locale = '';
+          portal.render();
+        };
+        alert.append(retry);
+      }
+    },
+  };
+
+  // show a loading bar while any fetch request is pending
+  const nativeFetch = window.fetch;
+  window.fetch = async (...args) => {
+    portal.pending = (portal.pending ?? 0) + 1;
+    if (!document.querySelector('#portal-progress')) document.querySelector('main')?.insertAdjacentHTML('afterbegin', '<progress id="portal-progress" aria-label="Loading"></progress>');
+    try {
+      return await nativeFetch(...args);
+    } finally {
+      if (!--portal.pending) document.querySelector('#portal-progress')?.remove();
+    }
+  };
+
+  document.addEventListener('click', async event => {
+    const target = event.target.closest('a, button, summary');
+    if (!target || event.defaultPrevented || event.button > 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    if (target.hasAttribute('data-route')) {
+      event.preventDefault();
+      portal.memoryPath = target.dataset.route;
+      if (portal.mode !== 'abstract') history.pushState({}, '', portal.routePrefix + target.dataset.route);
+      portal.render();
+      return;
+    }
+    if (target.hasAttribute('data-logout')) {
+      event.preventDefault();
+      try {
+        await portal.logout();
+      } catch (error) {
+        console.error('Portal:', error);
+        document.querySelector('#content progress')?.remove();
+        if (!document.querySelector('#content')) {
+          clearInterval(portal.carousel);
+          document.documentElement.classList.remove('modal-is-open');
+          document.querySelectorAll('[data-portal-ui], #app').forEach(element => element.remove());
+          document.body.insertAdjacentHTML('beforeend', '<main id="content" class="container" data-portal-ui></main>');
+        }
+        const alert = document.querySelector('#portal-error') ?? document.querySelector('#content').appendChild(Object.assign(document.createElement('p'), { id: 'portal-error' }));
+        alert.setAttribute('role', 'alert');
+        alert.setAttribute('data-portal-ui', '');
+        alert.replaceChildren(document.createTextNode(error.message + ' '));
+        const retry = document.createElement('button');
+        retry.textContent = 'Retry';
+        retry.onclick = () => {
+          portal.locale = '';
+          portal.render();
+        };
+        alert.append(retry);
+      }
+      return;
+    }
+    if (target.hasAttribute('data-menu')) {
+      const menu = document.querySelector('#secondary-menu');
+      menu.hidden = !menu.hidden;
+      target.setAttribute('aria-expanded', String(!menu.hidden));
+      return;
+    }
+    if (target.hasAttribute('data-language-toggle')) {
+      event.preventDefault();
+      const locale = portal.route.locale === 'it' ? 'en' : 'it';
+      if (!portal.languages.includes(locale)) return;
+      portal.memoryPath = portal.route.path.replace(`/${portal.route.locale}/`, `/${locale}/`);
+      if (portal.mode !== 'abstract') history.pushState({}, '', portal.routePrefix + portal.memoryPath);
+      portal.render();
+      return;
+    }
+    if (target.hasAttribute('data-languages')) {
+      event.preventDefault();
+      const dialog = document.querySelector('#language-dialog');
+      dialog.addEventListener('close', () => document.documentElement.classList.remove('modal-is-open'), { once: true });
+      document.documentElement.classList.add('modal-is-open');
+      dialog.showModal();
+      return;
+    }
+    if (target.hasAttribute('data-services') || target.hasAttribute('data-credits')) {
+      event.preventDefault();
+      const dialog = document.querySelector('#portal-dialog');
+      const item = target.hasAttribute('data-services') && (['group', 'organization'].includes(portal.route.name) ? portal.visibleProjects : portal.projects).find(item => String(item.id) === target.dataset.services);
+      const title = item ? item.title : 'Applicativo realizzato con il framework Open Source';
+      const html = item
+        ? `<h4>${portal.escape(portal.t('Network services - OGC'))}</h4><ul>${Object.entries(item.ogc_urls).map(([name, url]) => `<li><b>${portal.escape(name)}:</b> <a href="${portal.escape(portal.safeURL(url))}" target="_blank" rel="noopener noreferrer">${portal.escape(portal.safeURL(url))}</a></li>`).join('')}</ul>`
+        : `<section class="credits-content"><p><a href="${portal.escape(portal.safeURL('https://g3wsuite.it/'))}" target="_blank" rel="noopener noreferrer"><img src="${new URL('assets/logo_g3wsuite.png', portal.scriptURL).href}" alt="G3W SUITE" width="250"></a></p>      <p>Pubblica e gestisci i tuoi progetti QGIS sul Web</p>      <address><a href="${portal.escape(portal.safeURL('https://maps.google.com/?q=Montecatini%20Terme%2C%20Italy'))}" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 9c0 6-8 13-8 13S4 15 4 9a8 8 0 1 1 16 0Z"/><circle cx="12" cy="9" r="3"/></svg>Montecatini Terme - Italy</a>        <a href="${portal.escape(portal.safeURL('tel:+393938534336'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 3 4 5-3 3a16 16 0 0 0 7 7l3-3 5 4c-2 7-10 2-14-2S-2 5 5 3Z"/></svg>+39 393 8534336</a><a href="${portal.escape(portal.safeURL('mailto:info@gis3w.it'))}"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 5 10 8L22 5"/></svg>info@gis3w.it</a></address>      ${portal.info.credits}</section><footer>Framework sviluppato da <a href="${portal.escape(portal.safeURL('https://www.gis3w.it'))}" target="_blank" rel="noopener noreferrer"><img src="${new URL('assets/logo_gis3w_156_85.png', portal.scriptURL).href}" alt="Gis3w" width="60"></a></footer>`;
+      dialog.innerHTML = `<article><header><form method="dialog"><input type="submit" aria-label="Close" value="" class="close contrast"></form>    <h3 id="dialog-title">${portal.escape(title)}</h3></header>${html}</article>`;
+      dialog.addEventListener('close', () => document.documentElement.classList.remove('modal-is-open'), {
+        once: true
+      });
+      document.documentElement.classList.add('modal-is-open');
+      dialog.showModal();
+      return;
+    }
+    if (target.hasAttribute('data-scroll-top')) {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      return;
+    }
+    if (target.hasAttribute('data-skip-content')) {
+      event.preventDefault();
+      document.querySelector('#content').focus();
+    }
+  });
+
+  document.addEventListener('change', event => {
+    const input = event.target.closest('#language-dialog input[name="language"]');
+    if (!input) return;
+    input.closest('dialog').close();
+    portal.memoryPath = input.dataset.route;
+    if (portal.mode !== 'abstract') history.pushState({}, '', portal.routePrefix + input.dataset.route);
+    portal.render();
+  });
+  window.addEventListener('popstate', () => portal.render());
+  window.addEventListener('hashchange', () => portal.render());
+  window.addEventListener('scroll', () => {
+    const button = document.querySelector('[data-scroll-top]');
+    if (button) button.hidden = window.scrollY < 150;
+  }, { passive: true });
+
+  if (window.PORTAL_FAVICON) {
+    const icon = document.querySelector('link[rel="icon"]') || document.head.appendChild(document.createElement('link'));
+    icon.rel = 'icon';
+    icon.href = portal.safeURL(window.PORTAL_FAVICON);
+  }
+  portal.render();
+})();
