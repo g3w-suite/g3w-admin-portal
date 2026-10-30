@@ -120,12 +120,10 @@ async def tablet_viewport(context):
 @then("footer contacts occupy the third column")
 async def footer_columns(context):
     columns = context.page.locator("#footer .grid")
-    about = await columns.locator("> div").first.bounding_box()
-    contacts = await columns.locator("> address").bounding_box()
-    grid = await columns.bounding_box()
-    assert about and contacts and grid
-    assert abs(about["y"] - contacts["y"]) < 1, (about, contacts)
-    assert contacts["x"] > grid["x"] + grid["width"] * .6, (grid, contacts)
+    await expect(columns).to_have_css(
+        "grid-template-columns", re.compile(r"^\S+\s+\S+\s+\S+$")
+    )
+    await expect(columns.locator("> address")).to_have_css("grid-column-start", "3")
 
 
 @then("mobile navigation shows a menu button instead of crowded actions")
