@@ -103,7 +103,7 @@ class GroupsAPIFilter(VisibleGroupsMixin, BaseFilterBackend):
         # PORTAL_GROUPS_FILTER = { 'macrogroups__name': 'ALTAMURA' }
         ##
         if (
-            hasattr(settings, 'PORTAL_DEFAULT_GROUPS_FILTER') and
+            hasattr(settings, 'PORTAL_GROUPS_FILTER') and
             url_name in ('portal-group-api-list', 'portal-group-without-macrogroup-api-list')
         ):
             groups = Group.objects.filter(**getattr(settings, 'PORTAL_GROUPS_FILTER'))
@@ -129,7 +129,7 @@ class MacroGroupsAPIFilter(VisibleGroupsMixin, BaseFilterBackend):
         # 
         # hide macrogroups on frontend (returns empty list)
         #
-        # PORTAL_MAGROGROUPS_FILTER = { "pk": -9999 }
+        # PORTAL_MACROGROUPS_FILTER = { "pk": -9999 }
         ##
         if (hasattr(settings, 'PORTAL_MACROGROUPS_FILTER')):
            queryset = queryset.filter(**getattr(settings, 'PORTAL_MACROGROUPS_FILTER'))
