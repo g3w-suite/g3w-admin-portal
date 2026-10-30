@@ -111,8 +111,8 @@ body > nav.main-menu > ul:last-child { flex-basis: 100%; justify-content: space-
 nav .logo { max-height: 4rem; max-width: 10rem; }
 .ui-icon { width: 1.2em; height: 1.2em; margin-right: .4em; vertical-align: -.2em; flex-shrink: 0; }
 nav .h1 { display: block; font-size: 1.5rem; font-weight: 700; color: var(--h1-color); }
-#language-dialog article { width: auto; }
 #language-dialog fieldset { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: .5rem 2rem; margin: 0; }
+#language-dialog header { padding-top: 0; padding-bottom: 0; }
 #language-dialog label { display: flex; align-items: center; margin: 0; font-weight: 700; }
 #main-menu a {--color: var(--contrast-hover); }
 .nav-lang a[data-languages]::after { content: ""; display: inline-block; width: 1rem; height: 1rem; margin-inline-start: .5rem; vertical-align: middle; background: var(--icon-chevron) right center / 1rem auto no-repeat; }
