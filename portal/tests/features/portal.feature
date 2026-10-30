@@ -107,8 +107,7 @@ Feature: Native portal behavior without a JavaScript test runner
   Scenario Outline: Internal login ignores the Django logout page
     Given the visitor is "authenticated"
     And internal login advertises the Django logout URL
-    When I open "<path>"
-    And I use internal logout
+    When I use internal logout from "<path>"
     Then logout uses the portal API without leaving the application
 
     Examples:

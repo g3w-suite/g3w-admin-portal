@@ -350,9 +350,10 @@ def django_logout_destination(context):
     context.info.update(login_url="login", logout_url="/en/logout/")
 
 
-@when("I use internal logout")
-async def internal_logout(context):
-    if "/logout" not in context.page.url.split("#")[-1]:
+@when('I use internal logout from "{path}"')
+async def internal_logout(context, path):
+    await context.page.goto(path)
+    if "/logout" not in path.split("#")[-1]:
         await role(context, "link", "Logout").click()
 
 
