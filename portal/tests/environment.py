@@ -19,6 +19,10 @@ FIXTURES = [
 
 
 def start_backend(context):
+    # Runs once per test run: creating the test database is expensive.
+    if "backend" in context.started:
+        return
+    context.started.add("backend")
     if not os.environ.get("DJANGO_SETTINGS_MODULE"):
         raise RuntimeError(
             "Backend scenarios require the G3W-ADMIN/QGIS environment and "
@@ -48,12 +52,12 @@ def start_backend(context):
         overrides.disable()
         reload_urls()
 
-    context.add_cleanup(restore_settings)
+    context.add_cleanup(restore_settings, layer="testrun")
     reload_urls()
     setup_test_environment()
-    context.add_cleanup(teardown_test_environment)
+    context.add_cleanup(teardown_test_environment, layer="testrun")
     databases = setup_databases(verbosity=1, interactive=False, aliases={"default"})
-    context.add_cleanup(teardown_databases, databases, verbosity=1)
+    context.add_cleanup(teardown_databases, databases, verbosity=1, layer="testrun")
 
 
 def prepare_backend(context):
@@ -151,6 +155,7 @@ def before_all(context):
     context.repo = REPO
     context.results = Path(__file__).resolve().parent / "results"
     context.results.mkdir(parents=True, exist_ok=True)
+    context.started = set()
 
 
 def before_feature(context, feature):

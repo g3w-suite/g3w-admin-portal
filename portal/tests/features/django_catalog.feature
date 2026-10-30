@@ -1,48 +1,14 @@
 @backend
-Feature: Django portal API contracts and permissions
-  Real Django clients, fixtures and QGIS projects verify the backend.
-  Every scenario runs in an isolated test database transaction.
+Feature: Django portal catalog API and permissions
+  Groups, projects, macrogroups, pictures and metadata respect user permissions.
 
   Background:
     Given the Django portal catalog
 
-  Scenario: Local API proxy forwards and scopes remote session cookies
-    When a proxy request from "localhost:8000" targets "it/portal/api/infodata/"
-    Then the proxy forwards only remote session cookies and scopes the response cookies
-    And the proxy makes relative URLs point to the remote host
-
-  Scenario: Local API proxy builds the catalog from the remote endpoints
-    When a proxy request from "localhost:8000" targets "it/portal/api/catalog/"
-    Then the proxy aggregates the remote catalog endpoints
-
-  Scenario Outline: API proxy ignores non-local hosts and unapproved paths
-    When a proxy request from "<host>" targets "<target>"
-    Then the local server handles the request without contacting upstream
-
-    Examples:
-      | host           | target                  |
-      | example.com    | it/portal/api/infodata/ |
-      | localhost:8000 | admin/                 |
-
-  Scenario Outline: Root JWT token endpoints are proxied only on localhost
-    When a JWT token request from "<host>" targets "/authjwt/api/token/refresh/"
-    Then the token request is handled by "<handler>"
-
-    Examples:
-      | host           | handler    |
-      | localhost:8000 | the proxy  |
-      | example.com    | the server |
-
-  Scenario Outline: Current session identity
-    Given a backend "<visitor>" session
-    When the backend endpoint "portal-whoami-api" is requested
-    Then the backend responds with status 200
-    And the backend identity is "<visitor>"
-
-    Examples:
-      | visitor   |
-      | anonymous |
-      | viewer    |
+  Scenario: Project map and edit URLs refer to the real group and project
+    Given a backend "admin" session
+    When the backend endpoint "portal-project-api-list" is requested
+    Then the first backend project has its expected title and map and edit URLs
 
   Scenario Outline: Groups require at least one visible project
     Given a backend "<visitor>" session
@@ -71,11 +37,6 @@ Feature: Django portal API contracts and permissions
       | admin     | 2     | present |
       | editor2   | 0     | absent  |
       | viewer    | 1     | absent  |
-
-  Scenario: Project map and edit URLs refer to the real group and project
-    Given a backend "admin" session
-    When the backend endpoint "portal-project-api-list" is requested
-    Then the first backend project has its expected title and map and edit URLs
 
   Scenario Outline: Projects can be filtered by group
     Given a backend "admin" session
@@ -157,34 +118,3 @@ Feature: Django portal API contracts and permissions
     When the panoramic association is removed
     And the backend endpoint "portal-project-api-list" is requested
     Then the backend returns 2 entries
-
-  Scenario: Django serves the portal document
-    When the backend endpoint "frontend" is requested
-    Then the backend responds with status 200
-    And the Django document contains the native portal entry point
-
-  Scenario: Ajax login and logout update the real session
-    When valid backend credentials are submitted
-    Then the backend responds with status 200
-    And the backend operation reports "ok"
-    When the backend endpoint "portal-ajax-logout" is requested
-    Then the backend responds with status 200
-    And the backend operation reports "ok"
-    And the backend logout message is "Logout"
-    When invalid backend credentials are submitted
-    Then the backend responds with status 200
-    And the backend operation reports "error"
-
-  Scenario Outline: Picture administration is reserved for administrators
-    Given a backend "<visitor>" session
-    When the backend endpoint "<endpoint>" is requested
-    Then the backend responds with status <status>
-
-    Examples:
-      | visitor   | endpoint           | status |
-      | anonymous | portal-picture     | 302    |
-      | editor1   | portal-picture     | 403    |
-      | admin     | portal-picture     | 200    |
-      | anonymous | portal-picture-add | 302    |
-      | editor1   | portal-picture-add | 403    |
-      | admin     | portal-picture-add | 200    |
