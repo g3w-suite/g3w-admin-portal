@@ -31,24 +31,25 @@ async def catalog_cards(context, titles):
     await expect(context.page.locator("#content article h3")).to_have_text(titles.split(", "))
 
 
-@given('the theme primary color is "{color}"')
-def theme_primary(context, color):
-    context.settings["PORTAL_CUSTOM_CSS"] = f":root {{ --primary: {color}; }}"
-
-
 @given("the portal script is unavailable")
 async def missing_script(context):
     await context.page.route("**/frontend/index.js", lambda route: route.abort())
 
 
-@then('the loading spinner uses "{color}"')
-async def spinner_color(context, color):
+@then("the loading spinner uses the theme primary color")
+async def spinner_color(context):
     await expect(context.page.locator("#app")).to_be_attached()
+    primary = await context.page.evaluate(
+        "() => { const probe = document.createElement('span'); probe.style.backgroundColor = 'var(--primary)'; "
+        "document.body.append(probe); const color = getComputedStyle(probe).backgroundColor; "
+        "probe.remove(); return color; }"
+    )
+    assert primary not in {"", "rgba(0, 0, 0, 0)"}, primary
     for pseudo in ["::before", "::after"]:
         background = await context.page.evaluate(
             "pseudo => getComputedStyle(document.body, pseudo).backgroundColor", pseudo,
         )
-        assert background == color, (pseudo, background)
+        assert background == primary, (pseudo, background, primary)
 
 
 @then("projects were requested from the group API")

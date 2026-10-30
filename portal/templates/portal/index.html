@@ -17,7 +17,7 @@
 {% endif %}
 
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}">
+<html lang="{{ LANGUAGE_CODE }}" data-theme="{{ SETTINGS.PORTAL_THEME | default:"light" | escapejs }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

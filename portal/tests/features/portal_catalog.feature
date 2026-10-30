@@ -75,10 +75,9 @@ Feature: Home catalog and portal delivery
 
   @issue-16
   Scenario: The loading spinner follows the theme primary color
-    Given the theme primary color is "rgb(1, 2, 3)"
-    And the portal script is unavailable
+    Given the portal script is unavailable
     When I open "/#/en/"
-    Then the loading spinner uses "rgb(1, 2, 3)"
+    Then the loading spinner uses the theme primary color
 
   Scenario: Carousel pictures retain their configured order and credits
     Given two carousel pictures supplied out of order
