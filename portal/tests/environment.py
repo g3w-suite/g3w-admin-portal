@@ -54,10 +54,12 @@ def start_backend(context):
 
     context.add_cleanup(restore_settings, layer="testrun")
     reload_urls()
-    setup_test_environment()
-    context.add_cleanup(teardown_test_environment, layer="testrun")
-    databases = setup_databases(verbosity=1, interactive=False, aliases={"default"})
-    context.add_cleanup(teardown_databases, databases, verbosity=1, layer="testrun")
+    # The unified manage.py test runner owns the test database/environment.
+    if os.environ.get("G3W_TEST_DATABASE_READY") != "1":
+        setup_test_environment()
+        context.add_cleanup(teardown_test_environment, layer="testrun")
+        databases = setup_databases(verbosity=1, interactive=False, aliases={"default"})
+        context.add_cleanup(teardown_databases, databases, verbosity=1, layer="testrun")
 
 
 def prepare_backend(context):

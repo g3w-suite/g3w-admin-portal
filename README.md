@@ -1,5 +1,6 @@
-# G3W-ADMIN-PORTAL v5.0.0
+# G3W-ADMIN-PORTAL
 
+[![PyPI version](https://img.shields.io/pypi/v/g3w-admin-portal)](https://pypi.org/project/g3w-admin-portal/)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/g3w-suite/g3w-admin-portal)
 
 A public home page (portal) for [G3W-SUITE](https://github.com/g3w-suite): it lists the maps, groups and macrogroups published with [G3W-ADMIN](https://github.com/g3w-suite/g3w-admin).
@@ -12,7 +13,7 @@ A public home page (portal) for [G3W-SUITE](https://github.com/g3w-suite): it li
 2. [Configuration](#2-configuration)
 3. [Using a remote G3W-ADMIN server](#3-using-a-remote-g3w-admin-server)
 4. [Troubleshooting](#4-troubleshooting)
-5. [Development](#5-development)
+5. [Development and tests](#5-development-and-tests)
 
 ---
 
@@ -177,7 +178,7 @@ Use this when the portal and the G3W-ADMIN API live on **different domains**.
 **Step 1 — On the remote server**, install the portal with JWT support ([g3w-admin-authjwt](https://github.com/g3w-suite/g3w-admin-authjwt)):
 
 ```sh
-pip install "portal[authjwt] @ git+https://github.com/g3w-suite/g3w-admin-portal.git@v5.0.0"
+pip install "g3w-admin-portal[authjwt] @ git+https://github.com/g3w-suite/g3w-admin-portal.git@v5.0.0"
 ```
 
 **Step 2 — On the portal**, point it to the remote server:
@@ -297,7 +298,7 @@ See also: [MultipleProxyMiddleware](https://docs.djangoproject.com/en/3.2/ref/re
 
 ---
 
-## 5. Development
+## 5. Development and tests
 
 ### Frontend
 
@@ -305,14 +306,17 @@ The frontend is plain JS/CSS in [portal/static/frontend](./portal/static/fronten
 Edit the files directly, then deploy them with Django's `collectstatic`.
 Develop through G3W-ADMIN in Docker or with `pip install -e .`.
 
-### Tests
-
 Tests use Behave / Gherkin: [features](./portal/tests/features) and [steps](./portal/tests/steps).
+Install the test dependencies with:
+
+```sh
+python -m pip install -r requirements_test.txt
+```
 
 **Browser tests** — self-contained (own Django test server, mocked APIs). From the repository root:
 
 ```sh
-python -m pip install -r requirements-test.txt
+python -m pip install -r requirements_test.txt
 python -m playwright install chromium
 python -m behave --tags=browser
 ```
@@ -321,14 +325,6 @@ python -m behave --tags=browser
 
 ```sh
 DJANGO_SETTINGS_MODULE=base.settings python3 -m behave portal/tests/features --tags=backend
-```
-
-### Release a new version
-
-```sh
-make install           # init makefiles (once)
-make version v=X.Y.Z   # add new git version
-make push-tags         # update remote git tags (local --> remote)
 ```
 
 ---

@@ -149,7 +149,8 @@ async def native_delivery(context):
         assert response.ok, url
         assert re.search(r"javascript|css", response.headers["content-type"]), url
     for path in [
-        "/package.json", "/server.py", "/config.js", "/requirements-test.txt",
+        "/package.json", "/server.py", "/config.js",
+        "/requirements-test.txt", "/requirements_test.txt",
         "/static/frontend/missing.js",
     ]:
         assert (await client.get(path)).status == 404, path
