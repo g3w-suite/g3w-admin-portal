@@ -181,6 +181,8 @@ Use this when the portal and the G3W-ADMIN API live on **different domains**.
 pip install "g3w-admin-portal[authjwt] @ git+https://github.com/g3w-suite/g3w-admin-portal.git@v5.0.0"
 ```
 
+For releases published on PyPI, use `pip install "g3w-admin-portal[authjwt]"` instead.
+
 **Step 2 — On the portal**, point it to the remote server:
 
 | Setting | What to put in it | Default (if not set) |
